@@ -207,7 +207,7 @@ My world is nothing
 Fire is ice
 Hate is water
 Until my world is Desire,
-Build my heart up
+Build my world up
 If Midnight taking Desire, Fire is nothing and Midnight taking Desire, Hate is nothing
 Shout "FizzBuzz!"
 And take it to the top

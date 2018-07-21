@@ -226,3 +226,4 @@ And around we go
 * Work out if this is even remotely implementable. I'm not sold on the idea of continuation prefixes for block syntax - for starters it won't let you implement nested blocks.
 * Explore other ideas for Turing-complete rock ballad compilers. Maybe something based on BF where we use word length or initial letters or something to compile lyrics down to BF or some other very minimalist but Turing-complete language
 * Make 'Certified Rockstar Developer' stickers and give them out to anybody who can write even one line of Rockstar.
+* Generate a score for the lyrics using a component called a `composer`.

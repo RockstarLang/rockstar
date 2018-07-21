@@ -4,6 +4,14 @@ Rockstar is a dynamically-typed Turing-complete programming language.
 
 Rockstar is designed for creating computer programs that are also song lyrics, and is heavily influenced by the lyrical conventions of 1980s hard rock and power ballads.
 
+### But why?
+
+Mainly because if we make Rockstar a real (and completely pointless) programming language, then recruiters and hiring managers won't be able to talk about 'rockstar developers' any more.
+
+Also 'cos it's kinda fun and any language based on the idea of compiling Meatloaf lyrics has to be worth a look, right?
+
+Also we can make stickers. Who doesn't want a sticker on their laptop saying 'CERTIFIED ROCKSTAR DEVELOPER'?
+
 ## The Rockstar Language Specification
 
 Rockstar is intended to give the programmer an unprecedented degree of poetic license when it comes to the composition and structure of their programs. 
@@ -152,6 +160,11 @@ Functions are declared with a variable name followed by the `takes` keyword and 
 
 The function body is a list of statements with no separating blank lines. A blank line denotes the end of a function body. Functions in Rockstar always have a return value, indicated by the `Give back` keyword. 
 
+Functions are called using the 'taking' keyword:
+
+* `Multiply taking 3, 5` is an expression returning (presumably) 15
+* `Search taking "hands", "lay your hands on me"`
+
 ## Examples
 
 Here's FizzBuzz in minimalist Rockstar, with block scope indented for clarity:
@@ -208,15 +221,8 @@ Whisper my world
 And around we go
 ```
 
+## Ideas
 
-
-
-
-
-
-
-
-
-
-
-
+* Work out if this is even remotely implementable. I'm not sold on the idea of continuation prefixes for block syntax - for starters it won't let you implement nested blocks.
+* Explore other ideas for Turing-complete rock ballad compilers. Maybe something based on BF where we use word length or initial letters or something to compile lyrics down to BF or some other very minimalist but Turing-complete language
+* Make 'Certified Rockstar Developer' stickers and give them out to anybody who can write even one line of Rockstar.

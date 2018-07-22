@@ -5,7 +5,7 @@ class Lexer {
     get();
   }
   String _program;
-  String current;
+  var current;
   String currentString;
   int _pos = 0;
   void accept(String something) {
@@ -90,7 +90,7 @@ class Lexer {
   }
 
   // Returns null if it's not a possessive.
-  bool getPossessive(String s) {
+  String getPossessive(String s) {
     if (s == "my" || s == "My") return "my";
     if (s == "the" || s == "The") return "the";
     if (s == "your" || s == "Your") return "your";
@@ -115,10 +115,10 @@ class Lexer {
         String possessive = getPossessive(current);
         if (possessive != null) {
           get();
-          if (current == '"') error("Literal string after $possessive");
-          if (current is int) error("Integer after $possessive");
+          if (current == '"') _error("Literal string after $possessive");
+          if (current is int) _error("Integer after $possessive");
           int c = current.codeUnitAt(0);
-          if ($A <= c && c <= $Z) error("Proper name after $possessive");
+          if ($A <= c && c <= $Z) _error("Proper name after $possessive");
           current = "$possessive $current";
         }
         return;
@@ -193,17 +193,17 @@ class Lexer {
       int c = _codeUnit(_pos);
       if (c == $backslash) {
         _pos += 2;
-        if (_pos > _program.length) error("File ends in backslash");
+        if (_pos > _program.length) _error("File ends in backslash");
         chars = _makeCharArray(start, _pos, chars);
         c = _codeUnit(_pos - 1);
-        if (c == $n) chars.add($new_line);
+        if (c == $n) chars.add($lf);
         else if (c == $r) chars.add($cr);
         else if (c == $t) chars.add($ht);
         else if (c == $backslash) chars.add($backslash);
         else if (c == $single_quote) chars.add($single_quote);
         else if (c == $double_quote) chars.add($double_quote);
         else if (c == $0) chars.add(0);
-        else error("Unknown escape in string literal");
+        else _error("Unknown escape in string literal");
         continue;
       }
       if (c == delimiter) {
@@ -221,5 +221,11 @@ class Lexer {
     }
     _pos = start;
     _error("Unterminated string");
+  }
+
+  void _error(String message) {
+    String str = "Error at byte postion $_pos: $message";
+    print(str);
+    throw str;
   }
 }

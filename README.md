@@ -105,7 +105,7 @@ Similar to the single-equals operator in Visual Basic and some scripting languag
 Comparison in Rockstar can only be done within an expression.
 
 * `Tommy is nobody` initialises the variable `Tommy` with the value `nobody`
-* `If Tommy is nobody then` - will execute the next line if, and only if, the variable `Tommy` is equal to `nobody`
+* `If Tommy is nobody` - will execute the following block if, and only if, the variable `Tommy` is equal to `nobody`
 
 The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
 
@@ -137,24 +137,23 @@ Similar to the `If` statement, a loop is denoted by the `While` or `Until` keywo
 Tommy was a dancer
 While Tommy ain't nothing,
 Knock Tommy down
-And around we go
 ```
 
 That'll initialize Tommy with the value 16 (using the poetic number literal syntax) and then loop, decrementing Tommy by 1 each time until Tommy equals zero (i.e `ain't nothing` returns false).
 
 
-The `break` and `continue` statements work as they do in most block-based languages. Rockstar defines `Break it down!` as an alias for `break` and `Take it to the top` as an alias for `continue` 
+The `break` and `continue` statements work as they do in most block-based languages. Rockstar defines `Break it down` as an alias for `break` and `Take it to the top` as an alias for `continue` 
 
 #### Blocks
 
-A block of statements in Rockstar is denoted by the `and` keyword at the start of a line. Any line beginning with `and` forms part of a block statement continuing the previous line. The block ends when we hit a statement that doesn't start with `and`
+A block in Rockstar starts with an `If`, `Else`, `While` or `Until` statement, and is terminated by a blank line or the end-of-file. EOF ends all open code blocks
 
 ```
 Tommy was a dancer
 While Tommy ain't nothing
 Shout it
 Knock it down
-And around we go
+
 ```
 
 ### Functions
@@ -180,24 +179,28 @@ Modulus takes Number and Divisor
 While Number is higher than Divisor
 Take Divisor from Number
 Give back Number
-
+    (blank line ending While block)
+    (blank line ending function declaration)
 Limit is 100
 Counter is 0
 Fizz is 3
 Buzz is 5
 Until Counter is Limit
-	Build Counter up
-	If Modulus taking Counter, Fizz is 0 and Modulus taking Counter, Buzz is 0
-		Say "FizzBuzz!"
-		And Continue
-	If Modulus taking Counter and Fizz is 0
-		Say "Fizz!"
-		And Continue
-	If Modulus taking Counter and Buzz is 0
-		Say "Buzz!"
-		And Continue
-	Say Counter
-End
+Build Counter up
+If Modulus taking Counter, Fizz is 0 and Modulus taking Counter, Buzz is 0
+Say "FizzBuzz!"
+Continue
+    (blank line ending 'If' Block)
+If Modulus taking Counter and Fizz is 0
+Say "Fizz!"
+Continue
+    (blank line ending 'If' Block)	
+If Modulus taking Counter and Buzz is 0
+Say "Buzz!"
+Continue
+    (blank line ending 'If' Block)
+Say Counter
+    (blank line ending Until block)
 ```
 
 And here's the same thing in idiomatic Rockstar, using poetic literals and no indentation
@@ -208,23 +211,26 @@ While your heart is higher than your soul or your heart is your soul
 Take your soul from your heart
 Give back your heart
 
+
 Desire is a lovestruck ladykiller
 My world is nothing 
 Fire is ice
 Hate is water
 Until my world is Desire,
 Build my world up
-If Midnight taking Desire, Fire is nothing and Midnight taking Desire, Hate is nothing
+If Midnight taking my world, Fire is nothing and Midnight taking my world, Hate is nothing
 Shout "FizzBuzz!"
-And take it to the top
-If Midnight taking Desire, Fire is nothing
+Take it to the top
+
+If Midnight taking my world, Fire is nothing
 Shout "Fizz!"
-And take it to the top
-If Midnight taking Desire, Hate is nothing
+Take it to the top
+
+If Midnight taking my world, Hate is nothing
 Say "Buzz!"
-And take it to the top
+Take it to the top
+
 Whisper my world
-And around we go
 ```
 
 ## Ideas

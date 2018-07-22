@@ -39,6 +39,8 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 * **Mysterious** - the value of any variable that hasn't been assigned a value, denoted by the keyword `mysterious`
 * **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere` and `nobody` are defined as aliases for `null`
 * **Boolean** - a logical entity having two values `true` and `false`. *(The keywords `maybe` and `definitely maybe` are reserved for future use)*
+ * `right`, `yes` and `ok` are valid aliases for `true`
+ * `wrong`, `no` and `lies` are valid aliases for `false`
 * **Number** - Numbers in Rockstar are stored using the [DEC64](http://www.dec64.com/) numeric type.
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
 * **Object** - a collection of named data properties, as in ECMAScript.

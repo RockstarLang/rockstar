@@ -202,7 +202,7 @@ And here's the same thing in idiomatic Rockstar, using poetic literals and no in
 
 ```
 Midnight takes your heart and your soul
-While your heart is higher than your soul
+While your heart is higher than your soul or your heart is your soul
 Take your soul from your heart
 Give back your heart
 

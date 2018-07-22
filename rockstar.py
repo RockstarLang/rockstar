@@ -7,6 +7,12 @@ random_name = lambda: 'my ' + ''.join(random.choice(string.ascii_lowercase) for 
 unescape_string = lambda string: string[1:-1].replace('\\n', '\n').replace('\\t', '\t').replace('\\\'', '\'').replace('\\"', '"')
 
 def extract_strings(code):
+    """
+    Replaces all literal strings in the given code with constants, returning
+    the replaced code and the table of constants. This way we don't have to
+    worry about string literals matching keywords and stuff. Dirty, I know
+    but works oh so well.
+    """
     strings = {}
     def replace(match):
         name = random_name()
@@ -15,6 +21,9 @@ def extract_strings(code):
     return re.sub(r'"([^"]|\\")*?"|\'([^\']|\\\')*?\'', replace, code), strings
 
 def parse_name(name, env):
+    """
+    Normalizes a name. This function is stateful because the language is crazy.
+    """
     name = name.lower()
     if name in ('it', 'he', 'she', 'him', 'her', 'them', 'they'):
         return env['_']
@@ -22,6 +31,11 @@ def parse_name(name, env):
     return name
 
 def parse_function(first_line, sentences, env):
+    """
+    Given the first line of the function declaration, consumes sentences until
+    it has finished parsing the rest of the body, and returns the function name
+    and callable body.
+    """
     function_name, params_str = first_line.split(' takes ')
     separator = ', ' if ', ' in params_str else ' and '
     params = [parse_name(param, env) for param in params_str.split(separator)]
@@ -35,6 +49,9 @@ def parse_function(first_line, sentences, env):
     return function_name, run
 
 def parse_expression(text, env):
+    """
+    Run-of-the-mill text to value conversion.
+    """
     # Rules are not well defined here. Just try our best.
 
     if text.isdigit():
@@ -73,6 +90,9 @@ def parse_expression(text, env):
     return lambda: env[name]
 
 def parse_block(sentences, env):
+    """
+    Consumes sentences until the block ends, then returns the block.
+    """
     body = []
     if len(sentences) > 1 and sentences[1][1].startswith('And ') and sentences[1][1] != 'And around we go':
         body.append(parse_next_statement(sentences, env))
@@ -89,6 +109,7 @@ def parse_block(sentences, env):
             body.append(parse_next_statement(sentences, env))
     return body
 
+# Use Python's Exception system for operations that interrupt control flow.
 class Continue(Exception): pass
 class Break(Exception): pass
 class Return(Exception):
@@ -96,6 +117,10 @@ class Return(Exception):
         self.value = value
 
 def parse_next_statement(sentences, env):
+    """
+    Consumes as many sentences as necessary to return a single well defined
+    statement.
+    """
     while sentences:
         lineno, sentence = sentences.pop(0)
         sentence = re.sub('^And ', '', sentence)
@@ -187,9 +212,14 @@ def parse_next_statement(sentences, env):
         else:
             raise ValueError(f'Parse error on line {lineno}: unrecognized sentence ' + repr(sentence))
 
+    # Keep line number and sentence text to help debugging.
     return (lineno, sentence), run
 
 def parse(code):
+    """
+    Translates source code into a list of runnable statements (with debugging
+    metadata).
+    """
     env = {'Whisper': print, 'Say': print, 'Shout': print, 'lineno': 0, 'nothing': 0}
 
     # Replace all literal strings with constants so we can do nasty string

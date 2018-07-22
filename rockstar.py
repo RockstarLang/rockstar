@@ -3,7 +3,7 @@ import random
 import string
 from pprint import pprint
 
-random_name = lambda: ''.join(random.choice(string.ascii_uppercase) for i in range(10))
+random_name = lambda: 'my ' + ''.join(random.choice(string.ascii_lowercase) for i in range(10))
 unescape_string = lambda string: string[1:-1].replace('\\n', '\n').replace('\\t', '\t').replace('\\\'', '\'').replace('\\"', '"')
 
 def extract_strings(code):
@@ -22,26 +22,23 @@ def parse_name(name, env):
     return name
 
 def parse_function(first_line, sentences, env):
-    name, params_str = first_line.split(' takes ')
-    params = [parse_name(param, env) for param in params_str.split(' and ')]
-    body = []
-    while sentences:
-        if not sentences[0].strip(): break
-        body.append(parse_next(sentences, env))
-    def run(*args):
-        for name, arg in zip(params, args):
+    function_name, params_str = first_line.split(' takes ')
+    separator = ', ' if ', ' in params_str else ' and '
+    params = [parse_name(param, env) for param in params_str.split(separator)]
+    body = parse_block(sentences, env)
+    def run(*values):
+        if len(params) != len(values):
+            raise ValueError(f'Mismatch of number of arguments for function {function_name  }: expected {len(params)} ({params}) and got {len(values)} ({values}).')
+        for name, arg in zip(params, values):
             env[name] = arg
-        for statement in body:
-            result = statement()
-            if result is not None:
-                return result
-    return name, run
+        return run_body(body)
+    return function_name, run
 
 def parse_expression(text, env):
     # Rules are not well defined here. Just try our best.
-    name = parse_name(text, env)
-    if name in env:
-        return env[name]
+
+    if text.isdigit():
+        return lambda: int(text)
     if ' and ' in text:
         left_str, right_str = text.split(' and ')
         left = parse_expression(left_str, env)
@@ -52,126 +49,148 @@ def parse_expression(text, env):
         left = parse_expression(left_str, env)
         right = parse_expression(right_str, env)
         return lambda: left() or right()
+    if ' is higher than ' in text:
+        left_str, right_str = text.split(' is higher than ')
+        left = parse_expression(left_str, env)
+        right = parse_expression(right_str, env)
+        return lambda: left() > right()
+    if ' is at least as high as ' in text:
+        left_str, right_str = text.split(' is at least as high as ')
+        left = parse_expression(left_str, env)
+        right = parse_expression(right_str, env)
+        return lambda: left() > right()
     if ' is ' in text:
         left_str, right_str = text.split(' is ')
         left = parse_expression(left_str, env)
         right = parse_expression(right_str, env)
         return lambda: left() == right()
     if ' taking ' in text:
-        name, params = text.split(' taking ')
+        name, params_str = text.split(' taking ')
         fn = parse_expression(name, env)
-        params = [parse_expression(param, env) for param in params.split(', ')]
+        params = [parse_expression(param, env) for param in params_str.split(', ')]
         return lambda: fn()(*(param() for param in params))
-    raise ValueError('Failed to eval expression: ' + repr(text))
+    name = parse_name(text, env)
+    return lambda: env[name]
 
 def parse_block(sentences, env):
     body = []
-    if not sentences[0].startswith('And '):
+    if len(sentences) > 1 and sentences[1][1].startswith('And ') and sentences[1][1] != 'And around we go':
+        body.append(parse_next_statement(sentences, env))
         while sentences:
-            if sentences[0].strip() == 'And around we go':
-                sentences.pop(0)
-                break
-            body.append(parse_next(sentences, env))
+            if not sentences[0][1].startswith('And '): break
+            body.append(parse_next_statement(sentences, env))
     else:
         while sentences:
-            if not sentences[0].startswith('And '): break
-            body.append(parse_next(sentences, env))
+            if sentences[0][1] == '':
+                break
+            elif sentences[0][1] in ('And around we go', 'End'):
+                sentences.pop(0)
+                break
+            body.append(parse_next_statement(sentences, env))
     return body
 
 class Continue(Exception): pass
 class Break(Exception): pass
+class Return(Exception):
+    def __init__(self, value):
+        self.value = value
 
-def parse_next(sentences, env):
-    while True:
-        sentence = re.sub('^And ', '', sentences.pop(0).strip(' ,'))
+def parse_next_statement(sentences, env):
+    while sentences:
+        lineno, sentence = sentences.pop(0)
+        sentence = re.sub('^And ', '', sentence)
         if sentence:
             break
+    else:
+        return (-1, ''), lambda: None
 
-    first, rest = sentence.split(' ', 1)
-    if 'ake it to the top' in sentence:
+    first, rest = sentence.split(' ', 1) if ' ' in sentence else (sentence, '')
+    if sentence.lower() in ('take it to the top', 'continue'):
         def run():
             raise Continue()
-        return run
-    elif sentence == 'Break it down!':
+    elif sentence.lower() == 'break it down!':
         def run():
             raise Break()
-        return run
     elif ' takes ' in sentence:
         name_str, fn = parse_function(sentence, sentences, env)
         name = parse_name(name_str, env)
         env[name] = fn
-        return lambda: None
+        run = lambda: None
     elif first == 'While':
         body = parse_block(sentences, env)
         expression = parse_expression(rest, env)
         def run():
             while expression():
-                for fn in body:
-                    fn(env)
-        return run
+                try:
+                    run_body(body)
+                except Continue:
+                    continue
+                except Break:
+                    break
     elif first == 'Until':
         body = parse_block(sentences, env)
         expression = parse_expression(rest, env)
         def run():
             while not expression():
-                for fn in body:
-                    fn()
-        return run
+                try:
+                    run_body(body)
+                except Continue:
+                    continue
+                except Break:
+                    break
     elif first == 'If':
         body = parse_block(sentences, env)
         expression = parse_expression(rest, env)
         def run():
             if expression():
-                for fn in body:
-                    fn(env)
-        return run
-    elif sentence.startswith('Give back'):
-        expression = sentence.replace('Give back', '')
+                run_body(body)
+    elif sentence.startswith('Give back '):
+        expression = parse_expression(sentence.replace('Give back ', ''), env)
         def run():
-            return eval_expression(expression, env)
-        return run
+            raise Return(expression())
     elif ' is ' in sentence:
         # This "elif" must be after conditional blocks due to =\== ambiguity.
         name_str, words = re.fullmatch(r'(.+?) is (.+?)', sentence).groups()
         if words in ('nothing', 'nowhere', 'nobody'):
             value = 0
+        elif words.isdigit():
+            value = int(words)
         else:
-            value = int(''.join(str(len(word)%10) for word in words.replace('.', ' .').split()))
+           value = int(''.join(str(len(word)%10) for word in words.replace('.', ' .').split()))
         name = parse_name(name_str, env)
         def run():
             env[name] = value
-        return run
     elif first == 'Build':
         name_str, = re.fullmatch(r'Build (.+?) up', sentence).groups()
         name = parse_name(name_str, env)
         def run():
             env[name] += 1
-        return run
     elif first == 'Build':
         name_str, = re.fullmatch(r'Build (.+?) up', sentence).groups()
         name = parse_name(name_str, env)
         def run():
             env[name] += 1
-        return run
     elif first == 'Take':
         name_left_str, name_right_str = re.fullmatch(r'Take (.+?) from (.+?)', sentence).groups()
         name_left = parse_name(name_left_str, env)
         name_right = parse_name(name_right_str, env)
         def run():
-            env[name_left] -= name_right
-        return run
+            # Take VALUE from NAME
+            env[name_right] -= env[name_left]
     else:
         for name, value in env.items():
             if callable(value) and sentence.startswith(name):
-                expression = sentence.replace(name + ' ', '')
+                expression = parse_expression(sentence.replace(name + ' ', ''), env)
                 def run():
-                    value(env, eval_expression(expression, env))
-                return run
-        raise ValueError('Parse error: ' + repr(sentence))
+                    value(expression())
+                break
+        else:
+            raise ValueError(f'Parse error on line {lineno}: unrecognized sentence ' + repr(sentence))
+
+    return (lineno, sentence), run
 
 def parse(code):
-    _print = lambda env, arg: print(arg)
-    env = {'Whisper': _print, 'Say': _print, 'Shout': _print}
+    env = {'Whisper': print, 'Say': print, 'Shout': print, 'lineno': 0, 'nothing': 0}
 
     # Replace all literal strings with constants so we can do nasty string
     # operations during parsing.
@@ -179,43 +198,75 @@ def parse(code):
     env.update(strings)
     env['_'] = None
 
-
-    sentences = code.split('\n')
+    sentences = list(enumerate([sentence.strip(' ,') for sentence in code.split('\n')], start=1))
     statements = []
     while sentences:
-        statements.append(parse_next(sentences, env))
-
+        statements.append(parse_next_statement(sentences, env))
     return statements
 
+def run_body(body):
+    for (lineno, sentence), statement in body:
+        #print('=', lineno, sentence)
+        try:
+            statement()
+        except Return as e:
+            return e.value
+    
 def run(code):
-    for statement in parse(code):
-        statement()
+    run_body(parse(code))
 
 if __name__ == '__main__':
-    fizzbuzz = """Midnight takes your heart and your soul
+    fizzbuzz1 = """
+Midnight takes your heart and your soul
 While your heart is higher than your soul
 Take your soul from your heart
+And around we go
 Give back your heart
 
 Desire is a lovestruck ladykiller
-My world is nothing
+My world is nothing 
 Fire is ice
 Hate is water
 Until my world is Desire,
 Build my world up
-If Midnight taking Desire, Fire is nothing and Midnight taking Desire, Hate is nothing
+If Midnight taking my world, Fire is Fire and Midnight taking my world, Hate is Hate
 Shout "FizzBuzz!"
 And take it to the top
-If Midnight taking Desire, Fire is nothing
+If Midnight taking my world, Fire is Fire
 Shout "Fizz!"
 And take it to the top
-If Midnight taking Desire, Hate is nothing
+If Midnight taking my world, Hate is Hate
 Say "Buzz!"
 And take it to the top
 Whisper my world
-And around we go"""
+And around we go
+"""
+
+    fizzbuzz2 = """
+Modulus takes Number and Divisor
+While Number is higher than Divisor
+    Take Divisor from Number
+End
+Give back Number
+
+Limit is 100
+Counter is 0
+Fizz is 3
+Buzz is 5
+Until Counter is Limit
+    Build Counter up
+    If Modulus taking Counter, Fizz is Fizz and Modulus taking Counter, Buzz is Buzz
+        Say "FizzBuzz!"
+        And Continue
+    If Modulus taking Counter, Fizz is Fizz
+        Say "Fizz!"
+        And Continue
+    If Modulus taking Counter, Buzz is Buzz
+        Say "Buzz!"
+        And Continue
+    Say Counter
+End
+"""
 
     expected = ['Fizz' * (i%3==0) + 'Buzz' * (i%5==0) or str(i) for i in range(1, 101)]
-    run(fizzbuzz)
-
-    run('Whisper "test"')
+    run(fizzbuzz1)

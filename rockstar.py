@@ -48,6 +48,20 @@ def parse_function(first_line, sentences, env):
         return run_body(body)
     return function_name, run
 
+binops = {
+    ' and ': lambda left, right: lambda: left() and right(),
+    ' or ': lambda left, right: lambda: left() or right(),
+    ' is higher than ': lambda left, right: lambda: left() > right(),
+    ' is greater than ': lambda left, right: lambda: left() > right(),
+    ' is bigger than ': lambda left, right: lambda: left() > right(),
+    ' is stronger than ': lambda left, right: lambda: left() > right(),
+    ' is lower than ': lambda left, right: lambda: left() < right(),
+    ' is less than ': lambda left, right: lambda: left() < right(),
+    ' is smaller than ': lambda left, right: lambda: left() < right(),
+    ' is weaker than ': lambda left, right: lambda: left() < right(),
+    # Note that this relies on ordered dicts.
+    ' is ': lambda left, right: lambda: left() == right(),
+}
 def parse_expression(text, env):
     """
     Run-of-the-mill text to value conversion.
@@ -56,36 +70,24 @@ def parse_expression(text, env):
 
     if text.isdigit():
         return lambda: int(text)
-    if ' and ' in text:
-        left_str, right_str = text.split(' and ')
-        left = parse_expression(left_str, env)
-        right = parse_expression(right_str, env)
-        return lambda: left() and right()
-    if ' or ' in text:
-        left_str, right_str = text.split(' or ')
-        left = parse_expression(left_str, env)
-        right = parse_expression(right_str, env)
-        return lambda: left() or right()
-    if ' is higher than ' in text:
-        left_str, right_str = text.split(' is higher than ')
-        left = parse_expression(left_str, env)
-        right = parse_expression(right_str, env)
-        return lambda: left() > right()
-    if ' is at least as high as ' in text:
-        left_str, right_str = text.split(' is at least as high as ')
-        left = parse_expression(left_str, env)
-        right = parse_expression(right_str, env)
-        return lambda: left() > right()
-    if ' is ' in text:
-        left_str, right_str = text.split(' is ')
-        left = parse_expression(left_str, env)
-        right = parse_expression(right_str, env)
-        return lambda: left() == right()
+
+    for separator, fn in binops.items():
+        if separator in text:
+            left_str, right_str = text.split(separator, 1)
+            left = parse_expression(left_str, env)
+            right = parse_expression(right_str, env)
+            return fn(left, right)
+
+    if text.startswith('not '):
+        rest = parse_expression(text[4:])
+        return lambda: not rest()
+
     if ' taking ' in text:
-        name, params_str = text.split(' taking ')
+        name, params_str = text.split(' taking ', 1)
         fn = parse_expression(name, env)
         params = [parse_expression(param, env) for param in params_str.split(', ')]
         return lambda: fn()(*(param() for param in params))
+
     name = parse_name(text, env)
     return lambda: env[name]
 
@@ -190,11 +192,11 @@ def parse_next_statement(sentences, env):
         name = parse_name(name_str, env)
         def run():
             env[name] += 1
-    elif first == 'Build':
-        name_str, = re.fullmatch(r'Build (.+?) up', sentence).groups()
+    elif first == 'Knock':
+        name_str, = re.fullmatch(r'Knock (.+?) down', sentence).groups()
         name = parse_name(name_str, env)
         def run():
-            env[name] += 1
+            env[name] -= 1
     elif first == 'Take':
         name_left_str, name_right_str = re.fullmatch(r'Take (.+?) from (.+?)', sentence).groups()
         name_left = parse_name(name_left_str, env)

@@ -20,7 +20,7 @@ Rockstar is intended to give the programmer an unprecedented degree of poetic li
 
 There's two ways to declare and use variables in Rockstar. 
 
-**Common variables** consist of one of the keywords `the`, `my` or `your` followed by a unique variable name, which must contain only lowercase ASCII letters a-z. 
+**Common variables** consist of one of the keywords `a`, `an`, `the`, `my` or `your` followed by a unique variable name, which must contain only lowercase ASCII letters a-z. 
 
 **Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Tommy`, `Gina`, `Doctor Feelgood`, `Mister Crowley`, `Kayleigh`, `Tom Sawyer`, `Billie Jean` and `Janie`. 
 
@@ -94,6 +94,7 @@ A poetic number literal begins with a variable name, followed by one of the keyw
 
 * `Tommy was a lovestruck ladykiller` initialises `Tommy` with the value `100`
 * `Sweet Lucy was a dancer` - initialises `Sweet Lucy` with the value 16
+* `A killer is on the loose` - initialises `a killer` with the value 235.
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
  * Note that poetic literals **can** include reserved keywords, as with `taking` in this example.
 

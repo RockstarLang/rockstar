@@ -3,6 +3,8 @@ import "lexer.dart";
 main() {
   demo("Shout 'Hello, World!'", ["shout", '"', "Hello, World!"]);
   demo("Build my world up", ["build", 'my world', "up"]);
+  demo("Build my world up baby", ["build", 'my world', "up"]);
+  demo("Baby build my world up", ["build", 'my world', "up"]);
   demo("Build my world up", ["build", 'my world', "up"]);
   demo("Build my\n   world up", ["build", 'my world', "up"]);
   demo("Tommy The Pinball Wizard says I'm the best\n", ["Tommy The Pinball Wizard", 'says', '"', "I'm the best"]);

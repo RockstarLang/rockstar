@@ -94,7 +94,8 @@ A poetic number literal begins with a variable name, followed by one of the keyw
 
 * `Tommy was a lovestruck ladykiller` initialises `Tommy` with the value `100`
 * `Sweet Lucy was a dancer` - initialises `Sweet Lucy` with the value 16
-* `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535'
+* `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
+ * Note that poetic literals **can** include reserved keywords, as with `taking` in this example.
 
 ### Comparison
 

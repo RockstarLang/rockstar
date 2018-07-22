@@ -179,8 +179,8 @@ Here's FizzBuzz in minimalist Rockstar, with block scope indented for clarity:
 Modulus takes Number and Divisor
 While Number is higher than Divisor
 Take Divisor from Number
-Give back Number
     (blank line ending While block)
+Give back Number
     (blank line ending function declaration)
 Limit is 100
 Counter is 0
@@ -201,7 +201,7 @@ Say "Buzz!"
 Continue
     (blank line ending 'If' Block)
 Say Counter
-    (blank line ending Until block)
+    (EOL ending Until block)
 ```
 
 And here's the same thing in idiomatic Rockstar, using poetic literals and no indentation
@@ -210,6 +210,7 @@ And here's the same thing in idiomatic Rockstar, using poetic literals and no in
 Midnight takes your heart and your soul
 While your heart is higher than your soul or your heart is your soul
 Take your soul from your heart
+
 Give back your heart
 
 

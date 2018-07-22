@@ -298,5 +298,10 @@ Until Counter is Limit
 End
 """
 
-    expected = ['Fizz' * (i%3==0) + 'Buzz' * (i%5==0) or str(i) for i in range(1, 101)]
-    run(fizzbuzz1)
+    import sys
+    if len(sys.argv) > 1:
+        with open(sys.argv[1]) as f:
+            run(f.read())
+    else:
+        expected = ['Fizz' * (i%3==0) + 'Buzz' * (i%5==0) or str(i) for i in range(1, 101)]
+        run(fizzbuzz1)

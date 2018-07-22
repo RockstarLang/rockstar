@@ -110,7 +110,12 @@ Comparison in Rockstar can only be done within an expression.
 
 The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
 
-Rockstar also supports the comparison syntax `is {comparator} than`, where `{comparator}` is defined as one of the keywords `higher`, `greater`, `bigger` or `stronger` to denote 'greater than', and the keywords `lower`, `less`, `smaller` and `weaker` to denote 'less than'. 
+Rockstar also supports the following comparison syntax:
+
+* `is higher/greater/bigger/stronger than` to denote 'greater than'
+* `is lower/less/smaller/weaker than` to denote 'less than'
+* `is as high/great/big/strong as` to denote 'greater than or equal to'
+* `is as low/little/small/weak as` to denote 'less than or equal to'
 
 ### Input/Output
 
@@ -177,7 +182,7 @@ Here's FizzBuzz in minimalist Rockstar, with block scope indented for clarity:
 
 ```
 Modulus takes Number and Divisor
-While Number is higher than Divisor
+While Number is as high as Divisor
 Take Divisor from Number
     (blank line ending While block)
 Give back Number
@@ -208,7 +213,7 @@ And here's the same thing in idiomatic Rockstar, using poetic literals and no in
 
 ```
 Midnight takes your heart and your soul
-While your heart is higher than your soul or your heart is your soul
+While your heart is as high as your soul
 Take your soul from your heart
 
 Give back your heart

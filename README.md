@@ -22,7 +22,7 @@ There's two ways to declare and use variables in Rockstar.
 
 **Common variables** consist of one of the keywords `the`, `my` or `your` followed by a unique variable name, which must contain only lowercase ASCII letters a-z. 
 
-**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Gina`, `Mister Crowley`, `Kayleigh`, `Tom Sawyer`, `Billie Jean` and `Janie`.
+**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Tommy`, `Doctor Feelgood`, `Gina`, `Mister Crowley`, `Kayleigh`, `Tom Sawyer`, `Billie Jean` and `Janie`.
 
 As in Ruby, Python and VBScript, variables are dynamically and you don't need to declare variables before use.
 

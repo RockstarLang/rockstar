@@ -24,7 +24,7 @@ There's two ways to declare and use variables in Rockstar.
 
 **Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Tommy`, `Gina`, `Roxanne`, `Layla`, `Black Betty`, `Billie Jean` and `Eleanor Rigby`.
 
-As in Ruby, Python and VBScript, variables are dynamically and you don't need to declare variables before use.
+As in Ruby, Python and VBScript, variables are dynamically typed and you don't need to declare variables before use.
 
 **Pronouns**
 

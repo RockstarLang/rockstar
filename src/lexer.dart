@@ -49,13 +49,16 @@ class Lexer {
       return;
     } else if (c >= $A && c <= $Z) {
       getProperVariable();
+      // "Baby" doesn't change the meaning of a rock song, so get the next
+      // token.
+      if (current == "Baby") get();
     } else if (c >= $0 && c <= $9) {
       getNumber();
     } else {
       getToken();
       // "Baby" doesn't change the meaning of a rock song, so get the next
       // token.
-      if (current == "baby" || current == "Baby") get();
+      if (current == "baby") get();
     }
   }
 

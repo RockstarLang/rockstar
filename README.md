@@ -71,6 +71,25 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
 * `Build my world up` will increment the value stored in `my world` by 1.
 * `Knock the walls down` will decrement the value stored in `the walls` by 1
  
+#### Arithmetic
+
+Basic arithmetic is provided by the `plus`, `minus`, `times` and `over` keywords.
+
+Arithmetic expressions:
+
+* `{a} plus {b}` - addition. Alias `with`
+* `{a} minus {b}` - subtraction. Alias `without`
+* `{a} times {b}` - multiplication. Alias `of`
+* `{a} over {b}` - division.
+
+Examples:
+
+* `Put the whole of your heart into my hands` - multiply `your heart` by `the whole` and assign the result to `my hands`
+
+* `My world is nothing without your love` - Initialize `my world` with the result of subtracting `your love` from 0
+
+* `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
+
 #### Poetic Literals
 
 Rockstar also supports a unique language feature known as **poetic literals**. Inspired by the [here-document](https://en.wikipedia.org/wiki/Here_document) syntax supported by many scripting languages, poetic literals allow the programmer to simultaneously initialize a variable and express their innermost angst.
@@ -183,7 +202,7 @@ Here's FizzBuzz in minimalist Rockstar, with block scope indented for clarity:
 ```
 Modulus takes Number and Divisor
 While Number is as high as Divisor
-Take Divisor from Number
+Put Number minus Divisor into Number
     (blank line ending While block)
 Give back Number
     (blank line ending function declaration)
@@ -214,7 +233,7 @@ And here's the same thing in idiomatic Rockstar, using poetic literals and no in
 ```
 Midnight takes your heart and your soul
 While your heart is as high as your soul
-Take your soul from your heart
+Put your heart without your soul into your heart
 
 Give back your heart
 

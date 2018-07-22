@@ -26,7 +26,7 @@ There's two ways to declare and use variables in Rockstar.
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, `Layla` and `Johnny B Goode` would also all be valid variable names in Rockstar.)
 
-As in Ruby, Python and VBScript, variables are dynamically and you don't need to declare variables before use.
+As in Ruby, Python and VBScript, variables are dynamically typed and you don't need to declare variables before use.
 
 **Pronouns**
 

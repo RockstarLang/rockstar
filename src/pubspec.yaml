@@ -1,0 +1,9 @@
+name: rockstar
+version: 0.1.0
+description: >-
+  Transpiler for the Rockstar language.
+author: Erik Corry <erik@arbat.com>
+homepage: https://github.com/erikcorry/rockstar
+documentation: https://github.com/erikcorry/rockstar
+dependencies:
+  charcode: ^1.1.0

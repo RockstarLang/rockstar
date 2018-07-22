@@ -134,7 +134,7 @@ Knock down Tommy
 And around we go
 ```
 
-That'll initialize Tommy with the value 6 (using the poetic number literal syntax) and then loop, decrementing Tommy by 1 each time until Tommy equals zero (i.e `ain't nothing` returns false).
+That'll initialize Tommy with the value 16 (using the poetic number literal syntax) and then loop, decrementing Tommy by 1 each time until Tommy equals zero (i.e `ain't nothing` returns false).
 
 
 The `break` and `continue` statements work as they do in most block-based languages. Rockstar defines `Break it down!` as an alias for `break` and `Take it to the top` as an alias for `continue` 

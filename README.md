@@ -48,10 +48,11 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 
 ### Literals and Assignment
 
-String literals in Rockstar use single or double quotes interchangably. 
+String literals in Rockstar use double quotes. 
 
 * `"Hello World"`
-* `'This is a string'`
+
+The single quote character in Rockstar is treated as a letter of the alphabet. This seems unusual until you remember that `I ain't talkin' 'bout love` is a perfectly valid rock'n'roll sentence. 
 
 Numeric literals in Rockstar are written as decimal numbers
 
@@ -61,7 +62,7 @@ Numeric literals in Rockstar are written as decimal numbers
 Assignment is denoted by the `put/into` keyword combination:
 
 * `Put 123 into X` will assign the value `123` to the variable `X`
-* `Put 'Hello World' into the message` will assign the value `'Hello World'` to the variable `the message`
+* `Put "Hello World" into the message` will assign the value `"Hello World"` to the variable `the message`
 
 #### Increment and Decrement
 
@@ -111,13 +112,9 @@ The modifier `not`  will invert the meaning of the comparison, similar to `IS NU
 
 Rockstar also supports the comparison syntax `is {comparator} than`, where `{comparator}` is defined as one of the keywords `higher`, `greater`, `bigger` or `stronger` to denote 'greater than', and the keywords `lower`, `less`, `smaller` and `weaker` to denote 'less than'. 
 
-### Contractions
-
-The short form `{X}'s` is an alias for `{X} is`
-
 ### Input/Output
 
-Use the `Listen` keyword to read one line of input from STDIN. Use `Listen to` to capture the input into a named variable.
+Use the `Listen` keyword to read one line of input from `STDIN`. Use `Listen to` to capture the input into a named variable.
 
 * `Listen to your heart` - read one line of input from `STDIN` and store it in `your heart`
 

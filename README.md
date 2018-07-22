@@ -90,7 +90,7 @@ A poetic string literal assignment starts with a variable name, followed by one 
 
 #### Poetic Number Literals
 
-A poetic number literal begins with a variable name, followed by one of the keywords `is` or the aliases `was` or `were`. As long as the next symbol is not a reserved keyword, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
+A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `was` or `were`. As long as the next symbol is not a reserved keyword, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
 
 * `Tommy was a lovestruck ladykiller` initialises `Tommy` with the value `100`
 * `Sweet Lucy was a dancer` - initialises `Sweet Lucy` with the value 16
@@ -110,7 +110,11 @@ Comparison in Rockstar can only be done within an expression.
 The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
 
 Rockstar also supports the comparison syntax `is {comparator} than`, where `{comparator}` is defined as one of the keywords `higher`, `greater`, `bigger` or `stronger` to denote 'greater than', and the keywords `lower`, `less`, `smaller` and `weaker` to denote 'less than'. 
- 
+
+### Contractions
+
+The short form `{X}'s` is an alias for `{X} is`
+
 ### Input/Output
 
 Use the `Listen` keyword to read one line of input from STDIN. Use `Listen to` to capture the input into a named variable.

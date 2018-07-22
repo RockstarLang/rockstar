@@ -51,16 +51,37 @@ def parse_function(first_line, sentences, env):
 binops = {
     ' and ': lambda left, right: lambda: left() and right(),
     ' or ': lambda left, right: lambda: left() or right(),
+
+    ' is as high as ': lambda left, right: lambda: left() >= right(),
+    ' is as great as ': lambda left, right: lambda: left() >= right(),
+    ' is as big as ': lambda left, right: lambda: left() >= right(),
+    ' is as strong as ': lambda left, right: lambda: left() >= right(),
+
+    ' is as low as ': lambda left, right: lambda: left() <= right(),
+    ' is as little as ': lambda left, right: lambda: left() <= right(),
+    ' is as small as ': lambda left, right: lambda: left() <= right(),
+    ' is as weak as ': lambda left, right: lambda: left() <= right(),
+
     ' is higher than ': lambda left, right: lambda: left() > right(),
     ' is greater than ': lambda left, right: lambda: left() > right(),
     ' is bigger than ': lambda left, right: lambda: left() > right(),
     ' is stronger than ': lambda left, right: lambda: left() > right(),
+
     ' is lower than ': lambda left, right: lambda: left() < right(),
     ' is less than ': lambda left, right: lambda: left() < right(),
     ' is smaller than ': lambda left, right: lambda: left() < right(),
     ' is weaker than ': lambda left, right: lambda: left() < right(),
+
     # Note that this relies on ordered dicts.
     ' is ': lambda left, right: lambda: left() == right(),
+
+    ' plus ': lambda left, right: lambda: left() + right(),
+    ' with ': lambda left, right: lambda: left() + right(),
+    ' minus ': lambda left, right: lambda: left() - right(),
+    ' without ': lambda left, right: lambda: left() - right(),
+    ' times ': lambda left, right: lambda: left() * right(),
+    ' of ': lambda left, right: lambda: left() * right(),
+    ' over ': lambda left, right: lambda: left() / right(),
 }
 def parse_expression(text, env):
     """
@@ -96,19 +117,11 @@ def parse_block(sentences, env):
     Consumes sentences until the block ends, then returns the block.
     """
     body = []
-    if len(sentences) > 1 and sentences[1][1].startswith('And ') and sentences[1][1] != 'And around we go':
+    while sentences:
+        if not sentences[0][1]:
+            sentences.pop(0)
+            break
         body.append(parse_next_statement(sentences, env))
-        while sentences:
-            if not sentences[0][1].startswith('And '): break
-            body.append(parse_next_statement(sentences, env))
-    else:
-        while sentences:
-            if sentences[0][1] == '':
-                break
-            elif sentences[0][1] in ('And around we go', 'End'):
-                sentences.pop(0)
-                break
-            body.append(parse_next_statement(sentences, env))
     return body
 
 # Use Python's Exception system for operations that interrupt control flow.
@@ -125,17 +138,15 @@ def parse_next_statement(sentences, env):
     """
     while sentences:
         lineno, sentence = sentences.pop(0)
-        sentence = re.sub('^And ', '', sentence)
         if sentence:
             break
-    else:
-        return (-1, ''), lambda: None
 
     first, rest = sentence.split(' ', 1) if ' ' in sentence else (sentence, '')
+    first = first.lower()
     if sentence.lower() in ('take it to the top', 'continue'):
         def run():
             raise Continue()
-    elif sentence.lower() == 'break it down!':
+    elif sentence.lower() in ('break it down!', 'break'):
         def run():
             raise Break()
     elif ' takes ' in sentence:
@@ -143,7 +154,7 @@ def parse_next_statement(sentences, env):
         name = parse_name(name_str, env)
         env[name] = fn
         run = lambda: None
-    elif first == 'While':
+    elif first == 'while':
         body = parse_block(sentences, env)
         expression = parse_expression(rest, env)
         def run():
@@ -154,7 +165,7 @@ def parse_next_statement(sentences, env):
                     continue
                 except Break:
                     break
-    elif first == 'Until':
+    elif first == 'until':
         body = parse_block(sentences, env)
         expression = parse_expression(rest, env)
         def run():
@@ -165,7 +176,7 @@ def parse_next_statement(sentences, env):
                     continue
                 except Break:
                     break
-    elif first == 'If':
+    elif first == 'if':
         body = parse_block(sentences, env)
         expression = parse_expression(rest, env)
         def run():
@@ -187,27 +198,38 @@ def parse_next_statement(sentences, env):
         name = parse_name(name_str, env)
         def run():
             env[name] = value
-    elif first == 'Build':
-        name_str, = re.fullmatch(r'Build (.+?) up', sentence).groups()
+    elif first == 'put':
+        value_str, name_str = re.fullmatch(r'Put (.+?) into (.+?)', sentence, flags=re.IGNORECASE).groups()
+        expression = parse_expression(value_str, env)
+        name = parse_name(name_str, env)
+        def run():
+            env[name] = expression()
+    elif first == 'build':
+        name_str, = re.fullmatch(r'Build (.+?) up', sentence, flags=re.IGNORECASE).groups()
         name = parse_name(name_str, env)
         def run():
             env[name] += 1
-    elif first == 'Knock':
-        name_str, = re.fullmatch(r'Knock (.+?) down', sentence).groups()
+    elif first == 'knock':
+        name_str, = re.fullmatch(r'Knock (.+?) down', sentence, flags=re.IGNORECASE).groups()
         name = parse_name(name_str, env)
         def run():
             env[name] -= 1
-    elif first == 'Take':
-        name_left_str, name_right_str = re.fullmatch(r'Take (.+?) from (.+?)', sentence).groups()
+    elif first == 'take':
+        name_left_str, name_right_str = re.fullmatch(r'Take (.+?) from (.+?)', sentence, flags=re.IGNORECASE).groups()
         name_left = parse_name(name_left_str, env)
         name_right = parse_name(name_right_str, env)
         def run():
             # Take VALUE from NAME
             env[name_right] -= env[name_left]
+    elif first == 'listen':
+        name_str = re.fullmatch(r'Listen to (.+?)', sentence, flags=re.IGNORECASE).groups()
+        name = parse_name(name, env)
+        def run():
+            env[name] = input()
     else:
         for name, value in env.items():
-            if callable(value) and sentence.startswith(name):
-                expression = parse_expression(sentence.replace(name + ' ', ''), env)
+            if callable(value) and sentence.lower().startswith(name):
+                expression = parse_expression(sentence[len(name)+1:], env)
                 def run():
                     value(expression())
                 break
@@ -222,7 +244,27 @@ def parse(code):
     Translates source code into a list of runnable statements (with debugging
     metadata).
     """
-    env = {'Whisper': print, 'Say': print, 'Shout': print, 'lineno': 0, 'nothing': 0}
+    env = {
+        'whisper': print,
+        'say': print,
+        'shout': print,
+        'scream': print,
+
+        'nothing': 0,
+        'nowhere': 0,
+        'noone': 0,
+
+        'true': True,
+        'yes': True,
+        'right': True,
+        'ok': True,
+
+        'false': False,
+        'no': False,
+        'wrong': False,
+        'no': False,
+        'lies': False
+    }
 
     # Replace all literal strings with constants so we can do nasty string
     # operations during parsing.
@@ -248,12 +290,13 @@ def run(code):
     run_body(parse(code))
 
 if __name__ == '__main__':
-    fizzbuzz1 = """
+    fizzbuzz = """
 Midnight takes your heart and your soul
-While your heart is higher than your soul
-Take your soul from your heart
-And around we go
+While your heart is as high as your soul
+Put your heart without your soul into your heart
+
 Give back your heart
+
 
 Desire is a lovestruck ladykiller
 My world is nothing 
@@ -261,43 +304,19 @@ Fire is ice
 Hate is water
 Until my world is Desire,
 Build my world up
-If Midnight taking my world, Fire is Fire and Midnight taking my world, Hate is Hate
+If Midnight taking my world, Fire is nothing and Midnight taking my world, Hate is nothing
 Shout "FizzBuzz!"
-And take it to the top
-If Midnight taking my world, Fire is Fire
+Take it to the top
+
+If Midnight taking my world, Fire is nothing
 Shout "Fizz!"
-And take it to the top
-If Midnight taking my world, Hate is Hate
+Take it to the top
+
+If Midnight taking my world, Hate is nothing
 Say "Buzz!"
-And take it to the top
+Take it to the top
+
 Whisper my world
-And around we go
-"""
-
-    fizzbuzz2 = """
-Modulus takes Number and Divisor
-While Number is higher than Divisor
-    Take Divisor from Number
-End
-Give back Number
-
-Limit is 100
-Counter is 0
-Fizz is 3
-Buzz is 5
-Until Counter is Limit
-    Build Counter up
-    If Modulus taking Counter, Fizz is Fizz and Modulus taking Counter, Buzz is Buzz
-        Say "FizzBuzz!"
-        And Continue
-    If Modulus taking Counter, Fizz is Fizz
-        Say "Fizz!"
-        And Continue
-    If Modulus taking Counter, Buzz is Buzz
-        Say "Buzz!"
-        And Continue
-    Say Counter
-End
 """
 
     import sys
@@ -306,4 +325,4 @@ End
             run(f.read())
     else:
         expected = ['Fizz' * (i%3==0) + 'Buzz' * (i%5==0) or str(i) for i in range(1, 101)]
-        run(fizzbuzz1)
+        run(fizzbuzz)

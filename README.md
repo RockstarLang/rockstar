@@ -132,7 +132,7 @@ Similar to the `If` statement, a loop is denoted by the `While` or `Until` keywo
 ```
 Tommy was a dancer
 While Tommy ain't nothing,
-Knock down Tommy
+Knock Tommy down
 And around we go
 ```
 

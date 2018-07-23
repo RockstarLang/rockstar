@@ -280,3 +280,4 @@ Whisper my world
 
 # Implementations
 * [rockstar-js](https://github.com/wolfgang42/rockstar-js) - Rockstar-to-JavaScript transpiler
+* [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler

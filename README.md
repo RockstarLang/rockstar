@@ -195,18 +195,18 @@ Knock it down
 
 #### Arrays/Lists
 
-To assign to an array use the same syntax as for variables but separate the values by 'and' or ',':
-'Put 123, 234, 345 and 456 into X' will create an array and adds the listed values.
+To assign to an array use the same syntax as for variables but separate the values by `and` or `,`
+`Put 123, 234, 345 and 456 into X` will create an array and adds the listed values.
 
-To add to an existing array use: '{value} belongs to {array}'
+To add to an existing array use: `{value} belongs to {array}`
 
-To get an item from an array use: 'get {index} from nameofarray'(of course indexes start at 0)
-An alias for 'get' is 'give me'
+To get an item from an array use: `get {index} from {array}` (of course indexes start at 0)
+An alias for `get` is `give me`
 Note: The poetic numbers can also be used for indexing
 
-'Get love from You' will give the 4th elemt of the array 'You'.
+`Get love from You` will give the 4th elemt of the array `You`.
 
-To get the length of the array use: 'How long {array} is'
+To get the length of the array use: `How long {array} is`
 
 
 ### Functions

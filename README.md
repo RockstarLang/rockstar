@@ -1,6 +1,6 @@
 # Rockstar
 
-Rockstar is a dynamically typed Turing-complete programming language. 
+Rockstar is a dynamically typed Turing-complete programming language. \m/ 🤘
 
 Rockstar is designed for creating computer programs that are also song lyrics, and is heavily influenced by the lyrical conventions of 1980s hard rock and power ballads.
 

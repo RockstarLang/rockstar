@@ -1,0 +1,13 @@
+
+(Finding the area of a circle with Rockstar)
+
+Serenity takes the world
+My life is the world of the world
+of you. A star, a light twinkling in excess
+Give back my life
+
+Alice is dead
+Jeremy is Serenity taking Alice
+Shout "Heya, heya" Jeremy
+
+(Should return Heya, heya 50.2654816)

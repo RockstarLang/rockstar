@@ -16,6 +16,16 @@ Also we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 
 Rockstar is intended to give the programmer an unprecedented degree of poetic license when it comes to the composition and structure of their programs. 
 
+### Comments 
+ 
+The use of comments in Rockstar programs is strongly discouraged. This is rock'n'roll; it's up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses (). Yes, this means you can't use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments. 
+ 
+Rockstar developers are not into that whole [brevity thing](https://www.urbandictionary.com/define.php?term=Brevity%20Thing). 
+ 
+``` 
+Tommy was a lean mean wrecking machine.  (initialises Tommy with the value 14487) 
+``` 
+ 
 ### Variables
 
 There's two ways to declare and use variables in Rockstar. 

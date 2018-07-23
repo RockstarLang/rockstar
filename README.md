@@ -130,6 +130,23 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
  * Note that poetic literals **can** include reserved keywords, as with `taking` in this example.
 
+
+#### Arrays/Lists
+
+To assign to an array use the same syntax as for variables but separate the values by `and` or `,`
+`Put 123, 234, 345 and 456 into X` will create an array and adds the listed values.
+
+To add to an existing array use: `{value} belongs to {array}`
+
+To get an item from an array use: `get {index} from {array}` (of course indexes start at 0)
+An alias for `get` is `give me`
+Note: The poetic numbers can also be used for indexing
+
+`Get love from You` will give the 4th elemt of the array `You`.
+
+To get the length of the array use: `How long {array} is`
+
+
 ### Comparison
 
 Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interepreted differently depending whether it appears as part of a statement or as part of an expression.
@@ -194,7 +211,6 @@ Knock it down
 ```
 
 #### Arrays/Lists
-
 To assign to an array use the same syntax as for variables but separate the values by `and` or `,`
 `Put 123, 234, 345 and 456 into X` will create an array and adds the listed values.
 

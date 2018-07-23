@@ -83,14 +83,14 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
  
 #### Arithmetic
 
-Basic arithmetic is provided by the `plus`, `minus`, `times` and `over` keywords.
+Basic arithmetic is provided by the `plus`, `minus`, `times`, `over`, and `by` keywords.
 
 Arithmetic expressions:
 
 * `{a} plus {b}` - addition. Alias `with`
 * `{a} minus {b}` - subtraction. Alias `without`
 * `{a} times {b}` - multiplication. Alias `of`
-* `{a} over {b}` - division.
+* `{a} over {b}` - division. Alias `by`
 
 Examples:
 
@@ -99,6 +99,8 @@ Examples:
 * `My world is nothing without your love` - Initialize `my world` with the result of subtracting `your love` from 0
 
 * `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
+
+* `My love by your eyes` - Returns `my love` divided by `your eyes`
 
 #### Poetic Literals
 

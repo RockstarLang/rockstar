@@ -39,14 +39,14 @@ def parse_function(first_line, sentences, env):
     function_name, params_str = first_line.split(' takes ')
     separator = ', ' if ', ' in params_str else ' and '
     params = [parse_name(param, env) for param in params_str.split(separator)]
-    body = parse_block(sentences, env)
+    body_fns, body_nodes = parse_block(sentences, env)
     def run(*values):
         if len(params) != len(values):
             raise ValueError(f'Mismatch of number of arguments for function {function_name  }: expected {len(params)} ({params}) and got {len(values)} ({values}).')
         for name, arg in zip(params, values):
             env[name] = arg
-        return run_body(body)
-    return function_name, run
+        return run_body(body_fns)
+    return function_name, run, ('function', function_name, params, body_nodes)
 
 binops = {
     ' and ': lambda left, right: lambda: left() and right(),
@@ -95,34 +95,42 @@ def parse_expression(text, env):
     for separator, fn in binops.items():
         if separator in text:
             left_str, right_str = text.split(separator, 1)
-            left = parse_expression(left_str, env)
-            right = parse_expression(right_str, env)
-            return fn(left, right)
+            left_fn, left_node = parse_expression(left_str, env)
+            right_fn, right_node = parse_expression(right_str, env)
+            return fn(left_fn, right_fn), ('binop', separator, left_node, right_node)
 
     if text.startswith('not '):
-        rest = parse_expression(text[4:])
-        return lambda: not rest()
+        rest_fn, rest_node = parse_expression(text[4:])
+        return lambda: not rest(), ('not', rest_node)
 
     if ' taking ' in text:
         name, params_str = text.split(' taking ', 1)
-        fn = parse_expression(name, env)
-        params = [parse_expression(param, env) for param in params_str.split(', ')]
-        return lambda: fn()(*(param() for param in params))
+        fn, name_node = parse_expression(name, env)
+        params_pairs = [parse_expression(param, env) for param in params_str.split(', ')]
+        params = [param for param, node in params_pairs]
+        param_nodes = [node for param, node in params_pairs]
+        return lambda: fn()(*(param() for param in params)), ('taking', name_node, param_nodes)
 
     name = parse_name(text, env)
-    return lambda: env[name]
+    if name in env and not callable(env[name]):
+        return lambda: env[name], ('string', env[name])
+    else:
+        return lambda: env[name], ('name', name)
 
 def parse_block(sentences, env):
     """
     Consumes sentences until the block ends, then returns the block.
     """
-    body = []
+    body_fns = []
+    body_nodes = []
     while sentences:
         if not sentences[0][1]:
             sentences.pop(0)
             break
-        body.append(parse_next_statement(sentences, env))
-    return body
+        statement, node = parse_next_statement(sentences, env)
+        body_fns.append(statement)
+        body_nodes.append(node)
+    return body_fns, body_nodes
 
 # Use Python's Exception system for operations that interrupt control flow.
 class Continue(Exception): pass
@@ -144,48 +152,54 @@ def parse_next_statement(sentences, env):
     first, rest = sentence.split(' ', 1) if ' ' in sentence else (sentence, '')
     first = first.lower()
     if sentence.lower() in ('take it to the top', 'continue'):
+        node = ('continue',)
         def run():
             raise Continue()
     elif sentence.lower() in ('break it down!', 'break'):
+        node = ('break',)
         def run():
             raise Break()
     elif ' takes ' in sentence:
-        name_str, fn = parse_function(sentence, sentences, env)
+        name_str, fn, node = parse_function(sentence, sentences, env)
         name = parse_name(name_str, env)
         env[name] = fn
         run = lambda: None
     elif first == 'while':
-        body = parse_block(sentences, env)
-        expression = parse_expression(rest, env)
+        body_fns, body_nodes = parse_block(sentences, env)
+        expression_fn, expression_node = parse_expression(rest, env)
+        node = ('while', expression_node, body_nodes)
         def run():
-            while expression():
+            while expression_fn():
                 try:
-                    run_body(body)
+                    run_body(body_fns)
                 except Continue:
                     continue
                 except Break:
                     break
     elif first == 'until':
-        body = parse_block(sentences, env)
-        expression = parse_expression(rest, env)
+        body_fns, body_nodes = parse_block(sentences, env)
+        expression_fn, expression_node = parse_expression(rest, env)
+        node = ('until', expression_node, body_nodes)
         def run():
-            while not expression():
+            while not expression_fn():
                 try:
-                    run_body(body)
+                    run_body(body_fns)
                 except Continue:
                     continue
                 except Break:
                     break
     elif first == 'if':
-        body = parse_block(sentences, env)
-        expression = parse_expression(rest, env)
+        body_fns, body_nodes = parse_block(sentences, env)
+        expression_fn, expression_node = parse_expression(rest, env)
+        node = ('if', expression_node, body_nodes)
         def run():
-            if expression():
-                run_body(body)
+            if expression_fn():
+                run_body(body_fns)
     elif sentence.startswith('Give back '):
-        expression = parse_expression(sentence.replace('Give back ', ''), env)
+        expression_fn, expression_node = parse_expression(sentence.replace('Give back ', ''), env)
+        node = ('give back', expression_node)
         def run():
-            raise Return(expression())
+            raise Return(expression_fn())
     elif ' is ' in sentence:
         # This "elif" must be after conditional blocks due to =\== ambiguity.
         name_str, words = re.fullmatch(r'(.+?) is (.+?)', sentence).groups()
@@ -196,48 +210,55 @@ def parse_next_statement(sentences, env):
         else:
            value = int(''.join(str(len(word)%10) for word in words.replace('.', ' .').split()))
         name = parse_name(name_str, env)
+        node = ('is (assignment)', name, value)
         def run():
             env[name] = value
     elif first == 'put':
         value_str, name_str = re.fullmatch(r'Put (.+?) into (.+?)', sentence, flags=re.IGNORECASE).groups()
-        expression = parse_expression(value_str, env)
+        expression_fn, expression_node = parse_expression(value_str, env)
         name = parse_name(name_str, env)
+        node = ('put', name, expression_node)
         def run():
-            env[name] = expression()
+            env[name] = expression_fn()
     elif first == 'build':
         name_str, = re.fullmatch(r'Build (.+?) up', sentence, flags=re.IGNORECASE).groups()
         name = parse_name(name_str, env)
+        node = ('build', name)
         def run():
             env[name] += 1
     elif first == 'knock':
         name_str, = re.fullmatch(r'Knock (.+?) down', sentence, flags=re.IGNORECASE).groups()
         name = parse_name(name_str, env)
+        node = ('knock', name)
         def run():
             env[name] -= 1
     elif first == 'take':
         name_left_str, name_right_str = re.fullmatch(r'Take (.+?) from (.+?)', sentence, flags=re.IGNORECASE).groups()
         name_left = parse_name(name_left_str, env)
         name_right = parse_name(name_right_str, env)
+        node = ('take', name_left, name_right)
         def run():
             # Take VALUE from NAME
             env[name_right] -= env[name_left]
     elif first == 'listen':
         name_str = re.fullmatch(r'Listen to (.+?)', sentence, flags=re.IGNORECASE).groups()
         name = parse_name(name, env)
+        node = ('listen', name)
         def run():
             env[name] = input()
     else:
         for name, value in env.items():
             if callable(value) and sentence.lower().startswith(name):
-                expression = parse_expression(sentence[len(name)+1:], env)
+                expression_fn, expression_node = parse_expression(sentence[len(name)+1:], env)
+                node = (name, expression_node)
                 def run():
-                    value(expression())
+                    value(expression_fn())
                 break
         else:
             raise ValueError(f'Parse error on line {lineno}: unrecognized sentence ' + repr(sentence))
 
     # Keep line number and sentence text to help debugging.
-    return (lineno, sentence), run
+    return ((lineno, sentence), run), node
 
 def parse(code):
     """
@@ -274,9 +295,12 @@ def parse(code):
 
     sentences = list(enumerate([sentence.strip(' ,') for sentence in code.split('\n')], start=1))
     statements = []
+    nodes = []
     while sentences:
-        statements.append(parse_next_statement(sentences, env))
-    return statements
+        statement, node = parse_next_statement(sentences, env)
+        statements.append(statement)
+        nodes.append(node)
+    return statements, nodes
 
 def run_body(body):
     for (lineno, sentence), statement in body:
@@ -287,7 +311,7 @@ def run_body(body):
             return e.value
     
 def run(code):
-    run_body(parse(code))
+    run_body(parse(code)[0])
 
 if __name__ == '__main__':
     fizzbuzz = """
@@ -325,4 +349,5 @@ Whisper my world
             run(f.read())
     else:
         expected = ['Fizz' * (i%3==0) + 'Buzz' * (i%5==0) or str(i) for i in range(1, 101)]
+        pprint(parse(fizzbuzz))
         run(fizzbuzz)

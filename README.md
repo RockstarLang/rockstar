@@ -283,3 +283,4 @@ Whisper my world
 * [rockstar-lexer](https://github.com/aitorres/rockstar-lexer) - Rockstar lexer written in Haskell with Alex
 * [rockstar-java](https://github.com/nbrevu/rockstar-java) - Rockstar interpreter in Java
 * [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler
+* [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust

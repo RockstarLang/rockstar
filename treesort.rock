@@ -1,0 +1,89 @@
+Nodeoperationread is 0
+Nodeoperationwrite is 1
+Nodevalueignored is 0
+Nodevariablevalue is 0
+Nodevariableleft is 1
+Nodevariableright is 2
+Makenode takes Value, Left, Right
+    Node takes Operation, Variable, Newvalue
+        If Operation is Nodeoperationread
+            If Variable is Nodevariablevalue
+                Give back Value
+            (end if)
+            If Variable is Nodevariableleft
+                Give back Left
+            (end if)
+            If Variable is Nodevariableright
+                Give back Right
+            (end if)
+        (end if)
+        If Operation is Nodeoperationwrite
+            If Variable is Nodevariablevalue
+                Put Newvalue into Value
+            (end if)
+            If Variable is Nodevariableleft
+                Put Newvalue into Left
+            (end if)
+            If Variable is Nodevariableright
+                Put Newvalue into Right
+            (end if)
+        (end if)
+    (end function)
+    Give back Node
+(end function)
+Insertnode takes Node, Newvalue
+    Put Makenode taking Newvalue, nothing, nothing into Newnode
+    If Node is nothing
+        Give back Newnode
+    (end if)
+    Put Node into Originalroot
+    Put nothing into Parentnode
+    Put Nodevariableright into Direction
+    While Node is not nothing
+        Put Node taking Nodeoperationread, Nodevariablevalue, Nodevalueignored into Value
+        Put Nodevariableright into Direction
+        If Newvalue is less than Value
+            Put Nodevariableleft into Direction
+        (end if)
+        Put Node into Parentnode
+        Put Node taking Nodeoperationread, Direction, Nodevalueignored into Node
+    (end while)
+    Put Parentnode taking Nodeoperationwrite, Direction, Newnode into Unusedreturnvalue
+    Give back Originalroot
+(end function)
+Inorder takes Node
+    If Node is nothing
+        Give back nothing
+    (end if)
+    Put Node taking Nodeoperationread, Nodevariableleft, Nodevalueignored into Left
+    Put Inorder taking Left into Unusedreturnvalue
+    Put Node taking Nodeoperationread, Nodevariablevalue, Nodevalueignored into Value
+    Say Value
+    Put Node taking Nodeoperationread, Nodevariableright, Nodevalueignored into Right
+    Put Inorder taking Right into Unusedreturnvalue
+    Give back nothing
+(end function)
+Main takes Root
+    Put Insertnode taking Root, 10097 into Root
+    Put Insertnode taking Root, 32533 into Root
+    Put Insertnode taking Root, 76520 into Root
+    Put Insertnode taking Root, 13586 into Root
+    Put Insertnode taking Root, 34673 into Root
+    Put Insertnode taking Root, 54876 into Root
+    Put Insertnode taking Root, 80959 into Root
+    Put Insertnode taking Root, 9117 into Root
+    Put Insertnode taking Root, 39292 into Root
+    Put Insertnode taking Root, 74945 into Root
+    Put Insertnode taking Root, 37542 into Root
+    Put Insertnode taking Root, 4805 into Root
+    Put Insertnode taking Root, 64894 into Root
+    Put Insertnode taking Root, 74296 into Root
+    Put Insertnode taking Root, 24805 into Root
+    Put Insertnode taking Root, 24037 into Root
+    Put Insertnode taking Root, 20636 into Root
+    Put Insertnode taking Root, 10402 into Root
+    Put Insertnode taking Root, 822 into Root
+    Put Insertnode taking Root, 91665 into Root
+    Put Inorder taking Root into Unusedreturnvalue
+(end function)
+Put Main taking nothing into Unusedreturnvalue

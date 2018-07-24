@@ -154,7 +154,7 @@ Use the `Listen` keyword to read one line of input from `STDIN`. Use `Listen to`
 
 * `Listen to your heart` - read one line of input from `STDIN` and store it in `your heart`
 
-Use the `Say` keyword to write the value of a variable to `SDTOUT`.
+Use the `Say` keyword to write the value of a variable to `STDOUT`.
 
 * `Say Tommy` - will output the value stored in `Tommy` to `STDOUT`
  

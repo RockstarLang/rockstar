@@ -282,3 +282,4 @@ Whisper my world
 * [rockstar-js](https://github.com/wolfgang42/rockstar-js) - Rockstar-to-JavaScript transpiler
 * [rockstar-lexer](https://github.com/aitorres/rockstar-lexer) - Rockstar lexer written in Haskell with Alex
 * [rockstar-java](https://github.com/nbrevu/rockstar-java) - Rockstar interpreter in Java
+* [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler

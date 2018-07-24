@@ -164,7 +164,7 @@ Rockstar defines `Shout`, `Whisper` and `Scream` as aliases for `Say`
 
 #### Conditionals
 
-Conditional expressions start with the `If` keyword, followed by an expression. If the expression evaluates to `true`, then the subsequent code block is executed.
+Conditional expressions start with the `If` keyword, followed by an expression. If the expression evaluates to `true`, then the subsequent code block is executed. Optionally, an `Else` block can be written after an `If` block. The code block following the `Else` keyword would be executed if the `If` expression evaluated to `false`.
 
 #### Loops
 

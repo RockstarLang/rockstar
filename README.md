@@ -86,7 +86,7 @@ The format is `somebody with <value> for (optional a/an) <property name>`.
 Multiple properties are separated by commas, and the word "and" can be used to join the last two:
 
 * `Something with 1 for the money, 2 for the show, 3 to get ready, and 4 to go`
-represents `{1: money, 2: show, 3: to get ready, 4: to go}`.
+represents `{money: 1, show: 2, to get ready: 3, to go: 4}`.
 
 Property access is done using possesives: `'s`. After `Put somebody with nothing for a soul into Bob`, `Bob's soul` is now 0.
 

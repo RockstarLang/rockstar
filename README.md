@@ -88,6 +88,11 @@ Multiple properties are separated by commas, and the word "and" can be used to j
 * `Something with 1 for the money, 2 for the show, 3 to get ready, and 4 to go`
 represents `{1: money, 2: show, 3: to get ready, 4: to go}`.
 
+Property access is done using possesives: `'s`. After `Put somebody with nothing for a soul into Bob`, `Bob's soul` is now 0.
+
+The possesives "its his her their" are all equivalent,
+and are used to reference properties on the last named variable. `Them's` is also accepted, as in `them's the rules`.
+
 #### Increment and Decrement
 
 Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.

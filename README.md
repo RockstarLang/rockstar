@@ -62,7 +62,7 @@ String literals in Rockstar use double quotes.
 
 * `"Hello World"`
 
-The single quote character in Rockstar is treated as a letter of the alphabet. This seems unusual until you remember that `I ain't talkin' 'bout love` is a perfectly valid rock'n'roll sentence. 
+The single quote character in Rockstar does not have any quoting semantics. It is treated as a valid character in variable names and keywords (but is **ignored** in poetic literals). This is rock'n'roll, and round these parts `I ain't talkin' 'bout love` is a perfectly valid sentence. 
 
 Numeric literals in Rockstar are written as decimal numbers
 
@@ -129,6 +129,7 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 * `A killer is on the loose` - initialises `a killer` with the value 235.
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
  * Note that poetic literals **can** include reserved keywords, as with `taking` in this example.
+ * A single quote `'` is valid in identifiers and variable names, but is NOT treated as a letter in poetic literals. Developers will often find it useful to be able to write `lovin'` vs `loving` if they need to declare the digit 5 as part of a poetic literal.
 
 ### Comparison
 

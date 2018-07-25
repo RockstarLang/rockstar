@@ -77,7 +77,7 @@ Given Rockstar's intriguing ancestral mixture of computer programming, creative 
 
 Most programming languages use the single quote for quoting literal strings - `'like this'`. English, when written using the basic ASCII character set, often uses the single quote to stand in for the apostrophe to denote contractions or possessives - `you're, she's, he's, shouldn't, rock'n'roll`. Rock'n'roll uses the apostrophe apparently at random - `sweet child o' mine`, `ain't talkin' 'bout love`, `guns n' roses`.
 
-Given three such dramatically diffeHere's how Rockstar interprets single quotes.
+Given three such dramatically different influences, here's how Rockstar interprets single quotes.
 
 1. The sequence `'s\W+` - a single quote followed by a lowercase 's' and one or more whitespace characters - should be replaced with ` is ` (space, is, space) 
  * This allows `Janie's got a gun` (initialises `Janie` with the value `313`) and `Union's been on strike` (initialise `Union` with the value `426`) as valid variable declarations.  

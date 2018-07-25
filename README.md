@@ -55,14 +55,11 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
 * **Object** - a collection of named data properties, as in ECMAScript.
 		
-
 ### Literals and Assignment
 
 String literals in Rockstar use double quotes. 
 
 * `"Hello World"`
-
-The single quote character in Rockstar does not have any quoting semantics. It is treated as a valid character in variable names and keywords (but is **ignored** in poetic literals). This is rock'n'roll, and round these parts `I ain't talkin' 'bout love` is a perfectly valid sentence. 
 
 Numeric literals in Rockstar are written as decimal numbers
 
@@ -74,6 +71,19 @@ Assignment is denoted by the `put/into` keyword combination:
 * `Put 123 into X` will assign the value `123` to the variable `X`
 * `Put "Hello World" into the message` will assign the value `"Hello World"` to the variable `the message`
 
+#### Single Quotes
+
+Given Rockstar's intriguing ancestral mixture of computer programming, creative English and idiomatic rock'n'roll, the single quote character presents all sorts of challenges.
+
+Most programming languages use the single quote for quoting literal strings - `'like this'`. English, when written using the basic ASCII character set, often uses the single quote to stand in for the apostrophe to denote contractions or possessives - `you're, she's, he's, shouldn't, rock'n'roll`. Rock'n'roll uses the apostrophe apparently at random - `sweet child o' mine`, `ain't talkin' 'bout love`, `guns n' roses`.
+
+Given three such dramatically diffeHere's how Rockstar interprets single quotes.
+
+1. The sequence `'s\W+` - a single quote followed by a lowercase 's' and one or more whitespace characters - should be replaced with ` is ` (space, is, space) 
+ * This allows `Janie's got a gun` (initialises `Janie` with the value `313`) and `Union's been on strike` (initialise `Union` with the value `426`) as valid variable declarations.  
+
+2. All other single quotes are then ignored. `ain't` is equivalent to `aint`, `wakin'` has five letters, and `'''''` is equal to the empty string. This means you can use single quotes freely throughout your program to punctuate, adjust word lengths and generally channel the spirit of rock'n'roll without worrying about compiler errors. 
+
 #### Increment and Decrement
 
 Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.
@@ -83,7 +93,7 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
  
 #### Arithmetic
 
-Basic arithmetic is provided by the `plus`, `minus`, `times`, `over`, and `by` keywords.
+Basic arithmetic is provided by the `plus`, `minus`, `times` and `over` keywords.
 
 Arithmetic expressions:
 
@@ -129,7 +139,7 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 * `A killer is on the loose` - initialises `a killer` with the value 235.
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
  * Note that poetic literals **can** include reserved keywords, as with `taking` in this example.
- * A single quote `'` is valid in identifiers and variable names, but is NOT treated as a letter in poetic literals. Developers will often find it useful to be able to write `lovin'` vs `loving` if they need to declare the digit 5 as part of a poetic literal.
+ * The semi-colon, comma, apostrophe and any other non-alphabetical characters are ignored.
 
 ### Comparison
 
@@ -140,7 +150,7 @@ Comparison in Rockstar can only be done within an expression.
 * `Tommy is nobody` initialises the variable `Tommy` with the value `nobody`
 * `If Tommy is nobody` - will execute the following block if, and only if, the variable `Tommy` is equal to `nobody`
 
-The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
+The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` (which is reduced to `aint` by Rockstar) is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
 
 Rockstar also supports the following comparison syntax:
 

@@ -96,6 +96,31 @@ and are used to reference properties on the last named variable. `Them's` is als
 Property testing is done via "has" or "has got".
 `Stacy's mom has got it going on` will return whether Stacy.mom has a property named "it going on".
 
+A complex object example:
+
+```js
+{
+    a: 1,
+    b: {x: 2, z: 1},
+    c: 5,
+    d: {m: 8, v: 7}
+}
+```
+
+Is equivalent to
+
+```
+Somebody with
+1 for an a,
+somebody with
+    2 for an x, and 1 for a z
+for b,
+5 for c,
+somebody with
+    8 for m, and 7 for v
+for d
+```
+
 #### Increment and Decrement
 
 Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.

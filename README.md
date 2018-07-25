@@ -93,6 +93,9 @@ Property access is done using possesives: `'s`. After `Put somebody with nothing
 The possesives "its his her their" are all equivalent,
 and are used to reference properties on the last named variable. `Them's` is also accepted, as in `them's the rules`.
 
+Property testing is done via "has" or "has got".
+`Stacy's mom has got it going on` will return whether Stacy.mom has a property named "it going on".
+
 #### Increment and Decrement
 
 Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.

@@ -83,6 +83,11 @@ The format is `somebody with <value> for (optional a/an) <property name>`.
 * `Somebody with the whole of my heart for a smile` is equivalent to `{smile: the whole * my heart}`.
 * `Somebody with someone with something for 1` is equivalent to `{1: {{}}}`
 
+Multiple properties are separated by commas, and the word "and" can be used to join the last two:
+
+* `Something with 1 for the money, 2 for the show, 3 to get ready, and 4 to go`
+represents `{1: money, 2: show, 3: to get ready, 4: to go}`.
+
 #### Increment and Decrement
 
 Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.

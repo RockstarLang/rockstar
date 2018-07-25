@@ -47,7 +47,7 @@ The keywords `it`, `he`, `she`, `him`, `her`, `them`, `they` always refer to the
 Rockstar uses a very similar type system to that defined by the [ECMAScript type system](http://www.ecma-international.org/ecma-262/5.1/#sec-8), except `undefined` doesn't sound very rock'n'roll so we use `mysterious` instead.
 
 * **Mysterious** - the value of any variable that hasn't been assigned a value, denoted by the keyword `mysterious`
-* **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere` and `nobody` are defined as aliases for `null`
+* **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere`, `nobody`, `empty` and `gone` are defined as aliases for `null`
 * **Boolean** - a logical entity having two values `true` and `false`. *(The keywords `maybe` and `definitely maybe` are reserved for future use)*
  * `right`, `yes` and `ok` are valid aliases for `true`
  * `wrong`, `no` and `lies` are valid aliases for `false`

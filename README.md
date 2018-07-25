@@ -74,6 +74,15 @@ Assignment is denoted by the `put/into` keyword combination:
 * `Put 123 into X` will assign the value `123` to the variable `X`
 * `Put "Hello World" into the message` will assign the value `"Hello World"` to the variable `the message`
 
+#### Object literals
+
+Object literals are written using any of the keywords `something`, `someone`, or `somebody`.
+The format is `somebody with <value> for (optional a/an) <property name>`.
+`Somebody` on its own represents an empty object.
+
+* `Somebody with the whole of my heart for a smile` is equivalent to `{smile: the whole * my heart}`.
+* `Somebody with someone with something for 1` is equivalent to `{1: {{}}}`
+
 #### Increment and Decrement
 
 Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.

@@ -40,7 +40,7 @@ As in Ruby, Python and VBScript, variables are dynamically typed and you don't n
 
 **Pronouns**
 
-The keywords `it`, `he`, `she`, `him`, `her`, `them`, `they` always refer to the most recently named variable, determined at parse time. 
+Keywords such as `it`, `he`, `she`, `him`, `her`, `they`, `them` always refer to the most recently named variable, determined at parse time. Additional valid pronouns include: `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, `ver`.
 
 ### Types
 

@@ -132,19 +132,36 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 
 
 #### Arrays/Lists
+Arrays behave like lists in some languages, they are dynamic, so you don't have a fixed size and can add elements to it later.
 
-To assign to an array use the same syntax as for variables but separate the values by `and` or `,`
-`Put 123, 234, 345 and 456 into X` will create an array and adds the listed values.
+To initialize an array with values use the same syntax as for variables but separate the values by `and` or `,`
+`Put 123, 234, 345 and 456 into {array}` will create an array and adds the listed values.
+
+To initialize the array with variable values use the following syntay:
+`{array} filled with {variable} and/but/or/, {variable} ...`
+
+Example:
+`a shout was loud
+a scream was quiet
+the nights filled with nothing but a shout and a scream`
+This would fill the array the nights with null at 0, 4 at 1, and 5 at 2. Because a shout is a number it makes the nights an array containing number types, meaning accessing position 0 would return 0 because that is the number equivalent of null
+
+If you want to define an array without filling it you can use the syntax:
+`{array} full of nothing` (or any of it's aliases)
 
 To add to an existing array use: `{value} belongs to {array}`
 
-To get an item from an array use: `get {index} from {array}` (of course indexes start at 0)
-An alias for `get` is `give me`
+To get an item from an array use: `{array} at {index}` (of course indexes start at 0)
 Note: The poetic numbers can also be used for indexing
 
-`Get love from You` will give the 4th elemt of the array `You`.
+Exameple, to assign the 4th element of the array `the man` into the variable `a casket`:
+`Put the man at rest into a casket`
+
+You can assign to a specifc array position, if you use:
+`{array} at {index} is {value}` (again poetic numbers can be used for indexing)
 
 To get the length of the array use: `How long {array} is`
+Alias for `How long` are `How deep` and `How far`.
 
 
 ### Comparison

@@ -61,7 +61,7 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 
 String literals in Rockstar use double quotes. 
 
-* `"Hello World"`
+* `"Hello San Francisco"`
 
 Numeric literals in Rockstar are written as decimal numbers
 
@@ -71,7 +71,7 @@ Numeric literals in Rockstar are written as decimal numbers
 Assignment is denoted by the `put/into` keyword combination:
 
 * `Put 123 into X` will assign the value `123` to the variable `X`
-* `Put "Hello World" into the message` will assign the value `"Hello World"` to the variable `the message`
+* `Put "Hello San Francisco" into the message` will assign the value `"Hello San Francisco"` to the variable `the message`
 
 #### Single Quotes
 
@@ -131,8 +131,8 @@ For the keywords `true`, `false`, `nothing`, `nobody` and `nowhere`, a poetic as
 
 A poetic string literal assignment starts with a variable name, followed by one of the keywords `says` followed by a single space. The rest of the line up to the `\n` terminator is treated as an unquoted string literal.
 
-* `Billy says hello world!\n` will initialise the variable `Billy` with the string literal `"hello world!"`
-* `The world says hello back\n` will initialise the variable `the world` with the string literal `hello back`
+* `Peter says Hello San Francisco!\n` will initialise the variable `Peter` with the string literal `"Hello San Francisco!"`
+* `San Francisco says Hello back\n` will initialise the variable `San Francisco` with the string literal `Hello back`
 
 #### Poetic Number Literals
 

@@ -40,7 +40,9 @@ As in Ruby, Python and VBScript, variables are dynamically typed and you don't n
 
 **Pronouns**
 
-The keywords `it`, `he`, `she`, `him`, `her`, `them`, `they` always refer to the most recently named variable, determined at parse time. 
+The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, and `ver` refer to the last named variable determined by parsing order. 
+ 
+(Please don't file issues pointing out that 80s rockers were a bunch of misogynists and gender-inclusive pronouns aren't really idiomatic. You're right, we know, and we've all learned a lot since then. Besides, [*Look What The Cat Dragged In*](https://en.wikipedia.org/wiki/Look_What_the_Cat_Dragged_In) was recorded by four cishet guys who spent more money on lipgloss and hairspray than they did on studio time, and it's an absolute classic.)
 
 ### Types
 
@@ -59,7 +61,7 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 
 String literals in Rockstar use double quotes. 
 
-* `"Hello World"`
+* `"Hello San Francisco"`
 
 Numeric literals in Rockstar are written as decimal numbers
 
@@ -69,7 +71,7 @@ Numeric literals in Rockstar are written as decimal numbers
 Assignment is denoted by the `put/into` keyword combination:
 
 * `Put 123 into X` will assign the value `123` to the variable `X`
-* `Put "Hello World" into the message` will assign the value `"Hello World"` to the variable `the message`
+* `Put "Hello San Francisco" into the message` will assign the value `"Hello San Francisco"` to the variable `the message`
 
 #### Single Quotes
 
@@ -112,7 +114,7 @@ Examples:
 
 * `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
 
-* `My love by your eyes` - Returns `my love` divided by `your eyes`
+* `My heart over the moon` - Returns `my heart` divided by `the moon`
 
 #### Poetic Literals
 
@@ -129,8 +131,8 @@ For the keywords `true`, `false`, `nothing`, `nobody` and `nowhere`, a poetic as
 
 A poetic string literal assignment starts with a variable name, followed by one of the keywords `says` followed by a single space. The rest of the line up to the `\n` terminator is treated as an unquoted string literal.
 
-* `Billy says hello world!\n` will initialise the variable `Billy` with the string literal `"hello world!"`
-* `The world says hello back\n` will initialise the variable `the world` with the string literal `hello back`
+* `Peter says Hello San Francisco!\n` will initialise the variable `Peter` with the string literal `"Hello San Francisco!"`
+* `San Francisco says Hello back\n` will initialise the variable `San Francisco` with the string literal `Hello back`
 
 #### Poetic Number Literals
 
@@ -298,3 +300,4 @@ Whisper my world
 * [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler
 * [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
 * [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust
+* [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)

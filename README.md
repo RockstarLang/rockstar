@@ -40,7 +40,9 @@ As in Ruby, Python and VBScript, variables are dynamically typed and you don't n
 
 **Pronouns**
 
-Keywords such as `it`, `he`, `she`, `him`, `her`, `they`, `them` always refer to the most recently named variable, determined at parse time. Additional valid pronouns include: `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, `ver`.
+The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, and `ver` refer to the last named variable determined by parsing order. 
+ 
+(Please don't file issues pointing out that 80s rockers were a bunch of misogynists and gender-inclusive pronouns aren't really idiomatic. You're right, we know, and we've all learned a lot since then. Besides, [*Look What The Cat Dragged In*](https://en.wikipedia.org/wiki/Look_What_the_Cat_Dragged_In) was recorded by four cishet guys who spent more money on lipgloss and hairspray than they did on studio time, and it's an absolute classic.)
 
 ### Types
 

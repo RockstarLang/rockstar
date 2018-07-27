@@ -299,4 +299,4 @@ Whisper my world
 * [rockstar-java](https://github.com/nbrevu/rockstar-java) - Rockstar interpreter in Java
 * [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler
 * [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
-* [rockstar-webpiler](https://rockstar.connorwfitzgerald.com) - Online Rockstar Parser and Transpiler [Source](https://github.com/cwfitzgerald/rockstar-webpiler)
+* [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)

@@ -16,6 +16,11 @@ Also we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 
 Rockstar is intended to give the programmer an unprecedented degree of poetic license when it comes to the composition and structure of their programs. 
 
+### File format
+
+Rockstar programs are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) files with the `.rock` file extension. *(Given that for everything included in the current Rockstar specification, UTF-8 is indistinguishable from 7-bit ASCII, that's a fancy way of saying they're plain text files.)*
+
+
 ### Comments 
  
 The use of comments in Rockstar programs is strongly discouraged. This is rock'n'roll; it's up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses (). Yes, this means you can't use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments. 

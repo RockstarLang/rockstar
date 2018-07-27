@@ -112,7 +112,7 @@ Examples:
 
 * `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
 
-* `My love over your eyes` - Returns `my love` divided by `your eyes`
+* `My heart over the moon` - Returns `my heart` divided by `the moon`
 
 #### Poetic Literals
 

@@ -1,3 +1,16 @@
+# UPDATE 2018-07-31 
+**Hey rockstar developers.** 
+
+**So...  this thing has completely exploded. 3,000+ stars, half-a-dozen implementations, loads of issues and ideas and PRs. It is AMAZING and you are all wonderful.**
+**Only problem is... I'm in the middle of moving house right now so I'm going to have to put the whole thing on hold for a week or two.** 
+**Doesn't mean it's dead - there's loads of really cool stuff still to come. But please, hang in there for a couple of weeks whilst I pack my life into a few dozen small boxes and lug it halfway across London.**
+
+By all means keep filing issues and opening PRs. But don't get discouraged if they don't get an immediate response.
+
+Rock on. \m/
+
+_@dylanbeattie_
+
 # Rockstar
 
 Rockstar is a dynamically typed Turing-complete programming language. 

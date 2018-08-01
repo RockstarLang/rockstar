@@ -405,6 +405,7 @@ Whisper my world
 * [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
 * [language-rockstar](https://github.com/thestd/language-rockstar) - Syntax highlighter for Atom
 * [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust ([online version using WebAssembly](https://palfrey.github.io/maiden/))
+* [thrash](https://github.com/young-steveo/thrash) - Rockstar implementation in Go
 * [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
 * [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
 * [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode

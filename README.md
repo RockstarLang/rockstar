@@ -122,7 +122,7 @@ Arithmetic expressions:
 * `{a} times {b}` - multiplication. Alias `of`
 * `{a} over {b}` - division. Aliases TBC.
 
-The alias `by` has been explicitly rejected because of disagreements between the colloquial English `ten by four` (i.e. 10*4 = 40) and `ten (divided) by four` (i.e. 10/4 = 2.5)
+The alias `by` has been explicitly rejected because of disagreements between the colloquial English `ten by four` (i.e. `10*4 = 40`) and `ten (divided) by four` (i.e. `10/4 = 2.5`)
 
 Examples:
 

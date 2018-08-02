@@ -74,6 +74,13 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 * **Number** - Numbers in Rockstar are stored using the [DEC64](http://www.dec64.com/) numeric type.
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
 * **Object** - a collection of named data properties, as in ECMAScript.
+
+### Literal Words vs Reserved Keywords
+
+Words that are used to construct a literal of a certain type are referred to as "Literal Words" and words that are used to construct various syntax constructs are referred to as "Reserved Keywords".
+
+- Literal Words: `mysterious`, `null`, `nothing`, `nowhere`, `nobody`, `empty`, `gone`, `true`, `right`, `yes`, `ok`, `false`, `wrong`, `no`, `lies`
+
 		
 ### Literals and Assignment
 
@@ -140,10 +147,11 @@ Rockstar also supports a unique language feature known as **poetic literals**. I
 
 ##### Poetic Type Literals
 
-For the keywords `true`, `false`, `nothing`, `nobody` and `nowhere`, a poetic assignment is a single line consisting of a variable name, the `is` keyword and the required value literal
+A poetic type assignment is a single line consisting of a variable name, the `is` keyword, or the aliases `was` or `were`, and the a Literal Word signifying the value the variable will be set to.
 
 * `My heart is true` - initialises the variable `my heart` with the Boolean value `true` 
 * `Tommy is nobody` - initialises the variable `Tommy` with the value `null` using the `nobody` alias
+* `Tommy is mysterious` - initialises the variable `Tommy` with the value `mysterious`.
 
 ##### Poetic String Literals
 
@@ -154,13 +162,14 @@ A poetic string literal assignment starts with a variable name, followed by one 
 
 #### Poetic Number Literals
 
-A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `was` or `were`. As long as the next symbol is not a reserved keyword, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
+A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `was` or `were`. As long as the next symbol is not a Literal Word, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
 
 * `Tommy was a lovestruck ladykiller` initialises `Tommy` with the value `100`
 * `Sweet Lucy was a dancer` - initialises `Sweet Lucy` with the value 16
 * `A killer is on the loose` - initialises `a killer` with the value 235.
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
- * Note that poetic literals **can** include reserved keywords, as with `taking` in this example.
+* `Tommy was without` initialises `Tommy` with the value `7` because `without` is a Reserved Keyword, but not a Literal Word.
+ * Note that poetic literals **can** include Reserved Keywords, as with `taking` in this example.
  * The semi-colon, comma, apostrophe and any other non-alphabetical characters are ignored.
 
 ### Comparison

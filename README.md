@@ -79,7 +79,7 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 
 Words that are used to construct a literal of a certain type are referred to as "Literal Words" and words that are used to construct various syntax constructs are referred to as "Reserved Keywords".
 
-- Literal Words: `mysterious`, `null`, `nothing`, `nowhere`, `nobody`, `empty`, `gone`, `true`, `right`, `yes`, `ok`, `false`, `wrong`, `no`, `lies`
+- Literal Words: `mysterious`, `null`, `nothing`, `nowhere`, `nobody`, `empty`, `gone`, `true`, `right`, `yes`, `ok`, `false`, `wrong`, `no`, `lies`, `maybe`, `definitely maybe`
 
 		
 ### Literals and Assignment

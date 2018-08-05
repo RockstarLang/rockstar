@@ -315,6 +315,7 @@ Whisper my world
 * [rockstar-js](https://github.com/wolfgang42/rockstar-js) - Rockstar-to-JavaScript transpiler
 * [rockstar-lexer](https://github.com/aitorres/rockstar-lexer) - Rockstar lexer written in Haskell with Alex
 * [rockstar-java](https://github.com/nbrevu/rockstar-java) - Rockstar interpreter in Java
+* [rockstar-ml](https://github.com/lkwq007/rockstar-ml) - Rockstar interpreter in OCaml
 * [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler
 * [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
 * [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust

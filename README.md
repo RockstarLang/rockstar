@@ -322,6 +322,7 @@ Whisper my world
 * [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
 * [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust
 * [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
+* [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
 
 # Social Spaces
 

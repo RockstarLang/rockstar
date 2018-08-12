@@ -324,6 +324,7 @@ Whisper my world
 * [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust
 * [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
 * [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
+* [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
 
 # Social Spaces
 

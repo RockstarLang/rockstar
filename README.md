@@ -128,7 +128,7 @@ Examples:
 
 * `Put the whole of your heart into my hands` - multiply `your heart` by `the whole` and assign the result to `my hands`
 
-* `My world is nothing without your love` - Initialize `my world` with the result of subtracting `your love` from 0
+* `Put nothing without your love into my world` - Initialize `my world` with the result of subtracting `your love` from 0
 
 * `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
 

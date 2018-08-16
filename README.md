@@ -223,7 +223,7 @@ The following examples all use c style syntax for explaining what things do.
 
 The higher, the tighter the binding. This is the precedence we generally expect from our math.
 
-1. Function Call (right-associative)
+1. Function Call (greedy arguments)
 2. Logical NOT (right-associative)
 3. Multiplication and Division (left-associative)
 4. Addition and Subtraction (left-associative)
@@ -233,21 +233,21 @@ The higher, the tighter the binding. This is the precedence we generally expect 
 ##### Examples
 
 - `A taking B times C plus not D times E and F` is equivalent to `((A(B) * C) + (!D * E)) && F`
-- `A taking B taking C, D` is equivalent to `A(B(C, D)` **NOT** `A(B(C), D)`.
 
 #### Binary Comparison
 
-Equality comparisons (`is`, `ain't`, `is not`) are allowed between any two operands of the same type. Objects are checked by reference equality, all other types are checked by value equality.
+Equality comparisons (`is`, `ain't`, `is not`) are allowed between types if they are the same type or they can be compared by the rules below. Objects are checked by reference equality, all other types are checked by value equality.
 
 Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `is as low as`) are only allowed if the operands are both Numbers or both Strings or they are converted to such an arrangement according to the rules below. Numbers are compared as expected, Strings are compared lexicographically.
 
+- \<Mysterious\> \<op\> Mysterious =\> Equal.
 - \<Non-Mysterious\> \<op\> Mysterious =\> Non equal.
-- String \<op\> Number =\> Convert the string to a number using base 10 with leading zeros ignored. If it fails, return false
+- String \<op\> Number =\> Convert the string to a number using base 10 with leading zeros ignored. If it fails, return false.
 - String \<op\> Boolean =\> Convert the string to a boolean using all defined aliases.
 - String \<op\> Null =\> Non equal.
 - Number \<op\> Boolean =\> Convert number to boolean by "truthiness".
-- Number \<op\> Null =\> Convert null to 0
-- Boolean \<op\> Null =\> Convert null to false
+- Number \<op\> Null =\> Convert null to 0.
+- Boolean \<op\> Null =\> Convert null to false.
 
 ##### Examples
 

@@ -325,6 +325,7 @@ Whisper my world
 * [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
 * [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
 * [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
+* [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac
 
 # Social Spaces
 

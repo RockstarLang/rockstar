@@ -91,6 +91,10 @@ Assignment is denoted by the `put/into` keyword combination:
 * `Put 123 into X` will assign the value `123` to the variable `X`
 * `Put "Hello San Francisco" into the message` will assign the value `"Hello San Francisco"` to the variable `the message`
 
+`thinks` is a valid alias for the `put/into` combination and allows full subexpressions.
+
+* `My brother thinks my sister is smaller than My Other Brother` will assign the variable `My brother` to the result of `my sister < My Other Brother`.
+
 #### Single Quotes
 
 Given Rockstar's intriguing ancestral mixture of computer programming, creative English and idiomatic rock'n'roll, the single quote character presents all sorts of challenges.

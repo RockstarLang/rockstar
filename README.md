@@ -106,10 +106,11 @@ Given three such dramatically different influences, here's how Rockstar interpre
 
 #### Increment and Decrement
 
-Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.
+Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` statements. Adding more than one `up` or `down` in the statement will increment or decrement the same amount of times as you have `up`s or `down`s in the statement. There may be a comma between each `up` and `down`.
 
 * `Build my world up` will increment the value stored in `my world` by 1.
 * `Knock the walls down` will decrement the value stored in `the walls` by 1
+* `Knock the walls down, down` will decrement the value stored in `the walls` by 2
  
 #### Arithmetic
 

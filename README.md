@@ -56,7 +56,9 @@ There's two ways to declare and use variables in Rockstar.
 
 As in Ruby, Python and VBScript, variables are dynamically typed and you don't need to declare variables before use.
 
-If a variable is defined outside of a function, it is in global scope. Global scope variables are available everywhere below its first initalization. If a variable is defined inside of a function, it is in local scope. Local scope variables are available from their initalization untill the end of the function they are defined in.
+If a variable is defined outside of a function, it is in global scope. Global scope variables are available everywhere below its first initialization. If a variable is defined inside of a function, it is in local scope. Local scope variables are available from their initialization until the end of the function they are defined in.
+
+While within a function, if you write to a variable that has been defined in global scope, you write to that variable, you do not define a new local variable.
 
 **Pronouns**
 

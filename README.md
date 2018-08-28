@@ -178,14 +178,14 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 
 ### Comparison
 
-Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interepreted differently depending whether it appears as part of a statement or as part of an expression.
+Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interepreted differently depending whether it appears as part of a statement or as part of an expression. `isn't` is the logical negation of the `is` keyword.
 
 Comparison in Rockstar can only be done within an expression.
 
 * `Tommy is nobody` initialises the variable `Tommy` with the value `nobody`
 * `If Tommy is nobody` - will execute the following block if, and only if, the variable `Tommy` is equal to `nobody`
 
-The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` (which is reduced to `aint` by Rockstar) is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
+The keyword `ain't` (which is reduced to `aint` by Rockstar) is an alias for `isn't`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
 
 Rockstar also supports the following comparison syntax:
 
@@ -201,7 +201,9 @@ Rockstar has 4 different logical operators that first convert their operand(s) t
 * `A and B` returns the [Conjunction](https://en.wikipedia.org/wiki/AND_gate)
 * `A or B` returns the [Disjunction](https://en.wikipedia.org/wiki/OR_gate)
 * `A nor B` returns the [Joint Denial](https://en.wikipedia.org/wiki/NOR_gate)
-* `not A` returns the [Negation](https://en.wikipedia.org/wiki/Inverter_(logic_gate)) of its single argument. Note that `is not` is a separate construct. `A is not B` is equivalent to `A != B` **NOT** `A == !B`. 
+* `not A` returns the [Negation](https://en.wikipedia.org/wiki/Inverter_(logic_gate)) of its single argument.
+
+All logical operators are short circuiting. This means if by evaluating the first argument to the operator guarantees a result, the other argument is not evaluated. `true and 1 over 0` is `false` and does not produce an error for dividing by zero.
 
 ### Input/Output
 

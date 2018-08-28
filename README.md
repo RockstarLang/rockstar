@@ -203,7 +203,7 @@ Rockstar has 4 different logical operators that first convert their operand(s) t
 * `A nor B` returns the [Joint Denial](https://en.wikipedia.org/wiki/NOR_gate)
 * `not A` returns the [Negation](https://en.wikipedia.org/wiki/Inverter_(logic_gate)) of its single argument.
 
-All logical operators are short circuiting. This means if by evaluating the first argument to the operator guarantees a result, the other argument is not evaluated. `true and 1 over 0` is `false` and does not produce an error for dividing by zero.
+All logical operators are short circuiting. This means if by evaluating the first argument to the operator guarantees a result, the other argument is not evaluated. `false and 1 over 0` is `false` and does not produce an error for dividing by zero.
 
 ### Input/Output
 

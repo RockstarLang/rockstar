@@ -1,16 +1,3 @@
-# UPDATE 2018-07-31 
-**Hey rockstar developers.** 
-
-**So...  this thing has completely exploded. 3,000+ stars, half-a-dozen implementations, loads of issues and ideas and PRs. It is AMAZING and you are all wonderful.**
-**Only problem is... I'm in the middle of moving house right now so I'm going to have to put the whole thing on hold for a week or two.** 
-**Doesn't mean it's dead - there's loads of really cool stuff still to come. But please, hang in there for a couple of weeks whilst I pack my life into a few dozen small boxes and lug it halfway across London.**
-
-By all means keep filing issues and opening PRs. But don't get discouraged if they don't get an immediate response.
-
-Rock on. \m/
-
-_@dylanbeattie_
-
 # Rockstar
 
 Rockstar is a dynamically typed Turing-complete programming language. 
@@ -48,13 +35,17 @@ Tommy was a lean mean wrecking machine.  (initialises Tommy with the value 14487
 
 There's two ways to declare and use variables in Rockstar. 
 
-**Common variables** consist of one of the keywords `a`, `an`, `the`, `my` or `your` followed by a unique variable name, which must contain only lowercase ASCII letters a-z. 
+**Common variables** consist of one of the keywords `a`, `an`, `the`, `my` or `your` followed by a unique variable name, which must contain only lowercase ASCII letters a-z. The keyword is part of the variable name, so `a boy` is a different variable from `the boy`.
 
 **Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Tommy`, `Gina`, `Doctor Feelgood`, `Mister Crowley`, `Kayleigh`, `Tom Sawyer`, `Billie Jean` and `Janie`. 
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, `Layla` and `Johnny B Goode` would also all be valid variable names in Rockstar.)
 
 As in Ruby, Python and VBScript, variables are dynamically typed and you don't need to declare variables before use.
+
+If a variable is defined outside of a function, it is in global scope. Global scope variables are available everywhere below its first initialization. If a variable is defined inside of a function, it is in local scope. Local scope variables are available from their initialization until the end of the function they are defined in.
+
+While within a function, if you write to a variable that has been defined in global scope, you write to that variable, you do not define a new local variable.
 
 **Pronouns**
 
@@ -106,10 +97,11 @@ Given three such dramatically different influences, here's how Rockstar interpre
 
 #### Increment and Decrement
 
-Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` keywords.
+Increment and decrement are supported by the `Build {variable} up` and `Knock {variable} down` statements. Adding more than one `up` or `down` in the statement will increment or decrement the same amount of times as you have `up`s or `down`s in the statement. There may be a comma between each `up` and `down`.
 
 * `Build my world up` will increment the value stored in `my world` by 1.
 * `Knock the walls down` will decrement the value stored in `the walls` by 1
+* `Knock the walls down, down` will decrement the value stored in `the walls` by 2
  
 #### Arithmetic
 
@@ -321,14 +313,22 @@ Whisper my world
 * [kaiser-ruby](https://github.com/marcinruszkiewicz/kaiser-ruby) - Rockstar to Ruby transpiler
 * [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
 * [language-rockstar](https://github.com/thestd/language-rockstar) - Syntax highlighter for Atom
-* [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust
+* [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust ([online version using WebAssembly](https://palfrey.github.io/maiden/))
 * [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
 * [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
 * [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
 * [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac
+* [sellout](https://github.com/davidadsit/sellout) - Rockstar to C# (dotnet core) transpiler
 
 # Social Spaces
 
 * [/r/RockstarDevs](https://www.reddit.com/r/RockstarDevs/) - Subreddit
 * [Rockstar Developers](https://discordapp.com/invite/xsQK7UU) - Discord Group
 
+# Media Coverage
+* [Meet the boffin behind a computer programming language based on power ballads](https://www.loudersound.com/features/meet-the-boffin-behind-a-computer-programming-language-based-on-power-ballads) in Classic Rock magazine.
+* [Rockstar article on BoingBoing](https://boingboing.net/2018/07/25/hello-cleveland-world.html)
+* [Rockstar on HackerNews](https://news.ycombinator.com/item?id=17585589)
+* [Rockstar on /r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/comments/934uvw/why_yes_i_am_a_certified_rockstar_developer/)
+* [Rockstar on dice.com](https://insights.dice.com/2018/07/27/rockstar-programming-language-developers/)
+* [The Rockstar Programming Language | Mitigated Frenzy](https://bparsia.wordpress.com/2018/09/11/the-rockstar-programming-language/) - see also their solution to the [Rainfall problem](https://bparsia.wordpress.com/2018/09/12/rockstar-rainfall-problem/#comment-1624)

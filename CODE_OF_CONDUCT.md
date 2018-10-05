@@ -22,6 +22,16 @@ Examples of unacceptable behavior by participants include:
 * Publishing others' private information, such as a physical or electronic address, without explicit permission
 * Other conduct which could reasonably be considered inappropriate in a professional setting
 
+## A Note about 'Rockstar'
+
+Rockstar is a little different to most open source software projects. For starters, it's a joke. A joke with a formal specification and multiple implementations, but please remember - we're doing this for a laugh. Please don't spoil the fun.
+
+Rockstar is also directly influenced by rock and heavy metal music, which puts this project in an unusual position. Rock music itself is rife with 'sexualized language and imagery', 'derogatory comments', 'political attacks', and all sorts of behaviour and material which would be 'considered inappropriate in a professional setting'.
+
+This is not a licence to be deliberately provocative or offensive. But if you find the sort of themes and imagery used in rock and metal music offensive, or you work in an environment where these things could cause a problem, please be warned that this project might contain material you find objectionable.
+
+We've designed Rockstar so that if you *really* want to initialize a variable by typing `My heart is bleeding, crying out for Satan's loving kiss`, you can. That doesn't mean you *should* - but if that's your thing, we're not gonna stop you.
+
 ## Our Responsibilities
 
 Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.

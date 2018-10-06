@@ -1,0 +1,30 @@
+say 5 is lower than 6
+say 6 is lower than 5
+say 5 is as low as 6
+say 6 is as low as 5
+say 5 is as low as 5
+say 6 is higher than 5
+say 5 is higher than 6
+say 6 is as high as 5
+say 5 is as high as 6
+say 6 is as high as 6
+say ""
+say -3 is lower than nothing
+say 3 is lower than nothing
+say nothing is lower than nothing
+say nothing is as low as null
+say ""
+say "a" is lower than "b"
+say "b" is lower than "a"
+say "a" is as low as "b"
+say "b" is as low as "a"
+say "a" is as low as "a"
+say "b" is higher than "a"
+say "a" is higher than "b"
+say "b" is as high as "a"
+say "a" is as high as "b"
+say "a" is as high as "a"
+say "abcd" is lower than "abce"
+say ""
+say "-123" is lower than 123
+say 123 is higher than "-123"

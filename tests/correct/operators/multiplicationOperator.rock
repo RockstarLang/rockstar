@@ -1,0 +1,11 @@
+say 5 of 5
+say 2 of 4
+say 4 of 3 of 2 of 1
+say -3 of 2
+say nothing times 5
+
+say "hello_" times 3
+say 3 times "world_"
+say 2.25 times "hello world_"
+say "hello" times 0 plus "world"
+say "hello" times nothing plus "world"

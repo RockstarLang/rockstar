@@ -1,0 +1,27 @@
+if ""
+say 1
+
+if "hello"
+say 2
+
+if 0
+say 3
+
+if 1
+say 4
+
+if -3
+say 5
+
+if mysterious
+say 6
+
+if null
+say 7
+
+F takes X
+give back X
+
+if F
+say 8
+

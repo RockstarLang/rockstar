@@ -1,0 +1,5 @@
+say .5 without 0.25
+say 0 minus 3
+say nothing minus 3
+put 5 without 2 without 1 into X
+say X

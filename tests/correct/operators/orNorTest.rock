@@ -1,0 +1,19 @@
+SayAndReturn takes B
+say "Hi"
+give back B
+(end function)
+say true or true
+say true or false
+say false or true
+say false or false
+say true or SayAndReturn taking false
+say false or SayAndReturn taking false
+say false or SayAndReturn taking true
+
+say true nor true
+say true nor false
+say false nor true
+say false nor false
+say true nor SayAndReturn taking false
+say false nor SayAndReturn taking false
+say false nor SayAndReturn taking true

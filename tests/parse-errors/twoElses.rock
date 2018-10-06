@@ -1,0 +1,7 @@
+if True
+say "hello"
+else
+say "hi"
+else
+say "bye"
+

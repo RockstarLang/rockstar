@@ -1,0 +1,4 @@
+Func takes X and Y
+say X plus ", " plus Y
+(end Func)
+Func taking 5

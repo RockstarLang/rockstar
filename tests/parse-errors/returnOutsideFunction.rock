@@ -1,0 +1,7 @@
+F takes A and B
+Give back A
+(end F)
+G takes A and B
+Give back B
+(end G)
+Give back A

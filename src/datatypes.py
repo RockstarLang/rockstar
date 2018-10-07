@@ -6,35 +6,57 @@ from enum import Enum, auto
 import decimal
 
 
-class LexerError(Exception):
+class SourceLocation(NamedTuple):
+    """
+    Represents a pair of start and end locations for the lexer token/ast node.
+    """
+    line_start: int
+    char_start: int
+    line_end: int
+    char_end: int
+
+
+class RockstarError(Exception):
+    """
+    Exception with location data.
+    """
+    location: SourceLocation
+
+    def __init__(self, message: str, location: SourceLocation) -> None:
+        super().__init__(message)
+
+        self.location = location
+
+
+class LexerError(RockstarError):
     """
     Error that occurred within the parser.
     """
     pass
 
 
-class ParserError(Exception):
+class ParserError(RockstarError):
     """
     Error that occurred within the parser.
     """
     pass
 
 
-class RuntimeTypeError(Exception):
+class RuntimeTypeError(RockstarError):
     """
     Type error that occurred during runtime.
     """
     pass
 
 
-class RuntimeArithmeticError(Exception):
+class RuntimeArithmeticError(RockstarError):
     """
     Arithmetic error that occurred during runtime.
     """
     pass
 
 
-class RuntimeComparisonError(Exception):
+class RuntimeComparisonError(RockstarError):
     """
     Comparison error that occurred during runtime.
     """
@@ -53,16 +75,6 @@ class InvalidNumber(decimal.InvalidOperation):
     Number was constructed with a invalid number string.
     """
     pass
-
-
-class SourceLocation(NamedTuple):
-    """
-    Represents a pair of start and end locations for the lexer token/ast node.
-    """
-    line_start: int
-    char_start: int
-    line_end: int
-    char_end: int
 
 
 class TokenType(Enum):

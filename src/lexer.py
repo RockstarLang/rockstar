@@ -250,27 +250,35 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
         idx = expect_word(source, idx, 'top', 'take it to the top', error_generator)
 
         return idx, datatypes.TokenType.ReservedContinue
+
     if first_word == "break":
         # break it down
         idx = expect_word(source, idx, 'it', 'break it down', error_generator)
         idx = expect_word(source, idx, 'down', 'break it down', error_generator)
 
         return idx, datatypes.TokenType.ReservedBreak
+
     if first_word == "listen":
         # listen to
-        idx = expect_word(source, idx, 'to', 'listen to', error_generator)
+        last_end_idx = in_idx
 
-        return idx, datatypes.TokenType.ReservedListen
+        # to is optional
+        new_idx, word = get_next_word(source, in_idx)
+        if new_idx == last_end_idx or word != 'to':
+            return idx, datatypes.TokenType.ReservedListen
+        return new_idx, datatypes.TokenType.ReservedListenTo
+
     if first_word == "give":
-        # listen to
+        # give back
         idx = expect_word(source, idx, 'back', 'give back', error_generator)
 
         return idx, datatypes.TokenType.ReservedReturn
+
     if first_word == "ain":
         # ain't
         if source[idx:idx+2] == "'t":
             return idx, datatypes.TokenType.ReservedNEQ
-    match: Optional[datatypes.TokenType] = single_keywords.get(first_word)
+
     match: Optional[datatypes.TokenType] = SINGLE_KEYWORDS.get(first_word)
     if match is not None:
         return idx, match

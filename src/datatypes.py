@@ -121,7 +121,8 @@ class TokenType(Enum):
     ReservedContinue = auto()     # `continue` or `take it to the top`
     ReservedPut = auto()          # `put Val into Val2` (put)
     ReservedInto = auto()         # `put Val into Val2` (into)
-    ReservedListen = auto()       # `listen to Val` (listen to)
+    ReservedListen = auto()       # `listen to Val` (listen)
+    ReservedListenTo = auto()     # `listen to Val` (listen to)
     ReservedSay = auto()          # `say/shout/whisper/scream Val` (say)
     ReservedReturn = auto()       # `give back Val` (give back)
 

@@ -3,7 +3,7 @@ Rockstar Reference Compiler's lexer. Turns a source file into an array of tokens
 Entrypoint is lexer.lex()
 """
 from functools import partial
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Dict
 import datatypes
 
 
@@ -43,54 +43,17 @@ def get_lexer_exception(msg: str, line: int, line_start: int, start_idx: int, en
     """
     Generates a LexerError with the right msg and indexes.
 
-    :param msg:           Error message
-    :param line:          Line number
-    :param line_start:    Index to character _after_ previous newline
-    :param start_idx:     Start index to token
-    :param end_idx:       Index one passed the end of the token
-    :return:
+    :param msg:                      Error message
+    :param line:                     Line number
+    :param line_start:               Index to character _after_ previous newline
+    :param start_idx:                Start index to token
+    :param end_idx:                  Index one passed the end of the token
+    :return:                         LexerError with proper values set
     """
     return datatypes.LexerError(msg, get_srcloc(line, line_start, start_idx, end_idx))
 
 
 ErrorGenerator = Callable[[str, int, int], datatypes.LexerError]
-
-
-def measure_indentation(source: str,
-                        in_idx: int,
-                        error_generator: ErrorGenerator) -> Tuple[int, int]:
-    """
-    Measures how many levels of indentation are at position in_idx. Mixed indentation not allowed. 4 spaces per indent.
-    1 tab = 4 spaces
-
-    :param source:             String of the source file
-    :param in_idx:             Index to measure indentation from
-    :param error_generator:    Constructs a error to throw. Arguments (msg, start_idx, end_idx)
-    :return:                   Tuple of the first non-indentation character and the levels of indentation
-    """
-
-    idx: int = in_idx
-    indentation: int = 0
-
-    source_length: int = len(source)
-
-    while idx < source_length and source[idx] == '\t':
-        idx += 1
-        indentation += 1
-
-        if idx + 1 < source_length and source[idx] == ' ':
-            raise error_generator("Cannot mix spaces and tabs within indentation.", in_idx, idx)
-
-    # Allowed to immediately move on to spaces as if there is a space following
-    # a collection of tabs, it will raise an error and never hit this code
-    while idx + 3 < source_length and source[idx : idx + 4] == '    ':
-        idx += 1
-        indentation += 1
-
-        if idx + 1 < source_length and source[idx] == '\t':
-            raise error_generator("Cannot mix spaces and tabs within indentation.", in_idx, idx)
-
-    return idx, indentation
 
 
 def parse_number(source: str,
@@ -99,10 +62,11 @@ def parse_number(source: str,
     """
     Parses a number into the proper rockstar format.
 
-    :param source:    String of the source file
-    :param in_idx:    Index of the first character of the number. Must not equal len(source)
-    :param error_generator:    Constructs a error to throw. Arguments (msg, start_idx, end_idx)
-    :return:          Tuple of the first non-number character and the parsed number
+    :param source:                   String of the source file
+    :param in_idx:                   Index of the first character of the number. Must not equal len(source)
+    :param error_generator:          Constructs a error to throw. Arguments (msg, start_idx, end_idx)
+    :return:                         Tuple of the first non-number character and the parsed number
+    :raises datatypes.LexerError:    On invalid number
     """
     assert len(source) != in_idx
 
@@ -129,6 +93,108 @@ def parse_number(source: str,
     return idx, number
 
 
+def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -> Tuple[int, datatypes.Token]:
+    """
+    Converts the keyword(s) at in_idx into either a keyword or bare word token
+
+    :param source:                   String of the source file
+    :param in_idx:                   Index of the first character of the number. Must not equal len(source)
+    :param error_generator:          Constructs a error to throw. Arguments (msg, start_idx, end_idx)
+    :return:                         Tuple of first non-keyword character and the token produced
+    :raises datatypes.LexerError:    On invalid keyword/bare word
+    """
+
+    single_keywords: Dict[str, datatypes.TokenType] = {
+        'mysterious': datatypes.TokenType.Mysterious,
+        'null': datatypes.TokenType.Null,
+        'nothing': datatypes.TokenType.Null,
+        'nowhere': datatypes.TokenType.Null,
+        'nobody': datatypes.TokenType.Null,
+        'gone': datatypes.TokenType.Null,
+        'empty': datatypes.TokenType.Null,
+        'true': datatypes.TokenType.BooleanTrue,
+        'right': datatypes.TokenType.BooleanTrue,
+        'yes': datatypes.TokenType.BooleanTrue,
+        'ok': datatypes.TokenType.BooleanTrue,
+        'false': datatypes.TokenType.BooleanFalse,
+        'wrong': datatypes.TokenType.BooleanFalse,
+        'no': datatypes.TokenType.BooleanFalse,
+        'lies': datatypes.TokenType.BooleanFalse,
+        'it': datatypes.TokenType.Pronoun,
+        'he': datatypes.TokenType.Pronoun,
+        'she': datatypes.TokenType.Pronoun,
+        'him': datatypes.TokenType.Pronoun,
+        'her': datatypes.TokenType.Pronoun,
+        'they': datatypes.TokenType.Pronoun,
+        'them': datatypes.TokenType.Pronoun,
+        'ze': datatypes.TokenType.Pronoun,
+        'hir': datatypes.TokenType.Pronoun,
+        'zie': datatypes.TokenType.Pronoun,
+        'zir': datatypes.TokenType.Pronoun,
+        'xe': datatypes.TokenType.Pronoun,
+        'xem': datatypes.TokenType.Pronoun,
+        've': datatypes.TokenType.Pronoun,
+        'ver': datatypes.TokenType.Pronoun,
+        'a': datatypes.TokenType.ReservedCommonVar,
+        'an': datatypes.TokenType.ReservedCommonVar,
+        'the': datatypes.TokenType.ReservedCommonVar,
+        'my': datatypes.TokenType.ReservedCommonVar,
+        'your': datatypes.TokenType.ReservedCommonVar,
+        'if': datatypes.TokenType.ReservedIf,
+        'else': datatypes.TokenType.ReservedElse,
+        'while': datatypes.TokenType.ReservedWhile,
+        'until': datatypes.TokenType.ReservedUntil,
+        'takes': datatypes.TokenType.ReservedTakes,
+        'and': datatypes.TokenType.ReservedAnd,
+        'build': datatypes.TokenType.ReservedBuild,
+        'up': datatypes.TokenType.ReservedUp,
+        'knock': datatypes.TokenType.ReservedKnock,
+        'down': datatypes.TokenType.ReservedDown,
+        'continue': datatypes.TokenType.ReservedContinue,
+        'put': datatypes.TokenType.ReservedPut,
+        'into': datatypes.TokenType.ReservedInto,
+        'say': datatypes.TokenType.ReservedSay,
+        'shout': datatypes.TokenType.ReservedSay,
+        'whisper': datatypes.TokenType.ReservedSay,
+        'scream': datatypes.TokenType.ReservedSay,
+        'was': datatypes.TokenType.ReservedAssignment,
+        'were': datatypes.TokenType.ReservedAssignment,
+        '\'s': datatypes.TokenType.ReservedAssignment,
+        'is': datatypes.TokenType.ReservedIs,
+        'as': datatypes.TokenType.ReservedAs,
+        'or': datatypes.TokenType.ReservedOr,
+        'nor': datatypes.TokenType.ReservedNor,
+        'higher': datatypes.TokenType.ReservedGTE,
+        'greater': datatypes.TokenType.ReservedGTE,
+        'bigger': datatypes.TokenType.ReservedGTE,
+        'stronger': datatypes.TokenType.ReservedGTE,
+        'lower': datatypes.TokenType.ReservedLTE,
+        'less': datatypes.TokenType.ReservedLTE,
+        'smaller': datatypes.TokenType.ReservedLTE,
+        'weaker': datatypes.TokenType.ReservedLTE,
+        'high': datatypes.TokenType.ReservedGT,
+        'great': datatypes.TokenType.ReservedGT,
+        'big': datatypes.TokenType.ReservedGT,
+        'strong': datatypes.TokenType.ReservedGT,
+        'low': datatypes.TokenType.ReservedLS,
+        'little': datatypes.TokenType.ReservedLS,
+        'small': datatypes.TokenType.ReservedLS,
+        'weak': datatypes.TokenType.ReservedLS,
+        'aint': datatypes.TokenType.ReservedNEQ,
+        'ain\'t': datatypes.TokenType.ReservedNEQ,
+        'not': datatypes.TokenType.ReservedNegation,
+        'plus': datatypes.TokenType.ReservedPlus,
+        'with': datatypes.TokenType.ReservedPlus,
+        'minus': datatypes.TokenType.ReservedMinus,
+        'without': datatypes.TokenType.ReservedMinus,
+        'times': datatypes.TokenType.ReservedMultiply,
+        'of': datatypes.TokenType.ReservedMultiply,
+        'over': datatypes.TokenType.ReservedDivide
+    }
+
+
+
+
 def lex(source: str) -> datatypes.TokenStream:
     """
     Turns a source file into an array of tokens which can then be parsed by the parser.
@@ -143,10 +209,6 @@ def lex(source: str) -> datatypes.TokenStream:
     line_idx: int = 0
     line: int = 1
 
-    after_newline: bool = True
-
-    indentation: int = 0
-
     tokens: datatypes.TokenStream = datatypes.TokenStream()
 
     while idx < src_length:
@@ -154,23 +216,7 @@ def lex(source: str) -> datatypes.TokenStream:
         current_char = source[idx]
         error_func: ErrorGenerator = partial(get_lexer_exception, line=line, line_idx=line_idx)
 
-        if after_newline:
-            new_idx, new_indents = measure_indentation(source, idx, error_func)
-            indent_diff = new_indents - indentation
-
-            if indent_diff < 0:
-                for _ in range(-indent_diff):
-                    location = get_srcloc(line, line_idx, idx, new_idx)
-                    tokens.append(datatypes.Token(type=datatypes.TokenType.Dedent, data=None, location=location))
-            elif indent_diff > 1:
-                for _ in range(indent_diff):
-                    location = get_srcloc(line, line_idx, idx, new_idx)
-                    tokens.append(datatypes.Token(type=datatypes.TokenType.Indent, data=None, location=location))
-
-            idx = new_idx
-            after_newline = False
-
-        elif current_char.isspace():
+        if current_char.isspace():
             idx = skip_whitespace(source, idx)
 
         elif current_char.isnumeric() or current_char == '-':
@@ -197,6 +243,5 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = datatypes.SourceLocation(old_line, old_column, line, 0)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
-            after_newline = True
 
     return tokens

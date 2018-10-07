@@ -1,9 +1,12 @@
 """
 Module containing all datatypes used within the compiler.
 """
-from typing import NamedTuple, Any
+from typing import NamedTuple, Any, Dict, Tuple, List
 from enum import Enum, auto
 import decimal
+
+
+PreprocessorSourceRemapping = Dict[int, List[Tuple[int, int]]]
 
 
 class SourceLocation(NamedTuple):
@@ -26,6 +29,13 @@ class RockstarError(Exception):
         super().__init__(message)
 
         self.location = location
+
+
+class PreprocessorError(RockstarError):
+    """
+    Error that occurred within the preprocessor.
+    """
+    pass
 
 
 class LexerError(RockstarError):
@@ -82,15 +92,12 @@ class TokenType(Enum):
     Indicates which type the current token is.
     """
     EOF = auto()                  # End of token stream
-    Newline = auto()              # \n
-    Indent = auto()               # The next line starts with a single higher indent level.
-#                                   Occurs after the Newline Symbol
-    Dedent = auto()               # The next line starts with a single lower indent level.
-#                                   Occurs after the Newline. There may be multiple in a row.
+    Newline = auto()              # `\n`
 
     Mysterious = auto()           # `mysterious`
     Null = auto()                 # `null/nothing/nowhere/nobody/gone/empty`
-    Boolean = auto()              # `true/right/yes/ok` -> True; `false/wrong/no/lies` -> False
+    BooleanTrue = auto()          # `true/right/yes/ok`
+    BooleanFalse = auto()         # `false/wrong/no/lies`
     Number = auto()               # `1234567890`
     String = auto()               # `"Hello"`
     Pronoun = auto()              # `it/he/she/him/her/they/them/ze/hir/zie/zir/xe/xem/ve/ver`
@@ -126,7 +133,7 @@ class TokenType(Enum):
     ReservedOr = auto()           # `Val or Val2` (or)
     ReservedNor = auto()          # `Val nor Val2` (nor)
     ReservedGTE = auto()          # `higher/greater/bigger/stronger`
-    ReservedLTE = auto()          # `lower/less/smaller/weaker
+    ReservedLTE = auto()          # `lower/less/smaller/weaker`
     ReservedGT = auto()           # `high/great/big/strong`
     ReservedLS = auto()           # `low/little/small/weak`
     ReservedNEQ = auto()          # `aint/ain't`

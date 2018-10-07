@@ -82,7 +82,11 @@ class TokenType(Enum):
     Indicates which type the current token is.
     """
     EOF = auto()                  # End of token stream
-    Newline = auto()              #
+    Newline = auto()              # \n
+    Indent = auto()               # The next line starts with a single higher indent level.
+#                                   Occurs after the Newline Symbol
+    Dedent = auto()               # The next line starts with a single lower indent level.
+#                                   Occurs after the Newline. There may be multiple in a row.
 
     Mysterious = auto()           # `mysterious`
     Null = auto()                 # `null/nothing/nowhere/nobody/gone/empty`

@@ -1,9 +1,10 @@
+"""
+Main function and entry point into the Rockstar Reference Compiler
+"""
 import argparse
-import datatypes
-import lexer
 
 
-def main():
+def main() -> None:
     arg_parser = argparse.ArgumentParser(description='Rockstar reference interpreter')
     arg_parser.add_argument('source', type=str, help='source file')
     args = arg_parser.parse_args()

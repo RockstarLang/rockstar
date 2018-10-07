@@ -191,6 +191,8 @@ Rockstar defines `Shout`, `Whisper` and `Scream` as aliases for `Say`
 
 Conditional expressions start with the `If` keyword, followed by an expression. If the expression evaluates to `true`, then the subsequent code block is executed. Optionally, an `Else` block can be written after an `If` block. The code block following the `Else` keyword would be executed if the `If` expression evaluated to `false`.
 
+For the purpose of conditional expressions, 0, `mysterious`, `null`, `false`, and the empty string all evaluate to `false`, and everything else to `true`.
+
 #### Loops
 
 Similar to the `If` statement, a loop is denoted by the `While` or `Until` keyword, which will cause the subsequent code block to be executed repeatedly whilst the expression is satisfied:

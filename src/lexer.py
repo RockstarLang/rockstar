@@ -3,7 +3,7 @@ Rockstar Reference Compiler's lexer. Turns a source file into an array of tokens
 Entrypoint is lexer.lex()
 """
 from functools import partial
-from typing import Callable, Tuple, Dict
+from typing import Callable, Tuple, Dict, Optional
 import datatypes
 
 
@@ -93,16 +93,61 @@ def parse_number(source: str,
     return idx, number
 
 
-def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -> Tuple[int, datatypes.Token]:
+def get_next_word(source: str, in_idx: int) -> Tuple[int, str]:
     """
-    Converts the keyword(s) at in_idx into either a keyword or bare word token
+    Gets the next word after in_idx after skipping whitespace
 
     :param source:                   String of the source file
-    :param in_idx:                   Index of the first character of the number. Must not equal len(source)
+    :param in_idx:                   Index of the first character to search on. Must not equal len(source)
+    :return:                         Tuple of first non-keyword character and the normalized string produced
+    """
+    assert len(source) != in_idx
+
+    idx: int = in_idx
+    source_length = len(source)
+
+    idx = skip_whitespace(source, idx)
+
+    while idx < source_length and source[idx].isalpha():
+        idx += 1
+
+    return idx, source[in_idx:idx].lower()
+
+
+def expect_word(source: str, in_idx: int, expected: str, phrase: str, error_generator: ErrorGenerator) -> int:
+    """
+    Parses the next word after in_idx and whitespace and expects it to be the value passed in through expected
+
+    :param source:                   String of the source file
+    :param in_idx:                   Index of the first character of the word. Must not equal len(source)
+    :param expected:                 The keyword to expect
+    :param phrase:                   The larger phrase that the keyword shows up in. Helps the error message.
+    :param error_generator:          Constructs a error to throw. Arguments (msg, start_idx, end_idx
+    :return:
+    :raises datatypes.LexerError:
+    """
+
+    last_end_idx = in_idx
+
+    idx, word = get_next_word(source, in_idx)
+    if idx == last_end_idx or word != expected:
+        raise error_generator(f"Expected '{expected}' within '{phrase}'. Got {word}.",
+                              last_end_idx, idx)
+
+    return in_idx
+
+
+def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -> Tuple[int, datatypes.TokenType]:
+    """
+    Converts the keyword(s) at in_idx into either a keyword or bare word token type
+
+    :param source:                   String of the source file
+    :param in_idx:                   Index of the first character of the word. Must not equal len(source)
     :param error_generator:          Constructs a error to throw. Arguments (msg, start_idx, end_idx)
     :return:                         Tuple of first non-keyword character and the token produced
     :raises datatypes.LexerError:    On invalid keyword/bare word
     """
+    assert len(source) != in_idx
 
     single_keywords: Dict[str, datatypes.TokenType] = {
         'mysterious': datatypes.TokenType.Mysterious,
@@ -181,7 +226,7 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
         'small': datatypes.TokenType.ReservedLS,
         'weak': datatypes.TokenType.ReservedLS,
         'aint': datatypes.TokenType.ReservedNEQ,
-        'ain\'t': datatypes.TokenType.ReservedNEQ,
+        # 'ain\'t': datatypes.TokenType.ReservedNEQ, Special cased below
         'not': datatypes.TokenType.ReservedNegation,
         'plus': datatypes.TokenType.ReservedPlus,
         'with': datatypes.TokenType.ReservedPlus,
@@ -192,7 +237,43 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
         'over': datatypes.TokenType.ReservedDivide
     }
 
+    idx: int = in_idx
 
+    idx, first_word = get_next_word(source, idx)
+
+    if first_word == "take":
+        # take it to the top
+        idx = expect_word(source, idx, 'it', 'take it to the top', error_generator)
+        idx = expect_word(source, idx, 'to', 'take it to the top', error_generator)
+        idx = expect_word(source, idx, 'the', 'take it to the top', error_generator)
+        idx = expect_word(source, idx, 'top', 'take it to the top', error_generator)
+
+        return idx, datatypes.TokenType.ReservedContinue
+    if first_word == "break":
+        # break it down
+        idx = expect_word(source, idx, 'it', 'break it down', error_generator)
+        idx = expect_word(source, idx, 'down', 'break it down', error_generator)
+
+        return idx, datatypes.TokenType.ReservedBreak
+    if first_word == "listen":
+        # listen to
+        idx = expect_word(source, idx, 'to', 'listen to', error_generator)
+
+        return idx, datatypes.TokenType.ReservedListen
+    if first_word == "give":
+        # listen to
+        idx = expect_word(source, idx, 'back', 'give back', error_generator)
+
+        return idx, datatypes.TokenType.ReservedReturn
+    if first_word == "ain":
+        # ain't
+        if source[idx:idx+2] == "'t":
+            return idx, datatypes.TokenType.ReservedNEQ
+    match: Optional[datatypes.TokenType] = single_keywords.get(first_word)
+    if match is not None:
+        return idx, match
+
+    return idx, datatypes.TokenType.Word
 
 
 def lex(source: str) -> datatypes.TokenStream:
@@ -243,5 +324,14 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = datatypes.SourceLocation(old_line, old_column, line, 0)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
+
+        elif current_char.isalpha():
+            idx, symbol = word_symbolizer(source, idx, error_func)
+
+            contents = source[start_idx:idx]
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=symbol, data=contents, location=location))
+        else:
+            raise get_lexer_exception(f"Unknown symbol '{current_char}'.", line, line_idx, start_idx, start_idx + 1)
 
     return tokens

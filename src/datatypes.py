@@ -1,14 +1,77 @@
+"""
+Module containing all datatypes used within the compiler.
+"""
 from typing import NamedTuple, Any
 from enum import Enum, auto
+import decimal
+
+
+class LexerError(Exception):
+    """
+    Error that occurred within the parser.
+    """
+    pass
+
+
+class ParserError(Exception):
+    """
+    Error that occurred within the parser.
+    """
+    pass
+
+
+class RuntimeTypeError(Exception):
+    """
+    Type error that occurred during runtime.
+    """
+    pass
+
+
+class RuntimeArithmeticError(Exception):
+    """
+    Arithmetic error that occurred during runtime.
+    """
+    pass
+
+
+class RuntimeComparisonError(Exception):
+    """
+    Comparison error that occurred during runtime.
+    """
+    pass
+
+
+class Number(decimal.Decimal):
+    """
+    A rockstar compliant number type
+    """
+    pass
+
+
+class InvalidNumber(decimal.InvalidOperation):
+    """
+    Number was constructed with a invalid number string.
+    """
+    pass
 
 
 class SourceLocation(NamedTuple):
-    line: int
-    char: int
+    """
+    Represents a pair of start and end locations for the lexer token/ast node.
+    """
+    line_start: int
+    char_start: int
+    line_end: int
+    char_end: int
 
 
-class TokenTypes(Enum):
+class TokenType(Enum):
+    """
+    Indicates which type the current token is.
+    """
     EOF = auto()                  # End of token stream
+    Newline = auto()              #
+
     Mysterious = auto()           # `mysterious`
     Null = auto()                 # `null/nothing/nowhere/nobody/gone/empty`
     Boolean = auto()              # `true/right/yes/ok` -> True; `false/wrong/no/lies` -> False
@@ -59,10 +122,17 @@ class TokenTypes(Enum):
 
 
 class Token(NamedTuple):
-    type: TokenTypes
+    """
+    Lexer token. Data stores the "value" associated with the token. If there isn't a value associated with the
+    token, it holds a string of the original text that the token represents. This is to allow poetic literals to work.
+    """
+    type: TokenType
     data: Any
     location: SourceLocation
 
 
 class TokenStream(list):
+    """
+    List of tokens.
+    """
     pass

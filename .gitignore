@@ -330,3 +330,10 @@ ASALocalRun/
 .mfractor/
 
 ._README.md
+
+# mypy
+.mypy_cache/
+
+# venv
+.venv*/
+venv*/

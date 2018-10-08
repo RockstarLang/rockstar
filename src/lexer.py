@@ -252,21 +252,25 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
         return idx, datatypes.TokenType.ReservedContinue
 
     if first_word == "break":
-        # break it down
-        idx = expect_word(source, idx, 'it', 'break it down', error_generator)
+        # could be break or break it down
+        original_idx = idx
+        idx, word = get_next_word(source, idx)
+        if idx == original_idx or word != 'it':
+            return original_idx, datatypes.TokenType.ReservedBreak
+        
         idx = expect_word(source, idx, 'down', 'break it down', error_generator)
 
         return idx, datatypes.TokenType.ReservedBreak
 
     if first_word == "listen":
         # listen to
-        last_end_idx = in_idx
+        original_idx = idx
 
         # to is optional
-        new_idx, word = get_next_word(source, in_idx)
-        if new_idx == last_end_idx or word != 'to':
-            return idx, datatypes.TokenType.ReservedListen
-        return new_idx, datatypes.TokenType.ReservedListenTo
+        idx, word = get_next_word(source, idx)
+        if idx == original_idx or word != 'to':
+            return original_idx, datatypes.TokenType.ReservedListen
+        return idx, datatypes.TokenType.ReservedListenTo
 
     if first_word == "give":
         # give back

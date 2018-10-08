@@ -62,16 +62,28 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
 * **Boolean** - a logical entity having two values `true` and `false`. *(The keywords `maybe` and `definitely maybe` are reserved for future use)*
  * `right`, `yes` and `ok` are valid aliases for `true`
  * `wrong`, `no` and `lies` are valid aliases for `false`
-* **Number** - Numbers in Rockstar are stored using the [DEC64](http://www.dec64.com/) numeric type.
+* **Number** - Numbers in Rockstar are stored using the [DEC64](http://www.dec64.com/) numeric type. The number internally is the closest representable number of the DEC64 type.
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
 * **Object** - a collection of named data properties, as in ECMAScript.
 
-### Literal Words vs Reserved Keywords
+Functions are just objects with a function call operator.
 
-Words that are used to construct a literal of a certain type are referred to as "Literal Words" and words that are used to construct various syntax constructs are referred to as "Reserved Keywords".
+### Truthiness
 
-- Literal Words: `mysterious`, `null`, `nothing`, `nowhere`, `nobody`, `empty`, `gone`, `true`, `right`, `yes`, `ok`, `false`, `wrong`, `no`, `lies`, `maybe`, `definitely maybe`
+The results of comparisons often rely on a concept called 'Truthiness'. If the value is truthy, it will be implicitly converted to true. If it is falsy, it will be implicitly converted to false.
 
+- Mysterious - Falsy
+- Null - Falsy
+- Boolean - Truthy if True, Falsy if False
+- Number - If equal to zero, falsy. Otherwise, truthy.
+- String - Truthy (null is the falsy equivalent)
+- Object - Truthy (null is the falsy equivalent)
+
+### Constants vs Keywords
+
+Words that are used to construct a literal of a certain type are referred to as **constants** and words that are used to construct various syntax constructs are referred to as **keywords**
+
+- Constants: `mysterious`, `null`, `nothing`, `nowhere`, `nobody`, `empty`, `gone`, `true`, `right`, `yes`, `ok`, `false`, `wrong`, `no`, `lies`, `maybe`, `definitely maybe`
 		
 ### Literals and Assignment
 
@@ -166,14 +178,14 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 
 ### Comparison
 
-Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interepreted differently depending whether it appears as part of a statement or as part of an expression.
+Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interepreted differently depending whether it appears as part of a statement or as part of an expression. `isn't` is the logical negation of the `is` keyword.
 
 Comparison in Rockstar can only be done within an expression.
 
 * `Tommy is nobody` initialises the variable `Tommy` with the value `nobody`
 * `If Tommy is nobody` - will execute the following block if, and only if, the variable `Tommy` is equal to `nobody`
 
-The modifier `not`  will invert the meaning of the comparison, similar to `IS NULL / IS NOT NULL` in SQL. The keyword `ain't` (which is reduced to `aint` by Rockstar) is an alias for `is not`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
+The keyword `ain't` (which is reduced to `aint` by Rockstar) is an alias for `isn't`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
 
 Rockstar also supports the following comparison syntax:
 
@@ -181,6 +193,17 @@ Rockstar also supports the following comparison syntax:
 * `is lower/less/smaller/weaker than` to denote 'less than'
 * `is as high/great/big/strong as` to denote 'greater than or equal to'
 * `is as low/little/small/weak as` to denote 'less than or equal to'
+
+### Logical Operations
+
+Rockstar has 4 different logical operators that first convert their operand(s) to a boolean by truthiness.
+
+* `A and B` returns the [Conjunction](https://en.wikipedia.org/wiki/AND_gate)
+* `A or B` returns the [Disjunction](https://en.wikipedia.org/wiki/OR_gate)
+* `A nor B` returns the [Joint Denial](https://en.wikipedia.org/wiki/NOR_gate)
+* `not A` returns the [Negation](https://en.wikipedia.org/wiki/Inverter_(logic_gate)) of its single argument.
+
+All logical operators are short circuiting. This means if by evaluating the first argument to the operator guarantees a result, the other argument is not evaluated. `false and 1 over 0` is `false` and does not produce an error for dividing by zero.
 
 ### Input/Output
 
@@ -193,6 +216,64 @@ Use the `Say` keyword to write the value of a variable to `STDOUT`.
 * `Say Tommy` - will output the value stored in `Tommy` to `STDOUT`
  
 Rockstar defines `Shout`, `Whisper` and `Scream` as aliases for `Say`
+
+The following examples all use c style syntax for explaining what things do.
+
+### Types Continued
+
+#### Operator Precedence
+
+The higher, the tighter the binding. This is the precedence we generally expect from our math.
+
+1. Function Call (greedy arguments)
+2. Logical NOT (right-associative)
+3. Multiplication and Division (left-associative)
+4. Addition and Subtraction (left-associative)
+5. Comparison operators (left-associative)
+6. `and`, `or`, and `nor` (left-associative)
+
+##### Examples
+
+- `A taking B times C plus not D times E and F` is equivalent to `((A(B) * C) + (!D * E)) && F`
+
+#### Binary Comparison
+
+Equality comparisons (`is`, `ain't`, `is not`) are allowed between types if they are the same type or they can be compared by the rules below. Objects are checked by reference equality, all other types are checked by value equality.
+
+Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `is as low as`) are only allowed if the operands are both Numbers or both Strings or they are converted to such an arrangement according to the rules below. Numbers are compared as expected, Strings are compared lexicographically.
+
+- \<Mysterious\> \<op\> Mysterious =\> Equal.
+- \<Non-Mysterious\> \<op\> Mysterious =\> Non equal.
+- String \<op\> Number =\> Convert the string to a number using base 10 with leading zeros ignored. If it fails, return false.
+- String \<op\> Boolean =\> Convert the string to a boolean using all defined aliases.
+- String \<op\> Null =\> Non equal.
+- Number \<op\> Boolean =\> Convert number to boolean by "truthiness".
+- Number \<op\> Null =\> Convert null to 0.
+- Boolean \<op\> Null =\> Convert null to false.
+
+##### Examples
+
+- `"1" is 1` evaluates to true because `"1"` gets converted to the number `1`
+- `"2" ain't Mysterious` evaluates to true because all types are non equal to mysterious, besides mysterious itself. 
+- `"02" < "10"` is true because of the lexicographical comparison between `0` and `1` shows that the first string is less than the second string.
+- `True < 10` is an error because `10` gets coerced into `True` due to the comparison with a boolean and there is no allowed ordering comparisons between booleans.
+
+#### Increment and Decrement Operators
+
+- \<op\> String =\> Error
+- \<op\> Boolean =\> Invert Boolean
+- \<op\> Null =\> Error
+- \<op\> Mysterious =\> Error
+
+#### Binary Operators
+
+Conversions other than the listed are errors.
+
+- String \<plus\> Number =\> Convert the number to a base-10 string, retaining all precision, but removing unnecessary digits. A leading zero is considered necessary for numbers with no whole part. eg. `00.1000` gets serialized to `0.1`
+- String \<plus\> Boolean =\> Convert the boolean to `true` or `false`
+- String \<plus\> Null =\> Convert the null to `null`
+- String \<plus\> Mysterious =\> Convert the mysterious to `mysterious`
+- String \<times\> Number =\> String gets repeated \<Number\> times
  
 ### Flow Control and Block Syntax
 
@@ -229,17 +310,18 @@ Knock it down
 
 ### Functions
 
-Functions are declared with a variable name followed by the `takes` keyword and a list of argument separated by the `and` keyword. 
+Functions are declared with a variable name followed by the `takes` keyword and a list of arguments separated by the `and` keyword.
 
 * `Multiply takes X and Y`
 * `Search takes Needle and Haystack`
 
 The function body is a list of statements with no separating blank lines. A blank line denotes the end of a function body. Functions in Rockstar always have a return value, indicated by the `Give back` keyword. 
 
-Functions are called using the 'taking' keyword:
+Functions are called using the 'taking' keyword and must have at least one argument. Multiple arguments are separated by the "and" keyword or a ','. Arguments may only be variables or literals. Compound expressions are not allowed. Functionals are greedy, if they find more symbols that make up valid arguments they will take them.
 
 * `Multiply taking 3, 5` is an expression returning (presumably) 15
 * `Search taking "hands", "lay your hands on me"`
+* `Put Multiply taking 3, 5 and 9 into Large` will set large to `3 * 5 * 9` **NOT** `(3 * 5) && 9`.
 
 ## Examples
 

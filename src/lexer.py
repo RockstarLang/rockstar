@@ -352,6 +352,12 @@ def lex(source: str) -> datatypes.TokenStream:
             location = datatypes.SourceLocation(old_line, old_column, line, 0)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
 
+        elif current_char == ',':
+            idx += 1
+
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=datatypes.TokenType.Comma, data=None, location=location))
+
         elif current_char.isalpha():
             idx, symbol = word_symbolizer(source, idx, error_func)
 

@@ -2,7 +2,7 @@
 Rockstar Reference Compiler's lexer. Turns a source file into an array of tokens which can then be parsed by the parser.
 Entrypoint is lexer.lex()
 """
-from typing import Callable, Tuple, Dict, Optional
+from typing import Callable, Tuple, Dict, Set, Optional
 import datatypes
 
 
@@ -191,6 +191,7 @@ SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
     'shout': datatypes.TokenType.ReservedSay,
     'whisper': datatypes.TokenType.ReservedSay,
     'scream': datatypes.TokenType.ReservedSay,
+    'says': datatypes.TokenType.ReservedSays,
     'was': datatypes.TokenType.ReservedAssignment,
     'were': datatypes.TokenType.ReservedAssignment,
     'is': datatypes.TokenType.ReservedIs,
@@ -223,6 +224,28 @@ SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
     'times': datatypes.TokenType.ReservedMultiply,
     'of': datatypes.TokenType.ReservedMultiply,
     'over': datatypes.TokenType.ReservedDivide
+}
+
+TYPE_CONSTANT_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.Null,
+    datatypes.TokenType.BooleanTrue,
+    datatypes.TokenType.BooleanFalse,
+    datatypes.TokenType.Mysterious
+}
+
+VARIABLE_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.ReservedCommonVar,
+    datatypes.TokenType.Pronoun,
+    datatypes.TokenType.Word
+}
+
+POETIC_STRING_ASSIGNMENT_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.ReservedSays
+}
+
+POETIC_ASSIGNMENT_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.ReservedAssignment,
+    datatypes.TokenType.ReservedIs
 }
 
 
@@ -290,6 +313,56 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
 
     return idx, datatypes.TokenType.Word
 
+def tokenize_poetic_assignment(source: str, start_idx: int, line: int) -> Tuple[int, datatypes.Token]:
+    source_length = len(source)
+    idx = start_idx
+    idx, first_word = get_next_word(source, idx)
+    match: Optional[datatypes.TokenType] = SINGLE_KEYWORDS.get(first_word)
+    # If this is a poetic type literal assignment, just match that
+    if match is not None and match in TYPE_CONSTANT_SYMBOLS:
+        #todo use getsrcloc
+        location = datatypes.SourceLocation(line, start_idx, line, idx)
+        contents = source[start_idx:idx]
+        idx = skip_whitespace(source, idx)
+        if source[idx] != "\n":
+            raise datatypes.LexerError("Nothing else can follow poetic type literal assignment", location=location, start_idx=start_idx, end_idx=idx)
+        return idx, datatypes.Token(type=match, data=contents, location=location)
+    # Otherwise, rewind to the start index and treat as raw text
+    idx = start_idx
+    current_word_length = 0
+    full_number_as_text = ""
+    added_decimal_point = False
+    while idx < source_length and source[idx] != "\n":
+        char = source[idx]
+        if char.isspace():
+            if current_word_length:
+                full_number_as_text += str(current_word_length)
+                current_word_length = 0
+        elif char.isalpha():
+            current_word_length = (current_word_length + 1) % 10
+        elif char == "." and not added_decimal_point:
+            if current_word_length:
+                full_number_as_text += str(current_word_length)
+                current_word_length = 0
+            full_number_as_text += "."
+            added_decimal_point = True
+        idx += 1
+    if current_word_length:
+        full_number_as_text += str(current_word_length)
+    print(full_number_as_text)
+    #todo use getsrcloc  
+    location = datatypes.SourceLocation(line, start_idx, line, idx - 1)
+    return idx, datatypes.Token(type=datatypes.TokenType.Number, data=datatypes.Number(full_number_as_text), location=location)
+
+def tokenize_poetic_string_assignment(source: str, start_idx: int, line: int) -> Tuple[int, datatypes.Token]:
+    source_length = len(source)
+    idx = start_idx
+    while idx < source_length and source[idx] != "\n":
+        idx += 1
+    contents = source[start_idx:idx]
+    # todo use getsrcloc
+    location = datatypes.SourceLocation(line, start_idx, line, idx - 1)
+    return idx, datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location)
 
 def lex(source: str) -> datatypes.TokenStream:
     """
@@ -304,6 +377,8 @@ def lex(source: str) -> datatypes.TokenStream:
 
     line_idx: int = 0
     line: int = 1
+
+    seen_keyword_on_this_line: bool = False
 
     tokens: datatypes.TokenStream = datatypes.TokenStream()
 
@@ -360,6 +435,7 @@ def lex(source: str) -> datatypes.TokenStream:
             idx += 1
             line += 1
             line_idx = idx
+            seen_keyword_on_this_line = False
 
             location = datatypes.SourceLocation(old_line, old_column + 1, line, 1)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
@@ -381,14 +457,30 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.ReservedAssignment, data=None, location=location))
+            if not seen_keyword_on_this_line:
+                idx, token = tokenize_poetic_assignment(source, idx, line)
+                tokens.append(token)
+            seen_keyword_on_this_line = True    
 
         elif current_char.isalpha():
             idx, symbol = word_symbolizer(source, idx, error_func)
-
             contents = source[start_idx:idx]
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=symbol, data=contents, location=location))
-
+            if not seen_keyword_on_this_line:
+                if symbol in POETIC_ASSIGNMENT_SYMBOLS:
+                    idx, token = tokenize_poetic_assignment(source, idx, line)
+                    tokens.append(token)
+                    seen_keyword_on_this_line = True
+                elif symbol in POETIC_STRING_ASSIGNMENT_SYMBOLS:
+                    if source[idx + 1] != " ":
+                        raise datatypes.LexerError("Poetic string assignment must be followed by a space", 
+                            location=location, start_idx=start_idx, end_idx=idx+1)
+                    idx, token = tokenize_poetic_string_assignment(source, idx + 1, line) #idx + 1 skips over the space
+                    tokens.append(token)
+                    seen_keyword_on_this_line = True
+                elif symbol not in VARIABLE_SYMBOLS:
+                    seen_keyword_on_this_line = True
         else:
             raise get_lexer_exception(f"Unknown symbol '{current_char}'.", line, line_idx, start_idx, start_idx + 1)
 

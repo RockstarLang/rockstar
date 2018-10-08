@@ -257,7 +257,7 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
         idx, word = get_next_word(source, idx)
         if idx == original_idx or word != 'it':
             return original_idx, datatypes.TokenType.ReservedBreak
-        
+
         idx = expect_word(source, idx, 'down', 'break it down', error_generator)
 
         return idx, datatypes.TokenType.ReservedBreak
@@ -332,7 +332,8 @@ def lex(source: str) -> datatypes.TokenStream:
                 raise datatypes.LexerError("Unclosed comment", location=location, start_idx=start_idx, end_idx=idx)
             idx += 1  # skip ')'
 
-        elif current_char.isnumeric() or current_char == '-' or current_char == '.':
+        elif current_char.isnumeric() or current_char == '-' \
+                or (current_char == '.' and source[idx + 1].isnumeric()):
             idx, number = parse_number(source, idx, error_func)
 
             location = get_srcloc(line, line_idx, start_idx, idx)
@@ -367,6 +368,12 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Comma, data=None, location=location))
+
+        elif current_char == '.':
+            idx += 1
+
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=datatypes.TokenType.Period, data=None, location=location))
 
         elif source[idx:idx+2] == "'s":
             idx += 2

@@ -1,4 +1,4 @@
-program    ::= (<newline>)* (<statement> (<newline> | (<newline> <statement>)*)?)?
+program    ::= <newline>* (<statement> (<newline>+ | (<newline>+ <statement>)*)?)?
 
 statement  ::= <put_statement> | <listen_statement> | <say_statement> | <give_back_statement> | <if_statement> |
                <while_statement> | <until_statement> | <function_statement> | <increment_statement> |
@@ -6,14 +6,14 @@ statement  ::= <put_statement> | <listen_statement> | <say_statement> | <give_ba
                <function_call>
 
 
-put_statement        ::= "put" <math_expression> "into" <variable>
+put_statement        ::= "put" <expr> "into" <variable>
 listen_statement     ::= "listen" ("to" <variable>)?
-say_statement        ::= <say_commands> <math_expression>
-give_back_statement  ::= "give" "back" <math_expression>
-break_statement      ::= "break" "it" "down"
+say_statement        ::= <say_commands> <expr>
+give_back_statement  ::= "give" "back" <expr>
+break_statement      ::= "break" ("it" "down")?
 continue_statement   ::= "continue" | ("take" "it" "to" "the" "top")
-increment_statement  ::= "build" <variable> "up"
-decrement_statement  ::= "knock" <variable> "down"
+increment_statement  ::= "build" <variable> "up" (","? "up")*
+decrement_statement  ::= "knock" <variable> "down" (","? "down")*
 
 say_commands         ::= "say" | "shout" | "whisper" | "scream"
 
@@ -24,36 +24,37 @@ while_statement     ::= <while_condition> (<newline> <statement>)+ <newline> <ne
 until_statement     ::= <until_condition> (<newline> <statement>)+ <newline> <newline>
 function_statement  ::= <function_signature> (<newline> <statement>)+ <newline> <newline>
 
-if_condition        ::= "if" <math_expression>
+if_condition        ::= "if" <expr>
 else_condition      ::= "else"
-while_condition     ::= "while" <math_expression>
-until_condition     ::= "until" <math_expression>
+while_condition     ::= "while" <expr>
+until_condition     ::= "until" <expr>
 function_signature  ::= <variable> "takes" <variable> ("and" <variable>)*
 
 
 variable_assignment_statement       ::= <variable_type_assignment_statement> | <variable_str_assignment_statement>
-variable_type_assignment_statement  ::= <variable> <assignment_command> (<type_constants> | <variable_poetic_number_literal>)
+variable_type_assignment_statement  ::= <variable> <assignment_command> (<type_constant> | <variable_poetic_number_literal>)
 variable_str_assignment_statement   ::= <variable> "says" <anychar>+
 
-variable_poetic_number_literal      ::= <anychar>+ ("." <anychar>*)?
+variable_poetic_number_literal      ::= !(<type_constant> | <newline>) <anychar>* ("." <anychar>*)?
 
 assignment_command ::= "is" | "was" | "were" | "'s"
 
 
-math_expression          ::= <boolean_expression>
-boolean_expression       ::= <equality_expression> (<boolean_operator> <equality_expression>)*
-equality_expression      ::= <difference_expression> (<equality_operator> <difference_expression>)*
-difference_expression    ::= <add_expression> (<difference_operator> <add_expression>)*
-add_expression           ::= <multiply_expression> (<add_operator> <multiply_expression>)*
-multiply_expression      ::= <function_call_expression> (<multiply_operator> <function_call_expression>)*
-function_call_expression ::= (<function_call>) | <value_provider>
+expr               ::= <boolean_expr>
+boolean_expr       ::= <equality_expr> (<boolean_operator> <equality_expr>)*
+equality_expr      ::= <inequality_expr> (<equality_operator> <inequality_expr>)*
+inequality_expr    ::= <add_expr> (<inequality_operator> <add_expr>)*
+add_expr           ::= <multiply_expr> (<add_operator> <multiply_expr>)*
+multiply_expr      ::= <not_expr> (<multiply_operator> <not_expr>)*
+not_expr           ::= "not" <function_call_expr> | <function_call_expr>
+function_call_expr ::= (<function_call>) | <value_provider>
 
 boolean_operator      ::= "and" | "or" | "nor"
 equality_operator     ::= "is" | "aint" | "ain't"
 
-difference_operator   ::= <difference_eq_operator> | <difference_neq_operator>
-difference_eq_operator ::= "is" "as" (<greater_eq_operator> | <less_eq_operator>) "as"
-difference_neq_operator ::= "is" (<greater_operator> | <less_operator>) "than"
+inequality_operator     ::= <inequality_eq_operator> | <inequality_neq_operator>
+inequality_eq_operator  ::= "is" "as" (<greater_eq_operator> | <less_eq_operator>) "as"
+inequality_neq_operator ::= "is" (<greater_operator> | <less_operator>) "than"
 
 greater_eq_operator ::= "high" | "great" | "big" | "strong"
 less_eq_operator    ::= "low" | "little" | "small" | "weak"
@@ -77,13 +78,13 @@ pronoun                 ::= "it" | "he" | "she" | "him" | "her" | "they" | "them
                             "ze" | "hir" | "zie" | "zir" | "xe" | "xem" | "ve" | "ver"
 
 
-type_literal       ::= <type_constants> | <type_number> | <type_string>
-type_constants     ::= <type_mysterious> | <type_null> | <type_boolean_true> | <type_boolean_false>
+type_literal       ::= <type_constant> | <type_number> | <type_string>
+type_constant      ::= <type_mysterious> | <type_null> | <type_boolean_true> | <type_boolean_false>
 type_mysterious    ::= "mysterious"
 type_null          ::= "null" | "nothing" | "nowhere" | "nobody" | "gone" | "empty"
 type_boolean_true  ::= "true" | "right" | "yes" | "ok"
 type_boolean_false ::= "false" | "wrong" | "no" | "lies"
-type_number        ::= "-"? <digit>+ ("." <digit>*)?
+type_number        ::= "-"? (<digit>+ ("." <digit>*)?) | ("." <digit>+)
 type_string        ::= "\"" (<anychar> | <newline>)* "\""
 
 
@@ -91,4 +92,4 @@ full_letter ::= <captial> | <lowercase>
 anychar     ::= !<newline>
 
 
-newline    ::= '\n'
+newline    ::= "\r"? "\n"

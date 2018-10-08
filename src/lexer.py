@@ -50,7 +50,7 @@ def get_lexer_exception(msg: str, line: int, line_start: int, start_idx: int, en
     :param end_idx:                  Index one passed the end of the token
     :return:                         LexerError with proper values set
     """
-    return datatypes.LexerError(msg, get_srcloc(line, line_start, start_idx, end_idx))
+    return datatypes.LexerError(msg, get_srcloc(line, line_start, start_idx, end_idx), start_idx, end_idx)
 
 
 ErrorGenerator = Callable[[str, int, int], datatypes.LexerError]

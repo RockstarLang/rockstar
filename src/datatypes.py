@@ -24,11 +24,15 @@ class RockstarError(Exception):
     Exception with location data.
     """
     location: SourceLocation
+    start_idx: int
+    end_idx: int
 
-    def __init__(self, message: str, location: SourceLocation) -> None:
+    def __init__(self, message: str, location: SourceLocation, start_idx: int, end_idx: int) -> None:
         super().__init__(message)
 
         self.location = location
+        self.start_idx = start_idx
+        self.end_idx = end_idx
 
 
 class PreprocessorError(RockstarError):

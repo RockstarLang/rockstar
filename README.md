@@ -423,3 +423,7 @@ Whisper my world
 * [Rockstar on /r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/comments/934uvw/why_yes_i_am_a_certified_rockstar_developer/)
 * [Rockstar on dice.com](https://insights.dice.com/2018/07/27/rockstar-programming-language-developers/)
 * [The Rockstar Programming Language | Mitigated Frenzy](https://bparsia.wordpress.com/2018/09/11/the-rockstar-programming-language/) - see also their solution to the [Rainfall problem](https://bparsia.wordpress.com/2018/09/12/rockstar-rainfall-problem/#comment-1624)
+
+# See Also
+
+* [Enterprise™](https://github.com/joaomilho/Enterprise) - "The world is not made only of Rockstar programmers. For all the non hipsters out there, now there's Enterprise™"

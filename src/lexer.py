@@ -326,52 +326,62 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
 
     return idx, datatypes.TokenType.Word
 
-def tokenize_poetic_assignment(source: str, start_idx: int, line: int) -> Tuple[int, datatypes.Token]:
-    source_length = len(source)
+def try_type_literal_assignment(source: str, line: int, line_start: int, start_idx: int) -> Tuple[bool, Tuple[int, datatypes.Token]]:
     idx = skip_whitespace(source, start_idx)
     current_char = source[idx]
     error_func: ErrorGenerator = lambda msg, s_idx, e_idx: get_lexer_exception(msg, line, line_idx, s_idx, e_idx)
     # If the start looks like a number, assume we're matching a number
     if current_char.isnumeric() or current_char == '-' or current_char == '.':
         idx, number = parse_number(source, idx, error_func)
-        location = datatypes.SourceLocation(line, start_idx, line, idx)
+        location = get_srcloc(line, line_start, start_idx, idx)
         idx = skip_whitespace(source, idx)
         if source[idx] != "\n":
             raise datatypes.LexerError("Nothing else can follow poetic type literal assignment", location=location, start_idx=start_idx, end_idx=idx)
-        return idx, datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location)
-    # If the start looks like a string, assume we're matching a number
+        return True, (idx, datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location))
+    # If the start looks like a string, assume we're matching a string
     if current_char == '"':
         idx, string = parse_string(source, idx, error_func)
-        location = datatypes.SourceLocation(line, start_idx, line, idx)
+        location = get_srcloc(line, line_start, start_idx, idx)
         idx = skip_whitespace(source, idx)
         if source[idx] != "\n":
             raise datatypes.LexerError("Nothing else can follow poetic type literal assignment", location=location, start_idx=start_idx, end_idx=idx)
-        return idx, datatypes.Token(type=datatypes.TokenType.String, data=string, location=location)
+        return True, (idx, datatypes.Token(type=datatypes.TokenType.String, data=string, location=location))
 
     idx, first_word = get_next_word(source, idx)
     match: Optional[datatypes.TokenType] = SINGLE_KEYWORDS.get(first_word)
     # If this is a poetic type literal assignment, just match that
     if match is not None and match in TYPE_CONSTANT_SYMBOLS:
-        #todo use getsrcloc
-        location = datatypes.SourceLocation(line, start_idx, line, idx)
+        location = get_srcloc(line, line_start, start_idx, idx)
         contents = source[start_idx:idx]
         idx = skip_whitespace(source, idx)
         if source[idx] != "\n":
             raise datatypes.LexerError("Nothing else can follow poetic type literal assignment", location=location, start_idx=start_idx, end_idx=idx)
-        return idx, datatypes.Token(type=match, data=contents, location=location)
-    # Otherwise, rewind to the start index and treat as raw text
+        return True, (idx, datatypes.Token(type=match, data=contents, location=location))
+    return False, (-1, None)
+
+def tokenize_poetic_assignment(source: str, line: int, line_start: int, start_idx: int) -> Tuple[int, datatypes.Token]:
+    success, result = try_type_literal_assignment(source, line, line_start, start_idx)
+    if success:
+        return result
+
+    source_length = len(source)
     idx = start_idx
     current_word_length = 0
     full_number_as_text = ""
     added_decimal_point = False
+
     while idx < source_length and source[idx] != "\n":
         char = source[idx]
+        # If it's a space, add the current word length (if any) and reset
         if char.isspace():
             if current_word_length:
                 full_number_as_text += str(current_word_length)
                 current_word_length = 0
+        # If its a letter, increment the current word length (mod 10)
         elif char.isalpha():
             current_word_length = (current_word_length + 1) % 10
+        # If its a decimal point and we haven't added one, add a decimal
+        # point and start a new word
         elif char == "." and not added_decimal_point:
             if current_word_length:
                 full_number_as_text += str(current_word_length)
@@ -383,18 +393,16 @@ def tokenize_poetic_assignment(source: str, start_idx: int, line: int) -> Tuple[
         full_number_as_text += str(current_word_length)
     if not full_number_as_text:
         full_number_as_text = "0"
-    #todo use getsrcloc  
-    location = datatypes.SourceLocation(line, start_idx, line, idx - 1)
+    location = get_srcloc(line, line_start, start_idx, idx)
     return idx, datatypes.Token(type=datatypes.TokenType.Number, data=datatypes.Number(full_number_as_text), location=location)
 
-def tokenize_poetic_string_assignment(source: str, start_idx: int, line: int) -> Tuple[int, datatypes.Token]:
+def tokenize_poetic_string_assignment(source: str, line: int, line_start: int, start_idx: int) -> Tuple[int, datatypes.Token]:
     source_length = len(source)
     idx = start_idx
     while idx < source_length and source[idx] != "\n":
         idx += 1
     contents = source[start_idx:idx]
-    # todo use getsrcloc
-    location = datatypes.SourceLocation(line, start_idx, line, idx - 1)
+    location = get_srcloc(line, line_start, start_idx, idx)
     return idx, datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location)
 
 def lex(source: str) -> datatypes.TokenStream:
@@ -475,7 +483,7 @@ def lex(source: str) -> datatypes.TokenStream:
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.ReservedAssignment, data=None, location=location))
             if not seen_keyword_on_this_line:
-                idx, token = tokenize_poetic_assignment(source, idx, line)
+                idx, token = tokenize_poetic_assignment(source, line, line_idx, idx)
                 tokens.append(token)
             seen_keyword_on_this_line = True    
 
@@ -486,14 +494,14 @@ def lex(source: str) -> datatypes.TokenStream:
             tokens.append(datatypes.Token(type=symbol, data=contents, location=location))
             if not seen_keyword_on_this_line:
                 if symbol in POETIC_ASSIGNMENT_SYMBOLS:
-                    idx, token = tokenize_poetic_assignment(source, idx, line)
+                    idx, token = tokenize_poetic_assignment(source, line, line_idx, idx)
                     tokens.append(token)
                     seen_keyword_on_this_line = True
                 elif symbol in POETIC_STRING_ASSIGNMENT_SYMBOLS:
                     if source[idx] != " ":
                         raise datatypes.LexerError("Poetic string assignment must be followed by a space", 
                             location=location, start_idx=start_idx, end_idx=idx)
-                    idx, token = tokenize_poetic_string_assignment(source, idx + 1, line) #idx + 1 skips over the space
+                    idx, token = tokenize_poetic_string_assignment(source, line, line_idx, idx + 1) #idx + 1 skips over the space
                     tokens.append(token)
                     seen_keyword_on_this_line = True
                 elif symbol not in VARIABLE_SYMBOLS:

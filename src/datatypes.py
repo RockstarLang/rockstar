@@ -95,60 +95,61 @@ class TokenType(Enum):
     """
     Indicates which type the current token is.
     """
-    EOF = auto()                  # End of token stream
-    Newline = auto()              # `\n`
-    Comma = auto()                # `,`
-    Period = auto()               # '.'
+    EOF = auto()                     # End of token stream
+    Newline = auto()                 # `\n`
+    Comma = auto()                   # `,`
+    Period = auto()                  # '.'
 
-    Mysterious = auto()           # `mysterious`
-    Null = auto()                 # `null/nothing/nowhere/nobody/gone/empty`
-    BooleanTrue = auto()          # `true/right/yes/ok`
-    BooleanFalse = auto()         # `false/wrong/no/lies`
-    Number = auto()               # `1234567890`
-    String = auto()               # `"Hello"`
-    Pronoun = auto()              # `it/he/she/him/her/they/them/ze/hir/zie/zir/xe/xem/ve/ver`
+    Mysterious = auto()              # `mysterious`
+    Null = auto()                    # `null/nothing/nowhere/nobody/gone/empty`
+    BooleanTrue = auto()             # `true/right/yes/ok`
+    BooleanFalse = auto()            # `false/wrong/no/lies`
+    Number = auto()                  # `1234567890`
+    String = auto()                  # `"Hello"`
+    Pronoun = auto()                 # `it/he/she/him/her/they/them/ze/hir/zie/zir/xe/xem/ve/ver`
 
-    Word = auto()                 # Any word that isn`t a keyword
+    Word = auto()                    # Any word that isn`t a keyword
 
-    ReservedCommonVar = auto()    # `a/an/the/my/your`
+    ReservedCommonVar = auto()       # `a/an/the/my/your`
 
-    ReservedIf = auto()           # `if`
-    ReservedElse = auto()         # `else`
-    ReservedWhile = auto()        # `while`
-    ReservedUntil = auto()        # `until`
+    ReservedIf = auto()              # `if`
+    ReservedElse = auto()            # `else`
+    ReservedWhile = auto()           # `while`
+    ReservedUntil = auto()           # `until`
 
-    ReservedTakes = auto()        # `Func takes Val and Val2` (takes)
-    ReservedAnd = auto()          # `Func takes Val and Val2` (and)
-    ReservedBuild = auto()        # `build Val up` (build)
-    ReservedUp = auto()           # `build Val up` (up)
-    ReservedKnock = auto()        # `knock Val down` (knock)
-    ReservedDown = auto()         # `knock Val down` (down)
-    ReservedBreak = auto()        # `break it down`
-    ReservedContinue = auto()     # `continue` or `take it to the top`
-    ReservedPut = auto()          # `put Val into Val2` (put)
-    ReservedInto = auto()         # `put Val into Val2` (into)
-    ReservedListen = auto()       # `listen to Val` (listen)
-    ReservedListenTo = auto()     # `listen to Val` (listen to)
-    ReservedSay = auto()          # `say/shout/whisper/scream Val` (say)
-    ReservedReturn = auto()       # `give back Val` (give back)
+    ReservedTakes = auto()           # `Func takes Val and Val2` (takes)
+    ReservedAnd = auto()             # `Func takes Val and Val2` (and)
+    ReservedBuild = auto()           # `build Val up` (build)
+    ReservedUp = auto()              # `build Val up` (up)
+    ReservedKnock = auto()           # `knock Val down` (knock)
+    ReservedDown = auto()            # `knock Val down` (down)
+    ReservedBreak = auto()           # `break it down`
+    ReservedContinue = auto()        # `continue` or `take it to the top`
+    ReservedPut = auto()             # `put Val into Val2` (put)
+    ReservedInto = auto()            # `put Val into Val2` (into)
+    ReservedListen = auto()          # `listen to Val` (listen)
+    ReservedListenTo = auto()        # `listen to Val` (listen to)
+    ReservedSay = auto()             # `say/shout/whisper/scream Val` (say)
+    ReservedReturn = auto()          # `give back Val` (give back)
 
-    ReservedSays = auto()         # `Var says hi`
-    ReservedAssignment = auto()   # `Var is/was/were/`s mysterious`
+    ReservedSays = auto()            # `Var says hi` (says)
+    ReservedAssignment = auto()      # `Var is/are/was/were/`s mysterious`
+    ReservedExprAssignment = auto()  # `Var thinks mysterious` (thinks)
 
-    ReservedIs = auto()           # `Val is Val2` (is)
-    ReservedAs = auto()           # `Val is as great as` (as)
-    ReservedOr = auto()           # `Val or Val2` (or)
-    ReservedNor = auto()          # `Val nor Val2` (nor)
-    ReservedGTE = auto()          # `higher/greater/bigger/stronger`
-    ReservedLTE = auto()          # `lower/less/smaller/weaker`
-    ReservedGT = auto()           # `high/great/big/strong`
-    ReservedLS = auto()           # `low/little/small/weak`
-    ReservedNEQ = auto()          # `aint/ain't`
-    ReservedNegation = auto()     # `not`
-    ReservedPlus = auto()         # `plus/with`
-    ReservedMinus = auto()        # `minus/without`
-    ReservedMultiply = auto()     # `times/of`
-    ReservedDivide = auto()       # `over`
+    ReservedIs = auto()              # `Val is Val2` (is)
+    ReservedAs = auto()              # `Val is as great as` (as)
+    ReservedOr = auto()              # `Val or Val2` (or)
+    ReservedNor = auto()             # `Val nor Val2` (nor)
+    ReservedGTE = auto()             # `higher/greater/bigger/stronger`
+    ReservedLTE = auto()             # `lower/less/smaller/weaker`
+    ReservedGT = auto()              # `high/great/big/strong`
+    ReservedLS = auto()              # `low/little/small/weak`
+    ReservedNEQ = auto()             # `aint/ain't`
+    ReservedNegation = auto()        # `not`
+    ReservedPlus = auto()            # `plus/with`
+    ReservedMinus = auto()           # `minus/without`
+    ReservedMultiply = auto()        # `times/of`
+    ReservedDivide = auto()          # `over`
 
 
 class Token(NamedTuple):

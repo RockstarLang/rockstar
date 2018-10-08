@@ -193,7 +193,6 @@ SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
     'scream': datatypes.TokenType.ReservedSay,
     'was': datatypes.TokenType.ReservedAssignment,
     'were': datatypes.TokenType.ReservedAssignment,
-    '\'s': datatypes.TokenType.ReservedAssignment,
     'is': datatypes.TokenType.ReservedIs,
     'as': datatypes.TokenType.ReservedAs,
     'or': datatypes.TokenType.ReservedOr,
@@ -335,11 +334,16 @@ def lex(source: str) -> datatypes.TokenStream:
             tokens.append(datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location))
 
         elif current_char == '"':
-            matching_idx = source.find('"', idx + 1)
-            idx = matching_idx + 1
-
+            idx += 1 # move past starting quote
+            while idx < src_length and source[idx] != '"':
+                idx += 1
+            idx += 1 # move past end quote
             location = get_srcloc(line, line_idx, start_idx, idx)
-            contents = source[start_idx + 1 : matching_idx]
+            
+            if idx > src_length:
+                raise datatypes.LexerError("Unclosed string", location=location, start_idx=start_idx, end_idx=idx)
+            
+            contents = source[start_idx + 1 : idx - 1]
             tokens.append(datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location))
 
         elif current_char == '\n':
@@ -358,6 +362,12 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Comma, data=None, location=location))
+
+        elif current_char == '\'' and idx + 1 < src_length and source[idx + 1] == 's':
+            idx += 2
+
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=datatypes.TokenType.ReservedAssignment, data=None, location=location))
 
         elif current_char.isalpha():
             idx, symbol = word_symbolizer(source, idx, error_func)

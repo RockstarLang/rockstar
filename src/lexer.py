@@ -332,8 +332,9 @@ def lex(source: str) -> datatypes.TokenStream:
                 raise datatypes.LexerError("Unclosed comment", location=location, start_idx=start_idx, end_idx=idx)
             idx += 1  # skip ')'
 
-        elif current_char.isnumeric() or current_char == '-' \
-                or (current_char == '.' and source[idx + 1].isnumeric()):
+        elif current_char.isnumeric() or \
+                current_char == '-' or \
+                (current_char == '.' and source[idx + 1].isnumeric()):
             idx, number = parse_number(source, idx, error_func)
 
             location = get_srcloc(line, line_idx, start_idx, idx)

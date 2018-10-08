@@ -2,7 +2,6 @@
 Rockstar Reference Compiler's lexer. Turns a source file into an array of tokens which can then be parsed by the parser.
 Entrypoint is lexer.lex()
 """
-from functools import partial
 from typing import Callable, Tuple, Dict, Optional
 import datatypes
 
@@ -20,7 +19,7 @@ def skip_whitespace(source: str, in_idx: int) -> int:
     idx: int = in_idx
     src_length: int = len(source)
 
-    while source[idx] != '\n' and source[idx].isspace() and idx < src_length:
+    while idx < src_length and source[idx] != '\n' and source[idx].isspace():
         idx += 1
 
     return idx
@@ -36,7 +35,7 @@ def get_srcloc(line: int, line_start: int, start_idx: int, end_idx: int) -> data
     :param end_idx:       Index one passed the end of the token
     :return:              SourceLocation with proper values
     """
-    return datatypes.SourceLocation(line, start_idx - line_start, line, end_idx - line_start)
+    return datatypes.SourceLocation(line, start_idx - line_start + 1, line, end_idx - line_start + 1)
 
 
 def get_lexer_exception(msg: str, line: int, line_start: int, start_idx: int, end_idx: int) -> datatypes.LexerError:
@@ -107,11 +106,12 @@ def get_next_word(source: str, in_idx: int) -> Tuple[int, str]:
     source_length = len(source)
 
     idx = skip_whitespace(source, idx)
+    start_idx = idx
 
     while idx < source_length and source[idx].isalpha():
         idx += 1
 
-    return idx, source[in_idx:idx].lower()
+    return idx, source[start_idx:idx].lower()
 
 
 def expect_word(source: str, in_idx: int, expected: str, phrase: str, error_generator: ErrorGenerator) -> int:
@@ -132,9 +132,10 @@ def expect_word(source: str, in_idx: int, expected: str, phrase: str, error_gene
     idx, word = get_next_word(source, in_idx)
     if idx == last_end_idx or word != expected:
         raise error_generator(f"Expected '{expected}' within '{phrase}'. Got {word}.",
-                              last_end_idx, idx)
+                              last_end_idx,
+                              idx)
 
-    return in_idx
+    return idx
 
 
 SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
@@ -305,9 +306,9 @@ def lex(source: str) -> datatypes.TokenStream:
     while idx < src_length:
         start_idx = idx
         current_char = source[idx]
-        error_func: ErrorGenerator = partial(get_lexer_exception, line=line, line_idx=line_idx)
+        error_func: ErrorGenerator = lambda msg, s_idx, e_idx: get_lexer_exception(msg, line, line_idx, s_idx, e_idx)
 
-        if current_char.isspace():
+        if current_char.isspace() and current_char != '\n':
             idx = skip_whitespace(source, idx)
 
         elif current_char == '(':
@@ -349,7 +350,7 @@ def lex(source: str) -> datatypes.TokenStream:
             line += 1
             line_idx = idx
 
-            location = datatypes.SourceLocation(old_line, old_column, line, 0)
+            location = datatypes.SourceLocation(old_line, old_column + 1, line, 1)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
 
         elif current_char == ',':

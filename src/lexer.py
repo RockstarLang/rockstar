@@ -388,6 +388,7 @@ def lex(source: str) -> datatypes.TokenStream:
             contents = source[start_idx:idx]
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=symbol, data=contents, location=location))
+
         else:
             raise get_lexer_exception(f"Unknown symbol '{current_char}'.", line, line_idx, start_idx, start_idx + 1)
 

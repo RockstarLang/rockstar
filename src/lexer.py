@@ -277,6 +277,7 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
     if first_word == "ain":
         # ain't
         if source[idx:idx+2] == "'t":
+            idx += 2
             return idx, datatypes.TokenType.ReservedNEQ
 
     match: Optional[datatypes.TokenType] = SINGLE_KEYWORDS.get(first_word)
@@ -327,7 +328,7 @@ def lex(source: str) -> datatypes.TokenStream:
                 raise datatypes.LexerError("Unclosed comment", location=location, start_idx=start_idx, end_idx=idx)
             idx += 1  # skip ')'
 
-        elif current_char.isnumeric() or current_char == '-':
+        elif current_char.isnumeric() or current_char == '-' or current_char == '.':
             idx, number = parse_number(source, idx, error_func)
 
             location = get_srcloc(line, line_idx, start_idx, idx)
@@ -363,7 +364,7 @@ def lex(source: str) -> datatypes.TokenStream:
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Comma, data=None, location=location))
 
-        elif current_char == '\'' and idx + 1 < src_length and source[idx + 1] == 's':
+        elif source[idx:idx+2] == "'s":
             idx += 2
 
             location = get_srcloc(line, line_idx, start_idx, idx)

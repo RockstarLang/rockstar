@@ -340,10 +340,10 @@ def lex(source: str) -> datatypes.TokenStream:
                 idx += 1
             idx += 1 # move past end quote
             location = get_srcloc(line, line_idx, start_idx, idx)
-            
+
             if idx > src_length:
                 raise datatypes.LexerError("Unclosed string", location=location, start_idx=start_idx, end_idx=idx)
-            
+
             contents = source[start_idx + 1 : idx - 1]
             tokens.append(datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location))
 

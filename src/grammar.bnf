@@ -37,7 +37,7 @@ variable_str_assignment_statement   ::= <variable> "says" <anychar>+
 
 variable_poetic_number_literal      ::= !(<type_constant> | <newline>) <anychar>* ("." <anychar>*)?
 
-assignment_command ::= "is" | "was" | "were" | "'s"
+assignment_command ::= "is" | "was" | "were" | "are" | "'s"
 
 
 expr               ::= <boolean_expr>

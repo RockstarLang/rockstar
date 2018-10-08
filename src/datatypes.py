@@ -98,6 +98,7 @@ class TokenType(Enum):
     EOF = auto()                  # End of token stream
     Newline = auto()              # `\n`
     Comma = auto()                # `,`
+    Period = auto()               # '.'
 
     Mysterious = auto()           # `mysterious`
     Null = auto()                 # `null/nothing/nowhere/nobody/gone/empty`

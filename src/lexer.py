@@ -252,21 +252,25 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
         return idx, datatypes.TokenType.ReservedContinue
 
     if first_word == "break":
-        # break it down
-        idx = expect_word(source, idx, 'it', 'break it down', error_generator)
+        # could be break or break it down
+        original_idx = idx
+        idx, word = get_next_word(source, idx)
+        if idx == original_idx or word != 'it':
+            return original_idx, datatypes.TokenType.ReservedBreak
+
         idx = expect_word(source, idx, 'down', 'break it down', error_generator)
 
         return idx, datatypes.TokenType.ReservedBreak
 
     if first_word == "listen":
         # listen to
-        last_end_idx = in_idx
+        original_idx = idx
 
         # to is optional
-        new_idx, word = get_next_word(source, in_idx)
-        if new_idx == last_end_idx or word != 'to':
-            return idx, datatypes.TokenType.ReservedListen
-        return new_idx, datatypes.TokenType.ReservedListenTo
+        idx, word = get_next_word(source, idx)
+        if idx == original_idx or word != 'to':
+            return original_idx, datatypes.TokenType.ReservedListen
+        return idx, datatypes.TokenType.ReservedListenTo
 
     if first_word == "give":
         # give back
@@ -328,7 +332,9 @@ def lex(source: str) -> datatypes.TokenStream:
                 raise datatypes.LexerError("Unclosed comment", location=location, start_idx=start_idx, end_idx=idx)
             idx += 1  # skip ')'
 
-        elif current_char.isnumeric() or current_char == '-' or current_char == '.':
+        elif (current_char.isnumeric() or
+              current_char == '-' or
+              (current_char == '.' and source[idx + 1].isnumeric())):
             idx, number = parse_number(source, idx, error_func)
 
             location = get_srcloc(line, line_idx, start_idx, idx)
@@ -363,6 +369,12 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Comma, data=None, location=location))
+
+        elif current_char == '.':
+            idx += 1
+
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=datatypes.TokenType.Period, data=None, location=location))
 
         elif source[idx:idx+2] == "'s":
             idx += 2

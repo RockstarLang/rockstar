@@ -310,6 +310,23 @@ def lex(source: str) -> datatypes.TokenStream:
         if current_char.isspace():
             idx = skip_whitespace(source, idx)
 
+        elif current_char == '(':
+            start_line = line
+            start_line_idx = line_idx
+            while idx < src_length and source[idx] not in ')':
+                idx += 1
+                if source[idx] == '\n':
+                    line += 1
+                    line_idx = idx
+
+            if idx == src_length:
+                location = datatypes.SourceLocation(start_line,
+                                                    start_idx - start_line_idx + 1,
+                                                    line,
+                                                    idx - line_idx + 1)
+                raise datatypes.LexerError("Unclosed comment", location=location, start_idx=start_idx, end_idx=idx)
+            idx += 1  # skip ')'
+
         elif current_char.isnumeric() or current_char == '-':
             idx, number = parse_number(source, idx, error_func)
 

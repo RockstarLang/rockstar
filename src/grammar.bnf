@@ -31,13 +31,16 @@ until_condition     ::= "until" <expr>
 function_signature  ::= <variable> "takes" <variable> ("and" <variable>)*
 
 
-variable_assignment_statement       ::= <variable_type_assignment_statement> | <variable_str_assignment_statement>
+variable_assignment_statement       ::= <variable_type_assignment_statement> |
+                                        <variable_str_assignment_statement> |
+                                        <variable_expr_assignment_statement>
 variable_type_assignment_statement  ::= <variable> <assignment_command> (<type_constant> | <variable_poetic_number_literal>)
 variable_str_assignment_statement   ::= <variable> "says" <anychar>+
+variable_expr_assignment_statement  ::= <variable> "thinks" <expr>
 
-variable_poetic_number_literal      ::= !(<type_constant> | <newline>) <anychar>* ("." <anychar>*)?
+variable_poetic_number_literal      ::= !(<type_literal> | <newline>) <anychar>* ("." <anychar>*)?
 
-assignment_command ::= "is" | "was" | "were" | "'s"
+assignment_command ::= "is" | "are" | "was" | "were" | "'s"
 
 
 expr               ::= <boolean_expr>

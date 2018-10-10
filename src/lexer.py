@@ -425,33 +425,38 @@ def tokenize_poetic_assignment(source: str, line: int, line_start: int,
     source_length = len(source)
     idx = start_idx
     current_word_length = 0
+    # The characters that make up the number being represented.
     number_characters = []
     added_decimal_point = False
 
+    # Helper function for adding a new digit to number_characters.
+    # Does nothing if there are no new characters.
+    def try_add_digit():
+        if current_word_length > 0:
+            number_characters.append(str(current_word_length % 10))
+
     while idx < source_length and source[idx] != "\n":
         current_char = source[idx]
-        # If it's a space, add the current word length (if any) and reset
+        # If it's a space, add the current word length mod 10 (if any) and reset
         if current_char.isspace():
-            if current_word_length > 0:
-                number_characters.append(str(current_word_length))
-                current_word_length = 0
+            try_add_digit()
+            current_word_length = 0
 
-        # If its a letter, increment the current word length (mod 10)
+        # If its a letter, increment the current word length
         elif current_char.isalpha():
-            current_word_length = (current_word_length + 1) % 10
+            current_word_length += 1
 
         # If its a decimal point and we haven't added one, add a decimal
         # point and start a new word
         elif current_char == "." and not added_decimal_point:
-            if current_word_length > 0:
-                number_characters.append(str(current_word_length))
-                current_word_length = 0
+            try_add_digit()
+            current_word_length = 0
             number_characters.append(".")
             added_decimal_point = True
+
         idx += 1
 
-    if current_word_length > 0:
-        number_characters.append(str(current_word_length))
+    try_add_digit()
 
     # Create the string representing the entire number by joining the
     # individual characters. If there are none, the number will be 0.
@@ -580,7 +585,7 @@ def lex(source: str) -> datatypes.TokenStream:
                     tokens.append(token)
                     seen_keyword_on_line = True
                 elif symbol in POETIC_STRING_ASSIGNMENT_SYMBOLS:
-                    if not source[idx].isspace() or source[idx] == "\n":
+                    if (not source[idx].isspace()) or source[idx] == "\n":
                         raise datatypes.LexerError("Poetic string assignment must be followed by a space",
                                                    location=location, start_idx=start_idx, end_idx=idx)
                     # skip over the space with idx + 1

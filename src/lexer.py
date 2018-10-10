@@ -433,7 +433,7 @@ def tokenize_poetic_assignment(source: str, line: int, line_start: int,
 
     # Helper function for adding a new digit to number_characters.
     # Does nothing if there are no new characters.
-    def try_add_digit():
+    def try_add_digit() -> None:
         if current_word_length > 0:
             number_characters.append(str(current_word_length % 10))
 

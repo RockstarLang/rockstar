@@ -8,7 +8,7 @@ import lexer
 import datatypes
 
 
-def main() -> None:
+def main() -> int:
     arg_parser = argparse.ArgumentParser(description='Rockstar reference interpreter')
     arg_parser.add_argument('source', type=argparse.FileType('r'), help='source file')
     args = arg_parser.parse_args()
@@ -28,7 +28,10 @@ def main() -> None:
               f"{err.location.line_start}:{err.location.char_start} - {err.location.line_end}:{err.location.char_end}: "
               f"{err}",
               file=sys.stderr)
+        return 1
+
+    return 0
 
 
 if __name__ == '__main__':
-    main()
+    exit(main())

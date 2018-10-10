@@ -340,7 +340,7 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
     return idx, datatypes.TokenType.Word
 
 def try_type_literal_assignment(source: str, line: int,
-                                line_start: int, start_idx: int) -> Tuple[bool, int, Optional[datatypes.Token]]:
+                                line_start: int, start_idx: int) -> Optional[Tuple[int, datatypes.Token]]:
     """
     Assuming we've started a poetic type literal or number assignment, attempt to tokenize
     the remainder of the line as a type literal - a string literal, number literal, boolean, null, or mysterious.
@@ -352,9 +352,8 @@ def try_type_literal_assignment(source: str, line: int,
     :param line:                     Index of the line in the source file, used to construct location
     :param line_start:               Index of the first character in this line, used to construct location
     :param start_index:              The index in the source file to start tokenizing from
-    :return:                         Tuple containing whether tokenizing was successful,
-                                     the next index to tokenize from, and the token produced.
-                                     The index and token are undefined if tokenizing was not successful.
+    :return:                         If successful, tuple containing the next index to tokenize from and the token produced.
+                                     Otherwise, returns None.
     :raises datatypes.LexerError:    On text that looked like it was a number or string but failed to parse correctly,
                                      as well as when extra text follows the poetic type literal.
     """
@@ -369,7 +368,7 @@ def try_type_literal_assignment(source: str, line: int,
         idx = skip_whitespace(source, idx)
         if source[idx] != "\n":
             raise datatypes.LexerError(error_message, location=location, start_idx=start_idx, end_idx=idx)
-        return True, idx, datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location)
+        return idx, datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location)
 
     # If the start looks like a string, assume we're matching a string
     if current_char == '"':
@@ -378,7 +377,7 @@ def try_type_literal_assignment(source: str, line: int,
         idx = skip_whitespace(source, idx)
         if source[idx] != "\n":
             raise datatypes.LexerError(error_message, location=location, start_idx=start_idx, end_idx=idx)
-        return True, idx, datatypes.Token(type=datatypes.TokenType.String, data=string, location=location)
+        return idx, datatypes.Token(type=datatypes.TokenType.String, data=string, location=location)
 
     idx, first_word = get_next_word(source, idx)
     match: Optional[datatypes.TokenType] = SINGLE_KEYWORDS.get(first_word)
@@ -389,8 +388,8 @@ def try_type_literal_assignment(source: str, line: int,
         idx = skip_whitespace(source, idx)
         if source[idx] != "\n":
             raise datatypes.LexerError(error_message, location=location, start_idx=start_idx, end_idx=idx)
-        return True, idx, datatypes.Token(type=match, data=contents, location=location)
-    return False, -1, None
+        return idx, datatypes.Token(type=match, data=contents, location=location)
+    return None
 
 def tokenize_poetic_assignment(source: str, line: int, line_start: int, start_idx: int) -> Tuple[int, datatypes.Token]:
     """
@@ -409,12 +408,9 @@ def tokenize_poetic_assignment(source: str, line: int, line_start: int, start_id
     # At this point we don't know if this is a poetic type literal assignment or a
     # poetic number assignment. To figure it out, we try to tokenize the first word
     # as a type literal. If it fails, it must be a poetic number assignment.
-    success, result_idx, result_token = try_type_literal_assignment(source, line, line_start, start_idx)
-    if success:
-        assert result_token is not None
-        # This if check is needed to convert the Optional[Token] to just Token
-        if result_token is not None:
-            return result_idx, result_token
+    result = try_type_literal_assignment(source, line, line_start, start_idx)
+    if result is not None:
+        return result
 
     source_length = len(source)
     idx = start_idx

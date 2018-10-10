@@ -2,7 +2,7 @@
 Rockstar Reference Compiler's lexer. Turns a source file into an array of tokens which can then be parsed by the parser.
 Entrypoint is lexer.lex()
 """
-from typing import Callable, Tuple, Dict, Optional
+from typing import Callable, Tuple, Dict, Set, Optional
 import datatypes
 
 
@@ -90,6 +90,28 @@ def parse_number(source: str,
         raise error_generator(f"{source[in_idx : idx]} is not a valid number.", in_idx, idx)
 
     return idx, number
+
+def parse_string(source: str, start_idx: int, error_generator: ErrorGenerator) -> Tuple[int, str]:
+    """
+    Parses a string starting from the opening quotation mark.
+
+    :param source:                   String of the source file
+    :param start_idx:                Index of the first character of the string, starting from the first quote
+    :param error_generator:          Constructs a error to throw. Arguments (msg, start_idx, end_idx)
+    :return:                         Tuple of the index of first character past the closing quote and the parsed string
+    :raises datatypes.LexerError:    On unclosed string
+    """
+    src_length = len(source)
+    idx = start_idx + 1 # move past starting quote
+    while idx < src_length and source[idx] != '"':
+        idx += 1
+    idx += 1 # move past end quote
+
+    if idx > src_length:
+        raise error_generator("Unclosed string", start_idx, idx)
+
+    contents = source[start_idx + 1 : idx - 1]
+    return idx, contents
 
 
 def get_next_word(source: str, in_idx: int) -> Tuple[int, str]:
@@ -191,6 +213,7 @@ SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
     'shout': datatypes.TokenType.ReservedSay,
     'whisper': datatypes.TokenType.ReservedSay,
     'scream': datatypes.TokenType.ReservedSay,
+    'says': datatypes.TokenType.ReservedSays,
     'are': datatypes.TokenType.ReservedAssignment,
     'was': datatypes.TokenType.ReservedAssignment,
     'were': datatypes.TokenType.ReservedAssignment,
@@ -225,6 +248,32 @@ SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
     'times': datatypes.TokenType.ReservedMultiply,
     'of': datatypes.TokenType.ReservedMultiply,
     'over': datatypes.TokenType.ReservedDivide
+}
+
+# Set of token types that represent type constants
+TYPE_CONSTANT_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.Null,
+    datatypes.TokenType.BooleanTrue,
+    datatypes.TokenType.BooleanFalse,
+    datatypes.TokenType.Mysterious
+}
+
+# Set of token types that can be used for writing variables.
+VARIABLE_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.ReservedCommonVar,
+    datatypes.TokenType.Pronoun,
+    datatypes.TokenType.Word
+}
+
+# Set of token types that begin a poetic string assignment.
+POETIC_STRING_ASSIGNMENT_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.ReservedSays
+}
+
+# Set of token types that begin a poetic literal or number assignment.
+POETIC_ASSIGNMENT_SYMBOLS: Set[datatypes.TokenType] = {
+    datatypes.TokenType.ReservedAssignment,
+    datatypes.TokenType.ReservedIs
 }
 
 
@@ -292,6 +341,156 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
 
     return idx, datatypes.TokenType.Word
 
+def try_type_literal_assignment(source: str, line: int, line_start: int,
+                                start_idx: int, error_func: ErrorGenerator) -> Optional[Tuple[int, datatypes.Token]]:
+    """
+    Assuming we've started a poetic type literal or number assignment, attempt to tokenize
+    the remainder of the line as a type literal - a string literal, number literal, boolean, null, or mysterious.
+    Indicates whether the rest of the line was successfully tokenized so that the caller
+    can determine how to proceed. It is an error for a poetic type literal assignment to
+    include words after the type literal.
+
+    :param source:                   String of the source file
+    :param line:                     Index of the line in the source file, used to construct location
+    :param line_start:               Index of the first character in this line, used to construct location
+    :param start_idx:                The index in the source file to start tokenizing from
+    :param error_func:               Constructs an error to throw. Arguments (msg, start_idx, end_idx)
+    :return:                         If successful, tuple containing next index to tokenize from and token produced.
+                                     Otherwise, returns None.
+    :raises datatypes.LexerError:    On text that looked like it was a number or string but failed to parse correctly,
+                                     as well as when extra text follows the poetic type literal.
+    """
+    idx = skip_whitespace(source, start_idx)
+    current_char = source[idx]
+    error_message = "Nothing else can follow poetic type literal assignment"
+
+    # If the start looks like a number, assume we're matching a number
+    if current_char.isnumeric() or current_char == '-' or current_char == '.':
+        idx, number = parse_number(source, idx, error_func)
+        location = get_srcloc(line, line_start, start_idx, idx)
+        idx = skip_whitespace(source, idx)
+
+        if source[idx] != "\n":
+            raise error_func(error_message, start_idx, idx)
+
+        return idx, datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location)
+
+    # If the start looks like a string, assume we're matching a string
+    if current_char == '"':
+        idx, string = parse_string(source, idx, error_func)
+        location = get_srcloc(line, line_start, start_idx, idx)
+        idx = skip_whitespace(source, idx)
+
+        if source[idx] != "\n":
+            raise error_func(error_message, start_idx, idx)
+
+        return idx, datatypes.Token(type=datatypes.TokenType.String, data=string, location=location)
+
+    idx, first_word = get_next_word(source, idx)
+    match: Optional[datatypes.TokenType] = SINGLE_KEYWORDS.get(first_word)
+    # If this is a poetic type literal assignment, just match that
+    if match is not None and match in TYPE_CONSTANT_SYMBOLS:
+        location = get_srcloc(line, line_start, start_idx, idx)
+        contents = source[start_idx:idx]
+        idx = skip_whitespace(source, idx)
+
+        if source[idx] != "\n":
+            raise error_func(error_message, start_idx, idx)
+
+        return idx, datatypes.Token(type=match, data=contents, location=location)
+
+    return None
+
+def tokenize_poetic_assignment(source: str, line: int, line_start: int,
+                               start_idx: int, error_func: ErrorGenerator) -> Tuple[int, datatypes.Token]:
+    """
+    Assuming we've started a poetic type literal or poetic number assignment, attempt to tokenize
+    the remainder of the line as a type literal or poetic number. It is an error for a
+    poetic type literal assignment to include words after the type literal.
+
+    :param source:                   String of the source file
+    :param line:                     Index of the line in the source file, used to construct location
+    :param line_start:               Index of the first character in this line, used to construct location
+    :param start_idx:                The index in the source file to start tokenizing from
+    :param error_func:               Constructs an error to throw. Arguments (msg, start_idx, end_idx)
+    :return:                         Tuple containing the next index to tokenize from and the token produced
+    :raises datatypes.LexerError:    On text that looked like it was a number or string but failed to parse correctly,
+                                     as well as when extra text follows the poetic type literal.
+    """
+    # At this point we don't know if this is a poetic type literal assignment or a
+    # poetic number assignment. To figure it out, we try to tokenize the first word
+    # as a type literal. If it fails, it must be a poetic number assignment.
+    result = try_type_literal_assignment(source, line, line_start, start_idx, error_func)
+    if result is not None:
+        return result
+
+    source_length = len(source)
+    idx = start_idx
+    current_word_length = 0
+    # The characters that make up the number being represented.
+    number_characters = []
+    added_decimal_point = False
+
+    # Helper function for adding a new digit to number_characters.
+    # Does nothing if there are no new characters.
+    def try_add_digit() -> None:
+        if current_word_length > 0:
+            number_characters.append(str(current_word_length % 10))
+
+    while idx < source_length and source[idx] != "\n":
+        current_char = source[idx]
+        # If it's a space, add the current word length mod 10 (if any) and reset
+        if current_char.isspace():
+            try_add_digit()
+            current_word_length = 0
+
+        # If its a letter, increment the current word length
+        elif current_char.isalpha():
+            current_word_length += 1
+
+        # If its a decimal point and we haven't added one, add a decimal
+        # point and start a new word
+        elif current_char == "." and not added_decimal_point:
+            try_add_digit()
+            current_word_length = 0
+            number_characters.append(".")
+            added_decimal_point = True
+
+        idx += 1
+
+    try_add_digit()
+
+    # Create the string representing the entire number by joining the
+    # individual characters. If there are none, the number will be 0.
+    number_string = "".join(number_characters) or "0"
+    location = get_srcloc(line, line_start, start_idx, idx)
+    value = datatypes.Number(number_string)
+    token = datatypes.Token(type=datatypes.TokenType.Number, data=value, location=location)
+
+    return idx, token
+
+def tokenize_poetic_string_assignment(source: str, line: int,
+                                      line_start: int, start_idx: int) -> Tuple[int, datatypes.Token]:
+    """
+    Assuming we've started a poetic string assignment, tokenize the rest of the line
+    (up to but not including the newline character) as a string.
+
+    :param source:                   String of the source file
+    :param line:                     Index of the line in the source file, used to construct location
+    :param line_start:               Index of the first character in this line, used to construct location
+    :param start_index:              The index in the source file to start tokenizing from
+    :return:                         Tuple containing the next index to tokenize from and the token produced
+    """
+    source_length = len(source)
+    idx = start_idx
+
+    while idx < source_length and source[idx] != "\n":
+        idx += 1
+
+    contents = source[start_idx:idx]
+    location = get_srcloc(line, line_start, start_idx, idx)
+
+    return idx, datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location)
 
 def lex(source: str) -> datatypes.TokenStream:
     """
@@ -306,6 +505,8 @@ def lex(source: str) -> datatypes.TokenStream:
 
     line_idx: int = 0
     line: int = 1
+
+    seen_keyword_on_line: bool = False
 
     tokens: datatypes.TokenStream = datatypes.TokenStream()
 
@@ -334,26 +535,16 @@ def lex(source: str) -> datatypes.TokenStream:
                 raise datatypes.LexerError("Unclosed comment", location=location, start_idx=start_idx, end_idx=idx)
             idx += 1  # skip ')'
 
-        elif (current_char.isnumeric() or
-              current_char == '-' or
-              (current_char == '.' and source[idx + 1].isnumeric())):
+        elif current_char.isnumeric() or current_char == '-' or current_char == '.':
             idx, number = parse_number(source, idx, error_func)
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Number, data=number, location=location))
 
         elif current_char == '"':
-            idx += 1 # move past starting quote
-            while idx < src_length and source[idx] != '"':
-                idx += 1
-            idx += 1 # move past end quote
+            idx, string = parse_string(source, idx, error_func)
             location = get_srcloc(line, line_idx, start_idx, idx)
-
-            if idx > src_length:
-                raise datatypes.LexerError("Unclosed string", location=location, start_idx=start_idx, end_idx=idx)
-
-            contents = source[start_idx + 1 : idx - 1]
-            tokens.append(datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location))
+            tokens.append(datatypes.Token(type=datatypes.TokenType.String, data=string, location=location))
 
         elif current_char == '\n':
             old_column = idx - line_idx
@@ -362,6 +553,7 @@ def lex(source: str) -> datatypes.TokenStream:
             idx += 1
             line += 1
             line_idx = idx
+            seen_keyword_on_line = False
 
             location = datatypes.SourceLocation(old_line, old_column + 1, line, 1)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
@@ -372,25 +564,38 @@ def lex(source: str) -> datatypes.TokenStream:
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Comma, data=None, location=location))
 
-        elif current_char == '.':
-            idx += 1
-
-            location = get_srcloc(line, line_idx, start_idx, idx)
-            tokens.append(datatypes.Token(type=datatypes.TokenType.Period, data=None, location=location))
-
         elif source[idx:idx+2] == "'s":
             idx += 2
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.ReservedAssignment, data=None, location=location))
+            if not seen_keyword_on_line:
+                idx, token = tokenize_poetic_assignment(source, line, line_idx, idx, error_func)
+                tokens.append(token)
+            seen_keyword_on_line = True
 
         elif current_char.isalpha():
             idx, symbol = word_symbolizer(source, idx, error_func)
-
             contents = source[start_idx:idx]
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=symbol, data=contents, location=location))
-
+            # Poetic assignments always start with variables, so if we've seen a keyword
+            # we shouldn't treat this as a poetic assignment.
+            if not seen_keyword_on_line:
+                if symbol in POETIC_ASSIGNMENT_SYMBOLS:
+                    idx, token = tokenize_poetic_assignment(source, line, line_idx, idx, error_func)
+                    tokens.append(token)
+                    seen_keyword_on_line = True
+                elif symbol in POETIC_STRING_ASSIGNMENT_SYMBOLS:
+                    if (not source[idx].isspace()) or source[idx] == "\n":
+                        raise datatypes.LexerError("Poetic string assignment must be followed by a space",
+                                                   location=location, start_idx=start_idx, end_idx=idx)
+                    # skip over the space with idx + 1
+                    idx, token = tokenize_poetic_string_assignment(source, line, line_idx, idx + 1)
+                    tokens.append(token)
+                    seen_keyword_on_line = True
+                elif symbol not in VARIABLE_SYMBOLS:
+                    seen_keyword_on_line = True
         else:
             raise get_lexer_exception(f"Unknown symbol '{current_char}'.", line, line_idx, start_idx, start_idx + 1)
 

@@ -84,11 +84,7 @@ class Number(decimal.Decimal):
     pass
 
 
-class InvalidNumber(decimal.InvalidOperation):
-    """
-    Number was constructed with a invalid number string.
-    """
-    pass
+InvalidNumber = decimal.InvalidOperation  # pylint: disable=invalid-name
 
 
 class TokenType(Enum):

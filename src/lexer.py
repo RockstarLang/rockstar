@@ -352,7 +352,7 @@ def try_type_literal_assignment(source: str, line: int,
     :param line:                     Index of the line in the source file, used to construct location
     :param line_start:               Index of the first character in this line, used to construct location
     :param start_index:              The index in the source file to start tokenizing from
-    :return:                         If successful, tuple containing the next index to tokenize from and the token produced.
+    :return:                         If successful, tuple containing next index to tokenize from and token produced.
                                      Otherwise, returns None.
     :raises datatypes.LexerError:    On text that looked like it was a number or string but failed to parse correctly,
                                      as well as when extra text follows the poetic type literal.
@@ -480,7 +480,7 @@ def lex(source: str) -> datatypes.TokenStream:
     line_idx: int = 0
     line: int = 1
 
-    seen_keyword_on_this_line: bool = False
+    seen_keyword_on_line: bool = False
 
     tokens: datatypes.TokenStream = datatypes.TokenStream()
 
@@ -527,7 +527,7 @@ def lex(source: str) -> datatypes.TokenStream:
             idx += 1
             line += 1
             line_idx = idx
-            seen_keyword_on_this_line = False
+            seen_keyword_on_line = False
 
             location = datatypes.SourceLocation(old_line, old_column + 1, line, 1)
             tokens.append(datatypes.Token(type=datatypes.TokenType.Newline, data=None, location=location))
@@ -543,21 +543,21 @@ def lex(source: str) -> datatypes.TokenStream:
 
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=datatypes.TokenType.ReservedAssignment, data=None, location=location))
-            if not seen_keyword_on_this_line:
+            if not seen_keyword_on_line:
                 idx, token = tokenize_poetic_assignment(source, line, line_idx, idx)
                 tokens.append(token)
-            seen_keyword_on_this_line = True
+            seen_keyword_on_line = True
 
         elif current_char.isalpha():
             idx, symbol = word_symbolizer(source, idx, error_func)
             contents = source[start_idx:idx]
             location = get_srcloc(line, line_idx, start_idx, idx)
             tokens.append(datatypes.Token(type=symbol, data=contents, location=location))
-            if not seen_keyword_on_this_line:
+            if not seen_keyword_on_line:
                 if symbol in POETIC_ASSIGNMENT_SYMBOLS:
                     idx, token = tokenize_poetic_assignment(source, line, line_idx, idx)
                     tokens.append(token)
-                    seen_keyword_on_this_line = True
+                    seen_keyword_on_line = True
                 elif symbol in POETIC_STRING_ASSIGNMENT_SYMBOLS:
                     if source[idx] != " ":
                         raise datatypes.LexerError("Poetic string assignment must be followed by a space",
@@ -565,9 +565,9 @@ def lex(source: str) -> datatypes.TokenStream:
                     # skip over the space with idx + 1
                     idx, token = tokenize_poetic_string_assignment(source, line, line_idx, idx + 1)
                     tokens.append(token)
-                    seen_keyword_on_this_line = True
+                    seen_keyword_on_line = True
                 elif symbol not in VARIABLE_SYMBOLS:
-                    seen_keyword_on_this_line = True
+                    seen_keyword_on_line = True
         else:
             raise get_lexer_exception(f"Unknown symbol '{current_char}'.", line, line_idx, start_idx, start_idx + 1)
 

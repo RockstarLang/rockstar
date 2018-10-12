@@ -1,14 +1,15 @@
-(increment and decrement works on integers,
-including multi increment and decrements with optional commas)
+(increment and decrement works on integers)
 put 5 into my world
 put my world into my temp
 build my world up
 say my world
 say my temp
+
+(multi increment and decrements, with optional commas)
 put 5 into my world
 build my world up, up, up up up, up
 say my world
-knock my world down down down down down down
+knock my world down down, down down down down
 say my world
 
 (increment and decrement works on decimals)

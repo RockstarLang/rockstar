@@ -1,4 +1,4 @@
-(Tests that "break" and "continue", as well as their aliases, work as intended)
+("break" and "continue", as well as their aliases, work as intended)
 put 0 into I
 while I is smaller than 10
 build I up

@@ -1,4 +1,4 @@
-(Tests that variables defined globally can be used inside functions)
+(variables defined globally can be used inside functions)
 
 put 5 into Global
 

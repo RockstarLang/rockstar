@@ -1,27 +1,27 @@
 if ""
-say 1
+say "this should not print since empty strings are false"
 
 if "hello"
-say 2
+say "this should print since non-empty strings are true"
 
 if 0
-say 3
+say "this should not print since 0 is false"
 
 if 1
-say 4
+say "this should print since non-zero numbers are true"
 
 if -3
-say 5
+say "this should print since non-zero numbers, including negatives, are true"
 
 if mysterious
-say 6
+say "this should not print since mysterious is false"
 
 if null
-say 7
+say "this should not print since null is false"
 
 F takes X
 give back X
 
 if F
-say 8
+say "this should print since function references are objects which are truthy"
 

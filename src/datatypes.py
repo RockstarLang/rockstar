@@ -6,9 +6,6 @@ from enum import Enum, auto
 import decimal
 
 
-PreprocessorSourceRemapping = Dict[int, List[Tuple[int, int]]]
-
-
 class SourceLocation(NamedTuple):
     """
     Represents a pair of start and end locations for the lexer token/ast node.

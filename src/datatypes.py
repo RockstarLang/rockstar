@@ -115,6 +115,10 @@ class TokenType(Enum):
 
     ReservedTakes = auto()           # `Func takes Val and Val2` (takes)
     ReservedAnd = auto()             # `Func takes Val and Val2` (and)
+
+    ReservedTaking = auto()          # `Func taking Val` (taking)
+    ArgumentSeparator = auto()       # `Func taking Val 'n'/& Val` ('n', &)
+
     ReservedBuild = auto()           # `build Val up` (build)
     ReservedUp = auto()              # `build Val up` (up)
     ReservedKnock = auto()           # `knock Val down` (knock)

@@ -11,7 +11,7 @@ put X plus Y into Value
 say Value
 Give back Value
 (end function)
-say AddAndPrint taking 3 and 4
+say AddAndPrint taking 3, 4
 
 AddOrSub takes X and B
 if B

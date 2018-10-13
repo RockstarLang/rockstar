@@ -202,6 +202,7 @@ SINGLE_KEYWORDS: Dict[str, datatypes.TokenType] = {
     'while': datatypes.TokenType.ReservedWhile,
     'until': datatypes.TokenType.ReservedUntil,
     'takes': datatypes.TokenType.ReservedTakes,
+    'taking': datatypes.TokenType.ReservedTaking,
     'and': datatypes.TokenType.ReservedAnd,
     'build': datatypes.TokenType.ReservedBuild,
     'up': datatypes.TokenType.ReservedUp,
@@ -578,6 +579,18 @@ def lex(source: str) -> datatypes.TokenStream:
                 idx, token = tokenize_poetic_assignment(source, line, line_idx, idx, error_func)
                 tokens.append(token)
             seen_keyword_on_line = True
+
+        elif source[idx:idx+3] == "'n'":
+            idx += 3
+
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=datatypes.TokenType.ArgumentSeparator, data=None, location=location))
+
+        elif current_char == '&':
+            idx += 1
+
+            location = get_srcloc(line, line_idx, start_idx, idx)
+            tokens.append(datatypes.Token(type=datatypes.TokenType.ArgumentSeparator, data=None, location=location))
 
         elif current_char.isalpha():
             idx, symbol = word_symbolizer(source, idx, error_func)

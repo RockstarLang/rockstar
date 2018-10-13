@@ -28,7 +28,7 @@ if_condition        ::= "if" <expr>
 else_condition      ::= "else"
 while_condition     ::= "while" <expr>
 until_condition     ::= "until" <expr>
-function_signature  ::= <variable> "takes" <variable> ("and" <variable>)*
+function_signature  ::= <variable> "takes" <variable> (("'n'" | "&" | ("," "and"?) | "and") <variable>)*
 
 
 variable_assignment_statement       ::= <variable_type_assignment_statement> |
@@ -50,7 +50,7 @@ inequality_expr    ::= <add_expr> (<inequality_operator> <add_expr>)*
 add_expr           ::= <multiply_expr> (<add_operator> <multiply_expr>)*
 multiply_expr      ::= <not_expr> (<multiply_operator> <not_expr>)*
 not_expr           ::= "not" <function_call_expr> | <function_call_expr>
-function_call_expr ::= (<function_call>) | <value_provider>
+function_call_expr ::= <function_call> | <value_provider>
 
 boolean_operator      ::= "and" | "or" | "nor"
 equality_operator     ::= "is" | "aint" | "ain't"
@@ -69,7 +69,7 @@ multiply_operator   ::= "times" | "of" | "over"
 
 
 function_call      ::= <variable> "taking" <value_provider> (<function_arg_delim> <value_provider>)*
-function_arg_delim ::= "and" | ","
+function_arg_delim ::= "'n'" | ("," "and"?) | "&"
 
 value_provider     ::= <type_literal> | <variable>
 

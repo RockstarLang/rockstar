@@ -1,0 +1,11 @@
+(umlauts should work as parts of common variable names)
+The mētäl is true
+Shout the mētäl
+
+(proper variable names should allow umlauts too)
+Ÿëstërdäÿ is ours
+Say it
+
+(umlauts should be allowed in a literal string)
+Anna says she lïkes her ümlaüts
+Whisper Anna

@@ -117,7 +117,7 @@ class TokenType(Enum):
     ReservedAnd = auto()             # `Func takes Val and Val2` (and)
 
     ReservedTaking = auto()          # `Func taking Val` (taking)
-    ArgumentSeparator = auto()       # `Func taking Val 'n'/& Val' ('n', &)
+    ArgumentSeparator = auto()       # `Func taking Val 'n'/& Val` ('n', &)
 
     ReservedBuild = auto()           # `build Val up` (build)
     ReservedUp = auto()              # `build Val up` (up)

@@ -91,6 +91,7 @@ def parse_number(source: str,
 
     return idx, number
 
+
 def parse_string(source: str, start_idx: int, error_generator: ErrorGenerator) -> Tuple[int, str]:
     """
     Parses a string starting from the opening quotation mark.
@@ -341,6 +342,7 @@ def word_symbolizer(source: str, in_idx: int, error_generator: ErrorGenerator) -
 
     return idx, datatypes.TokenType.Word
 
+
 def try_type_literal_assignment(source: str, line: int, line_start: int,
                                 start_idx: int, error_func: ErrorGenerator) -> Optional[Tuple[int, datatypes.Token]]:
     """
@@ -400,6 +402,7 @@ def try_type_literal_assignment(source: str, line: int, line_start: int,
         return idx, datatypes.Token(type=match, data=contents, location=location)
 
     return None
+
 
 def tokenize_poetic_assignment(source: str, line: int, line_start: int,
                                start_idx: int, error_func: ErrorGenerator) -> Tuple[int, datatypes.Token]:
@@ -469,6 +472,7 @@ def tokenize_poetic_assignment(source: str, line: int, line_start: int,
 
     return idx, token
 
+
 def tokenize_poetic_string_assignment(source: str, line: int,
                                       line_start: int, start_idx: int) -> Tuple[int, datatypes.Token]:
     """
@@ -491,6 +495,7 @@ def tokenize_poetic_string_assignment(source: str, line: int,
     location = get_srcloc(line, line_start, start_idx, idx)
 
     return idx, datatypes.Token(type=datatypes.TokenType.String, data=contents, location=location)
+
 
 def lex(source: str) -> datatypes.TokenStream:
     """

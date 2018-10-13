@@ -1,4 +1,4 @@
-TrueFunc takes Nothing
+TrueFunc takes Ignored
 Give back True
 (end function)
 SayHiAndReturn takes V

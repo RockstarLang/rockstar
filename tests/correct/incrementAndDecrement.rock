@@ -1,18 +1,23 @@
+(increment and decrement works on integers)
 put 5 into my world
 put my world into my temp
 build my world up
 say my world
 say my temp
+
+(multi increment and decrements, with optional commas)
 put 5 into my world
 build my world up, up, up up up, up
 say my world
-knock my world down down down down down down
+knock my world down down, down down down down
 say my world
 
+(increment and decrement works on decimals)
 put 2.25 into Other Variable
 knock Other Variable down
 say Other Variable
 
+(increment and decrement flip the value of booleans)
 my test is true
 knock my test down
 say my test

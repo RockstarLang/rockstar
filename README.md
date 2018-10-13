@@ -312,14 +312,14 @@ Knock it down
 
 ### Functions
 
-Functions are declared with a variable name followed by the `takes` keyword and a list of arguments separated by one of the following: `and` `,` `, and` `&` `'n'`
+Functions are declared with a variable name followed by the `takes` keyword and a list of arguments separated by one of the following: `and` `,` `&` `, and` `'n'`
 
 * `Multiply takes X and Y`
 * `Search takes Needle and Haystack`
 
 The function body is a list of statements with no separating blank lines. A blank line denotes the end of a function body. Functions in Rockstar always have a return value, indicated by the `Give back` keyword. 
 
-Functions are called using the 'taking' keyword and must have at least one argument. Multiple arguments are separated with one of the following: `,` `, and` `&` `'n'`.
+Functions are called using the 'taking' keyword and must have at least one argument. Multiple arguments are separated with one of the following: `,` `&` `, and` `'n'`.
 
 Arguments may only be variables or literals. Compound expressions are not allowed. Functionals are greedy, if they find more symbols that make up valid arguments they will take them.
 

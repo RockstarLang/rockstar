@@ -514,7 +514,7 @@ def lex(source: str) -> datatypes.TokenStream:
 
     seen_keyword_on_line: bool = False
 
-    tokens: datatypes.TokenStream = datatypes.TokenStream()
+    tokens: datatypes.TokenStream = []
 
     while idx < src_length:
         start_idx = idx

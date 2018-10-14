@@ -1,7 +1,7 @@
 """
 Module containing all datatypes used within the compiler.
 """
-from typing import NamedTuple, Any, Dict, Tuple, List
+from typing import NamedTuple, Any, Optional, List
 from enum import Enum, auto
 import decimal
 
@@ -159,8 +159,66 @@ class Token(NamedTuple):
     location: SourceLocation
 
 
-class TokenStream(list):
+TokenStream = List[Token]
+
+
+class TokenConsumer:
     """
-    List of tokens.
+    Helper container which allows easy access into the stream of tokens for the parser. The parser needs access to one
+    token at a time, and the ability to consume, skip, and check the next token.
     """
-    pass
+
+    __tokens: TokenStream
+    __token_count: int
+    __index: int
+
+    def __init__(self, tokens: TokenStream) -> None:
+        """
+        :param tokens:    Tokens to consume
+        """
+        self.__tokens = tokens
+        self.__token_count = len(tokens)
+        self.__index = 0
+
+    def get_next(self, expected: TokenType) -> Optional[Token]:
+        """
+        If the next token is of type expected, consumes and returns the token. Otherwise returns None
+
+        :param expected:    Type expected to be next in the stream
+        :return:            The token if token is of type expected, None otherwise
+        """
+        if self.__index < self.__token_count and self.__tokens[self.__index].type == expected:
+            ret: Token = self.__tokens[self.__index]
+            self.__index += 1
+            return ret
+        return None
+
+    def skip_next(self, expected: TokenType) -> bool:
+        """
+        If the next token is of type expected, consumes the token.
+
+        :param expected:    Type expected to be next in the stream
+        :return:            If token is of type expected
+        """
+        if self.__index < self.__token_count and self.__tokens[self.__index].type == expected:
+            self.__index += 1
+            return True
+        return False
+
+    def is_next(self, expected: TokenType) -> bool:
+        """
+        Checks if the next token is of type expected without consumption
+
+        :param expected:    Type expected to be next in the stream
+        :return:            If token is of type expected
+        """
+        return self.__index < self.__token_count and self.__tokens[self.__index].type == expected
+
+    def advance(self) -> None:
+        """
+        Consumes a token
+
+        :return:    None
+        """
+        if self.__index < self.__token_count:
+            self.__index += 1

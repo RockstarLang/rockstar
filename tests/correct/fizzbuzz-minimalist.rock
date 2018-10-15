@@ -14,11 +14,11 @@ If Modulus taking Counter, Fizz is 0 and Modulus taking Counter, Buzz is 0
 Say "FizzBuzz!"
 Continue
     (blank line ending 'If' Block)
-If Modulus taking Counter and Fizz is 0
+If Modulus taking Counter & Fizz is 0
 Say "Fizz!"
 Continue
     (blank line ending 'If' Block)
-If Modulus taking Counter and Buzz is 0
+If Modulus taking Counter & Buzz is 0
 Say "Buzz!"
 Continue
     (blank line ending 'If' Block)

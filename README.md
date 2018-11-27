@@ -411,6 +411,7 @@ Whisper my world
 * [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
 * [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac
 * [sellout](https://github.com/davidadsit/sellout) - Rockstar to C# (dotnet core) transpiler
+* [native-rockstar](https://github.com/gillesdami/native-rockstar) - Rockstar to C++ transpiler in javascript.
 
 # Social Spaces
 

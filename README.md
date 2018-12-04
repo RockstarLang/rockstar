@@ -151,7 +151,7 @@ Rockstar also supports a unique language feature known as **poetic literals**. I
 
 ##### Poetic Type Literals
 
-A poetic type assignment is a single line consisting of a variable name, the `is` keyword, or the aliases `was` or `were`, and the a Literal Word signifying the value the variable will be set to.
+A poetic type assignment is a single line consisting of a variable name, the `is` keyword, or the aliases `was` or `were`, and a Literal Word signifying the value the variable will be set to.
 
 * `My heart is true` - initialises the variable `my heart` with the Boolean value `true` 
 * `Tommy is nobody` - initialises the variable `Tommy` with the value `null` using the `nobody` alias

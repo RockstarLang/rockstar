@@ -353,8 +353,8 @@ Say "Buzz!"
 Continue
     (blank line ending 'If' Block)
 Say Counter
-    (EOL ending Until block)
 ```
+(Note that the end of the file terminates the `Until` block.)
 
 And here's the same thing in idiomatic Rockstar, using poetic literals and no indentation
 

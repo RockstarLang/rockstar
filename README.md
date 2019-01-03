@@ -178,7 +178,7 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 
 ### Comparison
 
-Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interepreted differently depending whether it appears as part of a statement or as part of an expression. `isn't` is the logical negation of the `is` keyword.
+Similar to the single-equals operator in Visual Basic and some scripting languages, the `is` keyword in Rockstar is interpreted differently depending whether it appears as part of a statement or as part of an expression. `isn't` is the logical negation of the `is` keyword.
 
 Comparison in Rockstar can only be done within an expression.
 

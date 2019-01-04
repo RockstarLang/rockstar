@@ -222,3 +222,76 @@ class TokenConsumer:
         """
         if self.__index < self.__token_count:
             self.__index += 1
+
+
+class ASTType(Enum):
+    """
+    Indicates the type of AST node.
+    """
+    CommonVariable = auto()  # data: string "my:variable"
+    ProperVariable = auto()  # data: string "MyBestVariable"
+    Pronoun = auto()         # data: None
+
+    ConstantMysterious = auto()  # data: None
+    ConstantNull = auto()        # data: None
+    ConstantBoolean = auto()     # data: bool
+    ConstantNumber = auto()      # data: float
+    ConstantString = auto()      # data: string "this is the contents of my string"
+
+    FunctionCall = auto()        # children: [Variable, Arguments...]
+    Break = auto()               # children: []
+    Continue = auto()            # children: []
+    Return = auto()              # children: []
+
+    Addition = auto()            # children: [lhs, rhs]
+    Subtraction = auto()         # children: [lhs, rhs]
+    Multiplication = auto()      # children: [lhs, rhs]
+    Division = auto()            # children: [lhs, rhs]
+
+    Greater = auto()             # children: [lhs, rhs]
+    Less = auto()                # children: [lhs, rhs]
+    GreaterEq = auto()           # children: [lhs, rhs]
+    LessEq = auto()              # children: [lhs, rhs]
+
+    Eq = auto()                  # children: [lhs, rhs]
+    Neq = auto()                 # children: [lhs, rhs]
+    And = auto()                 # children: [lhs, rhs]
+    Or = auto()                  # children: [lhs, rhs]
+    Nor = auto()                 # children: [lhs, rhs]
+
+    Increment = auto()           # children: [variable]
+    Decrement = auto()           # children: [variable]
+
+    Print = auto()               # children: [value]
+    GetLine = auto()             # children: [variable]
+    Set = auto()                 # children: [variable, value]
+
+    IfStatement = auto()         # children: [condition, statements...]
+    WhileStatement = auto()      # children: [condition, statements...]
+    UntilStatement = auto()      # children: [condition, statements...]
+
+    FunctionArgs = auto()        # children: [arg1, argN...]
+    FunctionDecl = auto()        # children: [name, FunctionArgs, statements...]
+
+    Program = auto()             # children: [statements]
+
+
+class ASTNode:
+    """
+    A node in the AST. May contain data and zero or more children.
+    """
+    node_type: ASTType
+    data: Any
+    location: SourceLocation
+    children: List['ASTNode']
+
+    def __init__(self,
+                 node_type: ASTType,
+                 data: Any,
+                 location: SourceLocation,
+                 children: List['ASTNode'] = List['ASTNode']()) \
+            -> None:
+        self.node_type = node_type
+        self.data = data
+        self.location = location
+        self.children = children

@@ -232,14 +232,15 @@ class TokenConsumer:
             return True
         return False
 
-    def is_next(self, expected: TokenType) -> bool:
+    def is_next(self, expected: TokenType, offset: int = 0) -> bool:
         """
         Checks if the next token is of type expected without consumption
 
         :param expected:    Type expected to be next in the stream
+        :param offset:      Offset to check
         :return:            If token is of type expected
         """
-        return self.__index < self.__token_count and self.__tokens[self.__index].type == expected
+        return self.__index + offset < self.__token_count and self.__tokens[self.__index + offset].type == expected
 
     def advance(self) -> None:
         """
@@ -249,6 +250,15 @@ class TokenConsumer:
         """
         if self.__index < self.__token_count:
             self.__index += 1
+
+    def has_token(self) -> bool:
+        return self.__index >= self.__token_count
+
+    def unconditional_get_next(self) -> Token:
+        if self.__index < self.__token_count:
+            ret: Token = self.__tokens[self.__index]
+            self.__index += 1
+            return ret
 
 
 class ASTType(Enum):

@@ -1,10 +1,10 @@
 program    ::= <newline>* (<statement> (<newline>+ | (<newline>+ <statement>)*)?)?
 
 statement  ::= <put_statement> | <listen_statement> | <say_statement> | <give_back_statement> | <if_statement> |
-               <while_statement> | <until_statement> | <function_statement> | <increment_statement> |
-               <decrement_statement> | <continue_statement> | <break_statement> | <variable_assignment_statement> |
-               <function_call>
+               <while_statement> | <until_statement> | <increment_statement> | <decrement_statement> |
+               <continue_statement> | <break_statement> | <variable_statement>
 
+variable_statement   ::= <function_statement> | <variable_assignment_statement> | <function_call>
 
 put_statement        ::= "put" <expr> "into" <variable>
 listen_statement     ::= "listen" ("to" <variable>)?

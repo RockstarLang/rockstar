@@ -6,7 +6,7 @@ from enum import Enum, auto
 import decimal
 
 
-class SourceLocation(NamedTuple):
+class SourceLocation:
     """
     Represents a pair of start and end locations for the lexer token/ast node.
     """
@@ -14,6 +14,33 @@ class SourceLocation(NamedTuple):
     char_start: int
     line_end: int
     char_end: int
+
+    def __init__(self, line_start: int, char_start: int, line_end: int, char_end: int) -> None:
+        self.line_start = line_start
+        self.char_start = char_start
+        self.line_end = line_end
+        self.char_end = char_end
+
+    def extend(self, that: 'SourceLocation') -> 'SourceLocation':
+        """
+        Combine two source locations to get the source location that surrounds both.
+
+        :param that:    Other SourceLocation
+        :return:        New SourceLocation
+        """
+        loc = SourceLocation(line_start=self.line_start, char_start=self.char_start,
+                             line_end=self.line_end, char_end=self.char_end)
+        loc.extend_self(that)
+        return loc
+
+    def extend_self(self, that: 'SourceLocation') -> None:
+        """
+        Combines another SourceLocation with this one, setting this one to surround both.
+
+        :param that:    Other SourceLocation
+        """
+        self.line_start, self.char_start = min((self.line_start, self.char_start), (that.line_start, that.char_start))
+        self.line_end, self.char_end = min((self.line_end, self.char_end), (that.line_end, that.char_end))
 
 
 class RockstarError(Exception):

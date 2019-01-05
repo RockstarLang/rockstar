@@ -8,7 +8,7 @@ The other is known as *idiomatic Rockstar*, where we encourage developers to use
 
 ### Examples
 
-* Fizzbuzz in (idiomatic Rockstar)[fizzbuzz.rock] | (minimalist Rockstar)[fizzbuzz_minimalist.rock])
+* Fizzbuzz in [idiomatic Rockstar](fizzbuzz.rock) | [minimalist Rockstar](fizzbuzz_minimalist.rock)
 
 Want to contribute your own examples? Go for it - fork this repo, add your samples to the `examples` folder, and open a pull request.
 

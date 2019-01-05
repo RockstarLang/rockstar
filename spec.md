@@ -50,7 +50,6 @@ Rockstar uses a very similar type system to that defined by the [ECMAScript type
  * `wrong`, `no` and `lies` are valid aliases for `false`
 * **Number** - Numbers in Rockstar are stored using the [DEC64](http://www.dec64.com/) numeric type. The number internally is the closest representable number of the DEC64 type.
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
-* **Object** - a collection of named data properties, as in ECMAScript.
 
 Functions are just objects with a function call operator.
 
@@ -63,7 +62,6 @@ The results of comparisons often rely on a concept called 'Truthiness'. If the v
 - Boolean - Truthy if True, Falsy if False
 - Number - If equal to zero, falsy. Otherwise, truthy.
 - String - Truthy (null is the falsy equivalent)
-- Object - Truthy (null is the falsy equivalent)
 
 ### Constants vs Keywords
 

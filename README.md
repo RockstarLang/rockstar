@@ -1,8 +1,6 @@
 # Rockstar
 
-Rockstar is a dynamically typed Turing-complete programming language. 
-
-Rockstar is designed for creating computer programs that are also song lyrics, and is heavily influenced by the lyrical conventions of 1980s hard rock and power ballads.
+Rockstar is a dynamically typed computer programming language, designed for creating programs that are also song lyrics. Rockstar is heavily influenced by the lyrical conventions of 1980s hard rock and power ballads.
 
 ### But why?
 
@@ -10,15 +8,14 @@ Mainly because if we make Rockstar a real (and completely pointless) programming
 
 Also 'cos it's kinda fun and any language based on the idea of compiling Meatloaf lyrics has to be worth a look, right?
 
-Also we can make stickers. Who doesn't want a sticker on their laptop saying 'CERTIFIED ROCKSTAR DEVELOPER'?
+Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CERTIFIED ROCKSTAR DEVELOPER'?
 
 ## What's here?
 
 * The [Rockstar language specification](spec.md)
 * Some [examples of Rockstar programs](examples/README.md)
-* Work in progress on the [reference implementation](src/README.md)
 
-# Implementations
+## Implementations
 
 * [rockstar-js](https://github.com/wolfgang42/rockstar-js) - Rockstar-to-JavaScript transpiler
 * [rockstar-lexer](https://github.com/aitorres/rockstar-lexer) - Rockstar lexer written in Haskell with Alex
@@ -37,12 +34,12 @@ Also we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 * [sellout](https://github.com/davidadsit/sellout) - Rockstar to C# (dotnet core) transpiler
 * [native-rockstar](https://github.com/gillesdami/native-rockstar) - Rockstar to C++ transpiler in javascript.
 
-# Social Spaces
+## Social Spaces
 
 * [/r/RockstarDevs](https://www.reddit.com/r/RockstarDevs/) - Subreddit
 * [Rockstar Developers](https://discordapp.com/invite/xsQK7UU) - Discord Group
 
-# Media Coverage
+## Media Coverage
 * [Meet the boffin behind a computer programming language based on power ballads](https://www.loudersound.com/features/meet-the-boffin-behind-a-computer-programming-language-based-on-power-ballads) in Classic Rock magazine.
 * [Rockstar article on BoingBoing](https://boingboing.net/2018/07/25/hello-cleveland-world.html)
 * [Rockstar on HackerNews](https://news.ycombinator.com/item?id=17585589)
@@ -50,6 +47,6 @@ Also we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 * [Rockstar on dice.com](https://insights.dice.com/2018/07/27/rockstar-programming-language-developers/)
 * [The Rockstar Programming Language | Mitigated Frenzy](https://bparsia.wordpress.com/2018/09/11/the-rockstar-programming-language/) - see also their solution to the [Rainfall problem](https://bparsia.wordpress.com/2018/09/12/rockstar-rainfall-problem/#comment-1624)
 
-# See Also
+## See Also
 
 * [Enterprise™](https://github.com/joaomilho/Enterprise) - "The world is not made only of Rockstar programmers. For all the non hipsters out there, now there's Enterprise™"

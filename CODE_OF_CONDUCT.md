@@ -22,7 +22,7 @@ Examples of unacceptable behavior by participants include:
 * Publishing others' private information, such as a physical or electronic address, without explicit permission
 * Other conduct which could reasonably be considered inappropriate in a professional setting
 
-## A Note about 'Rockstar'
+## A Note about Rockstar
 
 Rockstar is a little different to most open source software projects. For starters, it's a joke. A joke with a formal specification and multiple implementations, but please remember - we're doing this for a laugh. Please don't spoil the fun.
 

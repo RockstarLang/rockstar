@@ -23,5 +23,4 @@ If Modulus taking Counter and Buzz is 0
 Say "Buzz!"
 Continue
     (blank line ending 'If' Block)
-Say Counter
-(   Note that the end of the file terminates the `Until` block.)
+Say Counter (Note that the EOF terminates the `Until` block.)

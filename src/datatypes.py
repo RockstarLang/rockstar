@@ -40,7 +40,7 @@ class SourceLocation:
         :param that:    Other SourceLocation
         """
         self.line_start, self.char_start = min((self.line_start, self.char_start), (that.line_start, that.char_start))
-        self.line_end, self.char_end = min((self.line_end, self.char_end), (that.line_end, that.char_end))
+        self.line_end, self.char_end = max((self.line_end, self.char_end), (that.line_end, that.char_end))
 
 
 class RockstarError(Exception):

@@ -94,6 +94,52 @@ class RockstarParser:
         surrounding_location: SourceLocation = put_token.location.extend(variable.location)
         return ASTNode(ASTType.Set, None, location=surrounding_location, children=[variable, expr])
 
+    def say_statement(self) -> ASTNode:
+        """
+        <say_commands> <expr>
+        """
+        say_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedSay)
+        if say_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedSay)
+
+        expr: ASTNode = self.expr()
+
+        surrounding_location: SourceLocation = say_token.location.extend(expr.location)
+        return ASTNode(ASTType.Print, None, location=surrounding_location, children=[expr])
+
+    def give_back_statement(self) -> ASTNode:
+        """
+        "give" "back" <expr>
+        """
+        give_back_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedReturn)
+        if give_back_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedReturn)
+
+        expr: ASTNode = self.expr()
+
+        surrounding_location: SourceLocation = give_back_token.location.extend(expr.location)
+        return ASTNode(ASTType.Return, None, location=surrounding_location, children=[expr])
+
+    def continue_statement(self) -> ASTNode:
+        """
+        "continue" | ("take" "it" "to" "the" "top")
+        """
+        continue_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedContinue)
+        if continue_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedContinue)
+
+        return ASTNode(ASTType.Continue, None, location=continue_token.location, children=[])
+
+    def break_statement(self) -> ASTNode:
+        """
+        "break" ("it" "down")?
+        """
+        break_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedBreak)
+        if break_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedBreak)
+
+        return ASTNode(ASTType.Break, None, location=break_token.location, children=[])
+
 def parse(tokens: TokenStream) -> ASTNode:
     """
     Parses the input token stream into an AST

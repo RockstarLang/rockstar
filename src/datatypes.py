@@ -278,7 +278,7 @@ class ASTType(Enum):
     FunctionCall = auto()        # children: [Variable, Arguments...]
     Break = auto()               # children: []
     Continue = auto()            # children: []
-    Return = auto()              # children: []
+    Return = auto()              # children: [value]
 
     Addition = auto()            # children: [lhs, rhs]
     Subtraction = auto()         # children: [lhs, rhs]

@@ -296,8 +296,8 @@ class ASTType(Enum):
     Or = auto()                  # children: [lhs, rhs]
     Nor = auto()                 # children: [lhs, rhs]
 
-    Increment = auto()           # children: [variable]
-    Decrement = auto()           # children: [variable]
+    Increment = auto()           # data: increment amount, children: [variable]
+    Decrement = auto()           # data: decrement amount (positive), children: [variable]
 
     Print = auto()               # children: [value]
     GetLine = auto()             # children: [variable]

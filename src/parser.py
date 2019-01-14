@@ -67,9 +67,9 @@ class RockstarParser:
         if self.__token_consumer.is_next(TokenType.ReservedUntil):
             return self.until_statement()
         if self.__token_consumer.is_next(TokenType.ReservedBuild):
-            return self.increment_statement()
+            return self.increment_or_decrement_statement(ASTType.Increment)
         if self.__token_consumer.is_next(TokenType.ReservedKnock):
-            return self.decrement_statement()
+            return self.increment_or_decrement_statement(ASTType.Decrement)
         if self.__token_consumer.is_next(TokenType.ReservedContinue):
             return self.continue_statement()
         if self.__token_consumer.is_next(TokenType.ReservedBreak):
@@ -139,6 +139,54 @@ class RockstarParser:
             raise self.make_missing_token_error(TokenType.ReservedBreak)
 
         return ASTNode(ASTType.Break, None, location=break_token.location, children=[])
+
+    def increment_or_decrement_statement(self, ast_type: ASTType) -> ASTNode:
+        """
+        "build" <variable> "up" (","? "up")*
+        "knock" <variable> "down" (","? "down")*
+
+        Parses an increment or decrement statement, depending on the passed in ast_type,
+        and returns the created ASTNode.
+
+        :param ast_type: Whether this is increment or decrement
+        :return:         The ASTNode representing this operation
+        """
+        assert ast_type in (ASTType.Increment, ASTType.Decrement)
+        # verb_token_type will be "build" for an increment and "knock" for a decrement
+        # direction_token_type will be "up" for an increment and "down" for a decrement
+        verb_token_type: TokenType = TokenType.ReservedBuild
+        direction_token_type: TokenType = TokenType.ReservedUp
+        if ast_type == ASTType.Decrement:
+            verb_token_type = TokenType.ReservedKnock
+            direction_token_type = TokenType.ReservedDown
+
+        verb_token: Optional[Token] = self.__token_consumer.get_next(verb_token_type)
+        if verb_token is None:
+            raise self.make_missing_token_error(verb_token_type)
+
+        variable: ASTNode = self.variable()
+
+        first_direction_token: Optional[Token] = self.__token_consumer.get_next(direction_token_type)
+        if first_direction_token is None:
+            raise self.make_missing_token_error(direction_token_type)
+
+        # The amount being incremented or decremented. Always positive either way.
+        modification_amount = 1
+        # The last "up" or "down" token, used to determine location of the ASTNode.
+        last_direction_token: Token = first_direction_token
+
+        while self.__token_consumer.is_next(TokenType.Comma) or self.__token_consumer.is_next(direction_token_type):
+            # Skips comma, or does nothing if the next token isn't a comma
+            self.__token_consumer.skip_next(TokenType.Comma)
+            direction_token: Optional[Token] = self.__token_consumer.get_next(direction_token_type)
+            # If it was a comma, the next token must be an up/down token
+            if direction_token is None:
+                raise self.make_missing_token_error(direction_token_type)
+            modification_amount += 1
+            last_direction_token = direction_token
+
+        surrounding_location: SourceLocation = verb_token.location.extend(last_direction_token.location)
+        return ASTNode(ast_type, data=modification_amount, location=surrounding_location, children=[variable])
 
 def parse(tokens: TokenStream) -> ASTNode:
     """

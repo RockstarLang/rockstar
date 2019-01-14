@@ -56,6 +56,8 @@ class RockstarParser:
             return self.put_statement()
         if self.__token_consumer.is_next(TokenType.ReservedListen):
             return self.listen_statement()
+        if self.__token_consumer.is_next(TokenType.ReservedListenTo):
+            return self.listen_to_statement()
         if self.__token_consumer.is_next(TokenType.ReservedSay):
             return self.say_statement()
         if self.__token_consumer.is_next(TokenType.ReservedReturn):
@@ -93,6 +95,28 @@ class RockstarParser:
 
         surrounding_location: SourceLocation = put_token.location.extend(variable.location)
         return ASTNode(ASTType.Set, None, location=surrounding_location, children=[variable, expr])
+
+    def listen_statement(self) -> ASTNode:
+        """
+        "listen"
+        """
+        listen_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedListen)
+        if listen_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedListen)
+        return ASTNode(ASTType.GetLine, None, location=listen_token.location, children=[])
+
+    def listen_to_statement(self) -> ASTNode:
+        """
+        "listen to" <variable>
+        """
+        listen_to_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedListenTo)
+        if listen_to_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedListenTo)
+
+        variable: ASTNode = self.variable()
+
+        surrounding_location = listen_to_token.location.extend(variable.location)
+        return ASTNode(ASTType.GetLine, None, location=surrounding_location, children=[variable])
 
 def parse(tokens: TokenStream) -> ASTNode:
     """

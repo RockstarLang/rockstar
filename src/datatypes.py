@@ -151,7 +151,7 @@ class TokenType(Enum):
     ReservedContinue = auto()        # `continue` or `take it to the top`
     ReservedPut = auto()             # `put Val into Val2` (put)
     ReservedInto = auto()            # `put Val into Val2` (into)
-    ReservedListen = auto()          # `listen to Val` (listen)
+    ReservedListen = auto()          # `listen` (listen)
     ReservedListenTo = auto()        # `listen to Val` (listen to)
     ReservedSay = auto()             # `say/shout/whisper/scream Val` (say)
     ReservedReturn = auto()          # `give back Val` (give back)
@@ -300,7 +300,7 @@ class ASTType(Enum):
     Decrement = auto()           # children: [variable]
 
     Print = auto()               # children: [value]
-    GetLine = auto()             # children: [variable]
+    GetLine = auto()             # children: [variable] or []
     Set = auto()                 # children: [variable, value]
 
     IfStatement = auto()         # children: [condition, statements...]

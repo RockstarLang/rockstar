@@ -3,8 +3,8 @@ Rockstar Reference Compiler's recursive decent parser. Turns an array of tokens 
 Entry point is parser.parse()
 """
 
+from typing import Optional
 from datatypes import TokenConsumer, TokenType, TokenStream, ASTType, ASTNode, SourceLocation, ParserError, Token
-
 
 class RockstarParser:
     """
@@ -15,6 +15,17 @@ class RockstarParser:
 
     def __init__(self, token_consumer: TokenConsumer) -> None:
         self.__token_consumer = token_consumer
+
+    def make_missing_token_error(self, expected_type: TokenType) -> ParserError:
+        """
+        Builds a ParserError detailing the expected token type and the type found instead.
+
+        :param expected_type:   The token type expected to be found
+        :return:                A ParserError detailing the error with the location
+        """
+        next_token: Token = self.__token_consumer.unconditional_get_next()
+        return ParserError(f"Missing expected token: {expected_type}. Found token: {next_token.type}",
+                           next_token.location, 0, 0)
 
     def program(self) -> ASTNode:
         """
@@ -65,6 +76,23 @@ class RockstarParser:
             return self.break_statement()
         return self.variable_statement()
 
+    def put_statement(self) -> ASTNode:
+        """
+        "put" <expr> "into" <variable>
+        """
+        put_token: Optional[Token] = self.__token_consumer.get_next(TokenType.ReservedPut)
+        if put_token is None:
+            raise self.make_missing_token_error(TokenType.ReservedPut)
+
+        expr: ASTNode = self.expr()
+
+        if not self.__token_consumer.skip_next(TokenType.ReservedInto):
+            raise self.make_missing_token_error(TokenType.ReservedInto)
+
+        variable: ASTNode = self.variable()
+
+        surrounding_location: SourceLocation = put_token.location.extend(variable.location)
+        return ASTNode(ASTType.Set, None, location=surrounding_location, children=[variable, expr])
 
 def parse(tokens: TokenStream) -> ASTNode:
     """

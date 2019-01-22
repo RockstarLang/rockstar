@@ -33,6 +33,7 @@ Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 * [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac
 * [sellout](https://github.com/davidadsit/sellout) - Rockstar to C# (dotnet core) transpiler
 * [native-rockstar](https://github.com/gillesdami/native-rockstar) - Rockstar to C++ transpiler in javascript.
+* [rokkstar](https://github.com/ascheja/rokkstar) - Rockstar parser and interpreter written in Kotlin.
 
 ## Social Spaces
 

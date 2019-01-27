@@ -290,7 +290,26 @@ poetic_digit = t:[A-Za-z']+
 
 variable = common_variable / proper_variable / pronoun
 
-keyword = ('if'i / 'takes'i / 'taking'i / 'say'i / 'put'i / 'else'i) ![A-Za-z]
+
+// To disallow identifiers like 'My back is hurting' (which is illegal because 'back' is a keyword)
+// we need to explicitly define all language keywords, and they MUST be matched in descending order of length
+// because of Complicated Weird Parser Reasons.
+kw10 = 'mysterious'i
+kw8 = ( 'stronger'i / 'continue'i)
+kw7 = ( 'between'i / 'greater'i / 'nothing'i / 'nowhere'i / 'smaller'i / 'whisper'i / 'without'i)
+kw6 = ( 'ain\'t'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
+    / 'strong'i)
+kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'shout'i / 'small'i
+    / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
+kw4 = ( 'aint'i / 'back'i / 'down'i / 'else'i / 'give'i / 'gone'i / 'high'i / 'into'i / 'less'i / 'lies'i / 'null'i
+    / 'plus'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
+kw3 = ( 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
+    / 'the'i / 'top'i / 'ver'i / 'was'i / 'xem'i / 'yes'i / 'zie'i / 'zir'i)
+kw2 = ( 'an'i / 'as'i / 'he'i / 'if'i / 'is'i / 'it'i / 'my'i / 'no'i / 'of'i / 'ok'i / 'or'i / 'to'i / 'up'i / 've'i
+    / 'xe'i / 'ze'i )
+kw1 = 'a'i
+
+keyword = (kw10 / kw8 / kw7 / kw6 / kw5 / kw5 / kw4 / kw3 / kw2 / kw1) !letter
 
 proper_noun = !keyword uppercase_letter letter*
 proper_variable = head:$(proper_noun (' ' $proper_noun)*)

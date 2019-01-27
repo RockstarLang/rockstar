@@ -1,18 +1,16 @@
-var assert = require('chai').assert;
-
-var path = require('path');
-
+const assert = require('chai').assert;
+const path = require('path');
 const fs = require('fs');
-var satriani = require('../satriani.js');
+const satriani = require('../satriani.js');
 
 describe('failure tests', function() {
-    test_directory('test/failures/', execute_and_compare_error);
+    test_directory('../tests/failures/', execute_and_compare_error);
 });
 
 describe('feature tests', function() {
-    var fixtures = fs.readdirSync('test/fixtures');
+    var fixtures = fs.readdirSync('../tests/fixtures');
     fixtures.forEach(fixture => {
-        test_directory(path.join('test/fixtures/', fixture), execute_and_compare_output);
+        test_directory(path.join('../tests/fixtures/', fixture), execute_and_compare_output);
     });
 });
 

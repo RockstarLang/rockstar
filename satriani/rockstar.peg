@@ -1,3 +1,9 @@
+/*
+PEG grammar for Rockstar (https://codewithrockstar.com)
+Created using PEG.js        https://pegjs.org
+After updating, run pegjs -o rockstar-parser.js rockstar.peg
+*/
+
 program     = p:line * { return { list: p.filter(item => item) } }
 
 line = _* s:statement EOL+ { return s }

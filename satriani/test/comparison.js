@@ -1,4 +1,4 @@
-const environment = require('../environment.js');
+const interpreter = require('../satriani.interpreter.js');
 const assert = require('chai').assert;
 
 let tests = [
@@ -14,8 +14,6 @@ let tests = [
     [true, null, false],
     [0, null, true],
     [1, null, false],
-//    ["TRUE", true, true],
-//    ["LIES", false, true],
     [undefined, undefined, true],
     [undefined, 1, false],
     [undefined, 0, false],
@@ -33,15 +31,13 @@ let tests = [
     ["hello","world", false]
 ];
 
-
-
 describe('comparison tests', function() {
     tests.forEach(test => {
         let lhs = test[0];
         let rhs = test[1];
         let out = test[2];
         it(typeof (lhs) + ':' + JSON.stringify(lhs) + ' ' + (out  ? '==' : '!=') + ' ' + typeof (rhs) + ':' + JSON.stringify(rhs), function () {
-            assert.equal(environment.eq(lhs, rhs), test[2]);
+            assert.equal(interpreter.eq(lhs, rhs), test[2]);
         });
     });
 });

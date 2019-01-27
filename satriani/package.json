@@ -20,11 +20,11 @@
     "browserify": "node node_modules/browserify/bin/cmd.js satriani.js --standalone Satriani -o deploy/docs/js/satriani.js",
     "deploy": "node_modules/gh-pages/bin/gh-pages.js -u 'CircleCI <circleci@codewithrockstar.com>' -r git@github.com:RockstarLang/codewithrockstar.com.git --add --src docs/js/satriani.js -m 'Updated js/satriani.js from main repo' -b master -d deploy",
     "serve": "python -m SimpleHTTPServer 8000",
-    "test": "pegjs rockstar.peg; mocha test/*.js"
+    "test": "pegjs -o satriani.parser.js rockstar.peg; mocha test/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dylanbeattie/satriani.git"
+    "url": "git+https://github.com/RockstarLang/rockstar.git"
   },
   "author": "",
   "license": "ISC",

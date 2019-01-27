@@ -61,10 +61,8 @@ Environment.prototype = {
                      result = evaluate(next, env, true);
                      if (result) switch(result.action) {
                          case 'break':
-                             console.log('break from list');
                              break main;
                          case 'continue':
-                             console.log('continue from list');
                              continue main;
                          case 'return':
                              return (result.value);
@@ -79,10 +77,7 @@ Environment.prototype = {
                  }
                  return;
              case 'break':
-                 if (flag) {
-                     console.log('BREAK');
-                     return { 'action' : 'break' };
-                 }
+                 if (flag) return { 'action' : 'break' };
                  return;
              case 'continue':
                  if (flag) return { 'action' : 'continue' };
@@ -152,7 +147,6 @@ Environment.prototype = {
              case "while_loop":
                  while_outer: while (evaluate(expr.condition, env, flag)) {
                      let result = evaluate(expr.consequent, env, flag);
-                     console.log(JSON.stringify(result));
                      if (result) switch(result.action) {
                          case 'continue':
                              continue while_outer;
@@ -166,7 +160,6 @@ Environment.prototype = {
              case "until_loop":
                  until_outer: while (!evaluate(expr.condition, env, flag)) {
                      let result = evaluate(expr.consequent, env, flag);
-                     console.log(JSON.stringify(result));
                      if (result) switch(result.action) {
                          case 'continue':
                              continue until_outer;

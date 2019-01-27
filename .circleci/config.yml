@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - checkout
-      - run: ls -la
+      - run: cd satriani && ls -la
 
       # Download and cache dependencies
       - restore_cache:
@@ -26,12 +26,12 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: yarn install
+      - run: cd satriani && yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn test
+      - run: cd satriani && yarn test
   deploy:
     docker:
       # specify the version you desire here
@@ -46,10 +46,10 @@ jobs:
 
     steps:
       - checkout
-      - run: ls
-      - run: yarn install
-      - run: yarn browserify
-      - run: yarn deploy
+      - run: cd satriani && ls
+      - run: cd satriani && yarn install
+      - run: cd satriani && yarn browserify
+      - run: cd satriani && yarn deploy
 
 workflows:
   version: 2

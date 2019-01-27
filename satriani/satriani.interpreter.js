@@ -43,7 +43,7 @@ Environment.prototype = {
 
     run: function(program) {
         let result = evaluate(program, this);
-        if (result && result.action) return(result.value);
+        return (result ? result.value : undefined);
     },
 
     pronoun_alias: null,
@@ -57,17 +57,18 @@ Environment.prototype = {
          let type = node[0];
          let expr = node[1];
          switch (type) {
+             case "action": return(tree);
              case "list":
                  let result = null;
                  for (let i = 0; i < expr.length; i++) {
                      let next = expr[i];
-                     result = evaluate(next, env, true);
-                     if (result && result.action) return(result);
+                     result = evaluate(next, env);
+                     if (result && result.action) return (result);
                  }
                  return result;
              case "conditional":
                  if (evaluate(expr.condition, env)) {
-                     return evaluate(expr.consequent, env)
+                     return evaluate(expr.consequent, env);
                  } else if (expr.alternate) {
                      return evaluate(expr.alternate, env);
                  }
@@ -188,7 +189,8 @@ Environment.prototype = {
                  return;
              case "call":
                  let func = env.lookup(expr.name);
-                 return func.apply(null, expr.args.map(arg => evaluate(arg, env)));
+                 let func_result = func.apply(null, expr.args.map(arg => evaluate(arg, env)));
+                 return (func_result ? func_result.value : undefined);
              default:
                  throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
 
@@ -228,8 +230,7 @@ Environment.prototype = {
          if (names.length != arguments.length) throw('Wrong number of arguments supplied to function ' + expr.name + ' (' + expr.args + ')');
          let scope = env.extend();
          for (let i = 0; i < names.length; ++i) scope.def(names[i], arguments[i])
-         let result = evaluate(expr.body, scope);
-         if (result && result.action == 'return') return result.value;
+         return evaluate(expr.body, scope);
      }
 
      return lambda;
@@ -238,6 +239,8 @@ Environment.prototype = {
  function binary(b, env) {
      let l = evaluate(b.left, env);
      let r = evaluate(b.right, env);
+     if (typeof(l) == 'undefined') l = 'mysterious';
+     if (typeof(r) == 'undefined') r = 'mysterious'
      switch (b.op) {
          case '+':
              return l + r;
@@ -246,6 +249,22 @@ Environment.prototype = {
          case '/':
              return l / r;
          case '*':
-             return l * r;
+             return multiply(l, r);
      }
  }
+ function multiply(lhs, rhs) {
+    // Null, nothing, noone, nowhere, etc. are all zero for multiplication purposes.
+    if (rhs == null) rhs = 0;
+    if (lhs == null) lhs = 0;
+     // Multiplying numbers just works.
+     if (typeof (lhs) == 'number' && typeof (rhs) == 'number') return (lhs * rhs);
+     // Multiplying strings by numbers does repeated concatenation
+     if (typeof (lhs) == 'string' && typeof (rhs) == 'number') return multiply_string(lhs, rhs);
+     if (typeof (lhs) == 'number' && typeof (rhs) == 'string') return multiply_string(rhs, lhs);
+ }
+
+ function multiply_string(s, n) {
+    let result = Array();
+    while(--n >= 0) result.push(s);
+    return(result.join(''));
+}

@@ -9,7 +9,9 @@ function Environment(parent) {
     this.vars = Object.create(parent ? parent.vars : null);
     this.parent = parent;
     this.output = (parent && parent.output ? parent.output : console.log);
-    this.readline = () => "";
+    // Because nodeJS is based on asynchronous IO, there is no built-in console.readline or similar
+    // so by default, any input will yield an empty string.
+    this.input = (parent && parent.input ? parent.input : () => "")
 }
 
 Environment.prototype = {
@@ -98,7 +100,7 @@ Environment.prototype = {
                  env.output(printable);
                  return;
              case "listen":
-                 return env.readline();
+                 return env.input();
              case "binary":
                  return binary(expr, env);
              case "lookup":

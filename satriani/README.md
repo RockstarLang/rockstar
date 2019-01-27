@@ -10,19 +10,20 @@ Satriani uses `pegjs`, a parser generator for JavaScript.
 
 The language grammar is defined in `rockstar.peg`.
 
-We use the `pegjs` command line to generate `rockstar.js`, which is the parser itself:
+We use the `pegjs` command line to generate `rockstar.parser.js`, which is the parser itself:
 
 ```
-$ pegjs rockstar.peg
+$ pegjs -o rockstar.parser.js rockstar.peg
 ```
-`rockstar.js` exports a function `parse(input, options)`, where `input` 
+
+`rockstar.parser.js` exports a function `parse(input, options)`, where `input` 
 is a string containing the source code of your Rockstar program and `options` is the 
 optional [pegjs parser options](https://pegjs.org/documentation#using-the-parser).
 
 `parse` will return an **abstract syntax tree** (AST) containing your program. The 
 AST is a JSON object representing your program as a tree of operations.
 
-`environment.js` is a runtime interpreter that can take the AST created by the parser and evaluate it. It's pluggable
+`rockstar.interpreter.js` is a runtime interpreter that can take the AST created by the parser and evaluate it. It's pluggable
 so you can override the I/O mechanisms.
 
 The test suite is runnable using [Mocha](https://mochajs.org/) - each 'test' is defined as a .rock source file and an .rock.out output file. so the 

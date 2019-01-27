@@ -28,9 +28,10 @@ function test_directory(directory, predicate) {
 
 function execute(source, inputs) {
     let result = "";
-    let interpreter = new satriani.Interpreter(function(s) { result += String(s)  + "\n"; });
-    interpreter.input = () => inputs.shift();
-    interpreter.interpret(source);
+    let output = function(s) { result += String(s)  + "\n"; };
+    let input = function() { return inputs.shift(); };
+    let rockstar = new satriani.Interpreter();
+    rockstar.run(source, input, output);
     return result;
 }
 

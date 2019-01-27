@@ -82,8 +82,8 @@ consequent 	= _ s:statement { return s }
       / EOL s:block { return s }
 
 alternate 	= _ 'else'i _ a:statement { return a }
-      / EOL 'else'i _ a:statement { return a }
-      / EOL 'else'i EOL a:block { return a }
+      / EOL+ 'else'i _ a:statement { return a }
+      / EOL+ 'else'i EOL a:block { return a }
             / EOL { return null }
 
 conditional = 'if'i _ e:expression c:consequent a:alternate?  {
@@ -197,7 +197,7 @@ comparison = lhs:arithmetic _ c:comparator _ rhs:comparison
 
 greater 	= ('higher'i /'greater'i / 'bigger'i / 'stronger'i)
 smaller	 	= ('lower'i /'less'i / 'smaller'i / 'weaker'i)
-great	= ('high'i / 'greater'i / 'big'i / 'strong'i)
+great	= ('high'i / 'great'i / 'big'i / 'strong'i)
 small	= ('low'i / 'small'i / 'weak'i)
 
 comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }

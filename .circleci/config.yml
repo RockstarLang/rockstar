@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - checkout
-      - run: ls -la |/repo/satriani
+      - run: ls -la ~/repo/satriani
 
       # Download and cache dependencies
       - restore_cache:
@@ -46,6 +46,7 @@ jobs:
 
     steps:
       - checkout
+      - run: ls -la ~/repo/satriani
       - run: cd satriani && ls
       - run: cd satriani && yarn install
       - run: cd satriani && yarn browserify

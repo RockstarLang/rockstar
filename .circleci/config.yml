@@ -17,21 +17,20 @@ jobs:
     working_directory: ~/repo/satriani
 
     steps:
-      - checkout
-      - run: ls -la ~/repo/satriani
-
+      - checkout:
+          - path: ~/repo
       # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: cd satriani && yarn install
+      - run: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: cd satriani && yarn test
+      - run: yarn test
   deploy:
     docker:
       # specify the version you desire here
@@ -45,12 +44,11 @@ jobs:
     working_directory: ~/repo/satriani
 
     steps:
-      - checkout
-      - run: ls -la ~/repo/satriani
-      - run: cd satriani && ls
-      - run: cd satriani && yarn install
-      - run: cd satriani && yarn browserify
-      - run: cd satriani && yarn deploy
+      - checkout:
+        - path: ~/repo
+      - run: yarn install
+      - run: yarn browserify
+      - run: yarn deploy
 
 workflows:
   version: 2

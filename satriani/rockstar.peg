@@ -30,12 +30,20 @@ continue = ('continue'i ignore_rest_of_line / 'take it to the top'i) {
 	return { 'continue' : {} }
 }
 
-function = name:variable _ 'takes'i _ args:arg_list EOL body:block
+function = name:variable _ 'takes'i _ args:function_def_arg_list EOL body:block
 	{ return { 'function': {
     	name: name,
         args: args.map(arg => arg),
         body: body
     } } }
+
+function_def_arg_separator = (_? ', and' _ / _?('and' / '&' / ',' / "'n'")_?)
+
+function_def_arg_list = head:variable function_def_arg_separator tail:arg_list
+	{ return [head].concat(tail) }
+    /
+    arg:variable { return [arg] }
+
 
 arg_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
 

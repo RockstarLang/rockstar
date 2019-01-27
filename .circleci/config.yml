@@ -17,8 +17,8 @@ jobs:
     working_directory: ~/repo/satriani/
 
     steps:
-      - run: ls -la
       - checkout
+      - run: ls -la
 
       # Download and cache dependencies
       - restore_cache:

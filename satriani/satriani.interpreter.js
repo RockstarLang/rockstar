@@ -58,19 +58,12 @@ Environment.prototype = {
          switch (type) {
              case "list":
                  let result = null;
-                 main: for (let i = 0; i < expr.length; i++) {
+                 for (let i = 0; i < expr.length; i++) {
                      let next = expr[i];
                      result = evaluate(next, env, true);
-                     if (result) switch(result.action) {
-                         case 'break':
-                             break main;
-                         case 'continue':
-                             continue main;
-                         case 'return':
-                             return (result.value);
-                     }
+                     if (result && result.action) return(result);
                  }
-                 return;
+                 return result;
              case "conditional":
                  if (evaluate(expr.condition, env)) {
                      return evaluate(expr.consequent, env, flag)
@@ -79,17 +72,11 @@ Environment.prototype = {
                  }
                  return;
              case 'break':
-                 if (flag) return { 'action' : 'break' };
-                 return;
+                 return { 'action' : 'break' };
              case 'continue':
-                 if (flag) return { 'action' : 'continue' };
-                 return;
+                 return { 'action' : 'continue' };
              case "return":
-                 if (flag) return {
-                     'action': 'return',
-                     'value': evaluate(expr.expression, env, flag)
-                 };
-                 return evaluate(expr.expression, env, flag);
+                 return { 'action': 'return', 'value': evaluate(expr.expression, env, flag) };
              case "number":
              case "string":
              case "constant":
@@ -242,7 +229,8 @@ Environment.prototype = {
          if (names.length != arguments.length) throw('Wrong number of arguments supplied to function ' + expr.name + ' (' + expr.args + ')');
          let scope = env.extend();
          for (let i = 0; i < names.length; ++i) scope.def(names[i], arguments[i])
-         return evaluate(expr.body, scope);
+         let result = evaluate(expr.body, scope);
+         if (result && result.action == 'return') return result.value;
      }
 
      return lambda;

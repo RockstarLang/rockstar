@@ -1,0 +1,26 @@
+Modulus takes Number and Divisor
+While Number is as high as Divisor
+Put Number minus Divisor into Number
+    (blank line ending While block)
+Give back Number
+    (blank line ending function declaration)
+Limit is 100
+Counter is 0
+Fizz is 3
+Buzz is 5
+Until Counter is Limit
+Build Counter up
+If Modulus taking Counter, Fizz is 0 and Modulus taking Counter, Buzz is 0
+Say "FizzBuzz!"
+Continue
+    (blank line ending 'If' Block)
+If Modulus taking Counter & Fizz is 0
+Say "Fizz!"
+Continue
+    (blank line ending 'If' Block)
+If Modulus taking Counter & Buzz is 0
+Say "Buzz!"
+Continue
+    (blank line ending 'If' Block)
+Say Counter
+    (EOL ending Until block)

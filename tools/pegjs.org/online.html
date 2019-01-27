@@ -84,10 +84,10 @@
       <script>
           $(function() {
               let $grammar = $("textarea#grammar");
-              $.get('/rockstar.peg', function(data) {
+              $.get('/satriani/rockstar.peg', function(data) {
                   $grammar.text(data);
                   editor.setValue(data);
-                  $("#input").load('/example.rock');
+                  $("#input").load('/tools/example.rock');
                   $grammar.change();
                   editor.refresh();
               });

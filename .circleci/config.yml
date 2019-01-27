@@ -17,6 +17,7 @@ jobs:
     working_directory: ~/repo/satriani/
 
     steps:
+      - run: ls -la
       - checkout
 
       # Download and cache dependencies
@@ -45,6 +46,7 @@ jobs:
 
     steps:
       - checkout
+      - run: ls
       - run: yarn install
       - run: yarn browserify
       - run: yarn deploy

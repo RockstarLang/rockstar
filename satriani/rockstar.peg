@@ -86,7 +86,7 @@ alternate 	= _ 'else'i _ a:statement { return a }
       / EOL+ 'else'i EOL a:block { return a }
             / EOL { return null }
 
-conditional = 'if'i _ e:expression c:consequent a:alternate?  {
+conditional = 'if'i _ e:expression c:consequent? a:alternate?  {
           return {
               'conditional': {
                   'condition' : e,

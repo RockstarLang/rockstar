@@ -1832,6 +1832,9 @@ function peg$parse(input, options) {
         s3 = peg$parsenor();
         if (s3 !== peg$FAILED) {
           s4 = peg$parseconsequent();
+          if (s4 === peg$FAILED) {
+            s4 = null;
+          }
           if (s4 !== peg$FAILED) {
             s5 = peg$parsealternate();
             if (s5 === peg$FAILED) {

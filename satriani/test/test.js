@@ -41,8 +41,10 @@ function execute_and_compare_output(file) {
     let inputs = [];
     ['.in', '.in\''].forEach(ext => {
         let inputsFile = file + ext;
-        console.log('scanning ' + inputsFile);
-        if (fs.existsSync(inputsFile)) inputs = fs.readFileSync(inputsFile, 'utf8').split(/\n/g);
+        if (fs.existsSync(inputsFile)) {
+            inputs = fs.readFileSync(inputsFile, 'utf8').split(/\n/g);
+            return;
+        }
     });
 
     let targetFile = file + '.out';

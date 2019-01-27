@@ -108,14 +108,15 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
  
 #### Arithmetic
 
-Basic arithmetic is provided by the `plus`, `minus`, `times` and `over` keywords.
+Rockstar supports the infix arithmetic operators `+`, `-`, `*` and `/`. The language includes aliases
+for each operator so you can write lyrically pleasing expressions.
 
-Arithmetic expressions:
-
-* `{a} plus {b}` - addition. Alias `with`
-* `{a} minus {b}` - subtraction. Alias `without`
-* `{a} times {b}` - multiplication. Alias `of`
-* `{a} over {b}` - division. Aliases TBC.
+| Operator  | Operation         | Aliases |
+| --  | ---------         | ------- |
+| +   | addition          | `plus`, `with` |
+| -   | subtraction       | `minus`, `without` |
+| *   | multiplication    | `times`, `of` |
+| /   | division          | `over`  |
 
 The alias `by` has been explicitly rejected because of disagreements between the colloquial English `ten by four` (i.e. `10*4 = 40`) and `ten (divided) by four` (i.e. `10/4 = 2.5`)
 

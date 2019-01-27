@@ -45,9 +45,8 @@ Environment.prototype = {
         let result = evaluate(program, this);
         if (result && result.action) return(result.value);
     },
-    
+
     pronoun_alias: null,
-    pronoun_value: null,
 }
 
  function evaluate(tree, env) {
@@ -93,9 +92,8 @@ Environment.prototype = {
              case "binary":
                  return binary(expr, env);
              case "lookup":
-                 if (expr.variable.pronoun) return (env.pronoun_value);
-                 env.pronoun_alias = expr.variable;
-                 return env.pronoun_value = env.lookup(expr.variable);
+                 if (expr.variable.pronoun) return env.lookup(env.pronoun_alias);
+                 return env.lookup(expr.variable);
              case "assign":
                  let alias = "";
                  let value = evaluate(expr.expression, env);
@@ -104,12 +102,11 @@ Environment.prototype = {
                  } else {
                      alias = expr.variable;
                      env.pronoun_alias = alias;
-                     env.pronoun_value = value;
                  }
                  env.assign(alias, value);
                  return;
              case "pronoun":
-                 return env.pronoun_value;
+                 return env.lookup(env.pronoun_alias);
              case "blank":
                  return;
              case "increment":

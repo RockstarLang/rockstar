@@ -249,7 +249,7 @@ letter = uppercase_letter / lowercase_letter
 common_variable = prefix:common_prefix _+ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
-assignment 	= v:variable ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'were 'i))) _* e:(literal / poetic_number)
+assignment 	= v:variable ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i))) _* e:(literal / poetic_number)
         { return { assign: { variable: v, expression: e} }; }
               /
               v:variable _+ 'says'i _+ e:poetic_string

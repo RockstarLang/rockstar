@@ -17,8 +17,8 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "browserify": "node node_modules/browserify/bin/cmd.js --standalone Satriani -o js/satriani-browser.js",
-    "deploy": "node_modules/gh-pages/bin/gh-pages.js -u 'CircleCI <circleci@codewithrockstar.com>' -r git@github.com:RockstarLang/codewithrockstar.com.git --add --src satriani-browser.js -m 'Updated satriani-bundle.js from main repo' -b master -d js",
+    "browserify": "node node_modules/browserify/bin/cmd.js satriani.js --standalone Satriani -o deploy/docs/js/satriani.js",
+    "deploy": "node_modules/gh-pages/bin/gh-pages.js -u 'CircleCI <circleci@codewithrockstar.com>' -r git@github.com:RockstarLang/codewithrockstar.com.git --add --src docs/js/satriani.js -m 'Updated js/satriani.js from main repo' -b master -d deploy",
     "serve": "python -m SimpleHTTPServer 8000",
     "test": "pegjs rockstar.peg; mocha test/*.js"
   },

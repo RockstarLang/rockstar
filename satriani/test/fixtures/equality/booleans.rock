@@ -1,0 +1,4 @@
+say true is true
+say true is false
+say false is false
+say false is true

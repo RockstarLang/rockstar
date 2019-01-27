@@ -1,0 +1,71 @@
+say "Checking for mysterious equalities"
+say mysterious is mysterious
+say mysterious is true
+say mysterious is "hello world"
+say mysterious is null
+say mysterious is 5
+say ""
+say "Checking for true v false equalities"
+say true is true
+say true is false
+say false is false
+say false is true
+say ""
+say "Checking for true/number"
+say true is 5
+say 5 is true
+say 0 is true
+say true is 0
+say ""
+say "Checking for false/number"
+say false is 5
+say 5 is false
+say 0 is false
+say false is 0
+say ""
+say "Checking for nulls"
+say 5 is null
+say 0 is null
+say true is null
+say false is null
+say null is null
+say ""
+say "Checking boolean strings"
+say true is "true"
+say true is "RIGht"
+say true is "lies"
+say true is "hello"
+say "true" is true
+say "lies" is true
+Say ""
+Say "Checking false things"
+say false is "false"
+say false is "WROng"
+say false is "true"
+say false is "hello"
+say "false" is false
+say "true" is false
+Say ""
+say "Checking numbers"
+say 5 is 5
+say 0.26 is 0.26
+say 4 is 3
+say ""
+say "Checking number/string"
+say "5" is 5
+say 5 is "05.0"
+say 5 is "3"
+say 5 is "hello"
+say ""
+say "Checking strings"
+say "hello" is "hello"
+say "hello" is "world"
+say ""
+say "Checking negation"
+say true is not false
+say true is not true
+say true ain't false
+say true ain't true
+say true aint false
+say true aint true
+

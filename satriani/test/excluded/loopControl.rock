@@ -1,0 +1,41 @@
+("break" and "continue", as well as their aliases, work as intended)
+put 0 into I
+while I is smaller than 10
+build I up
+if I is 3 or I is 7
+Take it to the top
+(end if)
+say I
+(end loop)
+
+put 0 into I
+while I is smaller than 10
+build I up
+if I is 3 or I is 7
+continue
+(end if)
+say I
+(end loop)
+
+put 0 into I
+while True
+build I up
+if I is stronger than 5
+break
+(end if)
+say I
+(end while)
+
+put 0 into I
+while I is weaker than 3
+build I up
+put 0 into J
+while True
+build J up
+if J is bigger than 3
+break it down
+(end if)
+say I plus ", " plus J
+(end inner loop)
+say "looped!"
+(end outer loop)

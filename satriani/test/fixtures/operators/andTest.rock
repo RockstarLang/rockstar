@@ -1,0 +1,15 @@
+TrueFunc takes Ignored
+Give back True
+(end function)
+SayHiAndReturn takes V
+say "Hi"
+Give back V
+(end function)
+say true and true
+say true and false
+say false and true
+say false and false
+say TrueFunc taking nothing and TrueFunc taking nothing
+say false and 1 over 0 is 0
+say true and SayHiAndReturn taking true
+say false and SayHiAndReturn taking true

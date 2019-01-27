@@ -1,0 +1,24 @@
+Echo takes X
+say X
+(end function)
+Echo taking true
+Echo taking "hello world"
+put 5 into Temp
+Echo taking Temp
+
+AddAndPrint takes X, and Y
+put X plus Y into Value
+say Value
+Give back Value
+(end function)
+say AddAndPrint taking 3, 4
+
+AddOrSub takes X, and B
+if B
+Give Back X plus 1
+(end if)
+say "else"
+Give Back X minus 1
+(end function)
+say AddOrSub taking 4, true
+say AddOrSub taking 4, false

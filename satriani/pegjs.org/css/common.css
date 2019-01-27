@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", lucida, sans-serif;
+  line-height: 1.5;
+  color: black; background-color: white;
+}
+aside, footer, header, nav { display: block; } /* HTML5 */
+a img { border: none; }

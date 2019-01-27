@@ -1,0 +1,27 @@
+if ""
+say "this should not print since empty strings are false"
+
+if "hello"
+say "this should print since non-empty strings are true"
+
+if 0
+say "this should not print since 0 is false"
+
+if 1
+say "this should print since non-zero numbers are true"
+
+if -3
+say "this should print since non-zero numbers, including negatives, are true"
+
+if mysterious
+say "this should not print since mysterious is false"
+
+if null
+say "this should not print since null is false"
+
+F takes X
+give back X
+
+if F
+say "this should print since function references are objects which are truthy"
+

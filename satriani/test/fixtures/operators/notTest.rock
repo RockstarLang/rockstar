@@ -1,0 +1,10 @@
+say not True
+say not 5
+say not "hello"
+say not 0
+say not mysterious
+say not null
+(verify 5 is not 4 isn't the same as 5 is [not 4])
+say 5 ain't 4
+say false is not 4
+say not not not true

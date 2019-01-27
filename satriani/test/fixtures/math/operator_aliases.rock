@@ -1,0 +1,16 @@
+say "addition"
+say 2 plus 2
+say 2 with 2
+
+say "subtraction"
+say 5 minus 3
+say 5 without 3
+
+say "multiplication"
+say 5 times 5
+say 5 of 5
+
+say "division"
+say 4 over 2
+
+

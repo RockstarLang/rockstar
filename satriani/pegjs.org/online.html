@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Futago-za Ryuu (futagoza.ryuu@gmail.com)">
+  <meta name="copyright" content="Copyright &copy; 2017 Futago-za Ryuu">
+  <meta name="keywords" content="parser generator, PEG, JavaScript">
+  <meta name="description" content="PEG.js is a parser generator for JavaScript based on the parsing expression grammar formalism.">
+  <title>Online version &raquo; PEG.js &ndash; Parser Generator for JavaScript</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/layout-online.css">
+  <link rel="stylesheet" href="css/content.css">
+  <link rel="stylesheet" href="vendor/codemirror/codemirror.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <!--[if IE]>
+    <script>
+      var html5elements = ["aside", "footer", "header", "nav"];
+      for (var i = 0; i < html5elements.length; i++) {
+        document.createElement(html5elements[i]);
+      }
+    </script>
+    <![endif]-->
+</head>
+
+<body>
+  <div id="loader">
+    <div id="loader-inner">Loading...</div>
+  </div>
+
+  <div id="content">
+    <table id="columns">
+      <tr>
+        <td>
+          <table class="column online" id="left-column">
+            <tr>
+              <td>
+                <div class="textarea-wrapper">
+                  <textarea class="code" id="grammar" autocomplete="off" autocorrect="off" autocapitalize="off"
+                    spellcheck="false" disabled>
+(loading...)
+              </textarea>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="content-height">
+                <div id="build-message" class="message progress">Loading...</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table class="column" id="right-column">
+            <tr>
+              <td>
+                <div class="textarea-wrapper">
+                  <textarea class="code" id="input" autocomplete="off" autocorrect="off" autocapitalize="off"
+                    spellcheck="false" disabled>Say "Loading"</textarea>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="content-height">
+                <div id="parse-message" class="message disabled">Parser not available.</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="content-height">
+                <h2 id="output-header">Output</h2>
+                <pre id="output" style="min-height: 40em;" class="disabled">Output not available.</pre>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <script src="https://unpkg.com/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="vendor/pegjs/peg.js"></script>
+    <script src="vendor/jsdump/jsDump.js"></script>
+    <script src="vendor/codemirror/codemirror.js"></script>
+      <script src="js/online.js"></script>
+      <script>
+          $(function() {
+              let $grammar = $("textarea#grammar");
+              $.get('/rockstar.peg', function(data) {
+                  $grammar.text(data);
+                  editor.setValue(data);
+                  $("#input").load('/example.rock');
+                  $grammar.change();
+                  editor.refresh();
+              });
+          });
+      </script>
+  </div>
+
+</body>
+
+</html>

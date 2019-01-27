@@ -1,0 +1,34 @@
+body {
+  margin: 2em 4em;
+  font-family: "Trebuchet MS", lucida, sans-serif;
+  line-height: 1.5;
+  color: black; background-color: white;
+}
+
+h1 { margin: 0 0 .75em 0; text-align: center; font-size: 200%; }
+
+table { width: 48em; margin: 0 auto; border-spacing: 0; border-collapse: collapse; }
+table td, table th { border: 1px solid silver; padding: .25em 1em; }
+table td .unit { font-size: 75%; color: gray; }
+table td.no-results  { padding: 1em; text-align: center; }
+table td.input-size  { text-align: right; }
+table td.parse-time  { text-align: right; }
+table td.parse-speed { text-align: right; }
+table tr.columns th { border-color: #404040; color: white; background-color: #404040; }
+table tr.heading th { background-color: #e0e0e0; }
+table tr.benchmark-total td { font-weight: bold; }
+table tr.total td { background-color: #ffff80; font-weight: bold; }
+table tr.total td .unit { color: #808000; }
+table tr.total td.parse-speed .value { font-size: 175%; }
+
+a, a:visited { color: #3d586c; }
+
+#options {
+  width: 45em;
+  margin: 2em auto; border-radius: .5em; -moz-border-radius: .5em; padding: .5em 1.5em;
+  background-color: #f0f0f0;
+}
+#options #run-count { width: 3em; }
+#options #cache { margin-left: 2em; }
+#options label[for=optimize] { margin-left: 2em; }
+#options #run { float:right; width: 5em; }

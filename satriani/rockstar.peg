@@ -1,0 +1,302 @@
+program     = p:line * { return { list: p.filter(item => item) } }
+
+line = _* s:statement EOL+ { return s }
+  /
+    EOL { return null }
+
+whitespace  = [ \t]
+comment     = '(' [^)]* ')'
+_           = (whitespace / comment)+
+
+noise 	= (_ / [;,?!&.])
+EOL = 	noise* '\n'
+
+ignore_rest_of_line = (_[^\n]*)?
+
+statement   = break / continue / function / function_call
+			/ function_return / loop / conditional / operation / expression
+
+break = 'break'i ignore_rest_of_line {
+	return { 'break' : {} }
+}
+
+continue = ('continue'i ignore_rest_of_line / 'take it to the top'i) {
+	return { 'continue' : {} }
+}
+
+function = name:variable _ 'takes'i _ args:arg_list EOL body:block
+	{ return { 'function': {
+    	name: name,
+        args: args.map(arg => arg),
+        body: body
+    } } }
+
+arg_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
+
+arg_list = head:variable arg_separator tail:arg_list
+	{ return [head].concat(tail) }
+    /
+    arg:variable { return [arg] }
+
+function_call = name:variable _ 'taking'i _ args:call_args
+	{ return { 'call': { name: name, args: args } } }
+
+call_args = head:simple_expression arg_separator tail:call_args
+	{ return [head].concat(tail) }
+    /
+    arg:simple_expression { return [arg] }
+
+return = 'return'i / 'give back'i
+function_return = return _ e:expression
+	{ return { 'return': { 'expression' : e } } }
+
+operation   = readline / output / crement / assignment
+
+
+readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
+		 / 'listen'i { return { 'listen' : ''} }
+
+continuation = EOL _* s:statement { return s };
+
+block 	= head:statement tail:(continuation)+
+    {
+          return { list : [head].concat(tail) }
+        }
+    / s:statement { return s }
+
+consequent 	= _ s:statement { return s }
+      / EOL s:block { return s }
+
+alternate 	= _ 'else'i _ a:statement { return a }
+      / EOL 'else'i _ a:statement { return a }
+      / EOL 'else'i EOL a:block { return a }
+            / EOL { return null }
+
+conditional = 'if'i _ e:expression c:consequent a:alternate?  {
+          return {
+              'conditional': {
+                  'condition' : e,
+                    'consequent' : c,
+                    'alternate' : a
+                }
+            };
+        }
+
+loopable 	= _ s:statement { return s }
+      		/ EOL s:block EOL { return s }
+
+loop 	= 'while'i _ e:expression c:loopable
+          { return { 'while_loop': {
+            'condition': e,
+            'consequent': c
+         } }; }
+         /
+         'until'i _ e:expression c:loopable
+          { return { 'until_loop': {
+            'condition': e,
+            'consequent': c
+         } }; }
+
+output      = ('say'i/'shout'i/'whisper'i/'scream'i) _ e:expression
+                {return {'output': e}}
+
+simple_expression  =   function_call / constant / lookup / literal / pronoun
+
+literal = constant / number / string
+
+constant = null / true / false / mysterious
+
+true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) { return { constant: true } }
+
+false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) { return { constant: false } }
+
+null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'empty'i / 'gone'i) { return { constant: null } }
+
+mysterious = 'mysterious'  { return '__MYSTERIOUS__' }
+
+number      = n:$('-'?[0-9]+ ('.' [0-9]+)?) '.'?
+                { return {number: parseFloat(n)} }
+      /
+              n:$('.' [0-9]+)
+                { return {number: parseFloat(n) } }
+
+
+string      = '"' s:$[^"]* '"'
+                { return {string: s}}
+
+expression = boolean
+
+boolean = nor
+
+nor = lhs:or _ 'nor' _ rhs:nor {
+	return { 'nor' : { lhs: lhs, rhs: rhs } } }
+	/ or
+
+or = lhs:and _ 'or' _ rhs:or {
+	return { 'or': {
+        lhs: lhs,
+        rhs: rhs
+    } }
+ }
+ /and
+
+and = lhs:equality_check _ 'and' _ rhs:and {
+	return { 'and': {
+        lhs: lhs,
+        rhs: rhs
+    } }
+ }
+ /
+ equality_check
+
+eq = ('aint'i / 'ain\'t'i) { return 'ne' }
+     / 	'is'i { return 'eq' }
+
+equality_check = lhs:not _ c:eq _ rhs:equality_check
+	{
+      return {
+          comparison: {
+              comparator: c,
+                lhs: lhs,
+                rhs: rhs
+            }
+        };
+    }
+	/
+    not
+
+ not = 'not' _ e:not { return { 'not': { expression: e} } }
+ 	/ comparison
+
+comparison = lhs:arithmetic _ c:comparator _ rhs:comparison
+  {
+      return {
+          comparison: {
+              comparator: c,
+                lhs: lhs,
+                rhs: rhs
+            }
+        };
+    }
+    /
+    arithmetic
+
+greater 	= ('higher'i /'greater'i / 'bigger'i / 'stronger'i)
+smaller	 	= ('lower'i /'less'i / 'smaller'i / 'weaker'i)
+great	= ('high'i / 'greater'i / 'big'i / 'strong'i)
+small	= ('low'i / 'small'i / 'weak'i)
+
+comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
+            / 	'is'i _ smaller _ 'than'i { return 'lt' }
+            /	'is'i _ 'as'i _ great _ 'as'i { return 'ge' }
+            /	'is'i _ 'as'i _ small _ 'as'i { return 'le' }
+
+
+arithmetic         = first:product rest:((add / subtract) product)+
+                { return rest.reduce(function(memo, curr) {
+                      return { binary: { op: curr[0], left: memo, right: curr[1]} };
+                }, first); }
+            / product
+
+product     = first:simple_expression rest:((multiply / divide) simple_expression)+
+                { return rest.reduce(function(memo, curr) {
+                    return { binary: { op: curr[0], left: memo, right: curr[1]} };
+                }, first); }
+            / simple_expression
+
+// Note that operator aliases explicitly include a trailing space,
+// otherwise 'with' is a prefix code for 'without' and confuses the parser.
+add 		= _* ('+' / 'plus ' / 'with ') _*       { return '+' }
+subtract 	= _* ('-' / 'minus ' / 'without ') _*   { return '-' }
+multiply 	= _* ('*' / 'times ' / 'of ') _*        { return '*' }
+divide 		= _* ('/' / 'over ' / 'between ') _*    { return '/' }
+
+pronoun = pronoun:(
+    // Longest pronouns first to avoid prefix coding errors.
+    // 4-letter pronouns
+    'they'i / 'them'i
+    // 3-letter pronouns
+    / 'she'i / 'him'i / 'her'i / 'hir'i / 'zie'i / 'zir'i / 'xem'i / 'ver'i
+    // 2-letter pronouns
+    / 'ze'i / 've'i / 'xe'i / 'it'i / 'he'i
+    )
+    { return { pronoun: pronoun.toLowerCase() } }
+
+lookup 	= v:variable
+  { return { lookup: { variable: v } }; }
+
+common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
+
+uppercase_letter = [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ]
+lowercase_letter = [a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįıĳĵķĸĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷÿźżžŉß]
+
+letter = uppercase_letter / lowercase_letter
+
+common_variable = prefix:common_prefix _+ name:$(letter+)
+        { return (prefix + '_' + name).toLowerCase() };
+
+assignment 	= v:variable ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'were 'i))) _* e:(literal / poetic_number)
+        { return { assign: { variable: v, expression: e} }; }
+              /
+              v:variable _+ 'says'i _+ e:poetic_string
+                { return { assign: { variable: v, expression: e} }; }
+              / 'put'i _+ e:expression _+ 'into'i _+ v:variable
+        { return { assign: { variable: v, expression: e} }; }
+
+poetic_string = s:$[^\n]*
+  { return { string: s} }
+
+poetic_number = poetic_digit_separator* n:poetic_digits poetic_digit_separator* d:poetic_decimal? poetic_digit_separator*
+
+  { return { number: parseFloat(d?n+'.'+d:n)}}
+
+poetic_decimal = '.' poetic_decimal_digit_separator* d:poetic_decimal_digits poetic_decimal_digit_separator* {return d}
+        /
+                '.' poetic_decimal_digit_separator*
+
+poetic_digit_separator = ( _ / [0-9\',;:?!+_\-/] )
+
+poetic_digits =
+  poetic_digit_separator* head:poetic_digit poetic_digit_separator+ tail:poetic_digits
+      { return head + tail }
+  /
+    d: poetic_digit
+      { return d }
+
+poetic_decimal_digit_separator = ( _ / poetic_digit_separator / '.')
+poetic_decimal_digits =
+  poetic_decimal_digit_separator* head:poetic_digit poetic_decimal_digit_separator+ tail:poetic_decimal_digits
+      { return head + tail }
+  /
+    d: poetic_digit
+      { return d }
+
+poetic_digit = t:[A-Za-z']+
+  { return (t.filter(c => /[A-Za-z]/.test(c)).length%10).toString()}
+
+variable = common_variable / proper_variable / pronoun
+
+keyword = ('if'i / 'takes'i / 'taking'i / 'say'i / 'put'i / 'else'i) ![A-Za-z]
+
+proper_noun = !keyword uppercase_letter letter*
+proper_variable = head:$(proper_noun (' ' $proper_noun)*)
+  { return head.replace(/ /g, '_').toUpperCase()  }
+
+crement = increment / decrement
+
+increment = 'build'i _ v:variable _ t:('up'i noise*)+
+  { return {
+      increment: {
+          variable: v,
+            multiple: t.length
+        }
+    }; }
+
+decrement = 'knock'i _ v:variable _ t:('down'i noise*)+
+  { return {
+      decrement: {
+          variable: v,
+            multiple: t.length
+        }
+    }; }
+

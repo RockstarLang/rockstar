@@ -1,0 +1,8 @@
+Decrement takes X
+If X is nothing
+Give back X
+Else
+Put X minus 1 into NewX
+Give back Decrement taking NewX
+
+Say Decrement taking 5

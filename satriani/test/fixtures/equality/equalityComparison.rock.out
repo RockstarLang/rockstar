@@ -1,0 +1,70 @@
+Checking for mysterious equalities
+true
+false
+false
+false
+false
+
+Checking for true v false equalities
+true
+false
+true
+false
+
+Checking for true/number
+true
+true
+false
+false
+
+Checking for false/number
+false
+false
+true
+true
+
+Checking for nulls
+false
+true
+false
+true
+true
+
+Checking boolean strings
+true
+true
+true
+true
+true
+true
+
+Checking false things
+false
+false
+false
+false
+false
+false
+
+Checking numbers
+true
+true
+false
+
+Checking number/string
+true
+true
+false
+false
+
+Checking strings
+true
+false
+
+Checking negation
+true
+false
+true
+false
+true
+false

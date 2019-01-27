@@ -1,0 +1,5 @@
+say true is null
+say false is null
+say null is null
+say 0 is null
+say 1 is null

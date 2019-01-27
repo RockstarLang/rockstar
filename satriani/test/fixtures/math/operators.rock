@@ -1,0 +1,14 @@
+say "addition"
+say 1 + 1
+say 5 + 10
+say 2.5 + 2.5
+say 1 + 0.2 + 0.03
+say "subtraction"
+say 2 - 1
+say 0 - 1
+say 1 - 0.5
+say "multiplication"
+say 1 * 0
+say 1 * 1
+say 1 * 2
+say 2 * 2

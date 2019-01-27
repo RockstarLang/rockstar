@@ -1,0 +1,14 @@
+put 5 into Global
+
+MyFunc takes X
+Give back X plus Global
+(end func)
+
+say MyFunc taking 2
+
+MyFuncTwo takes X
+Give back X plus GlobalTwo
+(end func)
+
+put 6 into GlobalTwo
+say MyFuncTwo taking 2

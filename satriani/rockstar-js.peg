@@ -1,0 +1,198 @@
+program     = p:statement *
+                { return {program: p} }
+
+comment     = '(' [^)]* ')'
+
+_           = ((' ' / '\t')+) / comment
+
+statement   = _* s:(operation / blank_line) ','? _* '\n'
+                { return s }
+
+operation   = output / assignment / expression
+
+output      = ('say'i/'shout'i/'whisper'i/'scream'i) _+ e:expression
+                {return {'output': e}}
+
+simple_expression  =    lookup / number / string
+
+number      = n:$('-'?[0-9]+ ('.' [0-9]+)?)
+                { return {number: parseFloat(n)} }
+
+string      = '"' s:$[^"]+ '"'
+                { return {string: s}}
+
+blank_line  = _* {return {blank:  ''}}
+
+expression  = sum
+
+sum         = first:product rest:((add / subtract) product)+
+                { return rest.reduce(function(memo, curr) {
+                      return { binary: { op: curr[0], left: memo, right: curr[1]} };
+                }, first); }
+            / product
+
+product     = first:simple_expression rest:((multiply / divide) simple_expression)+
+                { return rest.reduce(function(memo, curr) {
+                    return { binary: { op: curr[0], left: memo, right: curr[1]} };
+                }, first); }
+            / simple_expression
+
+// Note that operator aliases explicitly include a trailing space,
+// otherwise 'with' is a prefix code for 'without' and confuses the parser.
+add 		= _* ('+' / 'plus ' / 'with ') _*       { return '+' }
+subtract 	= _* ('-' / 'minus ' / 'without ') _*   { return '-' }
+multiply 	= _* ('*' / 'times ' / 'of ') _*        { return '*' }
+divide 		= _* ('/' / 'over ' / 'between ') _*    { return '/' }
+
+lookup 	= v:variable
+	{ return { lookup: { variable: v } }; }
+
+common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
+common_variable = prefix:common_prefix _+ name:$([A-Za-z]+)
+				{ return (prefix + '_' + name).toLowerCase() };
+
+assignment 	= v:variable _* ('=' / 'is 'i / 'was 'i) _* e:expression
+				{ return { assign: { variable: v, expression: e} }; }
+
+variable = common_variable / proper_variable
+
+proper_noun = [A-Z][A-Za-z]*
+proper_variable = head:$(proper_noun (' ' $proper_noun)*)
+	{ return head.replace(/ /g, '_').toUpperCase()  }
+
+
+
+
+
+/*
+
+Program = Statement *
+Statement = _? s:(FunctionDeclaration/Operation/BlankLine) ','? _* '\n' {return s}
+Operation = Loop / If / ArithmeticStatement / GiveBack / Set / Put / Listen / Say / Continue / Break / PoeticString
+_ = ((' ' / '\t')+) / Comment
+Comment = '(' [^)]* ')'
+
+Variable =
+	(n:(CommonVariable / ProperVariable) {return {t: 'Variable', n}})
+	/ Pronoun {return {t: 'Pronoun'}}
+CommonVariable = p:('the'i/'my'i/'your'i) _ v:$([a-z]+) {return p+v}
+ProperWord = $([A-Z][A-Za-z]+)
+ProperVariable = $(ProperWord _ ProperVariable) / $ProperWord
+Pronoun = (
+	'it'i
+	/'he'i/'she'i/'him'i/'her'i
+	/'them'i/'they'i
+	/'ze'i/'hir'i/'zie'i/'zir'i/'xe'i/'xem'i/'ve'i/'ver'i
+)
+
+TypeLiteral = v:TypeLiteralValue { return {t: 'Literal', v} }
+TypeLiteralValue =
+	('nothing'/'nobody'/'nowhere'/'empty'/'gone') {return 0} // TODO null?
+	/ ('true'/'right'/'yes'/'ok') {return true}
+    / ('false'/'wrong'/'no'/'lies') {return false}
+    / 'mysterious' { return undefined}
+
+String = '"' v:$[^"]+ '"'
+	{ return {t: 'Literal', v}}
+
+Number = n:$([0-9]+ ('.' [0-9]+)?)
+	{ return {t: 'Literal', v: parseFloat(n)} }
+
+ArithmeticStatement = BuildUp / KnockDown
+
+BuildUp = 'Build' _ v:Variable _ 'up'
+	{ return {t: 'Rement', v: v, o: '++'} }
+
+KnockDown = 'Knock' _ v:Variable _ 'down'
+	{ return {t: 'Rement', v: v, o: '--'} }
+
+PoeticString = v:Variable _ 'says' ' ' t:$[^\n]*
+	{ return {t: 'Set', v: v, e: {t: 'Literal', v: t}} }
+
+PoeticNumber = n:PoeticDigits d:PoeticDecimal? {return {t: 'Literal', v: parseFloat(d?n+'.'+d:n)}}
+
+PoeticDecimal = '.' _ d:PoeticDigits {return d}
+
+PoeticDigits =
+	l:PoeticDigit ( _ / [\',;:?!] )+ r:PoeticDigits { return l+r }
+	/ d: PoeticDigit { return d }
+
+PoeticDigit = t:[A-Za-z]+ {return (t.length%10).toString()}
+
+ArithmeticExpression =
+	l:SimpleExpression
+	_ o:ArithmeticOperator _
+	r:SimpleExpression
+	{ return {t: 'Arithmetic', l, o, r} }
+
+ArithmeticOperator =
+	('minus'/'without') {return '-'}
+	/ ('plus'/'with') {return '+'}
+	/ ('times'/'of') {return '*'}
+	/ ('over') {return '/'}
+
+Comparison = l:SimpleExpression _ b:BoolCheck c:Comparator? r:SimpleExpression
+	{ return {t: 'Comparison', l, r, b, c} }
+
+BoolCheck =
+	(('is'_'not'_)/"ain't"_) { return false }
+	/ 'is'_ { return true }
+
+Comparator =
+	('higher'/'greater'/'bigger'/'stronger')_'than'_ { return 'gt' }
+    / ('lower'/'less'/'smaller'/'weaker')_'than'_ { return 'lt' }
+    / 'as'_('high'/'great'/'big'/'strong')_'as'_ {return 'ge'}
+    / 'as'_('low'/'little'/'small'/'weak')_'as'_ {return 'le'}
+
+Listen = 'Listen' _ 'to' _ v:Variable
+	{return {t:'Listen', v}}
+
+Say = ('Say'i/'Shout'i/'Whisper'i/'Scream'i) _ e:Expression
+	{return {t:'Say', e}}
+
+If = 'If' _ e:Expression
+	{ return {t: 'If', e} }
+Else = 'Else' {return {t: 'Else'}}
+
+Loop = c:('While'/'Until') _ e:Expression
+	{ return {t: 'Loop', c, e} }
+Continue = ('Continue' / ('Take'_'it'_'to'_'the'_'top')) {return {t: 'Continue'}}
+Break = ('Break' / ('Break'_'it'_'down')) {return {t: 'Break'}}
+
+FunctionDeclaration = n:Variable _ 'takes' _ a:FunctionDeclarationArguments
+	{ return {t: 'FunctionDeclaration', n, a: a.map(a => a.n)} }
+FunctionDeclarationArguments =
+	a:Variable (_'and'_ / _?','_?) b:FunctionDeclarationArguments { return [a].concat(b) }
+    / a:Variable { return [a] }
+GiveBack = 'Give back' _ e:Expression
+	{ return {t: 'GiveBack', e} }
+BlankLine = '' {return {t: 'BlankLine'}}
+
+
+FunctionCall = f:Variable _ 'taking' _ a:FunctionCallArguments
+	{ return {t: 'FunctionCall', f, a} }
+// TODO 'and' is overloaded, so can't use full Expression syntax
+FunctionCallArguments =
+	a:SimpleExpression (_'and'_ / _?','_?) b:FunctionCallArguments { return [a].concat(b) }
+    / a:SimpleExpression { return [a] }
+
+
+///////////////////////
+// TODO Everything below here is never explicitly defined in the spec
+Expression = ArithmeticExpression / BooleanOperation
+SimpleExpression = FunctionCall / TypeLiteral / Variable / Number / String / PoeticNumber
+BooleanOperation =
+	(
+    	l:(Comparison / SimpleExpression)
+        _ b:('and'/'or') _
+        r:Expression
+        { return {t: 'BooleanOperation', l, b, r} }
+    )
+    / l: (Comparison / SimpleExpression) { return l }
+
+Set = v:Variable _ ('is'/'was'/'were') _ e:Expression
+	{ return {t: 'Set', v: v, e} }
+Put = 'Put' _ e:Expression _ 'into' _ v:Variable
+	{ return {t: 'Set', v: v, e} }
+
+*/

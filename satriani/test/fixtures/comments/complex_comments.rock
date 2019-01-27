@@ -1,0 +1,15 @@
+say "pass 1" (trailing comment)
+
+(leading comment) say "pass 2"
+
+say (inline comment) "pass 3"
+
+(
+multiline
+comments
+are
+also
+supported
+) say "pass 4"
+
+(((((((( multiple opening brackets are just part of the comment) say "pass 5"

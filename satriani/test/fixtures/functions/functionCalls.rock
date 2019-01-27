@@ -1,0 +1,30 @@
+Say "functions"
+Adder takes X, and Y
+say X plus Y
+(end function)
+
+Adder taking 1, 2
+
+Subtractor takes X, Y
+say X minus Y
+(end function)
+
+Subtractor taking 2, 1
+
+Multiplier takes X & Y
+say X times Y
+(end function)
+
+Multiplier taking 2 & 3
+
+Divisor takes X'n'Y
+say X over Y
+(end function)
+
+Divisor taking 4'n'2
+
+ThreeMultiplier takes X, Y, and Z
+say X times Y times Z
+(end function)
+
+ThreeMultiplier taking 2, 3, and 4

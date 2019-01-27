@@ -1,0 +1,27 @@
+say "true" is true
+say "yes" is true
+say "OK" is true
+say ""
+say true is "true"
+say true is "RIGht"
+say "yes" is true
+say "OK" is true
+say false is "false"
+say false is "WROng"
+say "lies" is false
+say ""
+say true is "hello"
+say "true" is true
+say ""
+say 5 is "3"
+say 5 is "hello"
+say ""
+say true is "lies"
+say "lies" is true
+say false is "true"
+say false is "hello"
+say "false" is false
+say "true" is false
+say ""
+say "hello" is "hello"
+say "hello" is "world"

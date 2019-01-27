@@ -1,0 +1,11 @@
+Factorial takes X
+if X is nothing
+Give back 1
+else
+put X minus 1 into NewX
+Give back X times Factorial taking NewX
+(end if)
+(end func)
+say Factorial taking 4
+say Factorial taking 10
+

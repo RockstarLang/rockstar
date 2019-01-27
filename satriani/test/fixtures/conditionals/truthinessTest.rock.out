@@ -1,0 +1,4 @@
+this should print since non-empty strings are true
+this should print since non-zero numbers are true
+this should print since non-zero numbers, including negatives, are true
+this should print since function references are objects which are truthy

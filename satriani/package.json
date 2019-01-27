@@ -1,0 +1,35 @@
+{
+  "name": "satriani",
+  "version": "0.9.0",
+  "description": "JS interpreter for Rockstar",
+  "main": "satriani.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "browserify": "^16.2.3",
+    "chai": "^4.2.0",
+    "gh-pages": "^2.0.1",
+    "pegjs": "^0.10.0",
+    "readline-sync": "^1.4.9"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "browserify": "node node_modules/browserify/bin/cmd.js --standalone Satriani -o js/satriani-browser.js",
+    "deploy": "node_modules/gh-pages/bin/gh-pages.js -u 'CircleCI <circleci@codewithrockstar.com>' -r git@github.com:RockstarLang/codewithrockstar.com.git --add --src satriani-browser.js -m 'Updated satriani-bundle.js from main repo' -b master -d js",
+    "serve": "python -m SimpleHTTPServer 8000",
+    "test": "pegjs rockstar.peg; mocha test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanbeattie/satriani.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylanbeattie/satriani/issues"
+  },
+  "homepage": "https://github.com/dylanbeattie/satriani#readme"
+}

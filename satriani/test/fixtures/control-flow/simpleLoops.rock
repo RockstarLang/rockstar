@@ -1,0 +1,9 @@
+put 10 into I
+while I
+say I
+knock I down
+(end loop)
+until I
+say I
+build I up
+(end loop)

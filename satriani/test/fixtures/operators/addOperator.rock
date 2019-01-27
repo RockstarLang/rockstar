@@ -1,0 +1,24 @@
+say 5 with 8
+put 5 into my left
+put 8 into my right
+say my left plus my right
+say 5 plus 8 plus 10.5
+say 5 plus nothing
+
+(string concatenation)
+say "hello" plus " " plus "world"
+
+(string + number)
+say "hello" plus " " plus 0.85
+say "hello" plus " " plus 5
+say "hello" plus " " plus .11
+say 5.5 plus " " plus "hello"
+
+(string + boolean)
+say "your words are " plus lies
+say "your words are " plus True
+say true plus ", you are."
+
+(string + null)
+say null plus " and void"
+say "void and " plus nothing

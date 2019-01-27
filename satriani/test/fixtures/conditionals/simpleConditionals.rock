@@ -1,0 +1,28 @@
+if true
+say "hello"
+say "world"
+else
+say "goodbye"
+say "everyone"
+(end block)
+
+if false
+say "hello"
+say "world"
+else
+say "goodbye"
+say "everyone"
+(end block)
+
+if true
+say "hello"
+say "world"
+(end block)
+
+if true
+if false
+say "1"
+else
+say "2"
+else
+say "3"

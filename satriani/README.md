@@ -1,14 +1,76 @@
 # Satriani
 
-Satriani is a JavaScript interpreter for the Rockstar programming language.
+Satriani is a JavaScript interpreter for the Rockstar programming language. Satriani has been created to act as a reference implementation for managing changes to the Rockstar language specification.
 
-Satriani has been created to act as a reference implementation for managing changes to the Rockstar language specification.
+## Usage
 
+To run Satriani using nodeJS from the command line:
+```
+git clone https://github.com/RockstarLang/rockstar 
+cd rockstar/satriani
+node rockstar <program>.rock
+```
+
+To run the test suite:
+
+```
+git clone https://github.com/RockstarLang/rockstar 
+cd rockstar/satriani
+yarn test
+```
+
+To run Satriani from your own JavaScript code:
+
+```
+const satriani = require('./satriani.js');
+
+// Required to support reading from stdin
+const readlineSync = require('readline-sync');
+
+let rockstar = new satriani.Interpreter();
+let program = "Shout Hello World!\nGive back 1\n";
+let ast = rockstar.parse(program);
+
+// Draw the abstract syntax tree (AST) to the console as a JSON object
+console.log(JSON.stringify(ast, null, 2))
+
+let output = console.log
+let input = readlineSync.question
+let result = rockstar.run(ast, input, output)
+console.log(result);
+```
+
+To run Satriani in a browser, use `browserify` to bundle it:
+
+```
+git clone https://github.com/RockstarLang/rockstar 
+cd rockstar/satriani
+yarn browserify
+```
+
+This will create a single JS file, `deploy/docs/js/satriani.js`, containing the Satriani parser and interpreter, which
+you can use in web pages:
+
+```
+<!DOCTYPE html>
+<html>
+<body>
+
+<script type="text/javascript" src="js/satriani.js"></script>
+<script type="text/javascript">
+    let source = 'Shout "Hello World"';
+    let output = console.log;
+    let input = () => window.prompt('Rockstar:');
+    let rockstar = new Satriani.Interpreter(output);
+    let result = rockstar.run(source, input, output);
+    console.log(result);
+</script>
+</body>
+</html>
+```
 ## How it works
 
-Satriani uses `pegjs`, a parser generator for JavaScript.
-
-The language grammar is defined in `rockstar.peg`.
+Satriani uses `pegjs`, a parser generator for JavaScript. The language grammar is defined in `rockstar.peg`.
 
 We use the `pegjs` command line to generate `rockstar.parser.js`, which is the parser itself:
 

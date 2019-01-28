@@ -13,6 +13,7 @@ Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 ## What's here?
 
 * The [Rockstar language specification](spec.md)
+* How to [contribute to Rockstar](CONTRIBUTING.md)
 * Some [examples of Rockstar programs](examples/README.md)
 
 ## Implementations

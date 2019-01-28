@@ -1,53 +1,60 @@
-# Rockstar
+# How to contribute to Rockstar
 
-Rockstar is a dynamically typed computer programming language, designed for creating programs that are also song lyrics. Rockstar is heavily influenced by the lyrical conventions of 1980s hard rock and power ballads.
+> "Rockstar was never intended to be more than a joke - a parody spec that I threw together in a couple 
+of hours in a bar one evening. The amount of interest and enthusiasm that this project has generated
+has been astonishing, and wonderful, but – perhaps inevitably – there are a LOT of things in the initial Rockstar spec that 
+made perfect sense when it was a joke spec but have proved incredibly difficult to actually implement.
+>
+> "Over the last six months, the entire Rockstar project has been through a sort of massive red/green/refactor cycle - 
+> creating tests to validate core language features, building implementations that pass those tests, and then looking
+> at ways to clean up and harmonise those implementations.
+> 
+> Thanks to the ongoing efforts of Rockstar developers around the world, we've ironed out most of the contradictions,
+> resolved dozens of ambiguities and gotchas in the original spec, and come up with something that's probably good 
+> enough to call a 'release candidate'. But I have a funny feeling like this is still only the beginning. :)
+>
+>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- @dylanbeattie, January 2019
 
-### But why?
+## Ways you can contribute
 
-Mainly because if we make Rockstar a real (and completely pointless) programming language, then recruiters and hiring managers won't be able to talk about 'rockstar developers' any more.
+First, make sure you've read the [code of conduct](CODE_OF_CONDUCT.md). TL;DR: be excellent to each other. Be calm, be 
+kind, help make Rockstar a community where new faces feel welcome and old hands feel appreciated.
 
-Also 'cos it's kinda fun and any language based on the idea of compiling Meatloaf lyrics has to be worth a look, right?
+* Report a bug. If you've found something that doesn't work, let us know.
+* Suggest a new feature.
+* Write a great Rockstar program we can add to our examples
+* Create your own implementation of Rockstar
 
-Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CERTIFIED ROCKSTAR DEVELOPER'?
+### Reporting bugs
 
-## What's here?
+If you've found a bug in the specification or in the Satriani implementation, let us know about it.
+* Search the [Issues](https://github.com/rockstarlang/rockstar/issues) to check we're not already tracking it.
+* If you can't find an open issue that describes your problem, [open a new one](https://github.com/RockstarLang/rockstar/issues/new).
+  * Include a **title and clear description**
+  * Describe:
+    * What you did (ideally with a code sample)
+    * What you expected to happen
+    * What actually happened, including any error messages or program output.
 
-* The [Rockstar language specification](spec.md)
-* Some [examples of Rockstar programs](examples/README.md)
+### Fixing Bugs
 
-## Implementations
+If you've fixed an open bug - awesome! You're a true Rockstar developer.
+*  Open a new GitHub pull request with your patch. Pull requests should include:
+   * The fix itself
+   * One or more test cases in the form of `.rock` programs demonstrating the bug, that 
+   should FAIL on an unpatched implementation and PASS with your patch in place.
+   * Updates to any associated documentation or examples
+ 
+### Contributing Features
 
-* [rockstar-js](https://github.com/wolfgang42/rockstar-js) - Rockstar-to-JavaScript transpiler
-* [rockstar-lexer](https://github.com/aitorres/rockstar-lexer) - Rockstar lexer written in Haskell with Alex
-* [rockstar-java](https://github.com/nbrevu/rockstar-java) - Rockstar interpreter in Java
-* [rockstar-ml](https://github.com/lkwq007/rockstar-ml) - Rockstar interpreter in OCaml
-* [rockstar-py](https://github.com/yanorestes/rockstar-py) - Rockstar-to-Python transpiler
-* [kaiser-ruby](https://github.com/marcinruszkiewicz/kaiser-ruby) - Rockstar to Ruby transpiler
-* [sublime-rockstar-syntax](https://github.com/paxromana96/sublime-rockstar-syntax) - Syntax highlighter for Sublime Text 3
-* [language-rockstar](https://github.com/thestd/language-rockstar) - Syntax highlighter for Atom
-* [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust ([online version using WebAssembly](https://palfrey.github.io/maiden/))
-* [thrash](https://github.com/young-steveo/thrash) - Rockstar implementation in Go
-* [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
-* [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
-* [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
-* [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac
-* [sellout](https://github.com/davidadsit/sellout) - Rockstar to C# (dotnet core) transpiler
-* [native-rockstar](https://github.com/gillesdami/native-rockstar) - Rockstar to C++ transpiler in javascript.
-* [rokkstar](https://github.com/ascheja/rokkstar) - Rockstar parser and interpreter written in Kotlin.
+If you've got a great idea for a Rockstar language feature, start by checking 
+[issues](https://github.com/rockstarlang/rockstar/issues) to check we're not already tracking it, or that your idea
+hasn't already been rejected.
 
-## Social Spaces
+If not, start by [opening an issue](https://github.com/RockstarLang/rockstar/issues/new) that describes your idea. If
+you want to chat to some of the core team about it first, hop onto the 
+[Rockstar Developers channel on Discord](https://discordapp.com/invite/xsQK7UU) and tell us what you're thinking.
 
-* [/r/RockstarDevs](https://www.reddit.com/r/RockstarDevs/) - Subreddit
-* [Rockstar Developers](https://discordapp.com/invite/xsQK7UU) - Discord Group
-
-## Media Coverage
-* [Meet the boffin behind a computer programming language based on power ballads](https://www.loudersound.com/features/meet-the-boffin-behind-a-computer-programming-language-based-on-power-ballads) in Classic Rock magazine.
-* [Rockstar article on BoingBoing](https://boingboing.net/2018/07/25/hello-cleveland-world.html)
-* [Rockstar on HackerNews](https://news.ycombinator.com/item?id=17585589)
-* [Rockstar on /r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/comments/934uvw/why_yes_i_am_a_certified_rockstar_developer/)
-* [Rockstar on dice.com](https://insights.dice.com/2018/07/27/rockstar-programming-language-developers/)
-* [The Rockstar Programming Language | Mitigated Frenzy](https://bparsia.wordpress.com/2018/09/11/the-rockstar-programming-language/) - see also their solution to the [Rainfall problem](https://bparsia.wordpress.com/2018/09/12/rockstar-rainfall-problem/#comment-1624)
-
-## See Also
-
-* [Enterprise™](https://github.com/joaomilho/Enterprise) - "The world is not made only of Rockstar programmers. For all the non hipsters out there, now there's Enterprise™"
+Remember, a good Rockstar feature is one that extends the capabilities of the language *and* allows developers the
+kind of lyrical creativity that makes for great Rockstar programs.  
+                                                                       

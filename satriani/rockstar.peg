@@ -252,7 +252,7 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
 assignment 	= v:variable ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i))) _* e:(literal / poetic_number)
         { return { assign: { variable: v, expression: e} }; }
               /
-              v:variable _+ 'says'i _+ e:poetic_string
+              v:variable _+ 'says 'i e:poetic_string
                 { return { assign: { variable: v, expression: e} }; }
               / 'put'i _+ e:expression _+ 'into'i _+ v:variable
         { return { assign: { variable: v, expression: e} }; }

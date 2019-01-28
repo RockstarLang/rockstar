@@ -70,7 +70,8 @@ you can use in web pages:
 ```
 ## How it works
 
-Satriani uses `pegjs`, a parser generator for JavaScript. The language grammar is defined in `rockstar.peg`.
+Satriani uses `pegjs`, a parser generator for JavaScript. The language 
+grammar is defined in **[rockstar.peg](rockstar.peg)**.
 
 We use the `pegjs` command line to generate `rockstar.parser.js`, which is the parser itself:
 
@@ -78,14 +79,14 @@ We use the `pegjs` command line to generate `rockstar.parser.js`, which is the p
 $ pegjs -o rockstar.parser.js rockstar.peg
 ```
 
-`rockstar.parser.js` exports a function `parse(input, options)`, where `input` 
+**[rockstar.parser.js](rockstar.parser.js)** exports a function `parse(input, options)`, where `input` 
 is a string containing the source code of your Rockstar program and `options` is the 
 optional [pegjs parser options](https://pegjs.org/documentation#using-the-parser).
 
 `parse` will return an **abstract syntax tree** (AST) containing your program. The 
 AST is a JSON object representing your program as a tree of operations.
 
-`rockstar.interpreter.js` is a runtime interpreter that can take the AST created by the parser and evaluate it. It's pluggable
+**[rockstar.interpreter.js](satriani.interpreter.js)** is a runtime interpreter that can take the AST created by the parser and evaluate it. It's pluggable
 so you can override the I/O mechanisms.
 
 The test suite is runnable using [Mocha](https://mochajs.org/) - each 'test' is defined as a .rock source file and an .rock.out output file. so the 
@@ -99,7 +100,7 @@ HUGE thanks to Wolfgang Faust for https://github.com/wolfgang42/rockstar-js - I'
 as a reference throughout and have reused bits of it directly, and it's been invaluable.
 
 Mihai Bazon's fantastic series of articles on building recursive descent compilers in JavaScript has also been
-realy useful: http://lisperator.net/pltut/
+really useful: http://lisperator.net/pltut/
 
 
 

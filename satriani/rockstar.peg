@@ -19,8 +19,8 @@ EOL = 	noise* '\n'
 
 ignore_rest_of_line = (_[^\n]*)?
 
-statement   = break / continue / function / function_call
-			/ function_return / loop / conditional / operation / expression
+statement   = _* s:(break / continue / function / function_call
+			/ function_return / loop / conditional / operation / expression) { return s }
 
 break = 'break'i ignore_rest_of_line {
 	return { 'break' : {} }

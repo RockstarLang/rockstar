@@ -6,7 +6,6 @@ Rockstar is intended to give the programmer an unprecedented degree of poetic li
 
 Rockstar programs are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) files with the `.rock` file extension. *(Given that for everything included in the current Rockstar specification, UTF-8 is indistinguishable from 7-bit ASCII, that's a fancy way of saying they're plain text files.)*
 
-
 ### Comments 
  
 The use of comments in Rockstar programs is strongly discouraged. This is rock'n'roll; it's up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses (). Yes, this means you can't use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments. 
@@ -14,7 +13,8 @@ The use of comments in Rockstar programs is strongly discouraged. This is rock'n
 Rockstar developers are not into that whole [brevity thing](https://www.urbandictionary.com/define.php?term=Brevity%20Thing). 
  
 ``` 
-Tommy was a lean mean wrecking machine.  (initialises Tommy with the value 14487) 
+(Initialise Tommy = 1337)
+Tommy was a big bad brother. 
 ``` 
  
 ### Variables
@@ -41,21 +41,21 @@ The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`
 
 ### Types
 
-Rockstar uses a very similar type system to that defined by the [ECMAScript type system](http://www.ecma-international.org/ecma-262/5.1/#sec-8), except `undefined` doesn't sound very rock'n'roll so we use `mysterious` instead.
+Rockstar uses a similar type system to that defined by the [ECMAScript type system](http://www.ecma-international.org/ecma-262/5.1/#sec-8), except `undefined` doesn't sound very rock'n'roll so we use `mysterious` instead.
 
 * **Mysterious** - the value of any variable that hasn't been assigned a value, denoted by the keyword `mysterious`
 * **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere`, `nobody`, `empty` and `gone` are defined as aliases for `null`
 * **Boolean** - a logical entity having two values `true` and `false`. *(The keywords `maybe` and `definitely maybe` are reserved for future use)*
  * `right`, `yes` and `ok` are valid aliases for `true`
  * `wrong`, `no` and `lies` are valid aliases for `false`
-* **Number** - Numbers in Rockstar are stored using the [DEC64](http://www.dec64.com/) numeric type. The number internally is the closest representable number of the DEC64 type.
+* **Number** - Numbers in Rockstar are double-precision floating point numbers, stored according to the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) standard. *(An earlier version of this spec proposed that Rockstar used the [DEC64](http://www.dec64.com/) numeric type. This is a perfect example of something that seemed like a great idea after a couple of beers but turns out to be prohibitively difficult to implement...)*
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
 
-Functions are just objects with a function call operator.
+Functions and function identifiers are not strictly part of the type system in Rockstar 1.0.
 
 ### Truthiness
 
-The results of comparisons often rely on a concept called 'Truthiness'. If the value is truthy, it will be implicitly converted to true. If it is falsy, it will be implicitly converted to false.
+The results of comparisons often rely on a concept called 'truthiness'. If the value is truthy, it will be implicitly converted to true. If it is falsy, it will be implicitly converted to false.
 
 - Mysterious - Falsy
 - Null - Falsy
@@ -67,7 +67,12 @@ The results of comparisons often rely on a concept called 'Truthiness'. If the v
 
 Words that are used to construct a literal of a certain type are referred to as **constants** and words that are used to construct various syntax constructs are referred to as **keywords**
 
-- Constants: `mysterious`, `null`, `nothing`, `nowhere`, `nobody`, `empty`, `gone`, `true`, `right`, `yes`, `ok`, `false`, `wrong`, `no`, `lies`, `maybe`, `definitely maybe`
+| Constant      | Aliases
+| --------      |  ------- |
+| `mysterious`  | -      |
+| `null`        |  `nothing`, `nowhere`, `nobody`, `empty`, `gone` |
+| `true`,       |  `right`, `yes`, `ok` |
+| `false`       |  `wrong`, `no`, `lies` |
 		
 ### Literals and Assignment
 
@@ -134,9 +139,9 @@ Examples:
 
 Rockstar also supports a unique language feature known as **poetic literals**. Inspired by the [here-document](https://en.wikipedia.org/wiki/Here_document) syntax supported by many scripting languages, poetic literals allow the programmer to simultaneously initialize a variable and express their innermost angst.
 
-##### Poetic Type Literals
+##### Poetic Constant Literals
 
-A poetic type assignment is a single line consisting of a variable name, the `is` keyword, or the aliases `was` or `were`, and a Literal Word signifying the value the variable will be set to.
+A poetic constant literal is a single line consisting of a variable name, the `is` keyword, or the aliases `are`, `was` or `were`, and a constant signifying the value the variable will be set to.
 
 * `My heart is true` - initialises the variable `my heart` with the Boolean value `true` 
 * `Tommy is nobody` - initialises the variable `Tommy` with the value `null` using the `nobody` alias

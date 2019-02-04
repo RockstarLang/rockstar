@@ -37,7 +37,7 @@ Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 * [rokkstar](https://github.com/ascheja/rokkstar) - Rockstar parser and interpreter written in Kotlin.
 
 ## Social Spaces
-
+* [Rockstar on Rosetta Code](http://www.rosettacode.org/wiki/Category:Rockstar)
 * [/r/RockstarDevs](https://www.reddit.com/r/RockstarDevs/) - Subreddit
 * [Rockstar Developers](https://discordapp.com/invite/xsQK7UU) - Discord Group
 

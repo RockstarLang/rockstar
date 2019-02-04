@@ -6,7 +6,7 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
 
 program     = p:line * { return { list: p.filter(item => item) } }
 
-line = _* s:statement EOL+ { return s }
+line = _* s:statement (EOL+ / EOF) { return s }
   /
     EOL { return null }
 
@@ -16,6 +16,7 @@ _           = (whitespace / comment)+
 
 noise 	= (_ / [;,?!&.])
 EOL = 	noise* '\n'
+EOF = !.
 
 ignore_rest_of_line = (_[^\n]*)?
 

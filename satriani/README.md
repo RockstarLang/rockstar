@@ -76,7 +76,7 @@ grammar is defined in **[rockstar.peg](rockstar.peg)**.
 We use the `pegjs` command line to generate `rockstar.parser.js`, which is the parser itself:
 
 ```
-$ pegjs -o rockstar.parser.js rockstar.peg
+$ yarn run pegjs
 ```
 
 **[rockstar.parser.js](rockstar.parser.js)** exports a function `parse(input, options)`, where `input` 

@@ -1,16 +1,14 @@
-OuterFunction takes X, Y, and Z
-InnerFunction takes X
-Give back X with X
+OuterFunction takes X and Y
+SameNameFunction takes X
+Give back X with "NESTED"
 
-Put InnerFunction taking X into ResultX
-Put InnerFunction taking Y into ResultY
-Put InnerFunction taking Z into ResultZ
-Put ResultX with ResultY with ResultZ into ResultXYZ
-Give back ResultXYZ
+Put SameNameFunction taking X into ResultX
+Put SameNameFunction taking Y into ResultY
+Put ResultX with ResultY into ResultXY
+Give back ResultXY
 
-Put OuterFunction taking "foo", "bar", and "baz" into Result
-Shout Result (should print "foofoobarbarbazbaz")
+SameNameFunction takes X
+Give back X with "GLOBAL"
 
-Put OuterFunction taking 1, 2, and 3 into Result
-Shout Result (should print 12 = 1+1+2+2+3+3)
-
+Shout OuterFunction taking "foo", "bar" (should print "fooNESTEDbarNESTED")
+Shout SameNameFunction taking "foo" (should print "fooGLOBAL")

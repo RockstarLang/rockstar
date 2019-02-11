@@ -16,13 +16,6 @@ function Environment(parent) {
 
 Environment.prototype = {
     extend: function () { return new Environment(this) },
-    // find_scope: function (name) {
-    //     let scope = this;
-    //     while (scope) {
-    //         if (Object.prototype.hasOwnProperty.call(scope.vars, name)) return scope;
-    //         scope = scope.parent;
-    //     }
-    // },
 
     lookup: function (name) {
         if (name in this.vars)
@@ -31,10 +24,6 @@ Environment.prototype = {
     },
 
     assign: function (name, value) {
-        // THIS is where we control whether assignment inside a function call
-        // can overwrite variables declared in a parent frame.
-        // let scope = this.find_scope(name);
-        // return (scope || this).vars[name] = value;
         return this.vars[name] = value;
     },
 

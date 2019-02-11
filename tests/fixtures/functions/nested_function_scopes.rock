@@ -1,0 +1,14 @@
+OuterFunction takes X and Y
+SameNameFunction takes X
+Give back X with "NESTED"
+
+Put SameNameFunction taking X into ResultX
+Put SameNameFunction taking Y into ResultY
+Put ResultX with ResultY into ResultXY
+Give back ResultXY
+
+SameNameFunction takes X
+Give back X with "GLOBAL"
+
+Shout OuterFunction taking "foo", "bar" (should print "fooNESTEDbarNESTED")
+Shout SameNameFunction taking "foo" (should print "fooGLOBAL")

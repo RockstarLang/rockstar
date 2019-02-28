@@ -19,18 +19,19 @@ Tommy was a big bad brother.
  
 ### Variables
 
-Rockstar supports three kinds of variable names. 
+Rockstar supports three kinds of variable names.
 
-**Simple variables** are valid identifiers that are not language keywords. A simple variable name must contain only letters, and cannot contain spaces. Note that Rockstar does not allow numbers or underscores in variable names - remember the golden rule of Rockstar syntax: if you can't sing it, you can't have it.
+**Simple variables** are valid identifiers that are not language keywords. A simple variable name must contain only letters, and cannot contain spaces. Note that Rockstar does not allow numbers or underscores in variable names - remember the golden rule of Rockstar syntax: if you can't sing it, you can't have it. Simple variables are case-insensitive.
 
 ```
 Variable is 1
+Tommy is a rockstar
 X is 2
 Y ix 3
-Tommy is a rockstar
+Put x plus y into result
 ```
 
-**Common variables** consist of one of the keywords `a`, `an`, `the`, `my` or `your` followed by whitespace and a unique variable name, which must contain only lowercase ASCII letters a-z. The keyword is part of the variable name, so `a boy` is a different variable from `the boy`.
+**Common variables** consist of one of the keywords `a`, `an`, `the`, `my` or `your` followed by whitespace and a unique variable name, which must contain only lowercase ASCII letters a-z. The keyword is part of the variable name, so `a boy` is a different variable from `the boy`. Common variables are case-insensitive.
 
 ```
 My variable is 5
@@ -40,7 +41,7 @@ Put my variable plus your variable into the total
 Shout the total
 ```
 
-**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and`Billie Jean`. 
+**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and`Billie Jean`. Proper variables are case-insensitive apart from the first letter of each word, which must be a capital letter.
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, and `Johnny B Goode` would also all be valid variable names in Rockstar.)
 

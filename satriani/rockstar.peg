@@ -67,7 +67,6 @@ function_return = return _ e:expression
 
 operation   = readline / output / crement / assignment
 
-
 readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
 		 / 'listen'i { return { 'listen' : ''} }
 
@@ -289,9 +288,6 @@ poetic_decimal_digits =
 poetic_digit = t:[A-Za-z']+
   { return (t.filter(c => /[A-Za-z]/.test(c)).length%10).toString()}
 
-variable = common_variable / proper_variable / pronoun
-
-
 // To disallow identifiers like 'My back is hurting' (which is illegal because 'back' is a keyword)
 // we need to explicitly define all language keywords, and they MUST be matched in descending order of length
 // because of Complicated Weird Parser Reasons.
@@ -312,9 +308,13 @@ kw1 = 'a'i
 
 keyword = (kw10 / kw8 / kw7 / kw6 / kw5 / kw5 / kw4 / kw3 / kw2 / kw1) !letter
 
+variable = common_variable / proper_variable / pronoun / simple_variable
+
+simple_variable = !keyword name:$(letter letter*) { return name } 
+
 proper_noun = !keyword uppercase_letter letter*
 proper_variable = head:$(proper_noun (' ' $proper_noun)*)
-  { return head.replace(/ /g, '_').toUpperCase()  }
+  { return head.replace(/ /g, '_').toLowerCase()  }
 
 crement = increment / decrement
 

@@ -27,7 +27,7 @@ Rockstar supports three kinds of variable names.
 Variable is 1
 Tommy is a rockstar
 X is 2
-Y ix 3
+Y is 3
 Put x plus y into result
 ```
 

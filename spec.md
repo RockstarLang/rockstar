@@ -253,7 +253,7 @@ Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `i
 - \<Mysterious\> \<op\> Mysterious =\> Equal.
 - \<Non-Mysterious\> \<op\> Mysterious =\> Non equal.
 - String \<op\> Number =\> Convert the string to a number using base 10 with leading zeros ignored. If it fails, return false.
-- String \<op\> Boolean =\> Convert the string to a boolean using all defined aliases.
+- String \<op\> Boolean =\> Convert the string to a boolean. The empty string is false; all other strings are true.
 - String \<op\> Null =\> Non equal.
 - Number \<op\> Boolean =\> Convert number to boolean by "truthiness".
 - Number \<op\> Null =\> Convert null to 0.

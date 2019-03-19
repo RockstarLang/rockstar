@@ -48,6 +48,7 @@ Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 * [Rockstar on /r/ProgrammerHumor](https://www.reddit.com/r/ProgrammerHumor/comments/934uvw/why_yes_i_am_a_certified_rockstar_developer/)
 * [Rockstar on dice.com](https://insights.dice.com/2018/07/27/rockstar-programming-language-developers/)
 * [The Rockstar Programming Language | Mitigated Frenzy](https://bparsia.wordpress.com/2018/09/11/the-rockstar-programming-language/) - see also their solution to the [Rainfall problem](https://bparsia.wordpress.com/2018/09/12/rockstar-rainfall-problem/#comment-1624)
+* [Rockstar reference on Coding Blocks Podcast](https://www.codingblocks.net/podcast/lightning-talks/)
 
 ## See Also
 

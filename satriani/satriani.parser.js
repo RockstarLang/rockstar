@@ -292,17 +292,19 @@ function peg$parse(input, options) {
       peg$c124 = "nor",
       peg$c125 = peg$literalExpectation("nor", false),
       peg$c126 = function(lhs, rhs) {
-      	return { 'nor' : { lhs: lhs, rhs: rhs } } },
+      	return { 'binary' : { op: 'nor', lhs: lhs, rhs: rhs } } },
       peg$c127 = "or",
       peg$c128 = peg$literalExpectation("or", false),
       peg$c129 = function(lhs, rhs) {
-      	return { 'or': {
+      	return { 'binary': {
+              op: 'or',
               lhs: lhs,
               rhs: rhs
           } }
        },
       peg$c130 = function(lhs, rhs) {
-      	return { 'and': {
+      	return { 'binary': {
+              op: 'and',
               lhs: lhs,
               rhs: rhs
           } }

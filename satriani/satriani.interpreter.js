@@ -166,12 +166,6 @@ function evaluate(tree, env) {
                     case "gt":
                         return (lhs > rhs);
                 }
-            case "and":
-                return (evaluate(expr.lhs, env) && evaluate(expr.rhs, env));
-            case "nor":
-                return (!evaluate(expr.lhs, env) && !evaluate(expr.rhs, env));
-            case "or":
-                return (evaluate(expr.lhs, env) || evaluate(expr.rhs, env));
             case "not":
                 return (!evaluate(expr.expression, env));
             case "function":
@@ -186,6 +180,12 @@ function evaluate(tree, env) {
 
         }
     }
+}
+
+function demystify(expr, env) {
+    let result = evaluate(expr, env);
+    if (typeof (result) == 'undefined') return ('mysterious');
+    return (result);
 }
 
 function eq(lhs, rhs) {
@@ -227,26 +227,36 @@ function make_lambda(expr, env) {
 }
 
 function binary(b, env) {
-    let l = evaluate(b.lhs, env);
-    let r = evaluate(b.rhs, env);
-    if (typeof (l) == 'undefined') l = 'mysterious';
-    if (typeof (r) == 'undefined') r = 'mysterious'
     switch (b.op) {
-        case '+':
-            return l + r;
-        case '-':
-            return l - r;
-        case '/':
-            return l / r;
-        case '*':
-            return multiply(l, r);
+        case "and": return (evaluate(b.lhs, env) && evaluate(b.rhs, env));
+        case "nor": return (!evaluate(b.lhs, env) && !evaluate(b.rhs, env));
+        case "or": return (evaluate(b.lhs, env) || evaluate(b.rhs, env));
+        case '+': return add(b.lhs, b.rhs, env);
+        case '-': return subtract(b.lhs, b.rhs, env);
+        case '/': return divide(b.lhs, b.rhs, env);
+        case '*': return multiply(b.lhs, b.rhs, env);
     }
 }
-function multiply(lhs, rhs) {
+
+function add(lhs, rhs, env) {
+    return demystify(lhs, env) + demystify(rhs, env);
+}
+
+function subtract(lhs, rhs, env) {
+    return evaluate(lhs, env) - evaluate(rhs, env);
+}
+
+function divide(lhs, rhs, env) {
+    return evaluate(lhs, env) / evaluate(rhs, env);
+}
+
+function multiply(lhs, rhs, env) {
+    lhs = evaluate(lhs, env);
+    rhs = evaluate(rhs, env);
     // Null, nothing, noone, nowhere, etc. are all zero for multiplication purposes.
     if (rhs == null) rhs = 0;
     if (lhs == null) lhs = 0;
-    // Multiplying numbers just works.
+    // Mu ltiplying numbers just works.
     if (typeof (lhs) == 'number' && typeof (rhs) == 'number') return (lhs * rhs);
     // Multiplying strings by numbers does repeated concatenation
     if (typeof (lhs) == 'string' && typeof (rhs) == 'number') return multiply_string(lhs, rhs);

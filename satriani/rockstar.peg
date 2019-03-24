@@ -143,11 +143,12 @@ expression = boolean
 boolean = nor
 
 nor = lhs:or _ 'nor' _ rhs:nor {
-	return { 'nor' : { lhs: lhs, rhs: rhs } } }
+	return { 'binary' : { op: 'nor', lhs: lhs, rhs: rhs } } }
 	/ or
 
 or = lhs:and _ 'or' _ rhs:or {
-	return { 'or': {
+	return { 'binary': {
+        op: 'or',
         lhs: lhs,
         rhs: rhs
     } }
@@ -155,7 +156,8 @@ or = lhs:and _ 'or' _ rhs:or {
  /and
 
 and = lhs:equality_check _ 'and' _ rhs:and {
-	return { 'and': {
+	return { 'binary': {
+        op: 'and',
         lhs: lhs,
         rhs: rhs
     } }

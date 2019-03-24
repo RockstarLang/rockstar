@@ -208,13 +208,13 @@ comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
 
 arithmetic         = first:product rest:((add / subtract) product)+
                 { return rest.reduce(function(memo, curr) {
-                      return { binary: { op: curr[0], left: memo, right: curr[1]} };
+                      return { binary: { op: curr[0], lhs: memo, rhs: curr[1]} };
                 }, first); }
             / product
 
 product     = first:simple_expression rest:((multiply / divide) simple_expression)+
                 { return rest.reduce(function(memo, curr) {
-                    return { binary: { op: curr[0], left: memo, right: curr[1]} };
+                    return { binary: { op: curr[0], lhs: memo, rhs: curr[1]} };
                 }, first); }
             / simple_expression
 
@@ -267,8 +267,8 @@ assignment = v:variable is _* e:(literal / poetic_number)
         expression: { 
           binary: { 
             op: o, 
-            left: { lookup: { variable: v } }, 
-            right: e
+            lhs: { lookup: { variable: v } }, 
+            rhs: e
           } 
         } 
       } }; 

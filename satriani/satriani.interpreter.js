@@ -227,8 +227,8 @@ Environment.prototype = {
  }
 
  function binary(b, env) {
-     let l = evaluate(b.left, env);
-     let r = evaluate(b.right, env);
+     let l = evaluate(b.lhs, env);
+     let r = evaluate(b.rhs, env);
      if (typeof(l) == 'undefined') l = 'mysterious';
      if (typeof(r) == 'undefined') r = 'mysterious'
      switch (b.op) {

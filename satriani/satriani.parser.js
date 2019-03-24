@@ -1301,7 +1301,7 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parsearg_separator() {
+  function peg$parseexpression_list_separator() {
     var s0, s1, s2, s3;
 
     s0 = peg$currPos;
@@ -1397,7 +1397,7 @@ function peg$parse(input, options) {
     s0 = peg$currPos;
     s1 = peg$parsevariable();
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsearg_separator();
+      s2 = peg$parseexpression_list_separator();
       if (s2 !== peg$FAILED) {
         s3 = peg$parsearg_list();
         if (s3 !== peg$FAILED) {
@@ -1447,7 +1447,7 @@ function peg$parse(input, options) {
         if (s3 !== peg$FAILED) {
           s4 = peg$parse_();
           if (s4 !== peg$FAILED) {
-            s5 = peg$parsecall_args();
+            s5 = peg$parseexpression_list();
             if (s5 !== peg$FAILED) {
               peg$savedPos = s0;
               s1 = peg$c43(s1, s5);
@@ -1476,15 +1476,15 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parsecall_args() {
+  function peg$parseexpression_list() {
     var s0, s1, s2, s3;
 
     s0 = peg$currPos;
     s1 = peg$parsesimple_expression();
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsearg_separator();
+      s2 = peg$parseexpression_list_separator();
       if (s2 !== peg$FAILED) {
-        s3 = peg$parsecall_args();
+        s3 = peg$parseexpression_list();
         if (s3 !== peg$FAILED) {
           peg$savedPos = s0;
           s1 = peg$c39(s1, s3);

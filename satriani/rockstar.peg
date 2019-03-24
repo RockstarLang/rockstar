@@ -46,17 +46,17 @@ function_def_arg_list = head:variable function_def_arg_separator tail:arg_list
     arg:variable { return [arg] }
 
 
-arg_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
+expression_list_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
 
-arg_list = head:variable arg_separator tail:arg_list
+arg_list = head:variable expression_list_separator tail:arg_list
 	{ return [head].concat(tail) }
     /
     arg:variable { return [arg] }
 
-function_call = name:variable _ 'taking'i _ args:call_args
+function_call = name:variable _ 'taking'i _ args:expression_list
 	{ return { 'call': { name: name, args: args } } }
 
-call_args = head:simple_expression arg_separator tail:call_args
+expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
     /
     arg:simple_expression { return [arg] }

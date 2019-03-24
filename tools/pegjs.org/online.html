@@ -6,7 +6,8 @@
   <meta name="author" content="Futago-za Ryuu (futagoza.ryuu@gmail.com)">
   <meta name="copyright" content="Copyright &copy; 2017 Futago-za Ryuu">
   <meta name="keywords" content="parser generator, PEG, JavaScript">
-  <meta name="description" content="PEG.js is a parser generator for JavaScript based on the parsing expression grammar formalism.">
+  <meta name="description"
+    content="PEG.js is a parser generator for JavaScript based on the parsing expression grammar formalism.">
   <title>Online version &raquo; PEG.js &ndash; Parser Generator for JavaScript</title>
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/layout-online.css">
@@ -80,21 +81,23 @@
     <script src="vendor/pegjs/peg.js"></script>
     <script src="vendor/jsdump/jsDump.js"></script>
     <script src="vendor/codemirror/codemirror.js"></script>
-      <script src="js/online.js"></script>
-      <script>
+    <script src="js/online.js"></script>
+    <script>
       $.ajaxSetup({
         // Disable caching of AJAX responses
         cache: false
       });
-              $.get('/satriani/rockstar.peg', function(data) {
-                  $grammar.text(data);
-                  editor.setValue(data);
-                  $("#input").load('/tools/example.rock');
-                  $grammar.change();
-                  editor.refresh();
-              });
-          });
-      </script>
+      $(function () {
+        let $grammar = $("textarea#grammar");
+        $.get('/satriani/rockstar.peg', function (data) {
+          $grammar.text(data);
+          editor.setValue(data);
+          $("#input").load('/tools/example.rock');
+          $grammar.change();
+          editor.refresh();
+        });
+      });
+    </script>
   </div>
 
 </body>

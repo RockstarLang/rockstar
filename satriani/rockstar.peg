@@ -249,15 +249,15 @@ letter = uppercase_letter / lowercase_letter
 common_variable = prefix:common_prefix _+ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
-assignment 	= v:variable ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i))) _* e:(literal / poetic_number)
-        { return { assign: { variable: v, expression: e} }; }
-              /
-              v:variable _+ 'says 'i e:poetic_string
-                { return { assign: { variable: v, expression: e} }; }
-              / 'put'i _+ e:expression _+ 'into'i _+ v:variable
-        { return { assign: { variable: v, expression: e} }; }
-    / 'let'i _+ v:variable _+ 'be'i _+ e:expression
-			{ return { assign: { variable: v, expression: e} }; }
+is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
+assignment = v:variable is _* e:(literal / poetic_number)
+    { return { assign: { variable: v, expression: e} }; }
+  / v:variable _+ 'says 'i e:poetic_string
+    { return { assign: { variable: v, expression: e} }; }
+  / 'put'i _+ e:expression _+ 'into'i _+ v:variable
+    { return { assign: { variable: v, expression: e} }; }
+  / 'let'i _+ v:variable _+ 'be'i _+ e:expression
+    { return { assign: { variable: v, expression: e} }; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }

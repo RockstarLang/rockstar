@@ -52,14 +52,14 @@ function_call = name:variable _ 'taking'i _ args:expression_list
 
 expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
-    /
-    arg:simple_expression { return [arg] }
+  / arg:simple_expression { return [arg] }
 
 return = 'return'i / 'give back'i
+
 function_return = return _ e:expression
 	{ return { 'return': { 'expression' : e } } }
 
-operation   = readline / output / crement / assignment
+operation = readline / output / crement / assignment
 
 readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
 		 / 'listen'i { return { 'listen' : ''} }
@@ -114,9 +114,9 @@ literal = constant / number / string
 
 constant = null / true / false / mysterious
 
-true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) { return { constant: true } }
+true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) !letter { return { constant: true } }
 
-false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) { return { constant: false } }
+false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) !letter { return { constant: false } }
 
 null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'empty'i / 'gone'i) { return { constant: null } }
 
@@ -208,11 +208,11 @@ arithmetic         = first:product rest:((add / subtract) product)+
                 }, first); }
             / product
 
-product     = first:simple_expression rest:((multiply / divide) simple_expression)+
+product     = first:simple_expression rest:((multiply / divide) expression_list)+
                 { return rest.reduce(function(memo, curr) {
                     return { binary: { op: curr[0], lhs: memo, rhs: curr[1]} };
                 }, first); }
-            / simple_expression
+            / expression_list
 
 // Note that operator aliases explicitly include a trailing space,
 // otherwise 'with' is a prefix code for 'without' and confuses the parser.

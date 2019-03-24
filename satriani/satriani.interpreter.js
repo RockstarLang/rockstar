@@ -36,6 +36,11 @@ Environment.prototype = {
         return (result ? result.value : undefined);
     },
 
+    dealias: function (expr) {
+        if (expr.variable.pronoun) return this.pronoun_alias;
+        return (expr.variable);
+    },
+
     pronoun_alias: null,
 }
 
@@ -83,8 +88,8 @@ function evaluate(tree, env) {
             case "binary":
                 return binary(expr, env);
             case "lookup":
-                if (expr.variable.pronoun) return env.lookup(env.pronoun_alias);
-                return env.lookup(expr.variable);
+                let lookup_name = env.dealias(expr);
+                return env.lookup(lookup_name);
             case "assign":
                 let alias = "";
                 let value = evaluate(expr.expression, env);
@@ -101,28 +106,27 @@ function evaluate(tree, env) {
             case "blank":
                 return;
             case "increment":
-                let old_increment_value = env.lookup(expr.variable);
+                let increment_name = env.dealias(expr);
+                let old_increment_value = env.lookup(increment_name);
                 switch (typeof (old_increment_value)) {
                     case "boolean":
-                        if (expr.multiple % 2 != 0) env.assign(expr.variable, !old_increment_value);
+                        if (expr.multiple % 2 != 0) env.assign(increment_name, !old_increment_value);
                         return;
                     default:
-                        env.assign(expr.variable, (old_increment_value + expr.multiple));
+                        env.assign(increment_name, (old_increment_value + expr.multiple));
                         return;
                 }
-                return;
             case "decrement":
-                let old_decrement_value = env.lookup(expr.variable);
+                let decrement_name = env.dealias(expr);
+                let old_decrement_value = env.lookup(decrement_name);
                 switch (typeof (old_decrement_value)) {
                     case "boolean":
-                        if (expr.multiple % 2 != 0) env.assign(expr.variable, !old_decrement_value);
+                        if (expr.multiple % 2 != 0) env.assign(decrement_name, !old_decrement_value);
                         return;
                     default:
-                        env.assign(expr.variable, (old_decrement_value - expr.multiple));
+                        env.assign(decrement_name, (old_decrement_value - expr.multiple));
                         return;
                 }
-                return;
-
             case "while_loop":
                 while_outer: while (evaluate(expr.condition, env)) {
                     let result = evaluate(expr.consequent, env);
@@ -176,6 +180,7 @@ function evaluate(tree, env) {
                 let func_result = func.apply(null, expr.args.map(arg => evaluate(arg, env)));
                 return (func_result ? func_result.value : undefined);
             default:
+                if (Array.isArray(tree) && tree.length == 1) return (evaluate(tree[0], env));
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
 
         }
@@ -239,28 +244,32 @@ function binary(b, env) {
 }
 
 function add(lhs, rhs, env) {
-    return demystify(lhs, env) + demystify(rhs, env);
+    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc += demystify(val, env), demystify(lhs, env));
 }
 
 function subtract(lhs, rhs, env) {
-    return evaluate(lhs, env) - evaluate(rhs, env);
+    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc -= evaluate(val, env), evaluate(lhs, env));
 }
 
 function divide(lhs, rhs, env) {
-    return evaluate(lhs, env) / evaluate(rhs, env);
+    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc /= evaluate(val, env), evaluate(lhs, env));
 }
 
 function multiply(lhs, rhs, env) {
-    lhs = evaluate(lhs, env);
-    rhs = evaluate(rhs, env);
+    return (rhs.reduce ? rhs : [rhs])
+        .map(expr => evaluate(expr, env))
+        .reduce(multiply_reduce, evaluate(lhs, env));
+}
+
+function multiply_reduce(acc, val, idx, src) {
     // Null, nothing, noone, nowhere, etc. are all zero for multiplication purposes.
-    if (rhs == null) rhs = 0;
-    if (lhs == null) lhs = 0;
+    if (acc == null) acc = 0;
+    if (val == null) val = 0;
     // Mu ltiplying numbers just works.
-    if (typeof (lhs) == 'number' && typeof (rhs) == 'number') return (lhs * rhs);
+    if (typeof (acc) == 'number' && typeof (val) == 'number') return (acc * val);
     // Multiplying strings by numbers does repeated concatenation
-    if (typeof (lhs) == 'string' && typeof (rhs) == 'number') return multiply_string(lhs, rhs);
-    if (typeof (lhs) == 'number' && typeof (rhs) == 'string') return multiply_string(rhs, lhs);
+    if (typeof (acc) == 'string' && typeof (val) == 'number') return multiply_string(acc, val);
+    if (typeof (acc) == 'number' && typeof (val) == 'string') return multiply_string(val, acc);
 }
 
 function multiply_string(s, n) {

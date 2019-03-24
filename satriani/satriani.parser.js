@@ -2080,7 +2080,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsetrue() {
-    var s0, s1;
+    var s0, s1, s2, s3;
 
     s0 = peg$currPos;
     if (input.substr(peg$currPos, 4).toLowerCase() === peg$c77) {
@@ -2118,16 +2118,34 @@ function peg$parse(input, options) {
       }
     }
     if (s1 !== peg$FAILED) {
-      peg$savedPos = s0;
-      s1 = peg$c85();
+      s2 = peg$currPos;
+      peg$silentFails++;
+      s3 = peg$parseletter();
+      peg$silentFails--;
+      if (s3 === peg$FAILED) {
+        s2 = void 0;
+      } else {
+        peg$currPos = s2;
+        s2 = peg$FAILED;
+      }
+      if (s2 !== peg$FAILED) {
+        peg$savedPos = s0;
+        s1 = peg$c85();
+        s0 = s1;
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+    } else {
+      peg$currPos = s0;
+      s0 = peg$FAILED;
     }
-    s0 = s1;
 
     return s0;
   }
 
   function peg$parsefalse() {
-    var s0, s1;
+    var s0, s1, s2, s3;
 
     s0 = peg$currPos;
     if (input.substr(peg$currPos, 5).toLowerCase() === peg$c86) {
@@ -2165,10 +2183,28 @@ function peg$parse(input, options) {
       }
     }
     if (s1 !== peg$FAILED) {
-      peg$savedPos = s0;
-      s1 = peg$c94();
+      s2 = peg$currPos;
+      peg$silentFails++;
+      s3 = peg$parseletter();
+      peg$silentFails--;
+      if (s3 === peg$FAILED) {
+        s2 = void 0;
+      } else {
+        peg$currPos = s2;
+        s2 = peg$FAILED;
+      }
+      if (s2 !== peg$FAILED) {
+        peg$savedPos = s0;
+        s1 = peg$c94();
+        s0 = s1;
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
+      }
+    } else {
+      peg$currPos = s0;
+      s0 = peg$FAILED;
     }
-    s0 = s1;
 
     return s0;
   }
@@ -3300,7 +3336,7 @@ function peg$parse(input, options) {
         s4 = peg$parsedivide();
       }
       if (s4 !== peg$FAILED) {
-        s5 = peg$parsesimple_expression();
+        s5 = peg$parseexpression_list();
         if (s5 !== peg$FAILED) {
           s4 = [s4, s5];
           s3 = s4;
@@ -3321,7 +3357,7 @@ function peg$parse(input, options) {
             s4 = peg$parsedivide();
           }
           if (s4 !== peg$FAILED) {
-            s5 = peg$parsesimple_expression();
+            s5 = peg$parseexpression_list();
             if (s5 !== peg$FAILED) {
               s4 = [s4, s5];
               s3 = s4;
@@ -3350,7 +3386,7 @@ function peg$parse(input, options) {
       s0 = peg$FAILED;
     }
     if (s0 === peg$FAILED) {
-      s0 = peg$parsesimple_expression();
+      s0 = peg$parseexpression_list();
     }
 
     return s0;

@@ -21,7 +21,7 @@
     "deploy": "node_modules/gh-pages/bin/gh-pages.js -u 'CircleCI <circleci@codewithrockstar.com>' -r git@github.com:RockstarLang/codewithrockstar.com.git --add --src docs/js/satriani.js -m 'Updated js/satriani.js from main repo' -b master -d deploy",
     "serve": "python -m SimpleHTTPServer 8000",
     "pegjs": "node node_modules/pegjs/bin/pegjs -o satriani.parser.js rockstar.peg",
-    "test": "mocha test/*.js"
+    "test": "yarn pegjs && mocha test/*.js"
   },
   "repository": {
     "type": "git",

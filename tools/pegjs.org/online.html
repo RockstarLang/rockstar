@@ -82,8 +82,10 @@
     <script src="vendor/codemirror/codemirror.js"></script>
       <script src="js/online.js"></script>
       <script>
-          $(function() {
-              let $grammar = $("textarea#grammar");
+      $.ajaxSetup({
+        // Disable caching of AJAX responses
+        cache: false
+      });
               $.get('/satriani/rockstar.peg', function(data) {
                   $grammar.text(data);
                   editor.setValue(data);

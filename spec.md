@@ -103,10 +103,14 @@ Numeric literals in Rockstar are written as decimal numbers
 * `123`
 * `3.141592654`
 
-Assignment is denoted by the `put/into` keyword combination:
+Assignment is done using either `put <expression> into <variable>` or `let <variable> be <expression>`:
+
 
 * `Put 123 into X` will assign the value `123` to the variable `X`
 * `Put "Hello San Francisco" into the message` will assign the value `"Hello San Francisco"` to the variable `the message`
+* `Let my balance be 1000000` will store the value `1000000` in the variable `my balance`
+* `Let the survivors be the brave without the fallen` will subtract `the fallen` from `the brave` and store the result in `the survivors`
+
 
 #### Single Quotes
 
@@ -129,10 +133,9 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
 * `Knock the walls down` will decrement the value stored in `the walls` by 1
 * `Knock the walls down, down` will decrement the value stored in `the walls` by 2
  
-#### Arithmetic
+#### Operators
 
-Rockstar supports the infix arithmetic operators `+`, `-`, `*` and `/`. The language includes aliases
-for each operator so you can write lyrically pleasing expressions.
+Rockstar supports the infix arithmetic operators `+`, `-`, `*` and `/`. The language includes aliases for each operator so you can write lyrically pleasing expressions.
 
 | Operator  | Operation         | Aliases |
 | --  | ---------         | ------- |
@@ -152,6 +155,15 @@ Examples:
 * `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
 
 * `My heart over the moon` - Returns `my heart` divided by `the moon`
+
+#### Compound Assignment Operators
+
+As in many C-style languages, Rockstar supports compound assignment operators, providing a terser syntax for storing the result of an operation. This is done using the `let` keyword.
+
+* `Let X be with 10` - add `10` to `X` and store the result in `X`. (Equivalent to `X += 10`)
+* `Let the children be without fear` - subtract `fear` from `the children` and store the result in `the children`
+* `Let my heart be over the moon` - equivalent to `my heart /= the moon`
+* 
 
 #### Poetic Literals
 

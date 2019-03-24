@@ -256,6 +256,8 @@ assignment 	= v:variable ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 
                 { return { assign: { variable: v, expression: e} }; }
               / 'put'i _+ e:expression _+ 'into'i _+ v:variable
         { return { assign: { variable: v, expression: e} }; }
+    / 'let'i _+ v:variable _+ 'be'i _+ e:expression
+			{ return { assign: { variable: v, expression: e} }; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }

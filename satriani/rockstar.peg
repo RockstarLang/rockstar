@@ -31,27 +31,21 @@ continue = ('continue'i ignore_rest_of_line / 'take it to the top'i) {
 	return { 'continue' : {} }
 }
 
-function = name:variable _ 'takes'i _ args:function_def_arg_list EOL body:block EOL
+function = name:variable _ 'takes'i _ args:variable_list EOL body:block EOL
 	{ return { 'function': {
     	name: name,
         args: args.map(arg => arg),
         body: body
     } } }
 
-function_def_arg_separator = (_? ', and' _ / _?('and' / '&' / ',' / "'n'")_?)
-
-function_def_arg_list = head:variable function_def_arg_separator tail:arg_list
-	{ return [head].concat(tail) }
-    /
-    arg:variable { return [arg] }
-
 
 expression_list_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
 
-arg_list = head:variable expression_list_separator tail:arg_list
+variable_list_separator   = expression_list_separator / _ 'and' _
+
+variable_list = head:variable variable_list_separator tail:variable_list
 	{ return [head].concat(tail) }
-    /
-    arg:variable { return [arg] }
+  / arg:variable { return [arg] }
 
 function_call = name:variable _ 'taking'i _ args:expression_list
 	{ return { 'call': { name: name, args: args } } }

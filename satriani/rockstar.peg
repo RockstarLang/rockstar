@@ -225,6 +225,8 @@ subtract 	= _* ('-' / 'minus ' / 'without ') _*   { return '-' }
 multiply 	= _* ('*' / 'times ' / 'of ') _*        { return '*' }
 divide 		= _* ('/' / 'over ' / 'between ') _*    { return '/' }
 
+compoundable_operator = add / subtract / multiply / divide
+
 pronoun = pronoun:(
     // Longest pronouns first to avoid prefix coding errors.
     // 4-letter pronouns
@@ -252,10 +254,26 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 assignment = v:variable is _* e:(literal / poetic_number)
     { return { assign: { variable: v, expression: e} }; }
+
   / v:variable _+ 'says 'i e:poetic_string
     { return { assign: { variable: v, expression: e} }; }
+
   / 'put'i _+ e:expression _+ 'into'i _+ v:variable
     { return { assign: { variable: v, expression: e} }; }
+
+  / 'let'i _+ v:variable _+ 'be'i o:compoundable_operator e:expression { 
+      return { assign: { 
+        variable: v, 
+        expression: { 
+          binary: { 
+            op: o, 
+            left: { lookup: { variable: v } }, 
+            right: e
+          } 
+        } 
+      } }; 
+    }
+
   / 'let'i _+ v:variable _+ 'be'i _+ e:expression
     { return { assign: { variable: v, expression: e} }; }
 

@@ -31,41 +31,35 @@ continue = ('continue'i ignore_rest_of_line / 'take it to the top'i) {
 	return { 'continue' : {} }
 }
 
-function = name:variable _ 'takes'i _ args:function_def_arg_list EOL body:block EOL
+function = name:variable _ 'takes'i _ args:variable_list EOL body:block EOL
 	{ return { 'function': {
     	name: name,
         args: args.map(arg => arg),
         body: body
     } } }
 
-function_def_arg_separator = (_? ', and' _ / _?('and' / '&' / ',' / "'n'")_?)
 
-function_def_arg_list = head:variable function_def_arg_separator tail:arg_list
+expression_list_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
+
+variable_list_separator   = expression_list_separator / _ 'and' _
+
+variable_list = head:variable variable_list_separator tail:variable_list
 	{ return [head].concat(tail) }
-    /
-    arg:variable { return [arg] }
+  / arg:variable { return [arg] }
 
-
-arg_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
-
-arg_list = head:variable arg_separator tail:arg_list
-	{ return [head].concat(tail) }
-    /
-    arg:variable { return [arg] }
-
-function_call = name:variable _ 'taking'i _ args:call_args
+function_call = name:variable _ 'taking'i _ args:expression_list
 	{ return { 'call': { name: name, args: args } } }
 
-call_args = head:simple_expression arg_separator tail:call_args
+expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
-    /
-    arg:simple_expression { return [arg] }
+  / arg:simple_expression { return [arg] }
 
 return = 'return'i / 'give back'i
+
 function_return = return _ e:expression
 	{ return { 'return': { 'expression' : e } } }
 
-operation   = readline / output / crement / assignment
+operation = readline / output / crement / assignment
 
 readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
 		 / 'listen'i { return { 'listen' : ''} }
@@ -120,9 +114,9 @@ literal = constant / number / string
 
 constant = null / true / false / mysterious
 
-true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) { return { constant: true } }
+true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) !letter { return { constant: true } }
 
-false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) { return { constant: false } }
+false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) !letter { return { constant: false } }
 
 null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'empty'i / 'gone'i) { return { constant: null } }
 
@@ -143,11 +137,12 @@ expression = boolean
 boolean = nor
 
 nor = lhs:or _ 'nor' _ rhs:nor {
-	return { 'nor' : { lhs: lhs, rhs: rhs } } }
+	return { 'binary' : { op: 'nor', lhs: lhs, rhs: rhs } } }
 	/ or
 
 or = lhs:and _ 'or' _ rhs:or {
-	return { 'or': {
+	return { 'binary': {
+        op: 'or',
         lhs: lhs,
         rhs: rhs
     } }
@@ -155,7 +150,8 @@ or = lhs:and _ 'or' _ rhs:or {
  /and
 
 and = lhs:equality_check _ 'and' _ rhs:and {
-	return { 'and': {
+	return { 'binary': {
+        op: 'and',
         lhs: lhs,
         rhs: rhs
     } }
@@ -212,11 +208,11 @@ arithmetic         = first:product rest:((add / subtract) product)+
                 }, first); }
             / product
 
-product     = first:simple_expression rest:((multiply / divide) simple_expression)+
+product     = first:simple_expression rest:((multiply / divide) expression_list)+
                 { return rest.reduce(function(memo, curr) {
                     return { binary: { op: curr[0], lhs: memo, rhs: curr[1]} };
                 }, first); }
-            / simple_expression
+            / expression_list
 
 // Note that operator aliases explicitly include a trailing space,
 // otherwise 'with' is a prefix code for 'without' and confuses the parser.

@@ -163,7 +163,30 @@ As in many C-style languages, Rockstar supports compound assignment operators, p
 * `Let X be with 10` - add `10` to `X` and store the result in `X`. (Equivalent to `X += 10`)
 * `Let the children be without fear` - subtract `fear` from `the children` and store the result in `the children`
 * `Let my heart be over the moon` - equivalent to `my heart /= the moon`
-* 
+
+
+#### List Arithmetic
+
+Rockstar operators support a list of expressions on the right-hand side of the operator. (Imagine explaining in English that, say, "the restaurant bill is the food, plus the drinks, the service and the tax" - same idea.)
+
+* `Let X be 1 with 2, 3, 4` - shorthand for `X = 1 + 2 + 3 + 4`
+* `Let X be "foo" with "bar", and "baz"` - X will be `"foo" + "bar" + "baz"`
+
+You can combine list arithmetic with compound assignment, as with this example:
+
+```
+The wolf is hungry, out on the street (initialise the_wolf = 63236)
+Fear is the mind killer (fear = 346)
+Fury is the demon child (fury = 355)
+Hate is the only truth (hate = 345)
+Let the wolf be without fear, fury, and hate (the_wolf = the_wolf - 346 - 355 - 345) 
+Shout the wolf (output 62190)
+```
+
+List arithmetic is only possible where the result type supports further operations.
+
+* `Let X be "foo" times 2, 2, 2` - OK; X is `"foofoofoofoofoofoofoofoo"`
+* `Let X be 2 times "foo", "bar"` - is `mysterious` (because `2 * foo = "foofoo"`, and `"foofoo" * "bar"` is undefined)
 
 #### Poetic Literals
 

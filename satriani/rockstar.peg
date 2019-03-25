@@ -234,8 +234,8 @@ pronoun = pronoun:(
     )
     { return { pronoun: pronoun.toLowerCase() } }
 
-lookup 	= v:variable
-  { return { lookup: { variable: v } }; }
+lookup 	=  'rock'i _ v:variable { return { enlist: { variable: v } }; }
+  / v:variable  { return { lookup: { variable: v } }; }
 
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
 
@@ -250,11 +250,14 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 assignment = v:variable is _* e:(literal / poetic_number)
     { return { assign: { variable: v, expression: e} }; }
-
   / v:variable _+ 'says 'i e:poetic_string
     { return { assign: { variable: v, expression: e} }; }
+  / 'rock'i _ v:variable _ 'with' _ e:expression_list
+    { return { enlist: { variable: v, expression: e } }; }
+  / 'rock'i _ v:variable _ 'like' _ e:(literal / poetic_number)
+    { return { enlist: { variable: v, expression: e } }; }
 
-  / 'put'i _+ e:expression _+ 'into'i _+ v:variable
+  / 'put'i _ e:expression _ 'into'i _+ v:variable
     { return { assign: { variable: v, expression: e} }; }
 
   / 'let'i _+ v:variable _+ 'be'i o:compoundable_operator e:expression { 
@@ -315,7 +318,7 @@ kw6 = ( 'ain\'t'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 
 kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'shout'i / 'small'i
     / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
 kw4 = ( 'aint'i / 'back'i / 'down'i / 'else'i / 'give'i / 'gone'i / 'high'i / 'into'i / 'less'i / 'lies'i / 'null'i
-    / 'plus'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
+    / 'plus'i / 'rock'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
 kw3 = ( 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
     / 'the'i / 'top'i / 'ver'i / 'was'i / 'xem'i / 'yes'i / 'zie'i / 'zir'i)
 kw2 = ( 'an'i / 'as'i / 'he'i / 'if'i / 'is'i / 'it'i / 'my'i / 'no'i / 'of'i / 'ok'i / 'or'i / 'to'i / 'up'i / 've'i

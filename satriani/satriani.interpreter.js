@@ -17,9 +17,13 @@ function Environment(parent) {
 Environment.prototype = {
     extend: function () { return new Environment(this) },
 
+    exists: function(name) {
+        return(name in this.vars);
+    },
+
     lookup: function (name) {
-        if (name in this.vars)
-            return this.vars[name];
+        if (this.exists(name)) return this.vars[name];
+        console.log(name);
         throw new Error("Undefined variable " + name);
     },
 
@@ -90,6 +94,21 @@ function evaluate(tree, env) {
             case "lookup":
                 let lookup_name = env.dealias(expr);
                 return env.lookup(lookup_name);
+            case "enlist":                
+                let array_value;
+                let array_name = env.dealias(expr);   
+                if (env.exists(array_name)) {
+                    array_value = env.lookup(array_name);
+                    if (! Array.isArray(array_value)) array_value = [array_value];                    
+                } else {
+                    array_value = [];
+                }
+                if (expr.expression) {
+                    let elements_to_enlist = (expr.expression.map ? expr.expression : [expr.expression]);
+                    array_value = array_value.concat(elements_to_enlist.map(e => evaluate(e, env)));
+                } 
+                env.assign(array_name, array_value);
+                return array_value;
             case "assign":
                 let alias = "";
                 let value = evaluate(expr.expression, env);

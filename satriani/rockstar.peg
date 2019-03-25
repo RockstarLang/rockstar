@@ -44,10 +44,13 @@ expression_list_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
 variable_list_separator   = expression_list_separator / _ 'and' _
 
 variable_list = head:variable variable_list_separator tail:variable_list
-	{ return [head].concat(tail) }
-  / arg:variable { return [arg] }
+	{ return [{ variable: head }].concat(tail) }
+  / arg:variable { return [ {variable: arg} ] }
 
-function_call = name:variable _ 'taking'i _ args:expression_list
+function_call = 'unite'i _ e:expression {
+  return { call: { name: 'fromcharcode', arg: e } };
+}
+/ name:variable _ 'taking'i _ args:expression_list
 	{ return { 'call': { name: name, args: args } } }
 
 expression_list = head:simple_expression expression_list_separator tail:expression_list
@@ -112,7 +115,9 @@ simple_expression  =   function_call / constant / lookup / literal / pronoun
 
 literal = constant / number / string
 
-constant = null / true / false / mysterious
+constant = empty_string / null / true / false / mysterious
+
+empty_string = ('silent'i / 'silence'i) !letter { return { constant: '' } }
 
 true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) !letter { return { constant: true } }
 
@@ -160,7 +165,7 @@ and = lhs:equality_check _ 'and' _ rhs:and {
  equality_check
 
 eq = ('aint'i / 'ain\'t'i) { return 'ne' }
-     / 	'is'i { return 'eq' }
+     / 	('is'i / 'are'i) { return 'eq' }
 
 equality_check = lhs:not _ c:eq _ rhs:equality_check
 	{
@@ -256,10 +261,13 @@ assignment = v:variable is _* e:(literal / poetic_number)
     { return { enlist: { variable: v, expression: e } }; }
   / 'rock'i _ v:variable _ 'like' _ e:(literal / poetic_number)
     { return { enlist: { variable: v, expression: e } }; }
-
+  / 'roll'i _ source:variable _ 'into' _ targets:variable_list
+    { return { delist: { source: { variable: source }, targets: targets } }; }
   / 'put'i _ e:expression _ 'into'i _+ v:variable
     { return { assign: { variable: v, expression: e} }; }
-
+  / 'cast'i _ source:expression _ 'into'i _+ target:variable
+    { return { cast: { source: source, target: { variable: target} } }; }
+    
   / 'let'i _+ v:variable _+ 'be'i o:compoundable_operator e:expression { 
       return { assign: { 
         variable: v, 
@@ -313,13 +321,13 @@ poetic_digit = t:[A-Za-z']+
 kw10 = 'mysterious'i
 kw8 = ( 'stronger'i / 'continue'i)
 kw7 = ( 'between'i / 'greater'i / 'nothing'i / 'nowhere'i / 'smaller'i / 'whisper'i / 'without'i)
-kw6 = ( 'ain\'t'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
+kw6 = ( 'ain\'t'i / 'bigger'i / 'decode'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
     / 'strong'i)
 kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'shout'i / 'small'i
     / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
 kw4 = ( 'aint'i / 'back'i / 'down'i / 'else'i / 'give'i / 'gone'i / 'high'i / 'into'i / 'less'i / 'lies'i / 'null'i
     / 'plus'i / 'rock'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
-kw3 = ( 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
+kw3 = ( 'are'i / 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
     / 'the'i / 'top'i / 'ver'i / 'was'i / 'xem'i / 'yes'i / 'zie'i / 'zir'i)
 kw2 = ( 'an'i / 'as'i / 'he'i / 'if'i / 'is'i / 'it'i / 'my'i / 'no'i / 'of'i / 'ok'i / 'or'i / 'to'i / 'up'i / 've'i
     / 'xe'i / 'ze'i )

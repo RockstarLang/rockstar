@@ -57,6 +57,8 @@ function evaluate(tree, env) {
         let expr = node[1];
         switch (type) {
             case "action": return (tree);
+            case "cast":
+                return(cast(expr, env));
             case "list":
                 let result = null;
                 for (let i = 0; i < expr.length; i++) {
@@ -94,21 +96,10 @@ function evaluate(tree, env) {
             case "lookup":
                 let lookup_name = env.dealias(expr);
                 return env.lookup(lookup_name);
+            case "delist":
+                return delist(expr, env);
             case "enlist":                
-                let array_value;
-                let array_name = env.dealias(expr);   
-                if (env.exists(array_name)) {
-                    array_value = env.lookup(array_name);
-                    if (! Array.isArray(array_value)) array_value = [array_value];                    
-                } else {
-                    array_value = [];
-                }
-                if (expr.expression) {
-                    let elements_to_enlist = (expr.expression.map ? expr.expression : [expr.expression]);
-                    array_value = array_value.concat(elements_to_enlist.map(e => evaluate(e, env)));
-                } 
-                env.assign(array_name, array_value);
-                return array_value;
+                return enlist(expr, env);
             case "assign":
                 let alias = "";
                 let value = evaluate(expr.expression, env);
@@ -206,6 +197,36 @@ function evaluate(tree, env) {
     }
 }
 
+function cast(expr, env) {
+    let source = evaluate(expr.source, env);
+    let target = env.dealias(expr.target);
+    env.assign(target, String.fromCharCode(source));   
+}
+
+function delist(expr, env) {
+    let source = env.lookup(env.dealias(expr.source));
+    expr.targets.map(t => env.dealias(t)).forEach(target => {
+        env.assign(target, source.shift());
+    });
+}
+
+function enlist(expr, env) {
+    let array_value;
+    let array_name = env.dealias(expr);   
+    if (env.exists(array_name)) {
+        array_value = env.lookup(array_name);
+        if (! Array.isArray(array_value)) array_value = [array_value];                    
+    } else {
+        array_value = [];
+    }
+    if (expr.expression) {
+        let elements_to_enlist = (expr.expression.map ? expr.expression : [expr.expression]);
+        array_value = array_value.concat(elements_to_enlist.map(e => evaluate(e, env)));
+    } 
+    env.assign(array_name, array_value);
+    return array_value;
+}
+
 function demystify(expr, env) {
     let result = evaluate(expr, env);
     if (typeof (result) == 'undefined') return ('mysterious');
@@ -213,6 +234,9 @@ function demystify(expr, env) {
 }
 
 function eq(lhs, rhs) {
+    if (Array.isArray(lhs)) return (eq_array(lhs, rhs));
+    if (Array.isArray(rhs)) return (eq_array(rhs,lhs));
+
     if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
     if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
 
@@ -222,6 +246,14 @@ function eq(lhs, rhs) {
     if (typeof (rhs) == 'number') return (eq_number(rhs, lhs));
 
     return lhs == rhs;
+}
+
+function eq_array(array, other) {
+    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => el === other[index])); 
+    if (other == null || other == 0 || other == "") {
+        return(array.length == 0);
+    }
+    return(false);
 }
 
 function eq_number(number, other) {
@@ -240,7 +272,7 @@ function eq_boolean(bool, other) {
 
 function make_lambda(expr, env) {
     function lambda() {
-        let names = expr.args;
+        let names = expr.args.map(arg => arg.variable);
         if (names.length != arguments.length) throw ('Wrong number of arguments supplied to function ' + expr.name + ' (' + expr.args + ')');
         let scope = env.extend();
         for (let i = 0; i < names.length; ++i) scope.def(names[i], arguments[i])

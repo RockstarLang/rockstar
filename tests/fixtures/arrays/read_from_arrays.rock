@@ -1,0 +1,24 @@
+Rock X with 1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+Until X is nothing
+Roll X into Y, Z
+Shout X
+Shout Y with " - " with Z
+
+Rock X with true, false, 1, 0, "yes", "no"
+Shout X
+Until X is nothing
+Roll X into the night
+Shout the night
+
+Rock numbers with 1, 2, 3
+Rock strings with "a", "b", "c"
+Rock bools with true, false
+Rock matrix with numbers, strings, bools
+Until matrix is nothing
+Roll matrix into current
+Until current is nothing
+Roll current into output
+Shout output
+
+
+

@@ -17,8 +17,8 @@ function Environment(parent) {
 Environment.prototype = {
     extend: function () { return new Environment(this) },
 
-    exists: function(name) {
-        return(name in this.vars);
+    exists: function (name) {
+        return (name in this.vars);
     },
 
     lookup: function (name) {
@@ -58,7 +58,7 @@ function evaluate(tree, env) {
         switch (type) {
             case "action": return (tree);
             case "cast":
-                return(cast(expr, env));
+                return (cast(expr, env));
             case "list":
                 let result = null;
                 for (let i = 0; i < expr.length; i++) {
@@ -98,7 +98,7 @@ function evaluate(tree, env) {
                 return env.lookup(lookup_name);
             case "delist":
                 return delist(expr, env);
-            case "enlist":                
+            case "enlist":
                 return enlist(expr, env);
             case "assign":
                 let alias = "";
@@ -189,6 +189,10 @@ function evaluate(tree, env) {
                 let func = env.lookup(expr.name);
                 let func_result = func.apply(null, expr.args.map(arg => evaluate(arg, env)));
                 return (func_result ? func_result.value : undefined);
+            case "index_lookup":
+                let list = evaluate(expr.list, env);
+                let index = evaluate(expr.index, env);
+                return list[index];
             default:
                 if (Array.isArray(tree) && tree.length == 1) return (evaluate(tree[0], env));
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
@@ -200,7 +204,7 @@ function evaluate(tree, env) {
 function cast(expr, env) {
     let source = evaluate(expr.source, env);
     let target = env.dealias(expr.target);
-    env.assign(target, String.fromCharCode(source));   
+    env.assign(target, String.fromCharCode(source));
 }
 
 function delist(expr, env) {
@@ -212,17 +216,17 @@ function delist(expr, env) {
 
 function enlist(expr, env) {
     let array_value;
-    let array_name = env.dealias(expr);   
+    let array_name = env.dealias(expr);
     if (env.exists(array_name)) {
         array_value = env.lookup(array_name);
-        if (! Array.isArray(array_value)) array_value = [array_value];                    
+        if (!Array.isArray(array_value)) array_value = [array_value];
     } else {
         array_value = [];
     }
     if (expr.expression) {
         let elements_to_enlist = (expr.expression.map ? expr.expression : [expr.expression]);
         array_value = array_value.concat(elements_to_enlist.map(e => evaluate(e, env)));
-    } 
+    }
     env.assign(array_name, array_value);
     return array_value;
 }
@@ -235,7 +239,7 @@ function demystify(expr, env) {
 
 function eq(lhs, rhs) {
     if (Array.isArray(lhs)) return (eq_array(lhs, rhs));
-    if (Array.isArray(rhs)) return (eq_array(rhs,lhs));
+    if (Array.isArray(rhs)) return (eq_array(rhs, lhs));
 
     if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
     if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
@@ -249,11 +253,11 @@ function eq(lhs, rhs) {
 }
 
 function eq_array(array, other) {
-    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => el === other[index])); 
+    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => el === other[index]));
     if (other == null || other == 0 || other == "") {
-        return(array.length == 0);
+        return (array.length == 0);
     }
-    return(false);
+    return (false);
 }
 
 function eq_number(number, other) {
@@ -316,7 +320,7 @@ function multiply_reduce(acc, val, idx, src) {
     // Null, nothing, noone, nowhere, etc. are all zero for multiplication purposes.
     if (acc == null) acc = 0;
     if (val == null) val = 0;
-    // Mu ltiplying numbers just works.
+    // Multiplying numbers just works.
     if (typeof (acc) == 'number' && typeof (val) == 'number') return (acc * val);
     // Multiplying strings by numbers does repeated concatenation
     if (typeof (acc) == 'string' && typeof (val) == 'number') return multiply_string(acc, val);

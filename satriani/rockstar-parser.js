@@ -518,13 +518,12 @@ function peg$parse(input, options) {
       peg$c312 = function(list, index, result) { return {
             assign: { 
               variable: result, 
-              expression: {
-                index_lookup: {
-                  list: list,
-                  index: index
-               }
+              expression: index_lookup: {
+                list: list,
+                index: index
               }
-          } } },
+            }
+          } },
       peg$c313 = function(s) { return { string: s} },
       peg$c314 = function(n, d) { return { number: parseFloat(d?n+'.'+d:n)}},
       peg$c315 = function(d) {return d},

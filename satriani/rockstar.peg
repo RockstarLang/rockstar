@@ -253,6 +253,7 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
+
 assignment = v:variable is _* e:(literal / poetic_number)
     { return { assign: { variable: v, expression: e} }; }
   / v:variable _+ 'says 'i e:poetic_string
@@ -284,6 +285,21 @@ assignment = v:variable is _* e:(literal / poetic_number)
   / 'let'i _+ v:variable _+ 'be'i _+ e:expression
     { return { assign: { variable: v, expression: e} }; }
 
+  / 
+    'pick'i _ list:expression _ 
+    'at'i _ index:expression _ 
+    'into' _ result:variable 
+    { return {
+      assign: { 
+        variable: result, 
+        expression: {
+          index_lookup: {
+            list: list,
+            index: index
+         }
+        }
+    } } } 
+
 poetic_string = s:$[^\n]*
   { return { string: s} }
 
@@ -310,7 +326,7 @@ poetic_decimal_digits =
       { return head + tail }
   /
     d: poetic_digit
-      { return d }
+      { return d } 
 
 poetic_digit = t:[A-Za-z']+
   { return (t.filter(c => /[A-Za-z]/.test(c)).length%10).toString()}

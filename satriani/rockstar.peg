@@ -59,7 +59,7 @@ return = 'return'i / 'give back'i
 function_return = return _ e:expression
 	{ return { 'return': { 'expression' : e } } }
 
-operation = readline / output / crement / assignment
+operation = readline / output / crement / assignment / rounding
 
 readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
 		 / 'listen'i { return { 'listen' : ''} }
@@ -198,8 +198,8 @@ small	= ('low'i / 'small'i / 'weak'i)
 
 comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
             / 	'is'i _ smaller _ 'than'i { return 'lt' }
-            /	'is'i _ 'as'i _ great _ 'as'i { return 'ge' }
-            /	'is'i _ 'as'i _ small _ 'as'i { return 'le' }
+            /	  'is'i _ 'as'i _ great _ 'as'i { return 'ge' }
+            /	  'is'i _ 'as'i _ small _ 'as'i { return 'le' }
 
 
 arithmetic         = first:product rest:((add / subtract) product)+
@@ -310,10 +310,10 @@ poetic_digit = t:[A-Za-z']+
 kw10 = 'mysterious'i
 kw8 = ( 'stronger'i / 'continue'i)
 kw7 = ( 'between'i / 'greater'i / 'nothing'i / 'nowhere'i / 'smaller'i / 'whisper'i / 'without'i)
-kw6 = ( 'ain\'t'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
+kw6 = ( 'ain\'t'i / 'around'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
     / 'strong'i)
-kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'shout'i / 'small'i
-    / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
+kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'round'i / 'shout'i 
+    / 'small'i / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
 kw4 = ( 'aint'i / 'back'i / 'down'i / 'else'i / 'give'i / 'gone'i / 'high'i / 'into'i / 'less'i / 'lies'i / 'null'i
     / 'plus'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
 kw3 = ( 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
@@ -350,3 +350,22 @@ decrement = 'knock'i _ v:variable _ t:('down'i noise*)+
         }
     }; }
 
+rounding = floor / ceil / math_round
+
+floor 
+  = 'turn'i _ v:variable _ 'down'i
+    { return { rounding: { variable: v, direction: 'down'  } }; }
+  / 'turn'i _ 'down'i _ v:variable
+    { return { rounding: { variable: v, direction: 'down'  } }; }
+
+ceil
+  = 'turn'i _ v:variable _ 'up'i
+    { return { rounding: { variable: v, direction: 'up'  } }; }
+  / 'turn'i _ 'up'i _ v:variable
+    { return { rounding: { variable: v, direction: 'up' } }; }
+
+math_round 
+  = 'turn'i _ v:variable _ ('round'i/'around'i)
+    { return { rounding: { variable: v, direction: 'nearest' } }; }  
+  / 'turn'i _ ('round'i/'around'i) _ v:variable
+    { return { rounding: { variable: v, direction: 'nearest' } }; }

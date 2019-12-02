@@ -105,6 +105,8 @@ function evaluate(tree, env) {
                 return env.lookup(env.pronoun_alias);
             case "blank":
                 return;
+            case "rounding":
+                return rounding(expr,env);
             case "increment":
                 let increment_name = env.dealias(expr);
                 let old_increment_value = env.lookup(increment_name);
@@ -184,6 +186,19 @@ function evaluate(tree, env) {
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
 
         }
+    }
+}
+
+function rounding(expr, env) {
+    let variable_name = env.dealias(expr);
+    let variable_value = env.lookup(variable_name);
+    switch (expr.direction) {
+        case "up":
+            return env.assign(variable_name, Math.ceil(variable_value));
+        case "down":
+            return env.assign(variable_name, Math.floor(variable_value));
+        default:
+            return env.assign(variable_name, Math.round(variable_value));
     }
 }
 

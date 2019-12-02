@@ -51,7 +51,7 @@ If a variable is defined outside of a function, it is in global scope. Global sc
 
 While within a function, if you write to a variable that has been defined in global scope, you write to that variable, you do not define a new local variable.
 
-**Pronouns**
+#### Pronouns
 
 The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, and `ver` refer to the last named variable determined by parsing order. 
  
@@ -163,7 +163,36 @@ As in many C-style languages, Rockstar supports compound assignment operators, p
 * `Let X be with 10` - add `10` to `X` and store the result in `X`. (Equivalent to `X += 10`)
 * `Let the children be without fear` - subtract `fear` from `the children` and store the result in `the children`
 * `Let my heart be over the moon` - equivalent to `my heart /= the moon`
-
+
+#### Arithmetic Rounding
+
+Rounding in Rockstar is performed by the `turn` keyword. `Turn up` will round up (i.e. towards positive infinity), to the nearest integer; `turn down` will round down (towards negative infinity) to the nearest integer, and `turn round` will round to the nearest integer. Bonnie Tyler enthusiasts will be pleased to note that Rockstar accepts `turn around` as a valid alias.
+
+Turn operations act in-place: they modify the variable directly, and will return the rounded value.
+
+```
+X is 1.2
+Turn up X
+Shout X (will print 2)
+
+X is 1.2
+Turn down X
+Shout X (will print 1)
+
+The radio's playing. The night has just begun. 
+ (initialises the radio with 7.35345)
+Turn up the radio
+Say the radio (will print 8)
+```
+Rounding supports variable [pronouns](#pronouns), so you can write phrases like:
+
+```
+My heart is on fire. Aflame with desire.
+Turn it up.
+Shout it.
+```
+
+which will print the value 25 (obviously).
 
 #### List Arithmetic
 

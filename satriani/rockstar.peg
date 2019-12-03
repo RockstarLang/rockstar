@@ -234,9 +234,12 @@ pronoun = pronoun:(
     )
     { return { pronoun: pronoun.toLowerCase() } }
 
-lookup 	= v:variable
-  { return { lookup: { variable: v } }; }
-
+lookup 	
+  = v:variable _ 'at'i _ i:variable
+    { return { lookup: { variable: v, index: i } }; }
+  / v:variable
+    { return { lookup: { variable: v } }; }
+     
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
 
 uppercase_letter = [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ]
@@ -248,18 +251,25 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
-assignment = v:variable is _* e:(literal / poetic_number)
-    { return { assign: { variable: v, expression: e} }; }
 
-  / v:variable _+ 'says 'i e:poetic_string
-    { return { assign: { variable: v, expression: e} }; }
+split = 'cut'i / 'split'i / 'shatter'i
 
-  / 'put'i _+ e:expression _+ 'into'i _+ v:variable
-    { return { assign: { variable: v, expression: e} }; }
+assignable
+  = v:variable _ 'at'i _ i:expression { return { variable: v, index: i }; }
+  / v:variable { return { variable: v }; }
 
-  / 'let'i _+ v:variable _+ 'be'i o:compoundable_operator e:expression { 
+assignment = target:assignable is _* e:(literal / poetic_number)
+    { return { assign: { target: target, expression: e} }; }
+
+  / target:assignable _+ 'says 'i e:poetic_string
+    { return { assign: { target: target, expression: e} }; }
+
+  / 'put'i _+ e:expression _+ 'into'i _+ target:assignable
+    { return { assign: { target: target, expression: e} }; }
+
+  / 'let'i _+ target:assignable _+ 'be'i o:compoundable_operator e:expression { 
       return { assign: { 
-        variable: v, 
+        target: target, 
         expression: { 
           binary: { 
             op: o, 
@@ -270,8 +280,13 @@ assignment = v:variable is _* e:(literal / poetic_number)
       } }; 
     }
 
-  / 'let'i _+ v:variable _+ 'be'i _+ e:expression
-    { return { assign: { variable: v, expression: e} }; }
+  / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
+    { return { assign: { target: target, expression: e} }; }
+
+  / split _ array:simple_expression _ 'with'i _ delimiter:expression _ 'into'i _ target:assignable
+    { return { split: { array: array, delimiter: delimiter, target: target } } ; }
+  / split _ array:simple_expression _ 'into'i _ target:assignable
+    { return { split: { array: array, target: target } } ; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }

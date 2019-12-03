@@ -209,15 +209,39 @@ function demystify(expr, env) {
 }
 
 function eq(lhs, rhs) {
-    if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
-    if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
+    if (is_nothing(lhs) && is_nothing(rhs)) return(true);
+    // if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
+    // if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
 
     if (typeof (lhs) == 'boolean') return (eq_boolean(lhs, rhs));
     if (typeof (rhs) == 'boolean') return (eq_boolean(rhs, lhs));
+
     if (typeof (lhs) == 'number') return (eq_number(lhs, rhs));
     if (typeof (rhs) == 'number') return (eq_number(rhs, lhs));
 
+    if (typeof (lhs) == 'string') return (eq_string(lhs, rhs));
+    if (typeof (rhs) == 'string') return (eq_string(rhs, lhs));
+
     return lhs == rhs;
+}
+
+function is_nothing(thing) {
+    return (
+        typeof(thing) == 'undefined'
+        ||
+        thing === null
+        ||
+        thing === ""
+        ||
+        thing == 0
+        ||
+        thing == false
+    );
+}
+
+function eq_string(string, other) {
+    if (other == null || typeof(other) == 'undefined') return (string === "");
+    return (other == string);
 }
 
 function eq_number(number, other) {

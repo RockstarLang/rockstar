@@ -108,6 +108,15 @@ Let my array at 7 be "some other value"
 Shout my array (will now print 8, since assigning my array at 7 modifies the array length)
 ```
 
+You can also use array index syntax to read (but not write) specific characters from a string
+
+```$
+Let my string be "abcdefg"
+Shout my string at 0 (will print "a")
+Shout my string at 1 (will print "b")
+Let the character be my string at 2
+```
+
 ### Splitting strings
 
 To split a string in Rockstar, use the `cut` keyword (aliases `split` and `shatter`)

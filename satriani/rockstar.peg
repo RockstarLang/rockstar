@@ -4,7 +4,27 @@ Created using PEG.js        https://pegjs.org
 After updating, run pegjs -o rockstar-parser.js rockstar.peg
 */
 
-program     = p:line * { return { list: p.filter(item => item) } }
+{
+  /* initialiser code - this is JS that runs before the parser is generated */
+  const keywords = [
+    'mysterious',
+    'stronger','continue',
+    'between','greater','nothing','nowhere','smaller','whisper','without',
+    'ain\'t','around','bigger','listen','nobody','return','scream','taking','weaker','higher', 'strong',
+    'break','build','empty','false','great','knock','lower','right','round','shout', 
+    'small','take','takes','times','until','while','wrong','minus',
+    'aint','back','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
+    'and','big','her','him','hir','it ','low','nor','not','put','say','she','the','top','ver','was','xem','yes','zie','zir',
+    'an','as','at','he','if','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
+    'a'
+  ]
+
+  function isKeyword(string) {
+    return keywords.includes(string.toLowerCase());
+  }
+}
+
+program = p:line * { return { list: p.filter(item => item) } }
 
 line = _* s:statement (EOL+ / EOF) { return s }
   /
@@ -319,31 +339,12 @@ poetic_decimal_digits =
 poetic_digit = t:[A-Za-z']+
   { return (t.filter(c => /[A-Za-z]/.test(c)).length%10).toString()}
 
-// To disallow identifiers like 'My back is hurting' (which is illegal because 'back' is a keyword)
-// we need to explicitly define all language keywords, and they MUST be matched in descending order of length
-// because of Complicated Weird Parser Reasons.
-kw10 = 'mysterious'i
-kw8 = ( 'stronger'i / 'continue'i)
-kw7 = ( 'between'i / 'greater'i / 'nothing'i / 'nowhere'i / 'smaller'i / 'whisper'i / 'without'i)
-kw6 = ( 'ain\'t'i / 'around'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
-    / 'strong'i)
-kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'round'i / 'shout'i 
-    / 'small'i / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
-kw4 = ( 'aint'i / 'back'i / 'down'i / 'else'i / 'give'i / 'gone'i / 'high'i / 'into'i / 'less'i / 'lies'i / 'null'i
-    / 'plus'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
-kw3 = ( 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
-    / 'the'i / 'top'i / 'ver'i / 'was'i / 'xem'i / 'yes'i / 'zie'i / 'zir'i)
-kw2 = ( 'an'i / 'as'i / 'he'i / 'if'i / 'is'i / 'it'i / 'my'i / 'no'i / 'of'i / 'ok'i / 'or'i / 'to'i / 'up'i / 've'i
-    / 'xe'i / 'ze'i )
-kw1 = 'a'i
-
-keyword = (kw10 / kw8 / kw7 / kw6 / kw5 / kw5 / kw4 / kw3 / kw2 / kw1) !letter
-
 variable = common_variable / proper_variable / pronoun / simple_variable
 
-simple_variable = !keyword name:$(letter letter*) { return name } 
+simple_variable = name:$(letter letter*) !{ return isKeyword(name) } { return name } 
 
-proper_noun = !keyword uppercase_letter letter*
+proper_noun = noun:$(uppercase_letter letter*) !{ return isKeyword(noun) } { return noun }
+
 proper_variable = head:$(proper_noun (' ' $proper_noun)*)
   { return head.replace(/ /g, '_').toLowerCase()  }
 

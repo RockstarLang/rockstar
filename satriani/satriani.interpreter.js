@@ -18,6 +18,7 @@ Environment.prototype = {
     extend: function () { return new Environment(this) },
 
     lookup: function (name, index) {
+        console.log(name, index);
         if (name in this.vars) {
             if (typeof(index) != 'undefined') return this.vars[name][index];
             return this.vars[name];
@@ -91,8 +92,7 @@ function evaluate(tree, env) {
             case "binary":
                 return binary(expr, env);
             case "lookup":
-                let lookup_name = env.dealias(expr);
-                return env.lookup(lookup_name);
+                return lookup(expr, env);
             case "assign":
                 return assign(expr, env);
             case "pronoun":
@@ -181,6 +181,12 @@ function evaluate(tree, env) {
 
         }
     }
+}
+
+function lookup(expr, env) {
+    let lookup_name = env.dealias(expr);
+    let index = evaluate(expr.index);
+    return env.lookup(lookup_name, index);
 }
 
 function assign(expr,env) {

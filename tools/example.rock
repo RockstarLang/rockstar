@@ -1,15 +1,2 @@
-Let my array at 0 be "foo"
-Let my array at 1 be "bar"
-Let my array at 2 be "baz"
-Shout my array at 0
-Shout my array at 1
-Shout my array at 2
-
-The line says one two three four five
-Split the line into words
-The index is 0
-The word is out
-Until the word is nothing
-Put the line at index into the word
-Say the word
-
+X is 1
+Y is 2

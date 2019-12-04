@@ -94,7 +94,7 @@ function evaluate(tree, env) {
                 let printable = evaluate(expr, env);2
                 if (typeof (printable) == 'undefined') printable = "mysterious";
                 env.output(printable);
-                return;1
+                return;
             case "listen":
                 return env.input();
             case "binary":
@@ -194,14 +194,14 @@ function evaluate(tree, env) {
 }
 
 function split(expr, env) {
-    let string = evaluate(expr.source);
-    let delimiter = expr.delimiter || ","
-
-
+    let source = evaluate(expr.source, env);
+    let delimiter = evaluate(expr.delimiter, env) || "";
+    return source.toString().split(delimiter);
 }
+
 function lookup(expr, env) {
     let lookup_name = env.dealias(expr);
-    let index = evaluate(expr.index);
+    let index = evaluate(expr.index, env);
     return env.lookup(lookup_name, index);
 }
 

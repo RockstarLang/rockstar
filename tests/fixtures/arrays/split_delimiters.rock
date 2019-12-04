@@ -1,0 +1,15 @@
+Say "IN-PLACE WITH DELIMITER"
+Let the string be "a,b,c"
+Split the string with ","
+Say the string
+Say the string at 0
+Say the string at 1
+Say the string at 2
+
+Say "OUTPUT WITH DELIMITER"
+Let the line be "livin' on a prayer"
+Split the line into words with " "
+Say words at 0
+Say words at 1
+Say words at 2
+Say words at 3

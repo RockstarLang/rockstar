@@ -1,0 +1,14 @@
+Say "IN-PLACE"
+Let the string be "abc"
+Split the string
+Say the string at 0
+Say the string at 1
+Say the string at 2
+Say the string at 3
+
+Say "LITERAL"
+Split "wxyz" into digits
+Say digits at 0
+Say digits at 1
+Say digits at 2
+Say digits at 3

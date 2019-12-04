@@ -80,6 +80,7 @@ Let the array at 0 be "zero"
 Let the array at 1 be "one"
 Let the array at 255 be "two hundred and fifty five"
 ```
+
 ### Truthiness
 
 The results of comparisons often rely on a concept called 'truthiness'. If the value is truthy, it will be implicitly converted to true. If it is falsy, it will be implicitly converted to false.

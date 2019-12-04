@@ -71,6 +71,15 @@ Rockstar uses a similar type system to that defined by the [ECMAScript type syst
 
 Functions and function identifiers are not strictly part of the type system in Rockstar 1.0.
 
+### Arrays
+
+Rockstar supports numerically-indexed arrays. Arrays are instantiated when they're assigned, and dynamically allocated.
+
+```$rockstar
+Let the array at 0 be "zero"
+Let the array at 1 be "one"
+Let the array at 255 be "two hundred and fifty five"
+```
 ### Truthiness
 
 The results of comparisons often rely on a concept called 'truthiness'. If the value is truthy, it will be implicitly converted to true. If it is falsy, it will be implicitly converted to false.

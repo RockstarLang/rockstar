@@ -18,17 +18,25 @@ Environment.prototype = {
     extend: function () { return new Environment(this) },
 
     lookup: function (name, index) {
-        console.log(name, index);
         if (name in this.vars) {
-            if (typeof(index) != 'undefined') return this.vars[name][index];
-            return this.vars[name];
+            let variable = this.vars[name];
+            if (Array.isArray(variable)) {
+                if (typeof (index) != 'undefined') return variable[index];
+                return (variable.length);
+            }
+            if (typeof (variable) == 'string' && typeof (index) == 'number') return (variable[index]);
+            return variable;
         }
         throw new Error("Undefined variable " + name);
     },
 
     assign: function (name, value, index) {
         if (typeof(index) != 'undefined') {
-            if (! (name in this.vars)) this.vars[name] = {};
+            if (name in this.vars) {
+                if (!Array.isArray(this.vars[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
+            } else {
+                this.vars[name] = new Array();
+            }
             return this.vars[name][index] = value;
         } else {
             return this.vars[name] = value;
@@ -101,6 +109,8 @@ function evaluate(tree, env) {
                 return;
             case "rounding":
                 return rounding(expr,env);
+            case "split":
+                return split(expr,env);
             case "increment":
                 let increment_name = env.dealias(expr);
                 let old_increment_value = env.lookup(increment_name);
@@ -183,6 +193,12 @@ function evaluate(tree, env) {
     }
 }
 
+function split(expr, env) {
+    let string = evaluate(expr.source);
+    let delimiter = expr.delimiter || ","
+
+
+}
 function lookup(expr, env) {
     let lookup_name = env.dealias(expr);
     let index = evaluate(expr.index);

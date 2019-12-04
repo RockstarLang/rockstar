@@ -303,10 +303,10 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
     { return { assign: { target: target, expression: e} }; }
 
-  / split _ array:simple_expression _ 'with'i _ delimiter:expression _ 'into'i _ target:assignable
-    { return { split: { array: array, delimiter: delimiter, target: target } } ; }
-  / split _ array:simple_expression _ 'into'i _ target:assignable
-    { return { split: { array: array, target: target } } ; }
+  / split _ source:expression _ 'with'i _ delimiter:expression _ 'into'i _ target:assignable
+    { return { split: { source: source, delimiter: delimiter, target: target } } ; }
+  / split _ source:simple_expression _ 'into'i _ target:assignable
+    { return { split: { source: source, target: target } } ; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }

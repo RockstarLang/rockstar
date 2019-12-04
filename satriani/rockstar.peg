@@ -68,21 +68,24 @@ variable_list = head:variable variable_list_separator tail:variable_list
   / arg:variable { return [arg] }
 
 function_call = name:variable _ 'taking'i _ args:expression_list
-	{ return { 'call': { name: name, args: args } } }
+	{ return { 'call': { name: name, args: Array.isArray(args) ? args : [args] } } }
 
 expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
-  / arg:simple_expression { return [arg] }
+  / arg:simple_expression { return arg }
 
 return = 'return'i / 'give back'i
 
 function_return = return _ e:expression
 	{ return { 'return': { 'expression' : e } } }
 
-operation = readline / output / crement / assignment / rounding
+operation = readline / output / crement / string_split / assignment / rounding
 
-readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
-		 / 'listen'i { return { 'listen' : ''} }
+readline
+  = 'listen to'i _ target:assignable
+    { return { assign: { expression: { listen : ''}, target: target } } }
+	/ 'listen'i
+    { return { 'listen' : ''} }
 
 continuation = EOL _* s:statement { return s };
 
@@ -232,7 +235,8 @@ product     = first:simple_expression rest:((multiply / divide) expression_list)
                 { return rest.reduce(function(memo, curr) {
                     return { binary: { op: curr[0], lhs: memo, rhs: curr[1]} };
                 }, first); }
-            / expression_list
+			/ expression_list
+            / simple_expression
 
 // Note that operator aliases explicitly include a trailing space,
 // otherwise 'with' is a prefix code for 'without' and confuses the parser.
@@ -254,8 +258,11 @@ pronoun = pronoun:(
     )
     { return { pronoun: pronoun.toLowerCase() } }
 
-lookup 	= v:variable
-  { return { lookup: { variable: v } }; }
+lookup
+  = v:variable _ 'at'i _ i:expression
+    { return { lookup: { variable: v, index: i } }; }
+  / v:variable
+    { return { lookup: { variable: v } }; }
 
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
 
@@ -268,30 +275,45 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
-assignment = v:variable is _* e:(literal / poetic_number)
-    { return { assign: { variable: v, expression: e} }; }
 
-  / v:variable _+ 'says 'i e:poetic_string
-    { return { assign: { variable: v, expression: e} }; }
+into_target = _ 'into'i _ t:assignable { return t }
 
-  / 'put'i _+ e:expression _+ 'into'i _+ v:variable
-    { return { assign: { variable: v, expression: e} }; }
+assignable
+  = v:variable _ 'at'i _ i:expression
+    { return { variable: v, index: i }; }
+  / v:variable
+    { return { variable: v }; }
 
-  / 'let'i _+ v:variable _+ 'be'i o:compoundable_operator e:expression { 
-      return { assign: { 
-        variable: v, 
-        expression: { 
-          binary: { 
-            op: o, 
-            lhs: { lookup: { variable: v } }, 
-            rhs: e
-          } 
-        } 
-      } }; 
+assignment = target:assignable is _* e:(literal / poetic_number)
+    { return { assign: { target: target, expression: e} }; }
+
+  / target:assignable _+ 'says 'i e:poetic_string
+    { return { assign: { target: target, expression: e} }; }
+
+  / 'put'i _+ e:expression target:into_target
+    { return { assign: { target: target, expression: e} }; }
+
+  / 'let'i _+ target:assignable _+ 'be'i o:compoundable_operator e:expression {
+      return { assign: {
+        target: target,
+        expression: { binary: {  op: o, lhs: { lookup: target }, rhs: e } }
+      } };
     }
 
-  / 'let'i _+ v:variable _+ 'be'i _+ e:expression
-    { return { assign: { variable: v, expression: e} }; }
+  / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
+    { return { assign: { target: target, expression: e} }; }
+
+split = 'cut'i / 'split'i / 'shatter'i
+
+string_split
+	= split _ s:assignable _ 'with'i _ d:expression
+     { return { assign: { target: s, expression: { split: { source: { lookup: s }, delimiter: d } } } } ; }
+	/ split _ s:expression t:into_target _ 'with'i _ d:expression
+     { return { assign: { target: t, expression: { split: { source: s, delimiter: d } } } } ; }
+	/ split _ s:expression t:into_target
+     { return { assign: { target: t, expression: { split: { source: s } } } } ; }
+	/ split _ s:assignable
+     { return { assign: { target: s, expression: { split: { source: { lookup: s } } } } } ; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }

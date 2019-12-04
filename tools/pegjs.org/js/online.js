@@ -108,7 +108,9 @@ $(document).ready(function() {
           $("#input").val().length,
           timeAfter - timeBefore
         ));
-      $("#output").removeClass("disabled").text(jsDump.parse(output));
+      let json = jsDump.parse(output);
+
+      $("#output").removeClass("disabled").text(json);
 
       var result = true;
     } catch (e) {

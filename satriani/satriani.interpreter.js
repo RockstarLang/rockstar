@@ -17,18 +17,30 @@ function Environment(parent) {
 Environment.prototype = {
     extend: function () { return new Environment(this) },
 
-    lookup: function (name) {
-        if (name in this.vars)
-            return this.vars[name];
+    lookup: function (name, index) {
+        if (name in this.vars) {
+            let variable = this.vars[name];
+            if (Array.isArray(variable)) {
+                if (typeof (index) != 'undefined') return variable[index];
+                return (variable.length);
+            }
+            if (typeof (variable) == 'string' && typeof (index) == 'number') return (variable[index]);
+            return variable;
+        }
         throw new Error("Undefined variable " + name);
     },
 
-    assign: function (name, value) {
-        return this.vars[name] = value;
-    },
-
-    def: function (name, value) {
-        return this.vars[name] = value;
+    assign: function (name, value, index) {
+        if (typeof(index) != 'undefined') {
+            if (name in this.vars) {
+                if (!Array.isArray(this.vars[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
+            } else {
+                this.vars[name] = new Array();
+            }
+            return this.vars[name][index] = value;
+        } else {
+            return this.vars[name] = value;
+        }
     },
 
     run: function (program) {
@@ -45,7 +57,7 @@ Environment.prototype = {
 }
 
 function evaluate(tree, env) {
-    if (tree == MYSTERIOUS) return (undefined);
+    if (tree == MYSTERIOUS || typeof(tree) == 'undefined') return (undefined);
     let list = Object.entries(tree)
     for (let i = 0; i < list.length; i++) {
         let node = list[i];
@@ -79,7 +91,7 @@ function evaluate(tree, env) {
             case "constant":
                 return (expr);
             case "output":
-                let printable = evaluate(expr, env);
+                let printable = evaluate(expr, env);2
                 if (typeof (printable) == 'undefined') printable = "mysterious";
                 env.output(printable);
                 return;
@@ -88,25 +100,17 @@ function evaluate(tree, env) {
             case "binary":
                 return binary(expr, env);
             case "lookup":
-                let lookup_name = env.dealias(expr);
-                return env.lookup(lookup_name);
+                return lookup(expr, env);
             case "assign":
-                let alias = "";
-                let value = evaluate(expr.expression, env);
-                if (expr.variable.pronoun) {
-                    alias = env.pronoun_alias;
-                } else {
-                    alias = expr.variable;
-                    env.pronoun_alias = alias;
-                }
-                env.assign(alias, value);
-                return;
+                return assign(expr, env);
             case "pronoun":
                 return env.lookup(env.pronoun_alias);
             case "blank":
                 return;
             case "rounding":
                 return rounding(expr,env);
+            case "split":
+                return split(expr,env);
             case "increment":
                 let increment_name = env.dealias(expr);
                 let old_increment_value = env.lookup(increment_name);
@@ -189,6 +193,33 @@ function evaluate(tree, env) {
     }
 }
 
+function split(expr, env) {
+    let source = evaluate(expr.source, env);
+    let delimiter = evaluate(expr.delimiter, env) || "";
+    return source.toString().split(delimiter);
+}
+
+function lookup(expr, env) {
+    let lookup_name = env.dealias(expr);
+    let index = evaluate(expr.index, env);
+    return env.lookup(lookup_name, index);
+}
+
+function assign(expr,env) {
+    let alias = "";
+    let value = evaluate(expr.expression, env);
+    let target = expr.target;
+    let index = evaluate(target.index, env);
+    if (target.variable.pronoun) {
+        alias = env.pronoun_alias;
+    } else {
+        alias = target.variable;
+        env.pronoun_alias = alias;
+    }
+    env.assign(alias, value, index);
+    return value;
+}
+
 function rounding(expr, env) {
     let variable_name = env.dealias(expr);
     let variable_value = env.lookup(variable_name);
@@ -263,7 +294,7 @@ function make_lambda(expr, env) {
         let names = expr.args;
         if (names.length != arguments.length) throw ('Wrong number of arguments supplied to function ' + expr.name + ' (' + expr.args + ')');
         let scope = env.extend();
-        for (let i = 0; i < names.length; ++i) scope.def(names[i], arguments[i])
+        for (let i = 0; i < names.length; ++i) scope.assign(names[i], arguments[i])
         return evaluate(expr.body, scope);
     }
 

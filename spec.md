@@ -71,14 +71,73 @@ Rockstar uses a similar type system to that defined by the [ECMAScript type syst
 
 Functions and function identifiers are not strictly part of the type system in Rockstar 1.0.
 
-### Arrays
+## Arrays
 
-Rockstar supports numerically-indexed arrays. Arrays are instantiated when they're assigned, and dynamically allocated.
+Rockstar supports JavaScript-style arrays. Arrays are zero-based, and dynamically 
+allocated when values are assigned using numeric indexes.
 
 ```$rockstar
 Let the array at 0 be "zero"
 Let the array at 1 be "one"
-Let the array at 255 be "two hundred and fifty five"
+Let the array at 255 be "big"
+Shout the array at 0
+Shout the array at 255
+```
+
+Returning an array in a scalar context will return the current length of the array:
+
+```$rockstar
+Let my array at 255 be "some value"
+Shout my array (will print the value 256)
+```
+
+Rockstar also supports non-numeric array keys, so it is valid to say:
+
+```
+let my array at "some_key" be "some_value"
+Shout my array at "some_key"
+```
+
+You can mix string and numeric keys within the same array. The array length property 
+ignores any non-numeric keys:
+
+```
+Let my array at "some_key" be "some_value"
+Shout my array (will print 0, since there are no numeric indexes)
+Let my array at 7 be "some other value"
+Shout my array (will now print 8, since assigning my array at 7 modifies the array length)
+```
+
+### Splitting strings
+
+To split a string in Rockstar, use the `cut` keyword (aliases `split` and `shatter`)
+
+String splitting can either operate in-place, or place results into an output variable.
+You can specify an optional delimiter; if no delimiter is provided, the string is split
+into a character array.
+
+```
+Split "a,b,c" into the array (the array is ["a", ",", "b", ",", "c"])
+Split "a,b,c" into the array with "," (the array is ["a", "b", "c"])
+Split my string (my string will split in-place to an array of characters)
+Split my string with x (split my string in-place using the current value of x as a delimiter)
+
+Cut my life into pieces 
+  (split my life, put the resulting array in pieces)
+
+Cut your cake with my knife
+  (modify your cake in-place, by splitting it using my knife as a delimiter)
+
+Shatter my heart into pieces with your lies
+   (Split my heart, using your lies as a delimiter, and put the result into pieces)
+```
+
+In-place string splitting is only valid when the first argument is a variable; the 
+following would be invalid (because where would the result actually go?)
+
+```$
+Split "a,b,c,d,e" with "," (NOT VALID - nowhere to place the output)
+Split "a,b,c,d,e" into tokens with "," (valid - tokens now contains ["a","b","c","d","e"])
 ```
 
 ### Truthiness

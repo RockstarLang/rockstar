@@ -1,0 +1,14 @@
+Say "parsing ints with cast"
+Let X be "123"
+Let Y be "456"
+Let Z be X with Y
+Shout Z (123456)
+Cast X
+Cast Y
+Let Z be X with Y
+Shout Z (579)
+
+Say "creating chars with cast"
+Let X be 65
+Cast X
+Shout X (A)

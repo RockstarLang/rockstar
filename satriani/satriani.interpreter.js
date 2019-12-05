@@ -21,8 +21,14 @@ Environment.prototype = {
         if (name in this.vars) {
             let variable = this.vars[name];
             if (Array.isArray(variable)) {
-                if (typeof (index) != 'undefined') return variable[index];
-                return (variable.length);
+                if (typeof (index) == 'undefined' || index == null) {
+                    if (this.FORCE_ARRAY_FLAG) {
+                        this.FORCE_ARRAY_FLAG = false;
+                        return variable;
+                    }
+                    return (variable.length);
+                }
+                return variable[index];
             }
             if (typeof (variable) == 'string' && typeof (index) == 'number') return (variable[index]);
             return variable;
@@ -31,16 +37,13 @@ Environment.prototype = {
     },
 
     assign: function (name, value, index) {
-        if (typeof(index) != 'undefined') {
-            if (name in this.vars) {
-                if (!Array.isArray(this.vars[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
-            } else {
-                this.vars[name] = new Array();
-            }
-            return this.vars[name][index] = value;
+        if (typeof (index) == 'undefined' || index == null) return this.vars[name] = value;
+        if (name in this.vars) {
+            if (!Array.isArray(this.vars[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
         } else {
-            return this.vars[name] = value;
+            this.vars[name] = new Array();
         }
+        return this.vars[name][index] = value;
     },
 
     run: function (program) {
@@ -57,7 +60,8 @@ Environment.prototype = {
 }
 
 function evaluate(tree, env) {
-    if (tree == MYSTERIOUS || typeof(tree) == 'undefined') return (undefined);
+    if (tree == MYSTERIOUS || typeof(tree) == 'undefined') return undefined;
+    if (tree == null) return null;
     let list = Object.entries(tree)
     for (let i = 0; i < list.length; i++) {
         let node = list[i];
@@ -109,8 +113,8 @@ function evaluate(tree, env) {
                 return;
             case "rounding":
                 return rounding(expr,env);
-            case "split":
-                return split(expr,env);
+            case "mutation":
+                return mutation(expr,env);
             case "increment":
                 let increment_name = env.dealias(expr);
                 let old_increment_value = env.lookup(increment_name);
@@ -175,6 +179,8 @@ function evaluate(tree, env) {
                         return (lhs >= rhs);
                     case "gt":
                         return (lhs > rhs);
+                    default:
+                        throw new Error(`Unknown comparison operator ${expr.comparator}`);
                 }
             case "not":
                 return (!evaluate(expr.expression, env));
@@ -188,15 +194,31 @@ function evaluate(tree, env) {
             default:
                 if (Array.isArray(tree) && tree.length == 1) return (evaluate(tree[0], env));
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
-
         }
     }
 }
 
-function split(expr, env) {
+function mutation(expr, env) {
     let source = evaluate(expr.source, env);
-    let delimiter = evaluate(expr.delimiter, env) || "";
-    return source.toString().split(delimiter);
+    let modifier = evaluate(expr.modifier, env);
+    switch(expr.type) {
+        case "split":
+            return source.toString().split(modifier || "");
+        case "cast":
+            if (typeof(source) == 'string') return parseInt(source, modifier);
+            if (typeof(source) == 'number') return String.fromCharCode(source);
+            throw new Error(`I don't know how to cast ${source}`);
+        case "join":
+            // This is a nasty hack but it avoids having to extend the entire
+            // parser with a special additional parameter.
+            env.FORCE_ARRAY_FLAG = true;
+            source = evaluate(expr.source, env);
+            if (Array.isArray(source)) {
+                let joiner = (typeof(modifier) == 'undefined' || modifier == null) ? '' : modifier;
+                return source.join(joiner);
+            }
+            throw new Error("I don't know how to join that.");
+    }
 }
 
 function lookup(expr, env) {

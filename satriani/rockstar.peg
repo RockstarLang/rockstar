@@ -12,8 +12,8 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
     'between','greater','nothing','nowhere','smaller','whisper','without',
     'ain\'t','around','bigger','listen','nobody','return','scream','taking','weaker','higher', 'strong',
     'break','build','empty','false','great','knock','lower','right','round','shout', 
-    'small','take','takes','times','until','while','wrong','minus',
-    'aint','back','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
+    'small','take','takes','times','until','unite','while','wrong','minus',
+    'aint','back','cast','burn','join','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
     'and','big','her','him','hir','it ','low','nor','not','put','say','she','the','top','ver','was','xem','yes','zie','zir',
     'an','as','at','he','if','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
     'a'
@@ -79,7 +79,7 @@ return = 'return'i / 'give back'i
 function_return = return _ e:expression
 	{ return { 'return': { 'expression' : e } } }
 
-operation = readline / output / crement / string_split / assignment / rounding
+operation = readline / output / crement / mutation / assignment / rounding
 
 readline
   = 'listen to'i _ target:assignable
@@ -276,13 +276,12 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 
-into_target = _ 'into'i _ t:assignable { return t }
+target = _ 'into'i _ t:assignable { return t }
 
+indexer = _ 'at'i _ i:expression { return i };
 assignable
-  = v:variable _ 'at'i _ i:expression
+  = v:variable i:indexer?
     { return { variable: v, index: i }; }
-  / v:variable
-    { return { variable: v }; }
 
 assignment = target:assignable is _* e:(literal / poetic_number)
     { return { assign: { target: target, expression: e} }; }
@@ -290,7 +289,7 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / target:assignable _+ 'says 'i e:poetic_string
     { return { assign: { target: target, expression: e} }; }
 
-  / 'put'i _+ e:expression target:into_target
+  / 'put'i _+ e:expression target:target
     { return { assign: { target: target, expression: e} }; }
 
   / 'let'i _+ target:assignable _+ 'be'i o:compoundable_operator e:expression {
@@ -303,17 +302,6 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
     { return { assign: { target: target, expression: e} }; }
 
-split = 'cut'i / 'split'i / 'shatter'i
-
-string_split
-	= split _ s:assignable _ 'with'i _ d:expression
-     { return { assign: { target: s, expression: { split: { source: { lookup: s }, delimiter: d } } } } ; }
-	/ split _ s:expression t:into_target _ 'with'i _ d:expression
-     { return { assign: { target: t, expression: { split: { source: s, delimiter: d } } } } ; }
-	/ split _ s:expression t:into_target
-     { return { assign: { target: t, expression: { split: { source: s } } } } ; }
-	/ split _ s:assignable
-     { return { assign: { target: s, expression: { split: { source: { lookup: s } } } } } ; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }
@@ -372,6 +360,20 @@ decrement = 'knock'i _ v:variable _ t:('down'i noise*)+
             multiple: t.length
         }
     }; }
+
+
+split = ('cut'i / 'split'i / 'shatter'i) { return 'split' }
+cast = ('cast'i / 'burn'i) { return 'cast' }
+join = ('join'i / 'unite'i) { return 'join' }
+
+mutator = split / cast / join
+modifier =  _ ('with'i / 'using'i) _ m:expression { return m }
+
+mutation
+    = op:mutator _ s:expression t:target m:modifier?
+        { return { assign: { target: t, expression: { mutation: { type: op, source: s, modifier: m } } } } ; }
+	/ op:mutator _ s:assignable m:modifier?
+        { return { assign: { target: s, expression: { mutation: { type: op, source: { lookup: s }, modifier: m } } } } ; }
 
 rounding = floor / ceil / math_round
 

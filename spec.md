@@ -117,9 +117,24 @@ Shout my string at 1 (will print "b")
 Let the character be my string at 2
 ```
 
-### Splitting strings
+### Splitting strings and type conversions
 
-To split a string in Rockstar, use the `cut` keyword (aliases `split` and `shatter`)
+#### A note about mutations
+
+Some operations in Rockstar will either act in-place, modifying the variable passed to them, or will leave the
+source variable unmodified and place their output into a target variable. These operations are known as mutation 
+operations, and they all have the syntax
+
+* `Modify X` - acts in-place 
+* `Modify X into Y` - leave `X` alone and put modified output into `Y`
+* `Modify X with Z` - modify `X` in-place, with optional parameter `Z`
+* `Modify X into Y with Z` - modify `X`, using parameter `Y`, and put results in `Z`
+
+Note that in-place mutations are **only valid where the first argument is a variable**:
+
+#### Splitting Strings
+
+To split a string in Rockstar, use the `cut` mutation (aliases `split` and `shatter`)
 
 String splitting can either operate in-place, or place results into an output variable.
 You can specify an optional delimiter; if no delimiter is provided, the string is split
@@ -147,6 +162,45 @@ following would be invalid (because where would the result actually go?)
 ```$
 Split "a,b,c,d,e" with "," (NOT VALID - nowhere to place the output)
 Split "a,b,c,d,e" into tokens with "," (valid - tokens now contains ["a","b","c","d","e"])
+```
+
+#### Joining Arrays
+
+To join an array in Rockstar, use the `join` mutation, or the alias `unite`
+
+```
+Let the string be "abcde"
+Split the string into tokens
+Join tokens with ";"
+    (the tokens now contains "a;b;c;d;e")
+
+The input says hey now hey now now
+Split the input into words with " "
+Unite words into the output with "! "
+    (the output now contains "hey! now! hey! now! now!")
+```
+
+#### Parsing numbers and character codes
+
+Use the `cast` mutation to parse strings into numbers, or to convert numbers into their corresponding Unicode characters.
+
+```$rockstar
+Let X be "123.45"
+Cast X
+    (X now contains the numeric value 123.45)
+Let X be "ff"
+Cast X with 16
+    (X now contains the numeric value 255 - OxFF)
+Cast "12345" into result
+    (result now contains the number 12345)
+Cast "aa" into result with 16
+    (result now contains the number 170 - 0xAA)
+
+Cast 65 into result
+    (result now contains the string "A" - ASCII code 65)
+
+Cast 1046 into result
+    (result now contains the Cyrillic letter "Ж" - Unicode code point 1046)
 ```
 
 ### Truthiness

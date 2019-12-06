@@ -378,6 +378,8 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
 * `Tommy was without` initialises `Tommy` with the value `7` because `without` is a Reserved Keyword, but not a Literal Word.
  * Note that poetic literals **can** include Reserved Keywords, as with `taking` in this example.
+ * The hyphen (`-`) is counted as a letter – so you can use terms like 'all-consuming' (13 letters > 3) and
+  'power-hungry' (12 letters > 2) instead of having to think of 12- and 13-letter words.
  * The semi-colon, comma, apostrophe and any other non-alphabetical characters are ignored.
 
 ### Comparison

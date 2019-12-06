@@ -314,7 +314,7 @@ poetic_decimal = '.' poetic_decimal_digit_separator* d:poetic_decimal_digits poe
         /
                 '.' poetic_decimal_digit_separator*
 
-poetic_digit_separator = ( _ / [0-9\',;:?!+_\-/] )
+poetic_digit_separator = ( _ / [0-9\',;:?!+_/] )
 
 poetic_digits =
   poetic_digit_separator* head:poetic_digit poetic_digit_separator+ tail:poetic_digits
@@ -331,8 +331,8 @@ poetic_decimal_digits =
     d: poetic_digit
       { return d }
 
-poetic_digit = t:[A-Za-z']+
-  { return (t.filter(c => /[A-Za-z]/.test(c)).length%10).toString()}
+poetic_digit = t:[A-Za-z\-']+
+  { return (t.filter(c => /[A-Za-z\-]/.test(c)).length%10).toString()}
 
 variable = common_variable / proper_variable / pronoun / simple_variable
 

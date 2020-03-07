@@ -16,7 +16,7 @@ let tests = [
     [1, null, false],
     [undefined, undefined, true],
     [undefined, 1, false],
-    [undefined, 0, true],
+    [undefined, 0, false],
     [undefined, null, false],
     [false,5,false],
     [5,false,false],

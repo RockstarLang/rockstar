@@ -262,7 +262,9 @@ function demystify(expr, env) {
 }
 
 function eq(lhs, rhs) {
-    if (typeof(lhs) === typeof(rhs) === 'undefined') return (true);
+    if (typeof(lhs) === 'undefined') {
+        return typeof(rhs) === 'undefined';
+    }
     if (is_nothing(lhs) && is_nothing(rhs)) return(true);
     // if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
     // if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
@@ -285,9 +287,9 @@ function is_nothing(thing) {
         ||
         thing === ""
         ||
-        thing == 0
+        thing === 0
         ||
-        thing == false
+        thing === false
     );
 }
 

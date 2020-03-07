@@ -262,6 +262,7 @@ function demystify(expr, env) {
 }
 
 function eq(lhs, rhs) {
+    if (typeof(lhs) === typeof(rhs) === 'undefined') return (true);
     if (is_nothing(lhs) && is_nothing(rhs)) return(true);
     // if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
     // if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
@@ -275,13 +276,11 @@ function eq(lhs, rhs) {
     if (typeof (lhs) == 'string') return (eq_string(lhs, rhs));
     if (typeof (rhs) == 'string') return (eq_string(rhs, lhs));
 
-    return lhs == rhs;
+    return lhs === rhs;
 }
 
 function is_nothing(thing) {
     return (
-        typeof(thing) == 'undefined'
-        ||
         thing === null
         ||
         thing === ""

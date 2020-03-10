@@ -51,7 +51,7 @@ If a variable is defined outside of a function, it is in global scope. Global sc
 
 While within a function, if you write to a variable that has been defined in global scope, you write to that variable, you do not define a new local variable.
 
-**Pronouns**
+#### Pronouns
 
 The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, and `ver` refer to the last named variable determined by parsing order. 
  
@@ -70,6 +70,138 @@ Rockstar uses a similar type system to that defined by the [ECMAScript type syst
 * **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
 
 Functions and function identifiers are not strictly part of the type system in Rockstar 1.0.
+
+## Arrays
+
+Rockstar supports JavaScript-style arrays. Arrays are zero-based, and dynamically 
+allocated when values are assigned using numeric indexes.
+
+```$rockstar
+Let the array at 0 be "zero"
+Let the array at 1 be "one"
+Let the array at 255 be "big"
+Shout the array at 0
+Shout the array at 255
+```
+
+Returning an array in a scalar context will return the current length of the array:
+
+```$rockstar
+Let my array at 255 be "some value"
+Shout my array (will print the value 256)
+```
+
+Rockstar also supports non-numeric array keys, so it is valid to say:
+
+```
+let my array at "some_key" be "some_value"
+Shout my array at "some_key"
+```
+
+You can mix string and numeric keys within the same array. The array length property 
+ignores any non-numeric keys:
+
+```
+Let my array at "some_key" be "some_value"
+Shout my array (will print 0, since there are no numeric indexes)
+Let my array at 7 be "some other value"
+Shout my array (will now print 8, since assigning my array at 7 modifies the array length)
+```
+
+You can also use array index syntax to read (but not write) specific characters from a string
+
+```$
+Let my string be "abcdefg"
+Shout my string at 0 (will print "a")
+Shout my string at 1 (will print "b")
+Let the character be my string at 2
+```
+
+### Splitting strings and type conversions
+
+#### A note about mutations
+
+Some operations in Rockstar will either act in-place, modifying the variable passed to them, or will leave the
+source variable unmodified and place their output into a target variable. These operations are known as mutation 
+operations, and they all have the syntax
+
+* `Modify X` - acts in-place 
+* `Modify X into Y` - leave `X` alone and put modified output into `Y`
+* `Modify X with Z` - modify `X` in-place, with optional parameter `Z`
+* `Modify X into Y with Z` - modify `X`, using parameter `Y`, and put results in `Z`
+
+Note that in-place mutations are **only valid where the first argument is a variable**:
+
+#### Splitting Strings
+
+To split a string in Rockstar, use the `cut` mutation (aliases `split` and `shatter`)
+
+String splitting can either operate in-place, or place results into an output variable.
+You can specify an optional delimiter; if no delimiter is provided, the string is split
+into a character array.
+
+```
+Split "a,b,c" into the array (the array is ["a", ",", "b", ",", "c"])
+Split "a,b,c" into the array with "," (the array is ["a", "b", "c"])
+Split my string (my string will split in-place to an array of characters)
+Split my string with x (split my string in-place using the current value of x as a delimiter)
+
+Cut my life into pieces 
+  (split my life, put the resulting array in pieces)
+
+Cut your cake with my knife
+  (modify your cake in-place, by splitting it using my knife as a delimiter)
+
+Shatter my heart into pieces with your lies
+   (Split my heart, using your lies as a delimiter, and put the result into pieces)
+```
+
+In-place string splitting is only valid when the first argument is a variable; the 
+following would be invalid (because where would the result actually go?)
+
+```$
+Split "a,b,c,d,e" with "," (NOT VALID - nowhere to place the output)
+Split "a,b,c,d,e" into tokens with "," (valid - tokens now contains ["a","b","c","d","e"])
+```
+
+#### Joining Arrays
+
+To join an array in Rockstar, use the `join` mutation, or the alias `unite`
+
+```
+Let the string be "abcde"
+Split the string into tokens
+Join tokens with ";"
+    (the tokens now contains "a;b;c;d;e")
+
+The input says hey now hey now now
+Split the input into words with " "
+Unite words into the output with "! "
+    (the output now contains "hey! now! hey! now! now!")
+```
+
+#### Parsing numbers and character codes
+
+Use the `cast` mutation to parse strings into numbers, or to convert numbers into their corresponding Unicode characters.
+
+```$rockstar
+Let X be "123.45"
+Cast X
+    (X now contains the numeric value 123.45)
+Let X be "ff"
+Cast X with 16
+    (X now contains the numeric value 255 - OxFF)
+Cast "12345" into result
+    (result now contains the number 12345)
+Cast "aa" into result with 16
+    (result now contains the number 170 - 0xAA)
+
+Cast 65 into result
+    (result now contains the string "A" - ASCII code 65)
+
+Cast 1046 into result
+    (result now contains the Cyrillic letter "Ж" - Unicode code point 1046)
+```
 
 ### Truthiness
 
@@ -163,7 +295,36 @@ As in many C-style languages, Rockstar supports compound assignment operators, p
 * `Let X be with 10` - add `10` to `X` and store the result in `X`. (Equivalent to `X += 10`)
 * `Let the children be without fear` - subtract `fear` from `the children` and store the result in `the children`
 * `Let my heart be over the moon` - equivalent to `my heart /= the moon`
-
+
+#### Arithmetic Rounding
+
+Rounding in Rockstar is performed by the `turn` keyword. `Turn up` will round up (i.e. towards positive infinity), to the nearest integer; `turn down` will round down (towards negative infinity) to the nearest integer, and `turn round` will round to the nearest integer. Bonnie Tyler enthusiasts will be pleased to note that Rockstar accepts `turn around` as a valid alias.
+
+Turn operations act in-place: they modify the variable directly, and will return the rounded value.
+
+```
+X is 1.2
+Turn up X
+Shout X (will print 2)
+
+X is 1.2
+Turn down X
+Shout X (will print 1)
+
+The radio's playing. The night has just begun. 
+ (initialises the radio with 7.35345)
+Turn up the radio
+Say the radio (will print 8)
+```
+Rounding supports variable [pronouns](#pronouns), so you can write phrases like:
+
+```
+My heart is on fire. Aflame with desire.
+Turn it up.
+Shout it.
+```
+
+which will print the value 25 (obviously).
 
 #### List Arithmetic
 
@@ -217,6 +378,8 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 * `My dreams were ice. A life unfulfilled; wakin' everybody up, taking booze and pills` - initialises `my dreams` with the value `3.1415926535`
 * `Tommy was without` initialises `Tommy` with the value `7` because `without` is a Reserved Keyword, but not a Literal Word.
  * Note that poetic literals **can** include Reserved Keywords, as with `taking` in this example.
+ * The hyphen (`-`) is counted as a letter – so you can use terms like 'all-consuming' (13 letters > 3) and
+  'power-hungry' (12 letters > 2) instead of having to think of 12- and 13-letter words.
  * The semi-colon, comma, apostrophe and any other non-alphabetical characters are ignored.
 
 ### Comparison

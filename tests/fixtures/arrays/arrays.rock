@@ -1,0 +1,9 @@
+Let my array at 0 be "foo"
+Let my array at 1 be "bar"
+Let my array at 2 be "baz"
+Let my array at "key" be "value"
+Shout my array at 0
+Shout my array at 1
+Shout my array at 2
+Shout my array at "key"
+Shout my array

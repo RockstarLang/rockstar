@@ -29,6 +29,7 @@ Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 * [maiden](https://github.com/palfrey/maiden) - Rockstar interpreter in Rust ([online version using WebAssembly](https://palfrey.github.io/maiden/))
 * [thrash](https://github.com/young-steveo/thrash) - Rockstar implementation in Go
 * [rockstar-webpiler](https://github.com/cwfitzgerald/rockstar-webpiler) - Online Rockstar Parser and Transpiler. [rockstar.connorwfitzgerald.com](https://rockstar.connorwfitzgerald.com)
+* [wasm-rocks](https://github.com/boyanio/wasm-rocks) - Online Rockstar-to-WebAssembly compiler
 * [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
 * [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
 * [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac

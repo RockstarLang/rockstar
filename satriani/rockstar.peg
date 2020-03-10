@@ -4,7 +4,27 @@ Created using PEG.js        https://pegjs.org
 After updating, run pegjs -o rockstar-parser.js rockstar.peg
 */
 
-program     = p:line * { return { list: p.filter(item => item) } }
+{
+  /* initialiser code - this is JS that runs before the parser is generated */
+  const keywords = [
+    'mysterious',
+    'stronger','continue',
+    'between','greater','nothing','nowhere','smaller','whisper','without',
+    'ain\'t','around','bigger','listen','nobody','return','scream','taking','weaker','higher', 'strong',
+    'break','build','empty','false','great','knock','lower','right','round','shout', 
+    'small','take','takes','times','until','unite','while','wrong','minus',
+    'aint','back','cast','burn','join','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
+    'and','big','her','him','hir','it ','low','nor','not','put','say','she','the','top','ver','was','xem','yes','zie','zir',
+    'an','as','at','he','if','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
+    'a'
+  ]
+
+  function isKeyword(string) {
+    return keywords.includes(string.toLowerCase());
+  }
+}
+
+program = p:line * { return { list: p.filter(item => item) } }
 
 line = _* s:statement (EOL+ / EOF) { return s }
   /
@@ -48,21 +68,24 @@ variable_list = head:variable variable_list_separator tail:variable_list
   / arg:variable { return [arg] }
 
 function_call = name:variable _ 'taking'i _ args:expression_list
-	{ return { 'call': { name: name, args: args } } }
+	{ return { 'call': { name: name, args: Array.isArray(args) ? args : [args] } } }
 
 expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
-  / arg:simple_expression { return [arg] }
+  / arg:simple_expression { return arg }
 
 return = 'return'i / 'give back'i
 
 function_return = return _ e:expression
 	{ return { 'return': { 'expression' : e } } }
 
-operation = readline / output / crement / assignment
+operation = readline / output / crement / mutation / assignment / rounding
 
-readline = 'listen to'i _ v:variable  { return { 'assign': { 'expression': { 'listen' : ''}, 'variable': v } } }
-		 / 'listen'i { return { 'listen' : ''} }
+readline
+  = 'listen to'i _ target:assignable
+    { return { assign: { expression: { listen : ''}, target: target } } }
+	/ 'listen'i
+    { return { 'listen' : ''} }
 
 continuation = EOL _* s:statement { return s };
 
@@ -198,8 +221,8 @@ small	= ('low'i / 'small'i / 'weak'i)
 
 comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
             / 	'is'i _ smaller _ 'than'i { return 'lt' }
-            /	'is'i _ 'as'i _ great _ 'as'i { return 'ge' }
-            /	'is'i _ 'as'i _ small _ 'as'i { return 'le' }
+            /	  'is'i _ 'as'i _ great _ 'as'i { return 'ge' }
+            /	  'is'i _ 'as'i _ small _ 'as'i { return 'le' }
 
 
 arithmetic         = first:product rest:((add / subtract) product)+
@@ -212,7 +235,8 @@ product     = first:simple_expression rest:((multiply / divide) expression_list)
                 { return rest.reduce(function(memo, curr) {
                     return { binary: { op: curr[0], lhs: memo, rhs: curr[1]} };
                 }, first); }
-            / expression_list
+			/ expression_list
+            / simple_expression
 
 // Note that operator aliases explicitly include a trailing space,
 // otherwise 'with' is a prefix code for 'without' and confuses the parser.
@@ -234,8 +258,11 @@ pronoun = pronoun:(
     )
     { return { pronoun: pronoun.toLowerCase() } }
 
-lookup 	= v:variable
-  { return { lookup: { variable: v } }; }
+lookup
+  = v:variable _ 'at'i _ i:expression
+    { return { lookup: { variable: v, index: i } }; }
+  / v:variable
+    { return { lookup: { variable: v } }; }
 
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
 
@@ -248,30 +275,33 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
-assignment = v:variable is _* e:(literal / poetic_number)
-    { return { assign: { variable: v, expression: e} }; }
 
-  / v:variable _+ 'says 'i e:poetic_string
-    { return { assign: { variable: v, expression: e} }; }
+target = _ 'into'i _ t:assignable { return t }
 
-  / 'put'i _+ e:expression _+ 'into'i _+ v:variable
-    { return { assign: { variable: v, expression: e} }; }
+indexer = _ 'at'i _ i:expression { return i };
+assignable
+  = v:variable i:indexer?
+    { return { variable: v, index: i }; }
 
-  / 'let'i _+ v:variable _+ 'be'i o:compoundable_operator e:expression { 
-      return { assign: { 
-        variable: v, 
-        expression: { 
-          binary: { 
-            op: o, 
-            lhs: { lookup: { variable: v } }, 
-            rhs: e
-          } 
-        } 
-      } }; 
+assignment = target:assignable is _* e:(literal / poetic_number)
+    { return { assign: { target: target, expression: e} }; }
+
+  / target:assignable _+ 'says 'i e:poetic_string
+    { return { assign: { target: target, expression: e} }; }
+
+  / 'put'i _+ e:expression target:target
+    { return { assign: { target: target, expression: e} }; }
+
+  / 'let'i _+ target:assignable _+ 'be'i o:compoundable_operator e:expression {
+      return { assign: {
+        target: target,
+        expression: { binary: {  op: o, lhs: { lookup: target }, rhs: e } }
+      } };
     }
 
-  / 'let'i _+ v:variable _+ 'be'i _+ e:expression
-    { return { assign: { variable: v, expression: e} }; }
+  / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
+    { return { assign: { target: target, expression: e} }; }
+
 
 poetic_string = s:$[^\n]*
   { return { string: s} }
@@ -284,7 +314,7 @@ poetic_decimal = '.' poetic_decimal_digit_separator* d:poetic_decimal_digits poe
         /
                 '.' poetic_decimal_digit_separator*
 
-poetic_digit_separator = ( _ / [0-9\',;:?!+_\-/] )
+poetic_digit_separator = ( _ / [0-9\',;:?!+_/] )
 
 poetic_digits =
   poetic_digit_separator* head:poetic_digit poetic_digit_separator+ tail:poetic_digits
@@ -301,34 +331,15 @@ poetic_decimal_digits =
     d: poetic_digit
       { return d }
 
-poetic_digit = t:[A-Za-z']+
-  { return (t.filter(c => /[A-Za-z]/.test(c)).length%10).toString()}
-
-// To disallow identifiers like 'My back is hurting' (which is illegal because 'back' is a keyword)
-// we need to explicitly define all language keywords, and they MUST be matched in descending order of length
-// because of Complicated Weird Parser Reasons.
-kw10 = 'mysterious'i
-kw8 = ( 'stronger'i / 'continue'i)
-kw7 = ( 'between'i / 'greater'i / 'nothing'i / 'nowhere'i / 'smaller'i / 'whisper'i / 'without'i)
-kw6 = ( 'ain\'t'i / 'bigger'i / 'listen'i / 'nobody'i / 'return'i / 'scream'i / 'taking'i / 'weaker'i / 'higher'i
-    / 'strong'i)
-kw5 = ( 'break'i / 'build'i / 'empty'i / 'false'i / 'great'i / 'knock'i / 'lower'i / 'right'i / 'shout'i / 'small'i
-    / 'take 'i / 'takes'i / 'times'i / 'until'i / 'while'i / 'wrong'i / 'minus'i)
-kw4 = ( 'aint'i / 'back'i / 'down'i / 'else'i / 'give'i / 'gone'i / 'high'i / 'into'i / 'less'i / 'lies'i / 'null'i
-    / 'plus'i / 'says'i / 'than'i / 'them'i / 'they'i / 'true'i / 'weak'i / 'were'i / 'your'i / 'over'i / 'with'i)
-kw3 = ( 'and'i / 'big'i / 'her'i / 'him'i / 'hir'i / 'it 'i / 'low'i / 'nor'i / 'not'i / 'put'i / 'say'i / 'she'i
-    / 'the'i / 'top'i / 'ver'i / 'was'i / 'xem'i / 'yes'i / 'zie'i / 'zir'i)
-kw2 = ( 'an'i / 'as'i / 'he'i / 'if'i / 'is'i / 'it'i / 'my'i / 'no'i / 'of'i / 'ok'i / 'or'i / 'to'i / 'up'i / 've'i
-    / 'xe'i / 'ze'i )
-kw1 = 'a'i
-
-keyword = (kw10 / kw8 / kw7 / kw6 / kw5 / kw5 / kw4 / kw3 / kw2 / kw1) !letter
+poetic_digit = t:[A-Za-z\-']+
+  { return (t.filter(c => /[A-Za-z\-]/.test(c)).length%10).toString()}
 
 variable = common_variable / proper_variable / pronoun / simple_variable
 
-simple_variable = !keyword name:$(letter letter*) { return name } 
+simple_variable = name:$(letter letter*) !{ return isKeyword(name) } { return name } 
 
-proper_noun = !keyword uppercase_letter letter*
+proper_noun = noun:$(uppercase_letter letter*) !{ return isKeyword(noun) } { return noun }
+
 proper_variable = head:$(proper_noun (' ' $proper_noun)*)
   { return head.replace(/ /g, '_').toLowerCase()  }
 
@@ -350,3 +361,36 @@ decrement = 'knock'i _ v:variable _ t:('down'i noise*)+
         }
     }; }
 
+
+split = ('cut'i / 'split'i / 'shatter'i) { return 'split' }
+cast = ('cast'i / 'burn'i) { return 'cast' }
+join = ('join'i / 'unite'i) { return 'join' }
+
+mutator = split / cast / join
+modifier =  _ ('with'i / 'using'i) _ m:expression { return m }
+
+mutation
+    = op:mutator _ s:expression t:target m:modifier?
+        { return { assign: { target: t, expression: { mutation: { type: op, source: s, modifier: m } } } } ; }
+	/ op:mutator _ s:assignable m:modifier?
+        { return { assign: { target: s, expression: { mutation: { type: op, source: { lookup: s }, modifier: m } } } } ; }
+
+rounding = floor / ceil / math_round
+
+floor 
+  = 'turn'i _ v:variable _ 'down'i
+    { return { rounding: { variable: v, direction: 'down'  } }; }
+  / 'turn'i _ 'down'i _ v:variable
+    { return { rounding: { variable: v, direction: 'down'  } }; }
+
+ceil
+  = 'turn'i _ v:variable _ 'up'i
+    { return { rounding: { variable: v, direction: 'up'  } }; }
+  / 'turn'i _ 'up'i _ v:variable
+    { return { rounding: { variable: v, direction: 'up' } }; }
+
+math_round 
+  = 'turn'i _ v:variable _ ('round'i/'around'i)
+    { return { rounding: { variable: v, direction: 'nearest' } }; }  
+  / 'turn'i _ ('round'i/'around'i) _ v:variable
+    { return { rounding: { variable: v, direction: 'nearest' } }; }

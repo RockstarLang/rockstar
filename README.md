@@ -18,6 +18,8 @@ Plus we can make stickers. Who doesn't want a sticker on their laptop saying 'CE
 
 ## Implementations
 
+The official reference implementation is [Satriani](https://github.com/RockstarLang/rockstar/tree/master/satriani) - written in JavaScript, it runs in browsers and supports NodeJS for server-side and larger projects.
+
 * [rockstar-js](https://github.com/wolfgang42/rockstar-js) - Rockstar-to-JavaScript transpiler
 * [rockstar-lexer](https://github.com/aitorres/rockstar-lexer) - Rockstar lexer written in Haskell with Alex
 * [rockstar-java](https://github.com/nbrevu/rockstar-java) - Rockstar interpreter in Java

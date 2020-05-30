@@ -41,15 +41,15 @@ Put my variable plus your variable into the total
 Shout the total
 ```
 
-**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and`Billie Jean`. Proper variables are case-insensitive apart from the first letter of each word, which must be a capital letter.
+**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and `Billie Jean`. Proper variables are case-insensitive apart from the first letter of each word, which must be a capital letter.
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, and `Johnny B Goode` would also all be valid variable names in Rockstar.)
 
 As in Ruby, Python and VBScript, variables are dynamically typed and you don't need to declare variables before use.
 
-If a variable is defined outside of a function, it is in global scope. Global scope variables are available everywhere below its first initialization. If a variable is defined inside of a function, it is in local scope. Local scope variables are available from their initialization until the end of the function they are defined in.
+If a variable is defined outside of a function, it is in global scope. Global scope variables are available everywhere below their first initialization. If a variable is defined inside of a function, it is in local scope. Local scope variables are available from their initialization until the end of the function they are defined in.
 
-While within a function, if you write to a variable that has been defined in global scope, you write to that variable, you do not define a new local variable.
+While within a function, if you write to a variable that has been defined in global scope, you write to that variable; you do not define a new local variable.
 
 #### Pronouns
 
@@ -409,7 +409,7 @@ Rockstar has 4 different logical operators that first convert their operand(s) t
 * `A nor B` returns the [Joint Denial](https://en.wikipedia.org/wiki/NOR_gate)
 * `not A` returns the [Negation](https://en.wikipedia.org/wiki/Inverter_(logic_gate)) of its single argument.
 
-All logical operators are short circuiting. This means if by evaluating the first argument to the operator guarantees a result, the other argument is not evaluated. `false and 1 over 0` is `false` and does not produce an error for dividing by zero.
+All logical operators are short circuiting. This means if evaluating the first argument to the operator guarantees a result, the other argument is not evaluated. `false and 1 over 0` is `false` and does not produce an error for dividing by zero.
 
 ### Input/Output
 
@@ -444,9 +444,9 @@ The higher, the tighter the binding. This is the precedence we generally expect 
 
 #### Binary Comparison
 
-Equality comparisons (`is`, `ain't`, `is not`) are allowed between types if they are the same type or they can be compared by the rules below. Objects are checked by reference equality, all other types are checked by value equality.
+Equality comparisons (`is`, `ain't`, `is not`) are allowed between types if they are the same type or they can be compared by the rules below. Objects are checked by reference equality; all other types are checked by value equality.
 
-Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `is as low as`) are only allowed if the operands are both Numbers or both Strings or they are converted to such an arrangement according to the rules below. Numbers are compared as expected, Strings are compared lexicographically.
+Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `is as low as`) are only allowed if the operands are both Numbers or both Strings or they are converted to such an arrangement according to the rules below. Numbers are compared as expected. Strings are compared lexicographically.
 
 - \<Mysterious\> \<op\> Mysterious =\> Equal.
 - \<Non-Mysterious\> \<op\> Mysterious =\> Non equal.
@@ -461,8 +461,8 @@ Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `i
 
 - `"1" is 1` evaluates to true because `"1"` gets converted to the number `1`
 - `"2" ain't Mysterious` evaluates to true because all types are non equal to mysterious, besides mysterious itself. 
-- `"02" < "10"` is true because of the lexicographical comparison between `0` and `1` shows that the first string is less than the second string.
-- `True < 10` is an error because `10` gets coerced into `True` due to the comparison with a boolean and there is no allowed ordering comparisons between booleans.
+- `"02" < "10"` is true because the lexicographical comparison between `0` and `1` shows that the first string is less than the second string.
+- `True < 10` is an error because `10` gets coerced into `True` due to the comparison with a boolean and there are no allowed ordering comparisons between booleans.
 
 #### Increment and Decrement Operators
 
@@ -473,12 +473,12 @@ Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `i
 
 #### Binary Operators
 
-Conversions other than the listed are errors.
+Conversions other than those listed are errors.
 
-- String \<plus\> Number =\> Convert the number to a base-10 string, retaining all precision, but removing unnecessary digits. A leading zero is considered necessary for numbers with no whole part. eg. `00.1000` gets serialized to `0.1`
+- String \<plus\> Number =\> Convert the number to a base-10 string, retaining all precision, but removing unnecessary digits. A leading zero is considered necessary for numbers with no whole part, eg. `00.1000` gets serialized to `0.1`
 - String \<plus\> Boolean =\> Convert the boolean to `true` or `false`
-- String \<plus\> Null =\> Convert the null to `null`
-- String \<plus\> Mysterious =\> Convert the mysterious to `mysterious`
+- String \<plus\> Null =\> Convert the null to `"null"`
+- String \<plus\> Mysterious =\> Convert the mysterious to `"mysterious"`
 - String \<times\> Number =\> String gets repeated \<Number\> times
  
 ### Flow Control and Block Syntax
@@ -527,8 +527,8 @@ The function body is a list of statements with no separating blank lines. A blan
 
 Functions are called using the 'taking' keyword and must have at least one argument. Multiple arguments are separated with one of the following: `,` `&` `, and` `'n'`.
 
-Arguments may only be variables or literals. Compound expressions are not allowed. Functionals are greedy, if they find more symbols that make up valid arguments they will take them.
+Arguments may only be variables or literals. Compound expressions are not allowed. Functionals are greedy: if they find more symbols that make up valid arguments, they will take them.
 
 * `Multiply taking 3, 5` is an expression returning (presumably) 15
 * `Search taking "hands", "lay your hands on me"`
-* `Put Multiply taking 3, 5, and 9 into Large` will set large to `3 * 5 * 9` **NOT** `(3 * 5) && 9`.
+* `Put Multiply taking 3, 5, and 9 into Large` will set Large to `3 * 5 * 9` **NOT** `(3 * 5) && 9`.

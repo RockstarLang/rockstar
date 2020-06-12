@@ -36,14 +36,15 @@ Environment.prototype = {
         throw new Error("Undefined variable " + name);
     },
 
-    assign: function (name, value, index) {
-        if (typeof (index) == 'undefined' || index == null) return this.vars[name] = value;
-        if (name in this.vars) {
-            if (!Array.isArray(this.vars[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
+    assign: function (name, value, index, local) {
+        let container = (!local && typeof(value) != "function" && this.parent && name in this.parent.vars) ? this.parent.vars : this.vars;
+        if (typeof (index) == 'undefined' || index == null) return container[name] = value;
+        if (name in container) {
+            if (!Array.isArray(container[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
         } else {
-            this.vars[name] = new Array();
+            container[name] = new Array();
         }
-        return this.vars[name][index] = value;
+        return container[name][index] = value;
     },
 
     run: function (program) {
@@ -316,7 +317,7 @@ function make_lambda(expr, env) {
         let names = expr.args;
         if (names.length != arguments.length) throw ('Wrong number of arguments supplied to function ' + expr.name + ' (' + expr.args + ')');
         let scope = env.extend();
-        for (let i = 0; i < names.length; ++i) scope.assign(names[i], arguments[i])
+        for (let i = 0; i < names.length; ++i) scope.assign(names[i], arguments[i], null, 1)
         return evaluate(expr.body, scope);
     }
 

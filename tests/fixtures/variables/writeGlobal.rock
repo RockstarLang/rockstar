@@ -1,0 +1,20 @@
+global is 0
+
+CheckGlobal takes x
+say global
+(end of function)
+
+SetGlobal takes x
+let global be x
+put CheckGlobal taking 0 into dummy
+(end of function)
+
+CheckGlobalWithSameName takes global
+say global
+(end of function)
+
+put SetGlobal taking 1 into dummy
+say global
+
+put CheckGlobalWithSameName taking 5 into dummy
+say global

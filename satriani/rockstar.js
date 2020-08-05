@@ -3,10 +3,9 @@ const satriani = require('./satriani.js');
 var readlineSync = require('readline-sync');
 
 var sourceFilePath = process.argv[2];
-if (! sourceFilePath) {
-    console.log('No source file specified');
-    console.log('Usage: node rockstar.js program.rock');
-} else {
+var watch = process.argv.filter(x => x.toLowerCase() === "--watch").length > 0;
+
+function execute() {
     var rockstar = new satriani.Interpreter();
     fs.readFile(sourceFilePath, 'utf8', (err, data) => {
         if (err) throw err;
@@ -29,4 +28,14 @@ if (! sourceFilePath) {
 
         }
     });
+}
+
+if (!sourceFilePath) {
+    console.log('No source file specified');
+    console.log('Usage: node rockstar.js program.rock');
+} else {
+    execute();
+    if (watch) {
+        fs.watch(sourceFilePath, execute);
+    }
 }

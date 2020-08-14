@@ -123,12 +123,12 @@ Let the character be my string at 2
 
 Some operations in Rockstar will either act in-place, modifying the variable passed to them, or will leave the
 source variable unmodified and place their output into a target variable. These operations are known as mutation 
-operations, and they all have the syntax
+operations, and they all have the following syntax:
 
 * `Modify X` - acts in-place 
 * `Modify X into Y` - leave `X` alone and put modified output into `Y`
 * `Modify X with Z` - modify `X` in-place, with optional parameter `Z`
-* `Modify X into Y with Z` - modify `X`, using parameter `Y`, and put results in `Z`
+* `Modify X into Y with Z` - modify `X`, using parameter `Z`, and put results in `Y`
 
 Note that in-place mutations are **only valid where the first argument is a variable**:
 

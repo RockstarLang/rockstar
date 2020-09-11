@@ -50,6 +50,8 @@ function execute_and_compare_output(file) {
     let targetFile = file + '.out';
     let target = fs.existsSync(targetFile) ? fs.readFileSync(targetFile, 'utf8') : '';
     let actual = execute(source, inputs);
+    target = target.replace(/\r/g, '');
+    actual = actual.replace(/\r/g, '');
     assert.equal(actual, target);
 }
 

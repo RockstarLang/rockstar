@@ -278,6 +278,9 @@ is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 
 target = _ 'into'i _ t:assignable { return t }
 
+push  = ('rock'i / 'push'i )
+pop   = ('roll'i / 'pop'i)
+
 indexer = _ 'at'i _ i:expression { return i };
 assignable
   = v:variable i:indexer?
@@ -298,6 +301,12 @@ assignment = target:assignable is _* e:(literal / poetic_number)
         expression: { binary: {  op: o, lhs: { lookup: target }, rhs: e } }
       } };
     }
+
+  / push _ e:expression _ t:target
+    { return { enlist: { target: target, expression: e }}}
+  / push _ v:variable 
+    { return { enlist: { variable: v, expression: v }}}
+  / push _ v:variable _ 
 
   / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
     { return { assign: { target: target, expression: e} }; }

@@ -7,16 +7,16 @@ Rockstar is intended to give the programmer an unprecedented degree of poetic li
 Rockstar programs are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) files with the `.rock` file extension. *(Given that for everything included in the current Rockstar specification, UTF-8 is indistinguishable from 7-bit ASCII, that's a fancy way of saying they're plain text files.)*
 
 ### Comments 
- 
+
 The use of comments in Rockstar programs is strongly discouraged. This is rock'n'roll; it's up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses (). Yes, this means you can't use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments. 
- 
+
 Rockstar developers are not into that whole [brevity thing](https://www.urbandictionary.com/define.php?term=Brevity%20Thing). 
- 
+
 ``` 
 (Initialise Tommy = 1337)
 Tommy was a big bad brother. 
-``` 
- 
+```
+
 ### Variables
 
 Rockstar supports three kinds of variable names.
@@ -54,7 +54,7 @@ While within a function, if you write to a variable that has been defined in glo
 #### Pronouns
 
 The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`, `zir`, `xe`, `xem`, `ve`, and `ver` refer to the last named variable determined by parsing order. 
- 
+
 (Please don't file issues pointing out that 80s rockers were a bunch of misogynists and gender-inclusive pronouns aren't really idiomatic. You're right, we know, and we've all learned a lot since then. Besides, [*Look What The Cat Dragged In*](https://en.wikipedia.org/wiki/Look_What_the_Cat_Dragged_In) was recorded by four cishet guys who spent more money on lipgloss and hairspray than they did on studio time, and it's an absolute classic.)
 
 ### Types
@@ -116,6 +116,37 @@ Shout my string at 0 (will print "a")
 Shout my string at 1 (will print "b")
 Let the character be my string at 2
 ```
+
+#### Stack Operations
+
+Rockstar arrays can also be created and manipulated by the stack operations `rock` and `roll`. (The aliases `push` and `pop` are supported for Rockstar developers who are into 80s dance music.)
+
+To create a new empty array, `rock` the name of the array:
+
+```
+Rock the array
+```
+
+To push an element onto the front of an array:
+
+```
+Rock the array with the element
+```
+
+This supports list expressions, so you can push multiple elements onto the front of an array:
+
+```
+Rock ints with 1, 2, 3
+Rock the array with the first, the second, and the third
+```
+
+
+
+
+
+
+
+
 
 ### Splitting strings and type conversions
 
@@ -264,7 +295,7 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
 * `Build my world up` will increment the value stored in `my world` by 1.
 * `Knock the walls down` will decrement the value stored in `the walls` by 1
 * `Knock the walls down, down` will decrement the value stored in `the walls` by 2
- 
+
 #### Operators
 
 Rockstar supports the infix arithmetic operators `+`, `-`, `*` and `/`. The language includes aliases for each operator so you can write lyrically pleasing expressions.
@@ -379,7 +410,7 @@ A poetic number literal begins with a variable name, followed by the keyword `is
 * `Tommy was without` initialises `Tommy` with the value `7` because `without` is a Reserved Keyword, but not a Literal Word.
  * Note that poetic literals **can** include Reserved Keywords, as with `taking` in this example.
  * The hyphen (`-`) is counted as a letter – so you can use terms like 'all-consuming' (13 letters > 3) and
-  'power-hungry' (12 letters > 2) instead of having to think of 12- and 13-letter words.
+    'power-hungry' (12 letters > 2) instead of having to think of 12- and 13-letter words.
  * The semi-colon, comma, apostrophe and any other non-alphabetical characters are ignored.
 
 ### Comparison
@@ -420,7 +451,7 @@ Use the `Listen` keyword to read one line of input from `STDIN`. Use `Listen to`
 Use the `Say` keyword to write the value of a variable to `STDOUT`.
 
 * `Say Tommy` - will output the value stored in `Tommy` to `STDOUT`
- 
+
 Rockstar defines `Shout`, `Whisper` and `Scream` as aliases for `Say`
 
 The following examples all use c style syntax for explaining what things do.
@@ -480,7 +511,7 @@ Conversions other than those listed are errors.
 - String \<plus\> Null =\> Convert the null to `"null"`
 - String \<plus\> Mysterious =\> Convert the mysterious to `"mysterious"`
 - String \<times\> Number =\> String gets repeated \<Number\> times
- 
+
 ### Flow Control and Block Syntax
 
 #### Conditionals

@@ -17,6 +17,10 @@ function Environment(parent) {
 Environment.prototype = {
     extend: function () { return new Environment(this) },
 
+    exists: function (name) {
+        return (name in this.vars);
+    },
+
     lookup: function (name, index) {
         if (name in this.vars) {
             let variable = this.vars[name];
@@ -192,6 +196,8 @@ function evaluate(tree, env) {
                 let func = env.lookup(expr.name);
                 let func_result = func.apply(null, expr.args.map(arg => evaluate(arg, env)));
                 return (func_result ? func_result.value : undefined);
+            case "enlist":
+                return enlist(expr, env);
             default:
                 if (Array.isArray(tree) && tree.length == 1) return (evaluate(tree[0], env));
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
@@ -230,7 +236,6 @@ function lookup(expr, env) {
 
 function assign(expr,env) {
     let alias = "";
-    let value = evaluate(expr.expression, env);
     let target = expr.target;
     let index = evaluate(target.index, env);
     if (target.variable.pronoun) {
@@ -239,9 +244,38 @@ function assign(expr,env) {
         alias = target.variable;
         env.pronoun_alias = alias;
     }
+
+    let value = evaluate(expr.expression, env);
     env.assign(alias, value, index);
     return value;
 }
+
+function enlist(expr, env) {
+    let alias = "";
+    let target = expr.target;
+    let index = evaluate(target.index, env);
+    if (target.variable.pronoun) {
+        alias = env.pronoun_alias;
+    } else {
+        alias = target.variable;
+        env.pronoun_alias = alias;
+    }
+
+    let value;
+    if (env.exists(alias)) {
+        value = env.lookup(alias);
+        if (!Array.isArray(value)) value = [value];
+    } else {
+        value = [];
+    }
+    if (expr.expression) {
+        let values = (expr.expression.map ? expr.expression : [expr.expression]);
+        value = value.concat(values.map(e => evaluate(e, env)));
+    }
+    env.assign(alias, value, index);
+    return value;
+}
+
 
 function rounding(expr, env) {
     let variable_name = env.dealias(expr);

@@ -1,0 +1,18 @@
+Shout "assignment:"
+Rock ints with 1, 2, 3
+Let the first be roll ints
+Let the second be roll ints
+Shout the first (outputs 1)
+Shout the second (outputs 2)
+Shout roll ints (outputs 3)
+
+Shout "roll into variables:"
+Rock the list with 4, 5, 6
+Roll the list into foo
+Roll the list into bar
+Shout foo (outputs 4)
+Shout bar (outputs 5)
+Shout the list (outputs 1)
+Roll the list
+Shout the list (outputs 0)
+Shout roll the list (outputs mysterious)

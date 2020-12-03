@@ -258,8 +258,15 @@ pronoun = pronoun:(
     )
     { return { pronoun: pronoun.toLowerCase() } }
 
+roll = ('pop'i / 'roll'i)
+
+
+delist = 'roll'i _ v:variable
+  { return { delist: { variable: v } }; }
+
 lookup
-  = v:variable _ 'at'i _ i:expression
+  = d:delist { return d; }
+  / v:variable _ 'at'i _ i:expression
     { return { lookup: { variable: v, index: i } }; }
   / v:variable
     { return { lookup: { variable: v } }; }
@@ -278,9 +285,10 @@ is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 
 push  = ('rock'i / 'push'i )
 pop   = ('roll'i / 'pop'i)
-into  = _ 'into'i _ 
+into  = _ 'into'i _
 
 indexer = _ 'at'i _ i:expression { return i };
+
 assignable
   = v:variable i:indexer?
     { return { variable: v, index: i }; }
@@ -304,19 +312,21 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / 'let'i _+ t:assignable _+ 'be'i _+ e:expression
     { return { assign: { target: t, expression: e} }; }
 
-  / push _ e:expression into t:assignable
-    { return { enlist: { target: t, expression: e } }; }
+  / push _ e:expression into v:variable
+    { return { enlist: { variable: v, expression: e } }; }
 
-  / push _ t:assignable _ 'like'i _ e:(literal / poetic_number)
-    { return { enlist: { target: t, expression: e } }; }
+  / push _ v:variable _ 'like'i _ e:(literal / poetic_number)
+    { return { enlist: { variable: v, expression: e } }; }
 
-  / push _ t:assignable (_ 'with'i)? _ e:expression
-    { return { enlist: { target: t, expression: e } }; }
+  / push _ v:variable (_ 'with'i)? _ e:expression
+    { return { enlist: { variable: v, expression: e } }; }
 
-  / push _ t:assignable 
-    { return { enlist: { target: t } }; }
-    
-  
+  / push _ v:variable 
+    { return { enlist: { variable: v } }; }
+
+  / e:delist _ 'into'i _ target:assignable
+    { return { assign: { target: target, expression: e } }; }
+
 poetic_string = s:$[^\n]*
   { return { string: s} }
 

@@ -117,9 +117,11 @@ Shout my string at 1 (will print "b")
 Let the character be my string at 2
 ```
 
-#### Stack Operations
+### Stack operations
 
 Rockstar arrays can also be created and manipulated by the stack operations `rock` and `roll`. (The aliases `push` and `pop` are supported for Rockstar developers who are into 80s dance music.)
+
+#### Pushing elements onto an array
 
 To create a new empty array, `rock` the name of the array:
 
@@ -165,17 +167,41 @@ This syntax is very useful for initialising strings without using string literal
 Rock you like a hurricane (you is now [ 19 ])
 ```
 
+#### Popping elements from an array
 
+The `roll` keyword will remove the first element from an array and return the element that was removed.
 
+```
+Rock ints with 1, 2, 3
+Roll ints (returns 1; ints is now [ 2, 3 ])
+Roll ints (returns 2; ints is now [ 3 ])
+Roll ints (returns 3; ints is now [] )
+Roll ints (returns mysterious; ints is now [])
+```
 
+`roll` can be used in assignments:
 
+```
+Rock ints with 1, 2, 3
+Let the first be roll ints
+Let the second be roll ints
+Let the third be roll ints
+Shout the first (outputs 1)
+Shout the second (outputs 2)
+Shout the third (outputs 3)
+```
 
+Rockstar also supports a special `roll x into y` syntax for removing the first element from an array and assigning it to a variable:
 
-
-
-
-
-
+```
+Rock the list with 4, 5, 6
+Roll the list into foo
+Roll the list into bar
+Roll the list into baz
+Shout foo (will output 4)
+Shout bar (will output 5)
+Shoout baz (will output 6)
+```
 
 ### Splitting strings and type conversions
 

@@ -21,12 +21,12 @@ Environment.prototype = {
         return (name in this.vars);
     },
 
-    lookup: function (name, index) {
+    lookup: function (name, index, force_array) {
         if (name in this.vars) {
             let variable = this.vars[name];
             if (Array.isArray(variable)) {
                 if (typeof (index) == 'undefined' || index == null) {
-                    if (this.FORCE_ARRAY_FLAG) {
+                    if (force_array || this.FORCE_ARRAY_FLAG) {
                         this.FORCE_ARRAY_FLAG = false;
                         return variable;
                     }
@@ -41,7 +41,7 @@ Environment.prototype = {
     },
 
     assign: function (name, value, index, local) {
-        let container = (!local && typeof(value) != "function" && this.parent && name in this.parent.vars) ? this.parent.vars : this.vars;
+        let container = (!local && typeof (value) != "function" && this.parent && name in this.parent.vars) ? this.parent.vars : this.vars;
         if (typeof (index) == 'undefined' || index == null) return container[name] = value;
         if (name in container) {
             if (!Array.isArray(container[name])) throw new Error(`Can't assign ${name} at ${index} - ${name} is not an indexed variable.`);
@@ -65,7 +65,7 @@ Environment.prototype = {
 }
 
 function evaluate(tree, env) {
-    if (tree == MYSTERIOUS || typeof(tree) == 'undefined') return undefined;
+    if (tree == MYSTERIOUS || typeof (tree) == 'undefined') return undefined;
     if (tree == null) return null;
     let list = Object.entries(tree)
     for (let i = 0; i < list.length; i++) {
@@ -100,7 +100,7 @@ function evaluate(tree, env) {
             case "constant":
                 return (expr);
             case "output":
-                let printable = evaluate(expr, env);2
+                let printable = evaluate(expr, env); 2
                 if (typeof (printable) == 'undefined') printable = "mysterious";
                 env.output(printable);
                 return;
@@ -117,9 +117,9 @@ function evaluate(tree, env) {
             case "blank":
                 return;
             case "rounding":
-                return rounding(expr,env);
+                return rounding(expr, env);
             case "mutation":
-                return mutation(expr,env);
+                return mutation(expr, env);
             case "increment":
                 let increment_name = env.dealias(expr);
                 let old_increment_value = env.lookup(increment_name);
@@ -198,6 +198,8 @@ function evaluate(tree, env) {
                 return (func_result ? func_result.value : undefined);
             case "enlist":
                 return enlist(expr, env);
+            case "delist":
+                return delist(expr, env);
             default:
                 if (Array.isArray(tree) && tree.length == 1) return (evaluate(tree[0], env));
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
@@ -208,12 +210,12 @@ function evaluate(tree, env) {
 function mutation(expr, env) {
     let source = evaluate(expr.source, env);
     let modifier = evaluate(expr.modifier, env);
-    switch(expr.type) {
+    switch (expr.type) {
         case "split":
             return source.toString().split(modifier || "");
         case "cast":
-            if (typeof(source) == 'string') return parseInt(source, modifier);
-            if (typeof(source) == 'number') return String.fromCharCode(source);
+            if (typeof (source) == 'string') return parseInt(source, modifier);
+            if (typeof (source) == 'number') return String.fromCharCode(source);
             throw new Error(`I don't know how to cast ${source}`);
         case "join":
             // This is a nasty hack but it avoids having to extend the entire
@@ -221,7 +223,7 @@ function mutation(expr, env) {
             env.FORCE_ARRAY_FLAG = true;
             source = evaluate(expr.source, env);
             if (Array.isArray(source)) {
-                let joiner = (typeof(modifier) == 'undefined' || modifier == null) ? '' : modifier;
+                let joiner = (typeof (modifier) == 'undefined' || modifier == null) ? '' : modifier;
                 return source.join(joiner);
             }
             throw new Error("I don't know how to join that.");
@@ -234,48 +236,64 @@ function lookup(expr, env) {
     return env.lookup(lookup_name, index);
 }
 
-function assign(expr,env) {
-    let alias = "";
+function assign(expr, env) {
     let target = expr.target;
     let index = evaluate(target.index, env);
-    if (target.variable.pronoun) {
-        alias = env.pronoun_alias;
-    } else {
-        alias = target.variable;
-        env.pronoun_alias = alias;
-    }
-
+    let alias = (target.variable.pronoun ? env.pronoun_alias : target.variable);
     let value = evaluate(expr.expression, env);
     env.assign(alias, value, index);
+    if (!target.variable.pronoun) env.pronoun_alias = alias;
     return value;
 }
 
-function enlist(expr, env) { 
-    let alias = "";
-    let target = expr.target;
-    let index = evaluate(target.index, env);
-    if (target.variable.pronoun) {
-        alias = env.pronoun_alias;
-    } else {
-        alias = target.variable;
-        env.pronoun_alias = alias;
-    }
+function enlist(expr, env) {
 
-    let value;
-    if (env.exists(alias)) {
-        value = env.lookup(alias);
-        if (!Array.isArray(value)) value = [value];
+    let array_value;
+    let array_name = env.dealias(expr);
+
+    if (env.exists(array_name)) {
+        array_value = env.lookup(array_name, null, true);
+        if (!Array.isArray(array_value)) array_value = [array_value];
     } else {
-        value = [];
-    }    
+        array_value = [];
+    }
     if (expr.expression) {
-        let values = (expr.expression.map ? expr.expression : [expr.expression]);
-        value = value.concat(values.map(e => evaluate(e, env)));
+        let elements_to_enlist = (expr.expression.map ? expr.expression : [expr.expression]);
+        array_value = array_value.concat(elements_to_enlist.map(e => evaluate(e, env)));
     }
-    env.assign(alias, value, index);
-    return value;
+    env.assign(array_name, array_value);
+    return array_value;
+
+    // let alias = "";
+    // let target = expr.target;
+    // let index = evaluate(target.index, env);
+    // if (target.variable.pronoun) {
+    //     alias = env.pronoun_alias;
+    // } else {
+    //     alias = target.variable;
+    //     env.pronoun_alias = alias;
+    // }
+
+    // let value;
+    // if (env.exists(alias)) {
+    //     value = env.lookup(alias);
+    //     if (!Array.isArray(value)) value = [value];
+    // } else {
+    //     value = [];
+    // }
+    // if (expr.expression) {
+    //     let values = (expr.expression.map ? expr.expression : [expr.expression]);
+    //     value = value.concat(values.map(e => evaluate(e, env)));
+    // }
+    // env.assign(alias, value, index);
+    // return value;
 }
 
+function delist(expr, env) {
+    let source = env.lookup(env.dealias(expr), null, true);
+    let result = (source.shift && source.shift());
+    return result;
+}
 
 function rounding(expr, env) {
     let variable_name = env.dealias(expr);
@@ -297,7 +315,10 @@ function demystify(expr, env) {
 }
 
 function eq(lhs, rhs) {
-    if (is_nothing(lhs) && is_nothing(rhs)) return(true);
+    if (Array.isArray(lhs)) return (eq_array(lhs, rhs));
+    if (Array.isArray(rhs)) return (eq_array(rhs, lhs));
+
+    if (is_nothing(lhs) && is_nothing(rhs)) return (true);
     // if (typeof (lhs) == 'undefined') return (typeof (rhs) == 'undefined');
     // if (typeof (rhs) == 'undefined') return (typeof (lhs) == 'undefined');
 
@@ -315,7 +336,7 @@ function eq(lhs, rhs) {
 
 function is_nothing(thing) {
     return (
-        typeof(thing) == 'undefined'
+        typeof (thing) == 'undefined'
         ||
         thing === null
         ||
@@ -327,8 +348,14 @@ function is_nothing(thing) {
     );
 }
 
+function eq_array(array, other) {
+    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => el === other[index]));
+    if (other == null || other == 0 || other == "") return (array.length == 0);
+    return (false);
+}
+
 function eq_string(string, other) {
-    if (other == null || typeof(other) == 'undefined') return (string === "");
+    if (other == null || typeof (other) == 'undefined') return (string === "");
     return (other == string);
 }
 

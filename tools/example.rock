@@ -1,5 +1,7 @@
-Jazz is cool
-Let blues be jazz
-Rock jazz
-Shout jazz
-
+Shout "assignment:"
+Rock ints with 1, 2, 3
+Let the first be roll ints
+Let the second be roll ints
+Shout the first (outputs 1)
+Shout the second (outputs 2)
+Shout roll ints (outputs 3)

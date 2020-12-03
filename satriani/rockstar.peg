@@ -307,12 +307,16 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / push _ e:expression into t:assignable
     { return { enlist: { target: t, expression: e } }; }
 
-  / push _ t:assignable _ 'with'i _ e:expression
+  / push _ t:assignable _ 'like'i _ e:(literal / poetic_number)
+    { return { enlist: { target: t, expression: e } }; }
+
+  / push _ t:assignable (_ 'with'i)? _ e:expression
     { return { enlist: { target: t, expression: e } }; }
 
   / push _ t:assignable 
     { return { enlist: { target: t } }; }
-
+    
+  
 poetic_string = s:$[^\n]*
   { return { string: s} }
 

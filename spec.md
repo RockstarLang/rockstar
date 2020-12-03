@@ -124,7 +124,7 @@ Rockstar arrays can also be created and manipulated by the stack operations `roc
 To create a new empty array, `rock` the name of the array:
 
 ```
-Rock the array
+Rock the array (the array is now [])
 ```
 
 To push an element onto the front of an array:
@@ -136,9 +136,38 @@ Rock the array with the element
 This supports list expressions, so you can push multiple elements onto the front of an array:
 
 ```
-Rock ints with 1, 2, 3
+Rock ints with 1, 2, 3 (ints is now [1, 2, 3])
 Rock the array with the first, the second, and the third
 ```
+
+Remember the `with` keyword is context-sensitive, so in this example:
+
+```
+Rock ints with 1, 2 with 3, 4, 5
+          ^         ^
+          |         +-- this 'with' is the binary addition operator
+          |
+          +------------ this 'with' is part of the array push syntax
+          
+(ints is now [ 1, 5, 4, 5 ])
+```
+
+Rockstar supports a special syntax for pushing poetic literals onto a stack:
+
+```rockstar
+Rock the array like the poetic literal (the array is now [ 367 ])
+Rock the array like a wolf (the array is now [ 367, 14 ])
+```
+
+This syntax is very useful for initialising strings without using string literals - see below. It also means that the following line is valid Rockstar:
+
+```
+Rock you like a hurricane (you is now [ 19 ])
+```
+
+
+
+
 
 
 
@@ -359,7 +388,7 @@ which will print the value 25 (obviously).
 
 #### List Arithmetic
 
-Rockstar operators support a list of expressions on the right-hand side of the operator. (Imagine explaining in English that, say, "the restaurant bill is the food, plus the drinks, the service and the tax" - same idea.)
+Rockstar operators support a list of expressions on the right-hand side of the operator. (Imagine explaining in English that, say, "the restaurant bill is the food, plus the drinks, the service, and the tax" - same idea.)
 
 * `Let X be 1 with 2, 3, 4` - shorthand for `X = 1 + 2 + 3 + 4`
 * `Let X be "foo" with "bar", and "baz"` - X will be `"foo" + "bar" + "baz"`

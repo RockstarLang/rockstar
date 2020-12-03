@@ -250,7 +250,7 @@ function assign(expr,env) {
     return value;
 }
 
-function enlist(expr, env) {
+function enlist(expr, env) { 
     let alias = "";
     let target = expr.target;
     let index = evaluate(target.index, env);
@@ -267,7 +267,7 @@ function enlist(expr, env) {
         if (!Array.isArray(value)) value = [value];
     } else {
         value = [];
-    }
+    }    
     if (expr.expression) {
         let values = (expr.expression.map ? expr.expression : [expr.expression]);
         value = value.concat(values.map(e => evaluate(e, env)));

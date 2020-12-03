@@ -1,2 +1,6 @@
+Jazz is 123
 Rock jazz
-Shout jazz
+Shout jazz  (jazz is now a one-element array, so should output 1)
+Shout jazz at 0 (should output 12345)
+Shout jazz at 1 (should output mysterious)
+

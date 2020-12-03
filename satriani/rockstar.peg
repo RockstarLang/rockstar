@@ -276,10 +276,9 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 
-target = _ 'into'i _ t:assignable { return t }
-
 push  = ('rock'i / 'push'i )
 pop   = ('roll'i / 'pop'i)
+into  = _ 'into'i _ 
 
 indexer = _ 'at'i _ i:expression { return i };
 assignable
@@ -292,25 +291,24 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / target:assignable _+ 'says 'i e:poetic_string
     { return { assign: { target: target, expression: e} }; }
 
-  / 'put'i _+ e:expression target:target
+  / 'put'i _ e:expression into target:assignable
     { return { assign: { target: target, expression: e} }; }
 
-  / 'let'i _+ target:assignable _+ 'be'i o:compoundable_operator e:expression {
+  / 'let'i _ target:assignable _ 'be'i o:compoundable_operator e:expression {
       return { assign: {
         target: target,
         expression: { binary: {  op: o, lhs: { lookup: target }, rhs: e } }
       } };
     }
 
-  / push _ e:expression _ t:target
-    { return { enlist: { target: target, expression: e }}}
-  / push _ v:variable 
-    { return { enlist: { variable: v, expression: v }}}
-  / push _ v:variable _ 
+  / 'let'i _+ t:assignable _+ 'be'i _+ e:expression
+    { return { assign: { target: t, expression: e} }; }
 
-  / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
-    { return { assign: { target: target, expression: e} }; }
-
+  / push _ e:expression into t:assignable
+    { return { enlist: { target: t, expression: e } }; }
+    
+  / push _ t:assignable 
+    { return { enlist: { target: t } }; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }
@@ -379,7 +377,7 @@ mutator = split / cast / join
 modifier =  _ ('with'i / 'using'i) _ m:expression { return m }
 
 mutation
-    = op:mutator _ s:expression t:target m:modifier?
+    = op:mutator _ s:expression into t:assignable m:modifier?
         { return { assign: { target: t, expression: { mutation: { type: op, source: s, modifier: m } } } } ; }
 	/ op:mutator _ s:assignable m:modifier?
         { return { assign: { target: s, expression: { mutation: { type: op, source: { lookup: s }, modifier: m } } } } ; }

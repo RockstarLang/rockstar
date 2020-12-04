@@ -135,13 +135,15 @@ simple_expression  =   function_call / constant / lookup / literal / pronoun
 
 literal = constant / number / string
 
-constant = null / true / false / mysterious
+constant = null / true / false / empty_string / mysterious
 
 true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) !letter { return { constant: true } }
 
 false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) !letter { return { constant: false } }
 
-null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'empty'i / 'gone'i) { return { constant: null } }
+null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'gone'i) { return { constant: null } }
+
+empty_string = ('empty'i) { return { constant: "" } }
 
 mysterious = 'mysterious'  { return '__MYSTERIOUS__' }
 

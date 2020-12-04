@@ -1,18 +1,22 @@
 (all aliases for literals work)
 say mysterious
-
+say "aliases for null"
 say null
 say nothing
 say nowhere
 say nobody
-say empty
 say gone
 
+say "aliases for empty string"
+say empty
+
+say "aliases for true"
 say true
 say right
 say yes
 say ok
 
+say "aliases for false"
 say false
 say wrong
 say no

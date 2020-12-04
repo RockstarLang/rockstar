@@ -72,7 +72,7 @@ function_call = name:variable _ 'taking'i _ args:expression_list
 
 expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
-  / arg:simple_expression { return arg }
+  / arg:simple_expression { return [arg] }
 
 return = 'return'i / 'give back'i
 
@@ -143,7 +143,7 @@ false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) !letter { return { constant: fa
 
 null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'gone'i) { return { constant: null } }
 
-empty_string = ('empty'i) { return { constant: "" } }
+empty_string = ('empty'i / 'silent'i / 'silence'i) { return { constant: "" } }
 
 mysterious = 'mysterious'  { return '__MYSTERIOUS__' }
 

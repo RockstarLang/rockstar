@@ -194,7 +194,12 @@ function evaluate(tree, env) {
                 return;
             case "call":
                 let func = env.lookup(expr.name);
-                let func_result = func.apply(null, expr.args.map(arg => evaluate(arg, env)));
+                let func_result = func.apply(null, expr.args.map(arg => {
+                    env.FORCE_ARRAY_FLAG = true;
+                    let value =  evaluate(arg, env);
+                    // If the arg is an array, we shallow-copy it when passing it to a function call
+                    return (value && value.map ? value.map(e => e) : value);                
+                }));
                 return (func_result ? func_result.value : undefined);
             case "enlist":
                 return enlist(expr, env);
@@ -290,7 +295,8 @@ function enlist(expr, env) {
 }
 
 function delist(expr, env) {
-    let source = env.lookup(env.dealias(expr), null, true);
+    let name = env.dealias(expr);
+    let source = env.lookup(name, null, "FIST")
     let result = (source.shift && source.shift());
     return result;
 }

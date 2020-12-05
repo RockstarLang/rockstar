@@ -12,7 +12,7 @@ $(document).ready(function() {
   var oldOptionCache    = null;
   var oldOptionOptimize = null;
   var oldInput          = null;
-
+ 
   var editor = CodeMirror.fromTextArea($("#grammar").get(0), {
       lineNumbers: true,
       mode: "pegjs"
@@ -109,6 +109,8 @@ $(document).ready(function() {
           timeAfter - timeBefore
         ));
       let json = jsDump.parse(output);
+      json = json.replace(/ *[{}],? */g, '');
+      json = json.replace(/\n([ \t]*\n)*/g, '\n');
 
       $("#output").removeClass("disabled").text(json);
 

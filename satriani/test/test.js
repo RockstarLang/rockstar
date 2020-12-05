@@ -2,6 +2,7 @@ const assert = require('chai').assert;
 const path = require('path');
 const fs = require('fs');
 const satriani = require('../satriani.js');
+const util = require('util');
 
 describe('failure tests', function() {
     test_directory('../tests/failures/', execute_and_compare_error);
@@ -29,7 +30,10 @@ function test_directory(directory, predicate) {
 
 function execute(source, inputs) {
     let result = "";
-    let output = function(s) { result += String(s)  + "\n"; };
+    // We pass arrays to util.inspect() here because we're looking for parity
+    // with console.log so we can run nodejs on the console to verify 
+    // test behaviour.
+    let output = function(s) { result += (Array.isArray(s) ? util.inspect(s) : String(s))  + "\n"; };
     let input = function() { return inputs.shift(); };
     let rockstar = new satriani.Interpreter();
     rockstar.run(source, input, output);

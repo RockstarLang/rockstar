@@ -1,0 +1,25 @@
+Say "empty arrays:"
+Rock steady
+Shout steady
+
+say "in-place array coercion:"
+Jazz is 123
+Rock jazz
+Shout jazz  (jazz is now a one-element array, so should output 1)
+Shout jazz at 0 (should output 12345)
+Shout jazz at 1 (should output mysterious)
+
+say "push list expressions:"
+Rock ints 7, 8, 9
+Shout ints
+Shout ints at 0
+Shout ints at 1
+Shout ints at 2
+Shout ints at 3
+
+say "hurricane:"
+You are my destiny
+Rock you like a hurricane
+Shout you 
+Shout you at 0
+Shout you at 1

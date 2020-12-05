@@ -72,7 +72,7 @@ function_call = name:variable _ 'taking'i _ args:expression_list
 
 expression_list = head:simple_expression expression_list_separator tail:expression_list
 	{ return [head].concat(tail) }
-  / arg:simple_expression { return arg }
+  / arg:simple_expression { return [arg] }
 
 return = 'return'i / 'give back'i
 
@@ -135,13 +135,15 @@ simple_expression  =   function_call / constant / lookup / literal / pronoun
 
 literal = constant / number / string
 
-constant = null / true / false / mysterious
+constant = null / true / false / empty_string / mysterious
 
 true 	= ('true'i / 'ok'i / 'right'i / 'yes'i) !letter { return { constant: true } }
 
 false 	= ('false'i / 'lies'i / 'wrong'i / 'no'i) !letter { return { constant: false } }
 
-null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'empty'i / 'gone'i) { return { constant: null } }
+null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'gone'i) { return { constant: null } }
+
+empty_string = ('empty'i / 'silent'i / 'silence'i) { return { constant: "" } }
 
 mysterious = 'mysterious'  { return '__MYSTERIOUS__' }
 
@@ -258,8 +260,15 @@ pronoun = pronoun:(
     )
     { return { pronoun: pronoun.toLowerCase() } }
 
+roll = ('pop'i / 'roll'i)
+
+
+delist = 'roll'i _ v:variable
+  { return { delist: { variable: v } }; }
+
 lookup
-  = v:variable _ 'at'i _ i:expression
+  = d:delist { return d; }
+  / v:variable _ 'at'i _ i:expression
     { return { lookup: { variable: v, index: i } }; }
   / v:variable
     { return { lookup: { variable: v } }; }
@@ -276,9 +285,12 @@ common_variable = prefix:common_prefix _+ name:$(letter+)
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 
-target = _ 'into'i _ t:assignable { return t }
+push  = ('rock'i / 'push'i )
+pop   = ('roll'i / 'pop'i)
+into  = _ 'into'i _
 
 indexer = _ 'at'i _ i:expression { return i };
+
 assignable
   = v:variable i:indexer?
     { return { variable: v, index: i }; }
@@ -289,19 +301,33 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / target:assignable _+ 'says 'i e:poetic_string
     { return { assign: { target: target, expression: e} }; }
 
-  / 'put'i _+ e:expression target:target
+  / 'put'i _ e:expression into target:assignable
     { return { assign: { target: target, expression: e} }; }
 
-  / 'let'i _+ target:assignable _+ 'be'i o:compoundable_operator e:expression {
+  / 'let'i _ target:assignable _ 'be'i o:compoundable_operator e:expression {
       return { assign: {
         target: target,
         expression: { binary: {  op: o, lhs: { lookup: target }, rhs: e } }
       } };
     }
 
-  / 'let'i _+ target:assignable _+ 'be'i _+ e:expression
-    { return { assign: { target: target, expression: e} }; }
+  / 'let'i _+ t:assignable _+ 'be'i _+ e:expression
+    { return { assign: { target: t, expression: e} }; }
 
+  / push _ e:expression into v:variable
+    { return { enlist: { variable: v, expression: e } }; }
+
+  / push _ v:variable _ 'like'i _ e:(literal / poetic_number)
+    { return { enlist: { variable: v, expression: e } }; }
+
+  / push _ v:variable (_ 'with'i)? _ e:expression
+    { return { enlist: { variable: v, expression: e } }; }
+
+  / push _ v:variable 
+    { return { enlist: { variable: v } }; }
+
+  / e:delist _ 'into'i _ target:assignable
+    { return { assign: { target: target, expression: e } }; }
 
 poetic_string = s:$[^\n]*
   { return { string: s} }
@@ -370,7 +396,7 @@ mutator = split / cast / join
 modifier =  _ ('with'i / 'using'i) _ m:expression { return m }
 
 mutation
-    = op:mutator _ s:expression t:target m:modifier?
+    = op:mutator _ s:expression into t:assignable m:modifier?
         { return { assign: { target: t, expression: { mutation: { type: op, source: s, modifier: m } } } } ; }
 	/ op:mutator _ s:assignable m:modifier?
         { return { assign: { target: s, expression: { mutation: { type: op, source: { lookup: s }, modifier: m } } } } ; }

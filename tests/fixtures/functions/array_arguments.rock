@@ -1,0 +1,13 @@
+the function takes array
+shout "The parameters that were passed:"
+shout array at 0
+shout array at 1
+shout array
+
+let param at 0 be 3
+let param at 1 be 4
+shout "The parameters to be passed:"
+shout param at 0
+shout param at 1
+shout param
+the function taking param

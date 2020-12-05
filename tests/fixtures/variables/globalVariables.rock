@@ -12,3 +12,14 @@ Give back X plus GlobalTwo
 
 put 6 into GlobalTwo
 say MyFuncTwo taking 2
+
+(variables defined globally can be changed from functions)
+
+SetGlobal takes X
+put X into Global
+(end func)
+
+put 1 into Global
+say Global
+SetGlobal taking 2
+say Global

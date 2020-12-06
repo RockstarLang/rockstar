@@ -250,14 +250,10 @@ divide 		= _* ('/' / 'over ' / 'between ') _*    { return '/' }
 compoundable_operator = add / subtract / multiply / divide
 
 pronoun = pronoun:(
-    // Longest pronouns first to avoid prefix coding errors.
-    // 4-letter pronouns
     'they'i / 'them'i
-    // 3-letter pronouns
     / 'she'i / 'him'i / 'her'i / 'hir'i / 'zie'i / 'zir'i / 'xem'i / 'ver'i
-    // 2-letter pronouns
     / 'ze'i / 've'i / 'xe'i / 'it'i / 'he'i
-    )
+    ) &(_ / EOL / EOF)
     { return { pronoun: pronoun.toLowerCase() } }
 
 roll = ('pop'i / 'roll'i)
@@ -280,7 +276,7 @@ lowercase_letter = [a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûü�
 
 letter = uppercase_letter / lowercase_letter
 
-common_variable = prefix:common_prefix _+ name:$(letter+)
+common_variable = prefix:common_prefix _ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
 is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
@@ -298,11 +294,12 @@ assignable
 assignment = target:assignable is _* e:(literal / poetic_number)
     { return { assign: { target: target, expression: e} }; }
 
-  / target:assignable _+ 'says 'i e:poetic_string
+  / target:assignable _ 'says 'i e:poetic_string
     { return { assign: { target: target, expression: e} }; }
 
   / 'put'i _ e:expression into target:assignable
     { return { assign: { target: target, expression: e} }; }
+
 
   / 'let'i _ target:assignable _ 'be'i o:compoundable_operator e:expression {
       return { assign: {
@@ -311,7 +308,7 @@ assignment = target:assignable is _* e:(literal / poetic_number)
       } };
     }
 
-  / 'let'i _+ t:assignable _+ 'be'i _+ e:expression
+  / 'let'i _ t:assignable _ 'be'i _ e:expression
     { return { assign: { target: t, expression: e} }; }
 
   / push _ e:expression into v:variable

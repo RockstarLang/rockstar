@@ -200,7 +200,7 @@ Roll the list into bar
 Roll the list into baz
 Shout foo (will output 4)
 Shout bar (will output 5)
-Shoout baz (will output 6)
+Shout baz (will output 6)
 ```
 
 ### Splitting strings and type conversions

@@ -41,7 +41,7 @@ Put my variable plus your variable into the total
 Shout the total
 ```
 
-**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and `Billie Jean`. Proper variables are case-insensitive apart from the first letter of each word, which must be a capital letter.
+**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and `Billie Jean`. 
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, and `Johnny B Goode` would also all be valid variable names in Rockstar.)
 
@@ -50,6 +50,15 @@ As in Ruby, Python and VBScript, variables are dynamically typed and you don't n
 If a variable is defined outside of a function, it is in global scope. Global scope variables are available everywhere below their first initialization. If a variable is defined inside of a function, it is in local scope. Local scope variables are available from their initialization until the end of the function they are defined in.
 
 While within a function, if you write to a variable that has been defined in global scope, you write to that variable; you do not define a new local variable.
+
+#### A note on case sensitivity in Rockstar
+
+Rockstar keywords and variable names are all case-insensitive, with the exception of proper variables. Proper variables are case-insensitive **apart from the first letter of each word, which must be a capital letter.**
+
+* `TIME`, `time`, `tIMe`, `TIMe` are all equivalent. Simple variables are case-insensitive.
+* `MY HEART`, `my heart`, `My Heart` - are all equivalent; the keyword `my` triggers **common variable** behaviour
+* `Tom Sawyer`, `TOM SAWYER`, `TOm SAWyer` - are all equivalent; the capital `S` on `Sawyer` triggers **proper variable** behaviour
+* `DOCTOR feelgood` is not a valid Rockstar variable; the lowercase `f` on `feelgood` does not match any valid variable naming style and so the variable name is not valid.
 
 #### Pronouns
 

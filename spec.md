@@ -604,16 +604,25 @@ Knock it down
 
 ### Functions
 
-Functions are declared with a variable name followed by the `takes` keyword and a list of arguments separated by one of the following: `and` `,` `&` `, and` `'n'`
+Functions are declared with a variable name followed by the `takes` keyword (alias `wants`) and a list of arguments separated by one of the following: `and` `,` `&` `, and` `'n'`
 
 * `Multiply takes X and Y`
 * `Search takes Needle and Haystack`
+* `Polly wants a cracker`
 
-The function body is a list of statements with no separating blank lines. A blank line denotes the end of a function body. Functions in Rockstar always have a return value, indicated by the `Give back` keyword. 
+The function body is a list of statements with no separating blank lines. A blank line denotes the end of a function body. Functions in Rockstar always have a return value, specified by the `return` keyword and its aliases `give` and `send`. For historical reasons, `give back` is also supported as an alias for `return`, and the return statement can be followed by the keyword `back` (which has no effect but can make code more lyrical). 
+
+```
+(This function adds 9 to its input and returns the result)
+Polly wants a cracker
+Cheese is delicious
+Put a cracker with cheese into your mouth
+Give it back
+```
 
 Functions are called using the 'taking' keyword and must have at least one argument. Multiple arguments are separated with one of the following: `,` `&` `, and` `'n'`.
 
-Arguments may only be variables or literals. Compound expressions are not allowed. Functionals are greedy: if they find more symbols that make up valid arguments, they will take them.
+Arguments may be any valid expression, including literals, arithmetic expressions and function calls.
 
 * `Multiply taking 3, 5` is an expression returning (presumably) 15
 * `Search taking "hands", "lay your hands on me"`

@@ -12,10 +12,10 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
     'between','greater','nothing','nowhere','smaller','whisper','without',
     'ain\'t','around','bigger','listen','nobody','return','scream','taking','weaker','higher', 'strong',
     'break','build','empty','false','great','knock','lower','right','round','shout', 
-    'small','take','takes','times','until','unite','while','wrong','minus',
+    'small','take','takes','times','until','unite','wants','while','wrong','minus',
     'aint','back','cast','burn','join','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
     'and','big','her','him','hir','it ','low','nor','not','put','say','she','the','top','ver','was','xem','yes','zie','zir',
-    'an','as','at','he','if','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
+    'an','as','at','he','if','in','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
     'a'
   ]
 
@@ -51,7 +51,8 @@ continue = ('continue'i ignore_rest_of_line / 'take it to the top'i) {
 	return { 'continue' : {} }
 }
 
-function = name:variable _ 'takes'i _ args:variable_list EOL body:block EOL
+takes = ('takes'i / 'wants'i)
+function = name:variable _ takes _ args:variable_list EOL body:block EOL
 	{ return { 'function': {
     	name: name,
         args: args.map(arg => arg),
@@ -74,9 +75,9 @@ expression_list = head:simple_expression expression_list_separator tail:expressi
 	{ return [head].concat(tail) }
   / arg:simple_expression { return [arg] }
 
-return = 'return'i / 'give back'i
+return = 'return'i / 'give back'i / 'send'i / 'give'i
 
-function_return = return _ e:expression
+function_return = return _ e:expression (_ 'back'i)?
 	{ return { 'return': { 'expression' : e } } }
 
 operation = readline / output / crement / mutation / assignment / rounding
@@ -283,7 +284,7 @@ is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 
 push  = ('rock'i / 'push'i )
 pop   = ('roll'i / 'pop'i)
-into  = _ 'into'i _
+into  = _ ('into'i / 'in'i) _
 
 indexer = _ 'at'i _ i:expression { return i };
 
@@ -326,7 +327,7 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / e:delist _ 'into'i _ target:assignable
     { return { assign: { target: target, expression: e } }; }
 
-poetic_string = s:$[^\n]*
+poetic_string = s:$[^\r\n]*
   { return { string: s} }
 
 poetic_number = poetic_digit_separator* n:poetic_digits poetic_digit_separator* d:poetic_decimal? poetic_digit_separator*

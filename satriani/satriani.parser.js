@@ -7443,7 +7443,7 @@ function peg$parse(input, options) {
       'small','take','takes','times','until','unite','wants','while','wrong','minus',
       'aint','back','cast','burn','join','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
       'and','big','her','him','hir','it ','low','nor','not','put','say','she','the','top','ver','was','xem','yes','zie','zir',
-      'an','as','at','he','if','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
+      'an','as','at','he','if','in','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
       'a'
     ]
 

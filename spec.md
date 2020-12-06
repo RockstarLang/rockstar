@@ -563,7 +563,7 @@ Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `i
 
 - \<op\> String =\> Error
 - \<op\> Boolean =\> Invert Boolean
-- \<op\> Null =\> Error
+- \<op\> Null =\> coerce to zero (`My world is nothing / build my world up` can be used to initialise a counter loop, for example.)
 - \<op\> Mysterious =\> Error
 
 #### Binary Operators

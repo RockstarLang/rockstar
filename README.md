@@ -39,6 +39,7 @@ Other implementations:
 * [vim-rockstar](https://github.com/sirosen/vim-rockstar) - Syntax highlighting for vim
 * [vscode-rockstar-language](https://github.com/ra100/vscode-rockstar-language) - Syntax highlighting for VSCode
 * [chirp](https://github.com/Suloch/chirp) - Rockstar interpreter in C using flex and yaac
+* [rockstar-feat-csharp](https://github.com/theolivenbaum/rockstar-feat-csharp) - Embed Rockstar on your C# code using source-code generators
 * [sellout](https://github.com/davidadsit/sellout) - Rockstar to C# (dotnet core) transpiler
 * [native-rockstar](https://github.com/gillesdami/native-rockstar) - Rockstar to C++ transpiler in javascript.
 * [rokkstar](https://github.com/ascheja/rokkstar) - Rockstar parser and interpreter written in Kotlin.

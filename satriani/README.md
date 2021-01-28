@@ -8,6 +8,7 @@ To run Satriani using nodeJS from the command line:
 ```
 git clone https://github.com/RockstarLang/rockstar 
 cd rockstar/satriani
+npm install
 node rockstar <program>.rock
 ```
 

@@ -15,3 +15,15 @@ say Sweet Lucy
 
 my number is a 57 + true 43
 say my number
+
+
+(Non-ASCII letters are allowed)
+I was ı
+my heart is full of röck
+shout my heart
+
+(Non-numeric characters expect the first . are ignored)
+my love was A-A-A-Alice!
+say my love
+
+

@@ -1,10 +1,12 @@
-('s is valid in poetic assignments with the apostrophe ignored)
+("'s " is interpreted as " is ", all other apostrophes are ignored)
 
-my soul is the Devil's to take
-shout my soul
-
-my soul is the Devil'sto take
-shout my soul
-
-my soul is the Devil 's to take
-shout my soul
+Foo 's nothing
+'Foo is nothing
+Foo' is nothing
+Foo is nothing'
+Foo is n'''othing
+Foo is 1'.2
+Foo is "abc"
+Whisper Foo is "a'bc''"
+Foo is "abc's "
+Whisper Foo is "abc is "

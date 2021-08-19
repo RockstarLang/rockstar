@@ -17,3 +17,28 @@ Let themes be 10 (variable name beginning with pronoun 'the')
 Let italics be true (variable name beginning with pronoun 'it')
 Shout themes
 Shout italics
+
+say "case insensitivity"
+TIME is 1
+say TIME
+say time
+say tIMe
+say TIMe
+
+time is 2
+say TIME
+say time
+say tIMe
+say TIMe
+
+tIMe is 3
+say TIME
+say time
+say tIMe
+say TIMe
+
+TIMe is 4
+say TIME
+say time
+say tIMe
+say TIMe

@@ -360,7 +360,7 @@ poetic_digit = t:[A-Za-z\-']+
 
 variable = common_variable / proper_variable / pronoun / simple_variable
 
-simple_variable = name:$(letter letter*) !{ return isKeyword(name) } { return name } 
+simple_variable = name:$(letter letter*) !{ return isKeyword(name) } { return name.toLowerCase() }
 
 proper_noun = noun:$(uppercase_letter letter*) !{ return isKeyword(noun) } { return noun }
 

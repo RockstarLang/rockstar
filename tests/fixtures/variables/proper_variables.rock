@@ -1,11 +1,13 @@
-Tommy is 1
-Gina is 2
-Dr Feelgood is 3
-The message is 4
-MY HEART IS "BROKEN"
+Dr Feelgood is 1
+say Dr Feelgood
 
-Say Tommy (1)
-Say Gina (2)
-Say DR FEELGOOD (3)
-Say the message (4)
-say my heart ("broken")
+JOHNNY B GOODE is 2
+say Johnny B Goode
+
+say "case sensitivity"
+(Proper variables are case-insensitive apart from
+ the first letter of each word, which must be a capital letter.)
+Tom Sawyer is 3
+say Tom Sawyer
+say TOM SAWYER
+say ToM SaWyEr

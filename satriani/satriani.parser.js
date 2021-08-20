@@ -530,7 +530,7 @@ function peg$parse(input, options) {
       peg$c332 = peg$classExpectation([["A", "Z"], ["a", "z"], "-", "'"], false, false),
       peg$c333 = function(t) { return (t.filter(c => /[A-Za-z\-]/.test(c)).length%10).toString()},
       peg$c334 = function(name) { return isKeyword(name) },
-      peg$c335 = function(name) { return name },
+      peg$c335 = function(name) { return name.toLowerCase() },
       peg$c336 = function(noun) { return isKeyword(noun) },
       peg$c337 = function(noun) { return noun },
       peg$c338 = " ",

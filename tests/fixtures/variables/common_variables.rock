@@ -4,11 +4,19 @@ an variable is 3
 my variable is 4
 your variable is 5
 
+the variables are 6
+my variables are 7
+your variables are 8
+
 say a variable
 say the variable
 say an variable
 say my variable
 say your variable
+
+say the variables
+say my variables
+say your variables
 
 say "expressions"
 say a variable with the variable
@@ -62,3 +70,8 @@ say The Time
 say tHe tImE
 say the Time
 say the time
+
+the times are 7
+say the times
+the times aRE 8
+say the times

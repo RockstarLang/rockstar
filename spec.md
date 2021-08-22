@@ -277,7 +277,7 @@ Unite words into the output with "! "
 
 #### Parsing numbers and character codes
 
-Use the `cast` mutation to parse strings into numbers, or to convert numbers into their corresponding Unicode characters.
+Use the `cast` mutation (alias `burn`) to parse strings into numbers, or to convert numbers into their corresponding Unicode characters.
 
 ```$rockstar
 Let X be "123.45"

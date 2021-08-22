@@ -300,19 +300,6 @@ pronoun = pronoun:(
     ) &(_ / EOL / EOF)
     { return { pronoun: pronoun.toLowerCase() } }
 
-roll = ('pop'i / 'roll'i)
-
-
-delist = 'roll'i _ v:variable
-  { return { delist: { variable: v } }; }
-
-lookup
-  = d:delist { return d; }
-  / v:variable _ 'at'i _ i:expression
-    { return { lookup: { variable: v, index: i } }; }
-  / v:variable
-    { return { lookup: { variable: v } }; }
-
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
 
 uppercase_letter = [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ]
@@ -328,6 +315,16 @@ is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 push  = ('rock'i / 'push'i )
 pop   = ('roll'i / 'pop'i)
 into  = _ ('into'i / 'in'i) _
+
+delist = pop _ v:variable
+  { return { delist: { variable: v } }; }
+
+lookup
+  = d:delist { return d; }
+  / v:variable _ 'at'i _ i:expression
+    { return { lookup: { variable: v, index: i } }; }
+  / v:variable
+    { return { lookup: { variable: v } }; }
 
 indexer = _ 'at'i _ i:expression { return i };
 

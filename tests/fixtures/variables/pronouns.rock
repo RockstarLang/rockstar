@@ -5,10 +5,10 @@ it is false
 say my heart
 say it
 
-put 1 into Rock Music
+put 1 into Epic Music
 put 2 into my car
-put Rock Music plus my car into it
-say Rock Music
+put Epic Music plus my car into it
+say Epic Music
 say my car
 
 Thomas is true

@@ -6,21 +6,64 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
 
 {
   /* initialiser code - this is JS that runs before the parser is generated */
-  const keywords = [
+
+  const keywords = new Set([
+    // common variable prefixes
+    'a', 'an', 'the', 'my', 'your',
+
+    // pronouns
+    'it', 'he', 'she', 'him', 'her', 'they', 'them', 'ze', 'hir', 'zie', 'zir', 'xe', 'xem', 've', 'ver',
+
+    // literal values
     'mysterious',
-    'stronger','continue',
-    'between','greater','nothing','nowhere','smaller','whisper','without',
-    'ain\'t','around','bigger','listen','nobody','return','scream','taking','weaker','higher', 'strong',
-    'break','build','empty','false','great','knock','lower','right','round','shout', 
-    'small','take','takes','times','until','unite','wants','while','wrong','minus',
-    'aint','back','cast','burn','join','down','else','give','gone','high','into','less','lies','null','plus','says','than','them','they','true','weak','were','your','over','with',
-    'and','big','her','him','hir','it ','low','nor','not','put','say','she','the','top','ver','was','xem','yes','zie','zir',
-    'an','as','at','he','if','in','is','it','my','no','of','ok','or','to','up','ve', 'xe','ze',
-    'a'
-  ]
+    'null', 'nothing', 'nowhere', 'nobody', 'gone',
+    'true', 'right', 'yes', 'ok',
+    'false', 'wrong', 'no', 'lies',
+    'maybe', 'definitely', // reserved for future use
+    'empty', 'silent', 'silence',
+
+    // assignment
+    'let', 'be', 'put', 'into', 'in', // expression
+    'is', 'are', 'was', 'were', 'says', // poetic
+
+    // operations
+    'at', 'rock', 'with', 'roll', 'into', 'push', 'pop', 'like', // arrays
+    'cut', 'split', 'shatter', 'join', 'unite', 'cast', 'burn', // strings
+    'build', 'up', 'knock', 'down', // increment/decrement
+    'plus', 'with', 'minus', 'without', 'times', 'of', 'over', 'between', // arithmetic
+    'and', // list arithmetic
+    'turn', 'up', 'down', 'round', 'around', // rounding
+    'and', 'or', 'nor', 'not', // logical
+
+    // comparison
+    'is', "isn't", "ain't", 'aint', 'not',
+    'than',
+    'higher', 'greater', 'bigger', 'stronger',
+    'lower', 'less', 'smaller', 'weaker',
+    'as',
+    'high', 'great', 'big', 'strong',
+    'low', 'little', 'small', 'weak',
+
+    // input/output
+    'listen', 'to',
+    'say', 'shout', 'whisper', 'scream',
+
+    // control flow
+    'if', 'else',
+    'while', 'until',
+    'break', 'continue',
+    'break', 'it', 'down',
+    'take', 'it', 'to', 'the', 'top',
+    'take',
+
+    // functions
+    'takes', 'wants',
+    'give', 'return', 'send', 'back',
+    'taking',
+  ])
 
   function isKeyword(string) {
-    return keywords.includes(string.toLowerCase());
+    return keywords.has(string.toLowerCase());
   }
 }
 
@@ -217,10 +260,10 @@ comparison = lhs:arithmetic _ c:comparator _ rhs:comparison
     /
     arithmetic
 
-greater 	= ('higher'i /'greater'i / 'bigger'i / 'stronger'i)
-smaller	 	= ('lower'i /'less'i / 'smaller'i / 'weaker'i)
-great	= ('high'i / 'great'i / 'big'i / 'strong'i)
-small	= ('low'i / 'small'i / 'weak'i)
+greater = ('higher'i / 'greater'i / 'bigger'i / 'stronger'i)
+smaller = ('lower'i / 'less'i / 'smaller'i / 'weaker'i)
+great   = ('high'i / 'great'i / 'big'i / 'strong'i)
+small   = ('low'i / 'little'i / 'small'i / 'weak'i)
 
 comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
             / 	'is'i _ smaller _ 'than'i { return 'lt' }
@@ -257,19 +300,6 @@ pronoun = pronoun:(
     ) &(_ / EOL / EOF)
     { return { pronoun: pronoun.toLowerCase() } }
 
-roll = ('pop'i / 'roll'i)
-
-
-delist = 'roll'i _ v:variable
-  { return { delist: { variable: v } }; }
-
-lookup
-  = d:delist { return d; }
-  / v:variable _ 'at'i _ i:expression
-    { return { lookup: { variable: v, index: i } }; }
-  / v:variable
-    { return { lookup: { variable: v } }; }
-
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
 
 uppercase_letter = [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ]
@@ -285,6 +315,16 @@ is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
 push  = ('rock'i / 'push'i )
 pop   = ('roll'i / 'pop'i)
 into  = _ ('into'i / 'in'i) _
+
+delist = pop _ v:variable
+  { return { delist: { variable: v } }; }
+
+lookup
+  = d:delist { return d; }
+  / v:variable _ 'at'i _ i:expression
+    { return { lookup: { variable: v, index: i } }; }
+  / v:variable
+    { return { lookup: { variable: v } }; }
 
 indexer = _ 'at'i _ i:expression { return i };
 
@@ -324,7 +364,7 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / push _ v:variable 
     { return { enlist: { variable: v } }; }
 
-  / e:delist _ 'into'i _ target:assignable
+  / e:delist into target:assignable
     { return { assign: { target: target, expression: e } }; }
 
 poetic_string = s:$[^\r\n]*

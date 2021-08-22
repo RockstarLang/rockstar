@@ -41,7 +41,7 @@ Put my variable plus your variable into the total
 Shout the total
 ```
 
-**Proper variables** are proper nouns - any word that isn't a reserved keyword and starts with an uppercase letter. Proper variable names can contain spaces as long as each space is followed by an uppercase letter. Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and `Billie Jean`. 
+**Proper variables** are multi-word proper nouns - words that aren't language keywords, each starting with an uppercase letter, separated by spaces. (Single-word variables are always simple variables.) Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and `Billie Jean`. 
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, and `Johnny B Goode` would also all be valid variable names in Rockstar.)
 
@@ -71,12 +71,12 @@ The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`
 Rockstar uses a similar type system to that defined by the [ECMAScript type system](http://www.ecma-international.org/ecma-262/5.1/#sec-8), except `undefined` doesn't sound very rock'n'roll so we use `mysterious` instead.
 
 * **Mysterious** - the value of any variable that hasn't been assigned a value, denoted by the keyword `mysterious`
-* **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere`, `nobody`, `empty` and `gone` are defined as aliases for `null`
+* **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere`, `nobody`, and `gone` are defined as aliases for `null`
 * **Boolean** - a logical entity having two values `true` and `false`. *(The keywords `maybe` and `definitely maybe` are reserved for future use)*
  * `right`, `yes` and `ok` are valid aliases for `true`
  * `wrong`, `no` and `lies` are valid aliases for `false`
 * **Number** - Numbers in Rockstar are double-precision floating point numbers, stored according to the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) standard. *(An earlier version of this spec proposed that Rockstar used the [DEC64](http://www.dec64.com/) numeric type. This is a perfect example of something that seemed like a great idea after a couple of beers but turns out to be prohibitively difficult to implement...)*
-* **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
+* **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units. `empty`, `silent`, and `silence` are aliases for the empty string (`""`).
 
 Functions and function identifiers are not strictly part of the type system in Rockstar 1.0.
 
@@ -277,7 +277,7 @@ Unite words into the output with "! "
 
 #### Parsing numbers and character codes
 
-Use the `cast` mutation to parse strings into numbers, or to convert numbers into their corresponding Unicode characters.
+Use the `cast` mutation (alias `burn`) to parse strings into numbers, or to convert numbers into their corresponding Unicode characters.
 
 ```$rockstar
 Let X be "123.45"
@@ -312,13 +312,14 @@ The results of comparisons often rely on a concept called 'truthiness'. If the v
 
 Words that are used to construct a literal of a certain type are referred to as **constants** and words that are used to construct various syntax constructs are referred to as **keywords**
 
-| Constant      | Aliases
-| --------      |  ------- |
-| `mysterious`  | -      |
-| `null`        |  `nothing`, `nowhere`, `nobody`, `empty`, `gone` |
-| `true`,       |  `right`, `yes`, `ok` |
-| `false`       |  `wrong`, `no`, `lies` |
-		
+| Constant     | Aliases                                         |
+| ------------ | ----------------------------------------------- |
+| `mysterious` | -                                               |
+| `null`       | `nothing`, `nowhere`, `nobody`, `empty`, `gone` |
+| `true`,      | `right`, `yes`, `ok`                            |
+| `false`      | `wrong`, `no`, `lies`                           |
+| `empty`      | `silent`, `silence`                             |
+
 ### Literals and Assignment
 
 String literals in Rockstar use double quotes. 
@@ -338,6 +339,7 @@ Assignment is done using either `put <expression> into <variable>` or `let <vari
 * `Let my balance be 1000000` will store the value `1000000` in the variable `my balance`
 * `Let the survivors be the brave without the fallen` will subtract `the fallen` from `the brave` and store the result in `the survivors`
 
+The keyword `in` is an alias for `into`.
 
 #### Single Quotes
 
@@ -364,12 +366,12 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
 
 Rockstar supports the infix arithmetic operators `+`, `-`, `*` and `/`. The language includes aliases for each operator so you can write lyrically pleasing expressions.
 
-| Operator  | Operation         | Aliases |
-| --  | ---------         | ------- |
-| +   | addition          | `plus`, `with` |
-| -   | subtraction       | `minus`, `without` |
-| *   | multiplication    | `times`, `of` |
-| /   | division          | `over`  |
+| Operator | Operation         | Aliases            |
+| -------- | ----------------- | ------------------ |
+| +        | addition          | `plus`, `with` .   |
+| -        | subtraction       | `minus`, `without` |
+| *        | multiplication    | `times`, `of`      |
+| /        | division          | `over`, `between`  |
 
 The alias `by` has been explicitly rejected because of disagreements between the colloquial English `ten by four` (i.e. `10*4 = 40`) and `ten (divided) by four` (i.e. `10/4 = 2.5`)
 
@@ -465,7 +467,7 @@ A poetic string literal assignment starts with a variable name, followed by one 
 
 #### Poetic Number Literals
 
-A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `was` or `were`. As long as the next symbol is not a Literal Word, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
+A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `are`, `was` or `were`. As long as the next symbol is not a Literal Word, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
 
 * `Tommy was a lovestruck ladykiller` initialises `Tommy` with the value `100`
 * `Sweet Lucy was a dancer` - initialises `Sweet Lucy` with the value 16

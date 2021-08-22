@@ -364,7 +364,7 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / push _ v:variable 
     { return { enlist: { variable: v } }; }
 
-  / e:delist _ 'into'i _ target:assignable
+  / e:delist into target:assignable
     { return { assign: { target: target, expression: e } }; }
 
 poetic_string = s:$[^\r\n]*

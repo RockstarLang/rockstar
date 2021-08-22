@@ -5685,31 +5685,13 @@ function peg$parse(input, options) {
                       s0 = peg$currPos;
                       s1 = peg$parsedelist();
                       if (s1 !== peg$FAILED) {
-                        s2 = peg$parse_();
+                        s2 = peg$parseinto();
                         if (s2 !== peg$FAILED) {
-                          if (input.substr(peg$currPos, 4).toLowerCase() === peg$c290) {
-                            s3 = input.substr(peg$currPos, 4);
-                            peg$currPos += 4;
-                          } else {
-                            s3 = peg$FAILED;
-                            if (peg$silentFails === 0) { peg$fail(peg$c291); }
-                          }
+                          s3 = peg$parseassignable();
                           if (s3 !== peg$FAILED) {
-                            s4 = peg$parse_();
-                            if (s4 !== peg$FAILED) {
-                              s5 = peg$parseassignable();
-                              if (s5 !== peg$FAILED) {
-                                peg$savedPos = s0;
-                                s1 = peg$c321(s1, s5);
-                                s0 = s1;
-                              } else {
-                                peg$currPos = s0;
-                                s0 = peg$FAILED;
-                              }
-                            } else {
-                              peg$currPos = s0;
-                              s0 = peg$FAILED;
-                            }
+                            peg$savedPos = s0;
+                            s1 = peg$c321(s1, s3);
+                            s0 = s1;
                           } else {
                             peg$currPos = s0;
                             s0 = peg$FAILED;

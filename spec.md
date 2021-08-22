@@ -366,12 +366,12 @@ Increment and decrement are supported by the `Build {variable} up` and `Knock {v
 
 Rockstar supports the infix arithmetic operators `+`, `-`, `*` and `/`. The language includes aliases for each operator so you can write lyrically pleasing expressions.
 
-| Operator  | Operation         | Aliases |
-| --  | ---------         | ------- |
-| +   | addition          | `plus`, `with` |
-| -   | subtraction       | `minus`, `without` |
-| *   | multiplication    | `times`, `of` |
-| /   | division          | `over`  |
+| Operator | Operation         | Aliases            |
+| -------- | ----------------- | ------------------ |
+| +        | addition          | `plus`, `with` .   |
+| -        | subtraction       | `minus`, `without` |
+| *        | multiplication    | `times`, `of`      |
+| /        | division          | `over`, `between`  |
 
 The alias `by` has been explicitly rejected because of disagreements between the colloquial English `ten by four` (i.e. `10*4 = 40`) and `ten (divided) by four` (i.e. `10/4 = 2.5`)
 

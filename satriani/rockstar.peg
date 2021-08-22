@@ -42,7 +42,7 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
     'lower', 'less', 'smaller', 'weaker',
     'as',
     'high', 'great', 'big', 'strong',
-    'low', 'small', 'weak',
+    'low', 'little', 'small', 'weak',
 
     // input/output
     'listen', 'to',
@@ -260,10 +260,10 @@ comparison = lhs:arithmetic _ c:comparator _ rhs:comparison
     /
     arithmetic
 
-greater 	= ('higher'i /'greater'i / 'bigger'i / 'stronger'i)
-smaller	 	= ('lower'i /'less'i / 'smaller'i / 'weaker'i)
-great	= ('high'i / 'great'i / 'big'i / 'strong'i)
-small	= ('low'i / 'small'i / 'weak'i)
+greater = ('higher'i / 'greater'i / 'bigger'i / 'stronger'i)
+smaller = ('lower'i / 'less'i / 'smaller'i / 'weaker'i)
+great   = ('high'i / 'great'i / 'big'i / 'strong'i)
+small   = ('low'i / 'little'i / 'small'i / 'weak'i)
 
 comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
             / 	'is'i _ smaller _ 'than'i { return 'lt' }

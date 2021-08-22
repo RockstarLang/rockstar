@@ -338,6 +338,7 @@ Assignment is done using either `put <expression> into <variable>` or `let <vari
 * `Let my balance be 1000000` will store the value `1000000` in the variable `my balance`
 * `Let the survivors be the brave without the fallen` will subtract `the fallen` from `the brave` and store the result in `the survivors`
 
+The keyword `in` is an alias for `into`.
 
 #### Single Quotes
 

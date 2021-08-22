@@ -71,12 +71,12 @@ The keywords `it`, `he`, `she`, `him`, `her`, `they`, `them`, `ze`, `hir`, `zie`
 Rockstar uses a similar type system to that defined by the [ECMAScript type system](http://www.ecma-international.org/ecma-262/5.1/#sec-8), except `undefined` doesn't sound very rock'n'roll so we use `mysterious` instead.
 
 * **Mysterious** - the value of any variable that hasn't been assigned a value, denoted by the keyword `mysterious`
-* **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere`, `nobody`, `empty` and `gone` are defined as aliases for `null`
+* **Null** - the null type. Evaluates as equal to zero and equal to false. The keywords `nothing`, `nowhere`, `nobody`, and `gone` are defined as aliases for `null`
 * **Boolean** - a logical entity having two values `true` and `false`. *(The keywords `maybe` and `definitely maybe` are reserved for future use)*
  * `right`, `yes` and `ok` are valid aliases for `true`
  * `wrong`, `no` and `lies` are valid aliases for `false`
 * **Number** - Numbers in Rockstar are double-precision floating point numbers, stored according to the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) standard. *(An earlier version of this spec proposed that Rockstar used the [DEC64](http://www.dec64.com/) numeric type. This is a perfect example of something that seemed like a great idea after a couple of beers but turns out to be prohibitively difficult to implement...)*
-* **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units.
+* **String** - Rockstar strings are sequences of 16-bit unsigned integer values representing UTF-16 code units. `empty`, `silent`, and `silence` are aliases for the empty string (`""`).
 
 Functions and function identifiers are not strictly part of the type system in Rockstar 1.0.
 
@@ -312,13 +312,14 @@ The results of comparisons often rely on a concept called 'truthiness'. If the v
 
 Words that are used to construct a literal of a certain type are referred to as **constants** and words that are used to construct various syntax constructs are referred to as **keywords**
 
-| Constant      | Aliases
-| --------      |  ------- |
-| `mysterious`  | -      |
-| `null`        |  `nothing`, `nowhere`, `nobody`, `empty`, `gone` |
-| `true`,       |  `right`, `yes`, `ok` |
-| `false`       |  `wrong`, `no`, `lies` |
-		
+| Constant     | Aliases                                         |
+| ------------ | ----------------------------------------------- |
+| `mysterious` | -                                               |
+| `null`       | `nothing`, `nowhere`, `nobody`, `empty`, `gone` |
+| `true`,      | `right`, `yes`, `ok`                            |
+| `false`      | `wrong`, `no`, `lies`                           |
+| `empty`      | `silent`, `silence`                             |
+
 ### Literals and Assignment
 
 String literals in Rockstar use double quotes. 

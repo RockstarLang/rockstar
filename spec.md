@@ -467,7 +467,7 @@ A poetic string literal assignment starts with a variable name, followed by one 
 
 #### Poetic Number Literals
 
-A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `was` or `were`. As long as the next symbol is not a Literal Word, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
+A poetic number literal begins with a variable name, followed by the keyword `is`, or the aliases `are`, `was` or `were`. As long as the next symbol is not a Literal Word, the rest of the line is treated as a decimal number in which the values of consecutive digits are given by the lengths of the subsequent barewords, up until the end of the line. To allow the digit zero, and to compensate for a lack of suitably rock'n'roll 1- and 2-letter words, word lengths are parsed modulo 10. A period (.) character denotes a decimal place. Other than the first period, any non-alphabetical characters are ignored.
 
 * `Tommy was a lovestruck ladykiller` initialises `Tommy` with the value `100`
 * `Sweet Lucy was a dancer` - initialises `Sweet Lucy` with the value 16

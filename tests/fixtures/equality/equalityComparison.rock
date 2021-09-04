@@ -64,8 +64,13 @@ say ""
 say "Checking negation"
 say true is not false
 say true is not true
+say ""
+say "Checking contractions"
+say true isn't false
+say true isnt false
 say true ain't false
-say true ain't true
 say true aint false
-say true aint true
-
+say false isn't true
+say false isnt true
+say false ain't true
+say false aint true

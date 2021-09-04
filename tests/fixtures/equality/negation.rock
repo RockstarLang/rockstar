@@ -1,8 +1,15 @@
 say true is not false
+say true isn't false
 say true ain't false
-say not true is not true
 say true aint false
+say true isn't not true
+say true ain't not true
+say not true is not true
 say ""
-say true aint true
-say true ain't true
 say true is not true
+say true isn't true
+say true ain't true
+say true aint true
+say true isn't not false
+say true ain't not false
+say not true is not false

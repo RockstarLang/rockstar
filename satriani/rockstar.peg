@@ -36,7 +36,7 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
     'and', 'or', 'nor', 'not', // logical
 
     // comparison
-    'is', "isn't", "ain't", 'aint', 'not',
+    'is', "isn't", 'isnt', "ain't", 'aint', 'not',
     'than',
     'higher', 'greater', 'bigger', 'stronger',
     'lower', 'less', 'smaller', 'weaker',
@@ -228,7 +228,7 @@ and = lhs:equality_check _ 'and' _ rhs:and {
  /
  equality_check
 
-eq = ('aint'i / 'ain\'t'i) { return 'ne' }
+eq = ('aint'i / 'ain\'t'i / 'isnt'i / 'isn\'t'i) { return 'ne' }
      / 	'is'i { return 'eq' }
 
 equality_check = lhs:not _ c:eq _ rhs:equality_check

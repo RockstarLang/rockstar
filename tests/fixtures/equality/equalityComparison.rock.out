@@ -64,7 +64,13 @@ false
 Checking negation
 true
 false
+
+Checking contractions
 true
-false
 true
-false
+true
+true
+true
+true
+true
+true

@@ -36,7 +36,9 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
     'and', 'or', 'nor', 'not', // logical
 
     // comparison
-    'is', "isn't", 'isnt', "ain't", 'aint', 'not',
+    'is', "isn't", 'isnt', "ain't", 'aint',
+    'arent', "aren't", 'wasnt', "wasn't", 'werent', "weren't",
+    'not',
     'than',
     'higher', 'greater', 'bigger', 'stronger',
     'lower', 'less', 'smaller', 'weaker',
@@ -228,10 +230,10 @@ and = lhs:equality_check _ 'and' _ rhs:and {
  /
  equality_check
 
-eq = ('aint'i / 'ain\'t'i / 'isnt'i / 'isn\'t'i) { return 'ne' }
-     / 	'is'i { return 'eq' }
+eq = isnt { return 'ne' }
+   / is   { return 'eq' }
 
-equality_check = lhs:not _ c:eq _ rhs:equality_check
+equality_check = lhs:not c:eq rhs:equality_check
 	{
       return {
           comparison: {
@@ -247,7 +249,7 @@ equality_check = lhs:not _ c:eq _ rhs:equality_check
  not = 'not' _ e:not { return { 'not': { expression: e} } }
  	/ comparison
 
-comparison = lhs:arithmetic _ c:comparator _ rhs:comparison
+comparison = lhs:arithmetic c:comparator rhs:comparison
   {
       return {
           comparison: {
@@ -265,10 +267,10 @@ smaller = ('lower'i / 'less'i / 'smaller'i / 'weaker'i)
 great   = ('high'i / 'great'i / 'big'i / 'strong'i)
 small   = ('low'i / 'little'i / 'small'i / 'weak'i)
 
-comparator 	= 	'is'i _ greater _ 'than'i { return 'gt' }
-            / 	'is'i _ smaller _ 'than'i { return 'lt' }
-            /	  'is'i _ 'as'i _ great _ 'as'i { return 'ge' }
-            /	  'is'i _ 'as'i _ small _ 'as'i { return 'le' }
+comparator 	= is greater _ 'than'i     _ { return 'gt' }
+            / is smaller _ 'than'i     _ { return 'lt' }
+            / is 'as'i _ great _ 'as'i _ { return 'ge' }
+            / is 'as'i _ small _ 'as'i _ { return 'le' }
 
 
 arithmetic         = first:product rest:((add / subtract) product)+
@@ -297,7 +299,7 @@ pronoun = pronoun:(
     'they'i / 'them'i
     / 'she'i / 'him'i / 'her'i / 'hir'i / 'zie'i / 'zir'i / 'xem'i / 'ver'i
     / 'ze'i / 've'i / 'xe'i / 'it'i / 'he'i
-    ) &(_ / EOL / EOF)
+    ) &(is / _ / EOL / EOF)
     { return { pronoun: pronoun.toLowerCase() } }
 
 common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
@@ -310,7 +312,15 @@ letter = uppercase_letter / lowercase_letter
 common_variable = prefix:common_prefix _ name:$(letter+)
         { return (prefix + '_' + name).toLowerCase() };
 
-is = ('\'s' / (_* ('=' / 'is 'i / 'was 'i / 'are 'i / 'were 'i)))
+is = ("'s"i / "'re"i / _ ('=' / 'is'i / 'was'i / 'are'i / 'were'i)) _
+
+isnt = _ (
+  'isnt'i   / "isn't"i   /
+  'aint'i   / "ain't"i   /
+  'arent'i  / "aren't"i  /
+  'wasnt'i  / "wasn't"i  /
+  'werent'i / "weren't"i
+  ) _
 
 push  = ('rock'i / 'push'i )
 pop   = ('roll'i / 'pop'i)

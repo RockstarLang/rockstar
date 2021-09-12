@@ -28,3 +28,67 @@ say "abcd" is lower than "abce"
 say ""
 say "-123" is lower than 123
 say 123 is higher than "-123"
+say ""
+
+say "Aliases"
+ten is 10
+
+say "is"
+say ten is higher   than 9
+say ten is greater  than 9
+say ten is bigger   than 9
+say ten is stronger than 9
+say ten is lower    than 11
+say ten is less     than 11
+say ten is smaller  than 11
+say ten is weaker   than 11
+
+say "'s"
+say ten's higher   than 9
+say ten's greater  than 9
+say ten's bigger   than 9
+say ten's stronger than 9
+say ten's lower    than 11
+say ten's less     than 11
+say ten's smaller  than 11
+say ten's weaker   than 11
+
+say "are"
+say ten are higher   than 9
+say ten are greater  than 9
+say ten are bigger   than 9
+say ten are stronger than 9
+say ten are lower    than 11
+say ten are less     than 11
+say ten are smaller  than 11
+say ten are weaker   than 11
+
+say "'re"
+say ten're higher   than 9
+say ten're greater  than 9
+say ten're bigger   than 9
+say ten're stronger than 9
+say ten're lower    than 11
+say ten're less     than 11
+say ten're smaller  than 11
+say ten're weaker   than 11
+
+say "was"
+say ten was higher   than 9
+say ten was greater  than 9
+say ten was bigger   than 9
+say ten was stronger than 9
+say ten was lower    than 11
+say ten was less     than 11
+say ten was smaller  than 11
+say ten was weaker   than 11
+
+say "were"
+say ten were higher   than 9
+say ten were greater  than 9
+say ten were bigger   than 9
+say ten were stronger than 9
+say ten were lower    than 11
+say ten were less     than 11
+say ten were smaller  than 11
+say ten were weaker   than 11

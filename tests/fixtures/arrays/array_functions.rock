@@ -1,4 +1,20 @@
-Function takes the array
+Shout "function that does nothing"
+
+The void takes something
+Give back nothing
+
+Rock a list with nothing
+Shout a list
+Shout a list at 0
+Let me be the void taking nothing
+Shout a list
+Shout a list at 0
+
+Whisper empty
+
+Shout "function that multiplies elements in an array"
+
+Multiplier takes the array
 The product is 1
 Until the array is nothing
 Roll the array into the variable
@@ -7,8 +23,25 @@ Let the product be the product of the variable
 
 Give back the product
 
-Rock the list with 3,4,5,6,6,8,9,10
-Let the answer be function taking the list
-Shout the answer (should be 120)
+Rock the list with 3,4,5,6,7,8,9,10
+Let the answer be multiplier taking the list
+Shout the answer
+Shout the list
 
-Shout the list (should be 5)
+Whisper empty
+
+Say "function that returns an array"
+
+Rock collection
+Shout collection
+Shout collection at 0
+
+Append takes the array and the arg
+Rock the array with the arg
+Give back the array
+
+Let expansion be append taking collection, "hello"
+Shout collection
+Shout collection at 0
+Shout expansion
+Shout expansion at 0

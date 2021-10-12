@@ -349,10 +349,14 @@ Most programming languages use the single quote for quoting literal strings - `'
 
 Given three such dramatically different influences, here's how Rockstar interprets single quotes.
 
-1. The sequence `'s\W+` - a single quote followed by a lowercase 's' and one or more whitespace characters - should be replaced with ` is ` (space, is, space) 
- * This allows `Janie's got a gun` (initialises `Janie` with the value `313`) and `Union's been on strike` (initialise `Union` with the value `426`) as valid variable declarations.  
+1. The sequence `'s` or `'re` appearing at the end of a word is equivalent to ` is`, except when used in poetic literals.
+
+   * This allows `Janie's got a gun` (initialises `Janie` with the value `313`) and `Union's been on strike` (initialises `Union` with the value `426`) as valid variable declarations. `We're here to see the show` initialises `We` with the value `42334`.
+   * You can also use `'s` and `'re` in comparisons: `If Janie's gone` tests whether `Janie` is `null`.
 
 2. All other single quotes are then ignored. `ain't` is equivalent to `aint`, `wakin'` has five letters, and `'''''` is equal to the empty string. This means you can use single quotes freely throughout your program to punctuate, adjust word lengths and generally channel the spirit of rock'n'roll without worrying about compiler errors. 
+
+`The fire's burning Tommy's feet` initialises `the fire` with the value `764`.
 
 #### Increment and Decrement
 
@@ -381,7 +385,7 @@ Examples:
 
 * `My world is nothing without your love` - Initialize `my world` with the result of subtracting `your love` from 0
 
-* `If the tears of a child is nothing` - check whether `the tears` * `a child` = 0 
+* `If the tears of a child are nothing` - check whether `the tears` * `a child` = 0
 
 * `My heart over the moon` - Returns `my heart` divided by `the moon`
 
@@ -488,7 +492,16 @@ Comparison in Rockstar can only be done within an expression.
 * `Tommy is nobody` initialises the variable `Tommy` with the value `nobody`
 * `If Tommy is nobody` - will execute the following block if, and only if, the variable `Tommy` is equal to `nobody`
 
+Comparison can also be done with any alias of `is`:
+
+* `If he's gone`
+* `If we are the future`
+* `If the cat was mysterious`
+* `If dreams were real`
+
 The keyword `ain't` (which is reduced to `aint` by Rockstar) is an alias for `isn't`. This usage runs contrary to idiomatic English, where "Tommy isn't anybody", "Tommy ain't nobody" and "Tommy ain't not nobody" somehow mean exactly the same thing.
+
+`aren't`, `wasn't`, and `weren't` are also aliases for `isn't`.
 
 Rockstar also supports the following comparison syntax:
 

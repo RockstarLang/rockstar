@@ -63,14 +63,80 @@ say "hello" is "world"
 say ""
 say "Checking negation"
 say true is not false
-say true is not true
-say ""
-say "Checking contractions"
 say true isn't false
-say true isnt false
-say true ain't false
-say true aint false
-say false isn't true
-say false isnt true
-say false ain't true
-say false aint true
+say true is not true
+say true isn't true
+say ""
+
+say "Aliases for is"
+say "simple variable"
+value is 1
+say value is 1
+value's 2
+say value's 2
+values are 3
+say values are 3
+values're 3
+say values're 3
+value was 5
+say value was 5
+values were 6
+say values were 6
+
+say "common variable"
+the value is 1
+say the value is 1
+the value's 2
+say the value's 2
+the values are 3
+say the values are 3
+the values're 4
+say the values're 4
+the value was 5
+say the value was 5
+the values were 6
+say the values were 6
+
+say "proper variable"
+Proper Value is 1
+say Proper VALUE IS 1
+PROPER VALUE'S 2
+say Proper Value's 2
+Proper Values are 3
+say Proper Values are 3
+PROPER VALUES'RE 4
+say Proper Values're 4
+Proper Value was 5
+say Proper Value was 5
+Proper Values were 6
+say Proper Values were 6
+
+say "pronoun"
+Pronoun Value is 0
+it is 1
+say it is 1
+it's 2
+say it's 2
+they are 3
+say they are 3
+they're 4
+say they're 4
+it was 5
+say it was 5
+they were 6
+say they were 6
+
+say ""
+
+say "Aliases for isn't"
+value is 1
+say value isn't   2
+say value isnt    2
+say value ain't   2
+say value aint    2
+say value aren't  2
+say value arent   2
+say value wasn't  2
+say value wasnt   2
+say value weren't 2
+say value werent  2

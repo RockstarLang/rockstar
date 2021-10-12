@@ -63,9 +63,43 @@ false
 
 Checking negation
 true
+true
+false
 false
 
-Checking contractions
+Aliases for is
+simple variable
+true
+true
+true
+true
+true
+true
+common variable
+true
+true
+true
+true
+true
+true
+proper variable
+true
+true
+true
+true
+true
+true
+pronoun
+true
+true
+true
+true
+true
+true
+
+Aliases for isn't
+true
+true
 true
 true
 true

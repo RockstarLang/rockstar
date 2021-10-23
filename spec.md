@@ -126,9 +126,9 @@ Shout my string at 1 (will print "b")
 Let the character be my string at 2
 ```
 
-### Stack operations
+### Queue operations
 
-Rockstar arrays can also be created and manipulated by the stack operations `rock` and `roll`. (The aliases `push` and `pop` are supported for Rockstar developers who are into 80s dance music.)
+Rockstar arrays can also be created and manipulated by the queue operations `rock` and `roll`. (The aliases `push` and `pop` are supported for Rockstar developers who are into 80s dance music.)
 
 #### Pushing elements onto an array
 
@@ -138,13 +138,13 @@ To create a new empty array, `rock` the name of the array:
 Rock the array (the array is now [])
 ```
 
-To push an element onto the front of an array:
+To push an element onto the end of an array:
 
 ```
 Rock the array with the element
 ```
 
-This supports list expressions, so you can push multiple elements onto the front of an array:
+This supports list expressions, so you can push multiple elements onto the end of an array:
 
 ```
 Rock ints with 1, 2, 3 (ints is now [1, 2, 3])
@@ -163,7 +163,7 @@ Rock ints with 1, 2 with 3, 4, 5
 (ints is now [ 1, 5, 4, 5 ])
 ```
 
-Rockstar supports a special syntax for pushing poetic literals onto a stack:
+Rockstar supports a special syntax for pushing poetic literals onto a queue:
 
 ```rockstar
 Rock the array like the poetic literal (the array is now [ 367 ])

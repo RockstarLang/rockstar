@@ -174,21 +174,21 @@ function evaluate(tree, env) {
                 }
                 return;
             case "comparison":
-                let lhs = toScalar(evaluate(expr.lhs, env));
-                let rhs = toScalar(evaluate(expr.rhs, env));
+                let lhs = evaluate(expr.lhs, env);
+                let rhs = evaluate(expr.rhs, env);
                 switch (expr.comparator) {
                     case "eq":
                         return eq(lhs, rhs);
                     case "ne":
                         return !eq(lhs, rhs);
                     case "lt":
-                        return (lhs < rhs);
+                        return (toScalar(lhs) < toScalar(rhs));
                     case "le":
-                        return (lhs <= rhs);
+                        return (toScalar(lhs) <= toScalar(rhs));
                     case "ge":
-                        return (lhs >= rhs);
+                        return (toScalar(lhs) >= toScalar(rhs));
                     case "gt":
-                        return (lhs > rhs);
+                        return (toScalar(lhs) > toScalar(rhs));
                     default:
                         throw new Error(`Unknown comparison operator ${expr.comparator}`);
                 }
@@ -356,7 +356,7 @@ function is_nothing(thing) {
 }
 
 function eq_array(array, other) {
-    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => el === other[index]));
+    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => eq(el, other[ix])));
     if (other == null || other == 0 || other == "") return (array.length == 0);
     return (false);
 }

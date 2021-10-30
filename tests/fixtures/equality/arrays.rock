@@ -1,0 +1,33 @@
+rock first with 0, 1, 2
+rock second with 3, 4, 5
+
+if first ain't second
+say "arrays of the same length but different contents are not equal"
+
+ArrayCopy takes source
+rock dest
+let i be 0
+let len be source + 0
+while i is less than len
+let dest at i be source at i
+build i up
+
+return dest
+
+let First Copy be ArrayCopy taking first
+if First Copy is first
+say "element-wise-copied arrays are equal"
+
+let Second Copy be second
+if Second Copy is second
+say "assignment-copied arrays are equal"
+
+rock First Nested with first, second
+rock Second Nested with first, second
+if First Nested is Second Nested
+say "nested arrays with the same contents are equal"
+
+rock Third Nested with first, second
+rock Fourth Nested with second, first
+if Third Nested ain't Fourth Nested
+say "nested arrays with different contents are not equal"

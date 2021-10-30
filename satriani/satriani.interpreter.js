@@ -21,23 +21,21 @@ Environment.prototype = {
         return (name in this.vars);
     },
 
-    lookup: function (name, index, force_array) {
-        if (name in this.vars) {
-            let variable = this.vars[name];
-            if (Array.isArray(variable)) {
-                if (typeof (index) == 'undefined' || index == null) {
-                    if (force_array || this.FORCE_ARRAY_FLAG) {
-                        this.FORCE_ARRAY_FLAG = false;
-                        return variable;
-                    }
-                    return (variable.length);
-                }
-                return variable[index];
-            }
-            if (typeof (variable) == 'string' && typeof (index) == 'number') return (variable[index]);
-            return variable;
+    lookup: function (name, index) {
+        if (name in this.vars == false) {
+            throw new Error("Undefined variable " + name);
         }
-        throw new Error("Undefined variable " + name);
+        let variable = this.vars[name];
+        if (Array.isArray(variable)) {
+            if (typeof (index) == 'undefined' || index == null) {
+                return variable;
+            }
+            return variable[index];
+        }
+        if (typeof (variable) == 'string' && typeof (index) == 'number') {
+            return (variable[index]);
+        }
+        return variable;
     },
 
     assign: function (name, value, index, local) {
@@ -64,6 +62,13 @@ Environment.prototype = {
     pronoun_alias: null,
 }
 
+function toScalar(value) {
+    if (Array.isArray(value)) {
+        return value.length;
+    }
+    return value;
+}
+
 function evaluate(tree, env) {
     if (tree == MYSTERIOUS || typeof (tree) == 'undefined') return undefined;
     if (tree == null) return null;
@@ -83,7 +88,7 @@ function evaluate(tree, env) {
                 }
                 return result;
             case "conditional":
-                if (evaluate(expr.condition, env)) {
+                if (toScalar(evaluate(expr.condition, env))) {
                     return evaluate(expr.consequent, env);
                 } else if (expr.alternate) {
                     return evaluate(expr.alternate, env);
@@ -100,7 +105,7 @@ function evaluate(tree, env) {
             case "constant":
                 return (expr);
             case "output":
-                let printable = evaluate(expr, env); 2
+                let printable = toScalar(evaluate(expr, env));
                 if (typeof (printable) == 'undefined') printable = "mysterious";
                 env.output(printable);
                 return;
@@ -143,7 +148,7 @@ function evaluate(tree, env) {
                         return;
                 }
             case "while_loop":
-                while_outer: while (evaluate(expr.condition, env)) {
+                while_outer: while (toScalar(evaluate(expr.condition, env))) {
                     let result = evaluate(expr.consequent, env);
                     if (result) switch (result.action) {
                         case 'continue':
@@ -156,7 +161,7 @@ function evaluate(tree, env) {
                 }
                 return;
             case "until_loop":
-                until_outer: while (!evaluate(expr.condition, env)) {
+                until_outer: while (!toScalar(evaluate(expr.condition, env))) {
                     let result = evaluate(expr.consequent, env);
                     if (result) switch (result.action) {
                         case 'continue':
@@ -177,25 +182,24 @@ function evaluate(tree, env) {
                     case "ne":
                         return !eq(lhs, rhs);
                     case "lt":
-                        return (lhs < rhs);
+                        return (toScalar(lhs) < toScalar(rhs));
                     case "le":
-                        return (lhs <= rhs);
+                        return (toScalar(lhs) <= toScalar(rhs));
                     case "ge":
-                        return (lhs >= rhs);
+                        return (toScalar(lhs) >= toScalar(rhs));
                     case "gt":
-                        return (lhs > rhs);
+                        return (toScalar(lhs) > toScalar(rhs));
                     default:
                         throw new Error(`Unknown comparison operator ${expr.comparator}`);
                 }
             case "not":
-                return (!evaluate(expr.expression, env));
+                return (!toScalar(evaluate(expr.expression, env)));
             case "function":
                 env.assign(expr.name, make_lambda(expr, env));
                 return;
             case "call":
                 let func = env.lookup(expr.name);
                 let func_result = func.apply(null, expr.args.map(arg => {
-                    env.FORCE_ARRAY_FLAG = true;
                     let value =  evaluate(arg, env);
                     // If the arg is an array, we shallow-copy it when passing it to a function call
                     return (value && value.map ? value.map(e => e) : value);                
@@ -221,12 +225,9 @@ function mutation(expr, env) {
         case "cast":
             if (typeof (source) == 'string') return parseInt(source, modifier);
             if (typeof (source) == 'number') return String.fromCharCode(source);
+            if (Array.isArray(source)) return String.fromCharCode(toScalar(source));
             throw new Error(`I don't know how to cast ${source}`);
         case "join":
-            // This is a nasty hack but it avoids having to extend the entire
-            // parser with a special additional parameter.
-            env.FORCE_ARRAY_FLAG = true;
-            source = evaluate(expr.source, env);
             if (Array.isArray(source)) {
                 let joiner = (typeof (modifier) == 'undefined' || modifier == null) ? '' : modifier;
                 return source.join(joiner);
@@ -296,7 +297,7 @@ function enlist(expr, env) {
 
 function delist(expr, env) {
     let name = env.dealias(expr);
-    let source = env.lookup(name, null, "FIST")
+    let source = env.lookup(name, null)
     let result = (source.shift && source.shift());
     return result;
 }
@@ -355,7 +356,7 @@ function is_nothing(thing) {
 }
 
 function eq_array(array, other) {
-    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => el === other[index]));
+    if (Array.isArray(other)) return ((array.length == other.length) && array.every((el, ix) => eq(el, other[ix])));
     if (other == null || other == 0 || other == "") return (array.length == 0);
     return (false);
 }
@@ -393,9 +394,9 @@ function make_lambda(expr, env) {
 
 function binary(b, env) {
     switch (b.op) {
-        case "and": return (evaluate(b.lhs, env) && evaluate(b.rhs, env));
-        case "nor": return (!evaluate(b.lhs, env) && !evaluate(b.rhs, env));
-        case "or": return (evaluate(b.lhs, env) || evaluate(b.rhs, env));
+        case "and": return (toScalar(evaluate(b.lhs, env)) && toScalar(evaluate(b.rhs, env)));
+        case "nor": return (!toScalar(evaluate(b.lhs, env)) && !toScalar(evaluate(b.rhs, env)));
+        case "or": return (toScalar(evaluate(b.lhs, env)) || toScalar(evaluate(b.rhs, env)));
         case '+': return add(b.lhs, b.rhs, env);
         case '-': return subtract(b.lhs, b.rhs, env);
         case '/': return divide(b.lhs, b.rhs, env);
@@ -404,21 +405,21 @@ function binary(b, env) {
 }
 
 function add(lhs, rhs, env) {
-    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc += demystify(val, env), demystify(lhs, env));
+    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc += toScalar(demystify(val, env)), toScalar(demystify(lhs, env)));
 }
 
 function subtract(lhs, rhs, env) {
-    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc -= evaluate(val, env), evaluate(lhs, env));
+    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc -= toScalar(evaluate(val, env)), toScalar(evaluate(lhs, env)));
 }
 
 function divide(lhs, rhs, env) {
-    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc /= evaluate(val, env), evaluate(lhs, env));
+    return (rhs.reduce ? rhs : [rhs]).reduce((acc, val) => acc /= toScalar(evaluate(val, env)), toScalar(evaluate(lhs, env)));
 }
 
 function multiply(lhs, rhs, env) {
     return (rhs.reduce ? rhs : [rhs])
-        .map(expr => evaluate(expr, env))
-        .reduce(multiply_reduce, evaluate(lhs, env));
+        .map(expr => toScalar(evaluate(expr, env)))
+        .reduce(multiply_reduce, toScalar(evaluate(lhs, env)));
 }
 
 function multiply_reduce(acc, val, idx, src) {

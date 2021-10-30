@@ -554,7 +554,7 @@ The higher, the tighter the binding. This is the precedence we generally expect 
 
 #### Binary Comparison
 
-Equality comparisons (`is`, `ain't`, `is not`) are allowed between types if they are the same type or they can be compared by the rules below. Objects are checked by reference equality; all other types are checked by value equality.
+Equality comparisons (`is`, `ain't`, `is not`) are allowed between types if they are the same type or they can be compared by the rules below. Two arrays are equal if their elements are equal.
 
 Ordering comparisons (`is higher than`, `is lower than`, `is as high as`, and `is as low as`) are only allowed if the operands are both Numbers or both Strings or they are converted to such an arrangement according to the rules below. Numbers are compared as expected. Strings are compared lexicographically.
 

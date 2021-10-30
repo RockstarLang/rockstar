@@ -1,0 +1,5 @@
+arrays of the same length but different contents are not equal
+element-wise-copied arrays are equal
+assignment-copied arrays are equal
+nested arrays with the same contents are equal
+nested arrays with different contents are not equal

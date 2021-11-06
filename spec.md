@@ -312,13 +312,13 @@ The results of comparisons often rely on a concept called 'truthiness'. If the v
 
 Words that are used to construct a literal of a certain type are referred to as **constants** and words that are used to construct various syntax constructs are referred to as **keywords**
 
-| Constant     | Aliases                                         |
-| ------------ | ----------------------------------------------- |
-| `mysterious` | -                                               |
-| `null`       | `nothing`, `nowhere`, `nobody`, `empty`, `gone` |
-| `true`,      | `right`, `yes`, `ok`                            |
-| `false`      | `wrong`, `no`, `lies`                           |
-| `empty`      | `silent`, `silence`                             |
+| Constant     | Aliases                                |
+| ------------ | -------------------------------------- |
+| `mysterious` | -                                      |
+| `null`       | `nothing`, `nowhere`, `nobody`, `gone` |
+| `true`       | `right`, `yes`, `ok`                   |
+| `false`      | `wrong`, `no`, `lies`                  |
+| `empty`      | `silent`, `silence`                    |
 
 ### Literals and Assignment
 

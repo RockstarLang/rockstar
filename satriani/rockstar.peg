@@ -322,7 +322,8 @@ isnt = _ (
   'werent'i / "weren't"i
   ) _
 
-push  = ('rock'i / 'push'i )
+/* push  = ('rock'i / 'push'i ) */
+push = ('deliberately_broken_grammar'i)
 pop   = ('roll'i / 'pop'i)
 into  = _ ('into'i / 'in'i) _
 

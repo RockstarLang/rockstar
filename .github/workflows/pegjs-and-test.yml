@@ -26,8 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: |
-        cd satriani
-        yarn install
-        yarn pegjs
-        yarn test
+    - run: cd satriani
+    - run: yarn install
+    - run: yarn pegjs
+    - run: yarn test

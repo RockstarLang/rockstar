@@ -8,7 +8,8 @@ To run Satriani using nodeJS from the command line:
 ```
 git clone https://github.com/RockstarLang/rockstar 
 cd rockstar/satriani
-npm install
+yarn install
+yarn pegjs
 node rockstar <program>.rock
 ```
 
@@ -49,7 +50,7 @@ cd rockstar/satriani
 yarn browserify
 ```
 
-This will create a single JS file, `deploy/docs/js/satriani.js`, containing the Satriani parser and interpreter, which
+This will create a single JS file, `satriani.standalone.js`, containing the Satriani parser and interpreter, which
 you can use in web pages:
 
 ```
@@ -57,7 +58,7 @@ you can use in web pages:
 <html>
 <body>
 
-<script type="text/javascript" src="js/satriani.js"></script>
+<script type="text/javascript" src="js/satriani.standalone.js"></script>
 <script type="text/javascript">
     let source = 'Shout "Hello World"';
     let output = console.log;

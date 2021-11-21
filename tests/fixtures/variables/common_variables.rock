@@ -1,22 +1,30 @@
-a variable is 1
-the variable is 2
-an variable is 3
-my variable is 4
-your variable is 5
+a     variable is 1
+an    variable is 2
+the   variable is 3
+my    variable is 4
+your  variable is 5
+our   variable is 6
 
-the variables are 6
-my variables are 7
-your variables are 8
+say a     variable
+say an    variable
+say the   variable
+say my    variable
+say your  variable
+say our   variable
 
-say a variable
-say the variable
-say an variable
-say my variable
-say your variable
+a     variables are 11
+an    variables are 12
+the   variables are 13
+my    variables are 14
+your  variables are 15
+our   variables are 16
 
-say the variables
-say my variables
-say your variables
+say a     variables
+say an    variables
+say the   variables
+say my    variables
+say your  variables
+say our   variables
 
 say "expressions"
 say a variable with the variable

@@ -9,7 +9,7 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
 
   const keywords = new Set([
     // common variable prefixes
-    'a', 'an', 'the', 'my', 'your',
+    'a', 'an', 'the', 'my', 'your', 'our',
 
     // pronouns
     'it', 'he', 'she', 'him', 'her', 'they', 'them', 'ze', 'hir', 'zie', 'zir', 'xe', 'xem', 've', 'ver',
@@ -302,7 +302,7 @@ pronoun = pronoun:(
     ) &(is / _ / EOL / EOF)
     { return { pronoun: pronoun.toLowerCase() } }
 
-common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i)
+common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i / 'our'i)
 
 uppercase_letter = [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ]
 lowercase_letter = [a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįıĳĵķĸĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷÿźżžŉß]

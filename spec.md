@@ -31,7 +31,7 @@ Y is 3
 Put x plus y into result
 ```
 
-**Common variables** consist of one of the keywords `a`, `an`, `the`, `my` or `your` followed by whitespace and a unique variable name, which must contain only lowercase ASCII letters a-z. The keyword is part of the variable name, so `a boy` is a different variable from `the boy`. Common variables are case-insensitive.
+**Common variables** consist of one of the keywords `a`, `an`, `the`, `my`, `your` or `our` followed by whitespace and a unique variable name, which must contain only lowercase ASCII letters a-z. The keyword is part of the variable name, so `a boy` is a different variable from `the boy`. Common variables are case-insensitive.
 
 ```
 My variable is 5

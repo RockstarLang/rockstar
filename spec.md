@@ -464,10 +464,12 @@ A poetic constant literal is a single line consisting of a variable name, the `i
 
 ##### Poetic String Literals
 
-A poetic string literal assignment starts with a variable name, followed by one of the keywords `says` followed by a single space. The rest of the line up to the `\n` terminator is treated as an unquoted string literal.
+A poetic string literal assignment starts with a variable name, followed by one of the keywords `say`, `says` or `said` followed by a single space. The rest of the line up to the `\n` terminator is treated as an unquoted string literal.
 
-* `Peter says Hello San Francisco!\n` will initialise the variable `Peter` with the string literal `"Hello San Francisco!"`
-* `San Francisco says Hello back\n` will initialise the variable `San Francisco` with the string literal `Hello back`
+* `Peter says Hello San Francisco!\n` will initialise the variable `Peter` with the string literal `"Hello San Francisco!"`.
+* `San Francisco says Hello back\n` will initialise the variable `San Francisco` with the string literal `Hello back`.
+* `You say I'm no good for you\n` will initialise the variable `You` with the string literal `I'm no good for you`.
+* `My parents said we'd never make it\n` will initialise the variable `My parents` with the string literal `we'd never make it`.
 
 #### Poetic Number Literals
 

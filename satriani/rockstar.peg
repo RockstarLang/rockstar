@@ -24,7 +24,7 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
 
     // assignment
     'let', 'be', 'put', 'into', 'in', // expression
-    'is', 'are', 'was', 'were', 'says', // poetic
+    'is', 'are', 'was', 'were', 'say', 'says', 'said', // poetic
 
     // operations
     'at', 'rock', 'with', 'roll', 'into', 'push', 'pop', 'like', // arrays
@@ -345,7 +345,7 @@ assignable
 assignment = target:assignable is _* e:(literal / poetic_number)
     { return { assign: { target: target, expression: e} }; }
 
-  / target:assignable _ 'says 'i e:poetic_string
+  / target:assignable _ ('says 'i / 'say 'i / 'said 'i) e:poetic_string
     { return { assign: { target: target, expression: e} }; }
 
   / 'put'i _ e:expression into target:assignable

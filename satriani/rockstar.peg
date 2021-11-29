@@ -105,9 +105,9 @@ function = name:variable _ takes _ args:variable_list EOL body:block EOL
     } } }
 
 
-expression_list_separator = (_? ', and' _ / _?('&' / ',' / "'n'")_?)
+expression_list_separator = (_? ', and'i _ / _?('&' / ',' / "'n'"i)_?)
 
-variable_list_separator   = expression_list_separator / _ 'and' _
+variable_list_separator   = expression_list_separator / _ 'and'i _
 
 variable_list = head:variable variable_list_separator tail:variable_list
 	{ return [head].concat(tail) }
@@ -191,7 +191,7 @@ null 	= ('null'i / 'nothing'i / 'nowhere'i / 'nobody'i / 'gone'i) { return { con
 
 empty_string = ('empty'i / 'silent'i / 'silence'i) { return { constant: "" } }
 
-mysterious = 'mysterious'  { return '__MYSTERIOUS__' }
+mysterious = 'mysterious'i  { return '__MYSTERIOUS__' }
 
 number      = n:$('-'?[0-9]+ ('.' [0-9]+)?) '.'?
                 { return {number: parseFloat(n)} }
@@ -207,11 +207,11 @@ expression = boolean
 
 boolean = nor
 
-nor = lhs:or _ 'nor' _ rhs:nor {
+nor = lhs:or _ 'nor'i _ rhs:nor {
 	return { 'binary' : { op: 'nor', lhs: lhs, rhs: rhs } } }
 	/ or
 
-or = lhs:and _ 'or' _ rhs:or {
+or = lhs:and _ 'or'i _ rhs:or {
 	return { 'binary': {
         op: 'or',
         lhs: lhs,
@@ -220,7 +220,7 @@ or = lhs:and _ 'or' _ rhs:or {
  }
  /and
 
-and = lhs:equality_check _ 'and' _ rhs:and {
+and = lhs:equality_check _ 'and'i _ rhs:and {
 	return { 'binary': {
         op: 'and',
         lhs: lhs,
@@ -246,7 +246,7 @@ equality_check = lhs:not c:eq rhs:equality_check
 	/
     not
 
- not = 'not' _ e:not { return { 'not': { expression: e} } }
+ not = 'not'i _ e:not { return { 'not': { expression: e} } }
  	/ comparison
 
 comparison = lhs:arithmetic c:comparator rhs:comparison
@@ -288,10 +288,10 @@ product     = first:simple_expression rest:((multiply / divide) expression_list)
 
 // Note that operator aliases explicitly include a trailing space,
 // otherwise 'with' is a prefix code for 'without' and confuses the parser.
-add 		= _* ('+' / 'plus ' / 'with ') _*       { return '+' }
-subtract 	= _* ('-' / 'minus ' / 'without ') _*   { return '-' }
-multiply 	= _* ('*' / 'times ' / 'of ') _*        { return '*' }
-divide 		= _* ('/' / 'over ' / 'between ') _*    { return '/' }
+add 		= _* ('+' / 'plus 'i / 'with 'i) _*       { return '+' }
+subtract 	= _* ('-' / 'minus 'i / 'without 'i) _*   { return '-' }
+multiply 	= _* ('*' / 'times 'i / 'of 'i) _*        { return '*' }
+divide 		= _* ('/' / 'over 'i / 'between 'i) _*    { return '/' }
 
 compoundable_operator = add / subtract / multiply / divide
 

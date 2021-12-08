@@ -145,8 +145,8 @@ consequent 	= _ s:statement { return s }
       / EOL s:block { return s }
 
 alternate 	= _ 'else'i _ a:statement { return a }
-      / EOL+ 'else'i _ a:statement { return a }
-      / EOL+ 'else'i EOL a:block { return a }
+      / EOL+ _* 'else'i _ a:statement { return a }
+      / EOL+ _* 'else'i EOL a:block { return a }
             / EOL { return null }
 
 conditional = 'if'i _ e:expression c:consequent? a:alternate?  {

@@ -28,7 +28,7 @@ function test_directory(directory, predicate) {
     });
 }
 
-function execute(source, inputs) {
+function execute(source, inputs, file) {
     let result = "";
     // We pass arrays to util.inspect() here because we're looking for parity
     // with console.log so we can run nodejs on the console to verify 
@@ -36,7 +36,7 @@ function execute(source, inputs) {
     let output = function(s) { result += (Array.isArray(s) ? util.inspect(s) : String(s))  + "\n"; };
     let input = function() { return inputs.shift(); };
     let rockstar = new satriani.Interpreter();
-    rockstar.run(source, input, output);
+    rockstar.run(source, input, output, file);
     return result;
 }
 
@@ -53,7 +53,7 @@ function execute_and_compare_output(file) {
 
     let targetFile = file + '.out';
     let target = fs.existsSync(targetFile) ? fs.readFileSync(targetFile, 'utf8') : '';
-    let actual = execute(source, inputs);
+    let actual = execute(source, inputs, file);
     target = target.replace(/\r/g, '');
     actual = actual.replace(/\r/g, '');
     assert.equal(actual, target);
@@ -63,5 +63,5 @@ function execute_and_compare_error(file) {
     let source = fs.readFileSync(file, 'utf8');
     let targetFile = file + '.err';
     let target = fs.existsSync(targetFile) ? fs.readFileSync(targetFile, 'utf8') : '';
-    assert.throws(function() { execute(source) }, Error, target);
+    assert.throws(function() { execute(source, file) }, Error, target);
 }

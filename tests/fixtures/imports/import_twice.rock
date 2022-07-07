@@ -1,0 +1,15 @@
+Say thy Name
+
+Put 1 into the pi
+Say "the pi before import is " plus the pi
+Featuring library
+Say "the pi after import is " with the pi
+Put 2 into the pi
+Say Foo
+Bar taking 541
+
+Say "the pi before 2nd import is " plus the pi
+Featuring library
+Say "the pi after 2nd import is " plus the pi
+
+Say thy Name

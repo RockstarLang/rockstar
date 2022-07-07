@@ -1,3 +1,7 @@
+const fs = require('fs');
+const path = require('path');
+const parser = require('./satriani.parser.js');
+
 module.exports = {
     Environment: Environment,
     eq: eq
@@ -50,6 +54,10 @@ Environment.prototype = {
     },
 
     run: function (program) {
+        if (!this.exists("thy_name")) {
+            // This script is not an import; it's executed directly.
+            this.assign("thy_name", "", null, 1);
+        }
         let result = evaluate(program, this);
         return (result ? result.value : undefined);
     },
@@ -209,6 +217,33 @@ function evaluate(tree, env) {
                 return enlist(expr, env);
             case "delist":
                 return delist(expr, env);
+            case "import_utils":
+                // Load library and inject requested symbols in the 'local=1' environment
+                let includeEnv = include(expr.library.name, env);
+                for (i = 0; i < expr.utils.length; ++i) {
+                    let util = expr.utils[i];
+                    if (util.name.startsWith("thy_")) {
+                      throw ("System variables won't be imported: '"+util.name+"'");
+                    }
+                    if (includeEnv.exists(util.name)) {
+                        env.assign(util.new_name, includeEnv.vars[util.name], null, 1);
+                    } else {
+                      throw ("The library '"+expr.library.name+"' does not contain the symbol '"+util.name+"'");
+                    }
+                }
+                return;
+            case "import_libraries":
+                for (i = 0; i < expr.libraries.length; ++i) {
+                    let library = expr.libraries[i];
+                    // Load each library and inject all symbols in the 'local=1' environment
+                    let includeEnv = include(library.name, env);
+                    for (const [k, v] of Object.entries(includeEnv.vars)) {
+                        if (!k.startsWith("thy_")) {// Do not retrieve system variables
+                            env.assign(k, v, null, 1);
+                        }
+                    }
+                }
+                return;
             default:
                 if (Array.isArray(tree) && tree.length == 1) return (evaluate(tree[0], env));
                 throw new Error("Sorry - I don't know how to evaluate this: " + JSON.stringify(tree))
@@ -437,4 +472,44 @@ function multiply_string(s, n) {
     let result = Array();
     while (--n >= 0) result.push(s);
     return (result.join(''));
+}
+
+function include(name, env) {
+    let filename = resolve_include_file(name, env);
+    // Parse the file
+    let data = fs.readFileSync(filename, 'utf8');
+    let ast = parser.parse(data);
+    // Interpret the AST
+    let includeEnv = new Environment();
+    includeEnv.input = env.input;
+    includeEnv.output = env.output;
+    includeEnv.assign("thy_location", filename, null, 1);
+    includeEnv.assign("thy_name", name, null, 1);
+    includeEnv.run(ast);// We don't care about a return value.
+    return includeEnv;
+}
+
+function resolve_include_file(name, env) {
+    let currentRockFilename = null;
+    if (env.exists("thy_location")) {
+        // Each file must know its location, to find it's relative rock libraries
+        currentRockFilename = env.vars["thy_location"];
+    } else {
+        // Best effort: including in the current path will probably fail
+        currentRockFilename = path.join(thy_dirname, "anonymous.rock");
+    }
+    let currentRockDirname = path.dirname(currentRockFilename);
+    let files = fs.readdirSync(currentRockDirname);
+    let filename = null;
+    basename_i = name + ".rock";
+    for (i = 0; i < files.length; ++i) {
+        let file = files[i];
+        if (file.toLowerCase() === basename_i) {
+            filename = path.join(currentRockDirname, file);
+            if (filename === currentRockFilename) throw ("The file '"+currentRockFilename+"' is including itself");
+            break;
+        }
+    }
+    if (filename == null) throw ("Include file not found: " + path.join(currentRockDirname, basename_i));
+    return path.resolve(filename);// Absolute path
 }

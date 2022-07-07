@@ -1,0 +1,12 @@
+
+the pi before import is 1
+Importing library.rock
+Imported library.rock
+the pi after import is 3.14159
+42
+In function library.rock Bar(541)
+the pi before 2nd import is 2
+Importing library.rock
+Imported library.rock
+the pi after 2nd import is 3.14159
+

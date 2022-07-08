@@ -76,7 +76,7 @@ line = _* s:statement (EOL+ / EOF) { return s }
     EOL { return null }
 
 whitespace  = [ \t]
-comment     = '(' [^)]* ')'
+comment     = '(' [^)]* ')' / '{' [^\}] '}' / '[' [^\]] ']'
 _           = (whitespace / comment)+
 
 noise 	= (_ / [;,?!&.])
@@ -371,7 +371,7 @@ assignment = target:assignable is _* e:(literal / poetic_number)
   / push _ v:variable (_ 'with'i)? _ e:expression
     { return { enlist: { variable: v, expression: e } }; }
 
-  / push _ v:variable 
+  / push _ v:variable
     { return { enlist: { variable: v } }; }
 
   / e:delist into target:assignable
@@ -451,7 +451,7 @@ mutation
 
 rounding = floor / ceil / math_round
 
-floor 
+floor
   = 'turn'i _ v:variable _ 'down'i
     { return { rounding: { variable: v, direction: 'down'  } }; }
   / 'turn'i _ 'down'i _ v:variable
@@ -463,8 +463,8 @@ ceil
   / 'turn'i _ 'up'i _ v:variable
     { return { rounding: { variable: v, direction: 'up' } }; }
 
-math_round 
+math_round
   = 'turn'i _ v:variable _ ('round'i/'around'i)
-    { return { rounding: { variable: v, direction: 'nearest' } }; }  
+    { return { rounding: { variable: v, direction: 'nearest' } }; }
   / 'turn'i _ ('round'i/'around'i) _ v:variable
     { return { rounding: { variable: v, direction: 'nearest' } }; }

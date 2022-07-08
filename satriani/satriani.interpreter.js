@@ -475,12 +475,18 @@ function multiply_string(s, n) {
 }
 
 function include(name, env) {
+    let includeEnv = new Environment();
+    let has_fs = (typeof fs !== 'undefined' && typeof fs.readdirSync === 'function' && typeof fs.readFileSync === 'function');
+    if (!has_fs) {
+        console.warn("Dependencies not found to perform the import of '"+name+".rock'");
+        // We ignore the missing includes in web-browser mode.
+        return includeEnv;
+    }
     let filename = resolve_include_file(name, env);
     // Parse the file
     let data = fs.readFileSync(filename, 'utf8');
     let ast = parser.parse(data);
     // Interpret the AST
-    let includeEnv = new Environment();
     includeEnv.input = env.input;
     includeEnv.output = env.output;
     includeEnv.assign("thy_location", filename, null, 1);

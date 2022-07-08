@@ -61,7 +61,7 @@ you can use in web pages:
 <html>
 <body>
 
-<script type="text/javascript" src="js/satriani.standalone.js"></script>
+<script type="text/javascript" src="satriani.standalone.js"></script>
 <script type="text/javascript">
     let source = 'Shout "Hello World"';
     let output = console.log;

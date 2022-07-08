@@ -31,7 +31,7 @@ function test_directory(directory, predicate) {
 function execute(source, inputs) {
     let result = "";
     // We pass arrays to util.inspect() here because we're looking for parity
-    // with console.log so we can run nodejs on the console to verify 
+    // with console.log so we can run nodejs on the console to verify
     // test behaviour.
     let output = function(s) { result += (Array.isArray(s) ? util.inspect(s) : String(s))  + "\n"; };
     let input = function() { return inputs.shift(); };

@@ -76,7 +76,7 @@ line = _* s:statement (EOL+ / EOF) { return s }
     EOL { return null }
 
 whitespace  = [ \t]
-comment     = '(' [^)]* ')' / '{' [^\}] '}' / '[' [^\]] ']'
+comment     = '(' [^)]* ')' / '{' [^\}]* '}' / '[' [^\]]* ']'
 _           = (whitespace / comment)+
 
 noise 	= (_ / [;,?!&.])

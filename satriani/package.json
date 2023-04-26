@@ -14,7 +14,7 @@
     "readline-sync": "^1.4.9"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^10.2.0"
   },
   "scripts": {
     "browserify": "yarn pegjs && node node_modules/browserify/bin/cmd.js satriani.js --standalone Satriani -o satriani.standalone.js",

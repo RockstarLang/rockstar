@@ -10,6 +10,8 @@ Rockstar programs are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) files with th
 
 The use of comments in Rockstar programs is strongly discouraged. This is rock'n'roll; it's up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses (). Yes, this means you can't use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments. 
 
+There is, however, a good use for comments - to mark up your code so people know how to play it!  Comment delimiters "{}" and "[]" are now available, as well.  These are used by the [ChordPro](https://www.chordpro.org/) musical notation system.
+
 Rockstar developers are not into that whole [brevity thing](https://www.urbandictionary.com/define.php?term=Brevity%20Thing). 
 
 ``` 

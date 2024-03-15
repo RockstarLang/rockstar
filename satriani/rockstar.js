@@ -1,6 +1,21 @@
 const fs = require('fs');
 const satriani = require('./satriani.js');
 var readlineSync = require('readline-sync');
+var readline = require('readline');
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false
+});
+
+const stdin_buffer = [];
+let use_buffered_stdin = false;
+rl.on('line', (line) => {
+    use_buffered_stdin = true;
+    stdin_buffer.push(line)
+});
+
+read_stdin = _ => (use_buffered_stdin ? stdin_buffer.shift() ?? "" : readlineSync.question());
 
 var sourceFilePath = process.argv[2];
 var watch = process.argv.filter(x => x.toLowerCase() === "--watch").length > 0;
@@ -11,7 +26,7 @@ function execute() {
         if (err) throw err;
         try {
             let tree = rockstar.parse(data);
-            let input = readlineSync.question;
+            let input = read_stdin;
             let output = console.log;
             let result = rockstar.run(tree, input, output)
             console.log(result ? result : "(program returned no output)");

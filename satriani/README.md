@@ -5,9 +5,12 @@ Satriani is a JavaScript interpreter for the Rockstar programming language. Satr
 ## Usage
 
 To run Satriani using nodeJS from the command line:
-```
+```bash
 git clone https://github.com/RockstarLang/rockstar 
 cd rockstar/satriani
+# If yarn is not available:
+#     npm install yarn
+#     node_modules/yarn/bin/yarn install
 yarn install
 yarn pegjs
 node rockstar <program>.rock
@@ -58,7 +61,7 @@ you can use in web pages:
 <html>
 <body>
 
-<script type="text/javascript" src="js/satriani.standalone.js"></script>
+<script type="text/javascript" src="satriani.standalone.js"></script>
 <script type="text/javascript">
     let source = 'Shout "Hello World"';
     let output = console.log;

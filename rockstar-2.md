@@ -55,7 +55,7 @@ A block terminator includes any adjacent whitespace and punctuation characters. 
 Midnight takes your heart and your soul
 While your heart is as high as your soul
 Put your heart without your soul into your heart
-Baby, give back your heart, yeah.
+Ooh, give back your heart, yeah.
 ```
 
 Declaring functions
@@ -78,6 +78,19 @@ My heart is the sum taking 4, 5, 6 and 7
 
 ## The Rockstar Wishlist
 
+### Better equality / comparisons
+
+Truthiness and falsiness are a good idea most of the time. Decrementing a number until it's falsy (zero), chopping characters out of a string until it's falsy (empty string) - they're useful for writing lyrical code.
+
+I propose the `exactly` keyword (alias `really`, `actually`)
+
+```rockstar
+My dreams are nothing
+My heart is silence
+If my heart is my dreams (returns true because 0 ~= "")
+If my heart is really my dreams (returns false because 0 !== "")
+```
+
 ### A native interpreter (rockstar.exe, /bin/rockstar)
 
 For Rockstar 2.0, I'm porting the parser and interpreter to .NET. 
@@ -97,6 +110,19 @@ Syntax highlighting, an AST visualiser... anybody want to build a Rockstar langu
 ### Filesystem and network IO
 
 This one's always been a bit controversial because supporting any kind of filesystem or network access means implementing features that won't work in a web-based interpreter. Some sort of HTTP client might be a nice way to allow Rockstar to connect to external resources without tying it to any kind of filesystem.
+
+Here's one possible syntax that might work:
+
+```
+The file is "input.txt"
+Open the file (note that this replaces the variable: the file name is now a file handle)
+Read the file into the line
+Say "this is another line" into the file
+
+
+```
+
+
 
 ### Modules, packages, imports, libraries... 
 
@@ -160,26 +186,104 @@ I think `now` returning the current UTC timestamp  JS new Date().valueOf())?
 
 There is an [old suggestion on the Rockstar repo from jimbobbennett](https://github.com/RockstarLang/rockstar/issues/68):
 
->For `if` blocks, Rockstar should support Meatloaf syntax:
->
->```
->I would do <function> for <condition>
->But I won't do <another function>
->```
->
->This syntax would evaluate the `<condition>`, and if it is `true`, then call `<function>`, else it will call `<another function>`.
+> For `if` blocks, Rockstar should support Meatloaf syntax:
+> `I would do <function> for <condition> But I won't do <another function>`
+ This syntax would evaluate the `<condition>`, and if it is `true`, then call `<function>`, else it will call `<another function>`.
 
 I have no plans to implement this one incredibly specific scenario.
 
 But... wouldn't it be cool if some combination of structures and statements meant this was valid Rockstar?
+### Bill & Ted
+
+We should parse expression like:
+
+```rockstar
+That is totally non non non non non NON heinous
+```
 
 ### Real songs as Rockstar programs ("Rock You Like A Hurricane")
 
 I think that Scorpions' "[Rock You Like A Hurricane](https://www.google.com/search?q=scorpions+rock+you+like+a+hurricane+lyric)" is the best candidate for an actual rock song which will cleanly compile in Rockstar, and I'd like to see if I can implement new language features in such a way that the whole song is syntactically valid.
-
 ## Timeline
 
 The [Copenhagen Developers Festival](https://cphdevfest.com/) is happening in August. It's a great event -- a mashup of a software developer conference and a music festival -- and sounds like a great excuse to throw a Rockstar 2.0 launch party.
 
 Time to get to work.
+
+### Developer Diary
+
+Keywords with spaces in them.
+
+OK, this is going to cause all kinds of fun.
+
+Here are two expressions:
+
+```
+x is greater than y
+x is y is greater than z
+```
+
+The first parses to:
+
+```
+binary:
+	op: greater_than
+	lhs: x
+	rhs: y
+```
+
+The second to:
+
+```
+binary:
+	op: equality
+	lhs: x
+	rhs: binary
+		op: greater_than
+		lhs: y
+		rhs: z
+```
+
+## Types vs Expressions
+
+#### Option 1: Number : Type : Expression
+
+Pros:
+* No repetition - there is only one thing called Number
+* Parser captures literals as actual types
+
+Cons:
+
+* Results of evaluations will have empty line/column/lexeme (is this bad?)
+	* what if we replace this with a Source property that tells us where it came from?
+	* If Source is null - it didn't come from source code
+#### Option 2: Number Type AND Number Expression
+
+Pros: 
+
+* Type doesn't contain any unnecessary metadata
+* Eval() returns a Type, not an Expression
+	* so Eval() will ALWAYS result in a Number/String/Boolean/Symbol/Function/Reference?
+	* ...but this still works even if Type : Expression
+
+
+
+
+x is 5
+y is 7
+the total is x with y
+
+# Breaking changes
+Stuff that works differently in rockstar 2.0
+
+* Boolean operators now behave like JavaScript: `true && x` will return x, `false || foo` will return foo
+* 
+
+CONDITIONALS
+
+"foo" = !"bar"    
+"foo" != "bar" => true
+
+a = !b
+a != b
 

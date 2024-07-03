@@ -34,22 +34,37 @@ Y is X
 Z is X with Y
 ```
 
+Poetic literals will use the ellipsis `...` (or the Unicode equivalent U+2026 `…`) as a decimal separator:
+
+```rockstar
+My dreams were like ice... a life unfulfilled, wakin' everybody up, taking booze and pills.
+```
+
 ### Statements and block syntax.
 
 In Rockstar 1, statements ended with a newline, and the only way to terminate a block was a blank line.
 
-In Rockstar 2, statements end with a new line, **or a supported punctuation mark `,` `:` `;` `?` `!`**
+In Rockstar 2, a statement ends with a **new line** or a **terminal punctuation mark** `.`, `!`, `?`. (These are punctuation marks which would end a sentence in written English.) 
+
+#### Line continuations
+
+If the last non-whitespace character on a line is a **continuation punctuation mark** `-`, `,`, `;`, `.`, the subsequent newline is ignored. This allows Rockstar statements to span multiple lines:
+
+```
+My dreams were like ice... a life unfulfilled, 
+wakin' everybody up, taking booze and pills.
+```
 
 ```rockstar
 My pain is like a diamond.
-Until my pain is nothing, shout it, yeah.
+Until my pain is nothing, shout it, tear it down, yeah.
 ```
 
 In Rockstar 2, the block terminators `whoa`, `oh`, `yeah`  and `baby` indicate the end of a code block. 
 
 To end multiple nested blocks, you can use `ooh` (ends two blocks), `oooh` (three blocks), `ooooh` (ends four blocks), `yeeah`, `yeeeah`, `baaby`, `baaaaby`, `whooa`, `whoooa`. *(how easy is this to implement? I have literally no idea.)*
 
-A block terminator includes any adjacent whitespace and punctuation characters. `, yeah!` is equivalent to `yeah`
+A block terminator includes **all adjacent whitespace and punctuation characters**. `, yeah!` is equivalent to `yeah`
 
 ```rockstar
 Midnight takes your heart and your soul

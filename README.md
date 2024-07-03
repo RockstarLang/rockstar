@@ -1,4 +1,14 @@
-# Rockstar
+```
+ _____     _____    ______     ___  ______________ ____  ______   
+|   _  \  /  _  \  /  ___/ /| /  / /  ______    _//    ||   _  \ 
+|  |_)  )/  / \  \/  /    / |/  / (  (___   |  | /     ||  |_)  )
+|      /(  (   )    (     |     \  \____  \ |  |/  /|  ||      /
+|  |\  \ \  \_/  /\  \___ |  |\  \ _____)  )| //  / |  ||  |\  \ 
+|__| \  \ \_____/  \_____||__| \__\\______/ |//__/  |__||__| \__\
+      \  | ------------------------------------------------------
+       \ | h t t p s : // c o d e w i t h r o c k s t a r . c o m
+        \| ------------------------------------------------------
+```        
 
 Rockstar is a dynamically typed computer programming language, designed for creating programs that are also song lyrics. Rockstar is heavily influenced by the lyrical conventions of 1980s hard rock and power ballads.
 

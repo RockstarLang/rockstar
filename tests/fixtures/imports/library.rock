@@ -1,0 +1,16 @@
+Say "Importing library.rock"
+
+Put 42 into Foo.
+
+Bar takes X
+Say "In function library.rock Bar(" plus X plus ")"
+(end function)
+
+Put 3.14159 into the pi,
+
+Put 2.71828 into the e
+
+If thy Name is nobody
+Say thy name!
+
+Say "Imported library.rock"

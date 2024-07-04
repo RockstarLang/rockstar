@@ -10,6 +10,8 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
   const keywords = new Set([
     // common variable prefixes
     'a', 'an', 'the', 'my', 'your', 'our',
+    // system variable prefix
+    'thy',
 
     // pronouns
     'it', 'he', 'she', 'him', 'her', 'they', 'them', 'ze', 'hir', 'zie', 'zir', 'xe', 'xem', 've', 'ver',
@@ -62,6 +64,15 @@ After updating, run pegjs -o rockstar-parser.js rockstar.peg
     'takes', 'wants',
     'give', 'return', 'send', 'back',
     'taking',
+
+    // imports
+    'give', 'a', 'hand', 'for',
+    'featuring',
+    'welcome', 'to',
+    'quoting',
+    'contains', 'a', 'sample', 'of',
+    'as', 'aka', 'by',
+    'from', 'courtesy', 'of',
   ])
 
   function isKeyword(string) {
@@ -85,7 +96,7 @@ EOF = !.
 
 ignore_rest_of_line = (_[^\n]*)?
 
-statement   = _* s:(break / continue / function / function_call
+statement   = _* s:(break / continue / function / function_call / import
 			/ function_return / loop / conditional / operation / expression) { return s }
 
 break = 'break'i ignore_rest_of_line {
@@ -304,7 +315,7 @@ pronoun = pronoun:(
     ) &(is / _ / EOL / EOF)
     { return { pronoun: pronoun.toLowerCase() } }
 
-common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i / 'our'i)
+common_prefix = ( 'an'i / 'a'i / 'the'i / 'my'i / 'your'i / 'our'i / 'thy'i )
 
 uppercase_letter = [A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮİĲĴĶĸĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŸŹŻŽ]
 lowercase_letter = [a-zàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįıĳĵķĸĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷÿźżžŉß]
@@ -470,3 +481,40 @@ math_round
     { return { rounding: { variable: v, direction: 'nearest' } }; }
   / 'turn'i _ ('round'i/'around'i) _ v:variable
     { return { rounding: { variable: v, direction: 'nearest' } }; }
+
+
+import_aliases = 'Give a hand for'i
+               / 'Featuring'i
+               / 'Welcome to'i
+               / 'Quoting'i
+               / 'Contains a sample of'i
+
+import_as = 'as'i
+          / 'aka'i
+          / 'by'i
+
+import_from = 'from'i
+            / 'of'i
+            / 'courtesy of'i
+
+import
+  = import_aliases _ ul:util_list _ import_from _ f:library
+    { return { import_utils : {utils : ul, library : f} } }
+  / import_aliases _ fl:library_list
+    { return { import_libraries : {libraries : fl} } }
+
+util
+  = u:variable _ import_as _ v:variable
+    { return { name : u, new_name : v } }
+  / u:variable
+    { return { name : u, new_name : u } }
+
+util_list = head:util variable_list_separator tail:util_list
+            { return [head].concat(tail) }
+          / arg:util { return [arg] }
+
+library_list = head:library variable_list_separator tail:library_list
+               { return [head].concat(tail) }
+             / arg:library { return [arg] }
+
+library = v:variable { return { name : v } }

@@ -13,7 +13,7 @@ function execute() {
             let tree = rockstar.parse(data);
             let input = readlineSync.question;
             let output = console.log;
-            let result = rockstar.run(tree, input, output)
+            let result = rockstar.run(tree, input, output, sourceFilePath);
             console.log(result ? result : "(program returned no output)");
         } catch (e) {
             if (e.location && e.location.start) {

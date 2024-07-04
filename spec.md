@@ -43,6 +43,11 @@ Put my variable plus your variable into the total
 Shout the total
 ```
 
+**System variables** are like *common variables* but with the special prefix `thy`. System variables won't be imported by the `import` statement.
+
+* `thy Name` is `nobody` (ie. empty string) when the script is directly executed; while it's the name of the current file, in lower case and without the .rock file extension, when it's imported.
+* `thy Location` is the absolute file name of the current script. It's used internally to find other imported files.
+
 **Proper variables** are multi-word proper nouns - words that aren't language keywords, each starting with an uppercase letter, separated by spaces. (Single-word variables are always simple variables.) Whilst some developers may use this feature to create variables with names like `Customer ID`, `Tax Rate` or `Distance In KM`, we recommend you favour idiomatic variable names such as `Doctor Feelgood`, `Mister Crowley`,  `Tom Sawyer`, and `Billie Jean`. 
 
 (Although not strictly idiomatic, `Eleanor Rigby`, `Peggy Sue`, `Black Betty`, and `Johnny B Goode` would also all be valid variable names in Rockstar.)
@@ -655,3 +660,50 @@ Arguments may be any valid expression, including literals, arithmetic expression
 * `Multiply taking 3, 5` is an expression returning (presumably) 15
 * `Search taking "hands", "lay your hands on me"`
 * `Put Multiply taking 3, 5, and 9 into Large` will set Large to `3 * 5 * 9` **NOT** `(3 * 5) && 9`.
+
+### Imports
+
+You can import a rock file in a line statement.
+Importing a file will execute its content and populate the local environment with all its symbols (variables, functions).
+**This will override any previously defined symbols with the same names in the same scope.**
+
+Use **proper variables** to insert underscores `_` in the file name.
+The `.rock` file extension is implicitly added for the look-up, which is case-insensitive.
+
+Multiple libraries are separated with one of the following: `,` `&` `, and` `'n'`.
+
+```
+Give a hand for Rockstar Math! (import rockstart_math.rock)
+Featuring Rockstar Math & FizzBuzz! (import rockstar_math.rock, FizzBuzz.rock)
+Welcome to Rockstar Math! (import rockstar_math.rock)
+Quoting Rockstar Math! (import rockstar_math.rock)
+Contains a sample of Rockstar Math. (import rockstar_math.rock)
+```
+
+You can also import only a list of symbols to avoid polluting the local environment.
+
+Multiple symbols are separated with one of the following: `,` `&` `, and` `'n'`.
+
+```
+Featuring Exp from Rockstar Math! (from rockstar_math.rock import Exp)
+Welcome to Gcd & Mod of Rockstar Math! (from rockstar_math.rock import Gcd, Mod)
+Quoting Power of Rockstar Math! (from rockstar_math.rock import Power)
+Contains a sample of Sinh, Cosh 'n' Tanh courtesy of Rockstar Math. (from rockstar_math.rock import Sinh, Cosh, Tanh)
+```
+
+You can also give a new name to a symbol to avoid overriding a previously defined symbol.
+
+```
+Featuring Square_Root as sqrt from Rockstar Math! (from rockstar_math.rock import Square_Root as sqrt)
+Welcome to the_e aka e and the_pi aka pi of Rockstar Math! (from rockstar_math.rock import the_e as e, the_pi as pi)
+Quoting Absolute_Value for abs of Rockstar Math! (from rockstar_math.rock import Absolute_Value as abs)
+Contains a sample of Power by pow, and PowerIntegerExponent by powInt courtesy of Rockstar Math. (from rockstar_math.rock import Power as pow, PowerIntegerExponent as powInt)
+```
+
+`Featuring [ SYMBOL [ aka NAME ] from ] LIBRARY`
+
+| Keyword      | Aliases                                                            |
+| ------------ | ------------------------------------------------------------------ |
+| Featuring    | `Welcome to`, `Quoting`, `Give a hand for`, `Contains a sample of` |
+| aka          | `as`, `by`                                                         |
+| from         | `of`, `courtesy of`                                                |

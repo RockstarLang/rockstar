@@ -57,7 +57,7 @@ jobs:
       - name: Build codewithrockstar.com site
         run: |
           cd codewithrockstar.com
-          ls -l /home/runner/work/rockstar2/rockstar2/codewithrockstar.com/examples/01-getting-started/hello-world.rock
+          ls -l /home/runner/work/rockstar/rockstar/codewithrockstar.com/examples/01-getting-started/hello-world.rock
           bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production

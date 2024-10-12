@@ -32,6 +32,7 @@ jobs:
         with:
           token: ${{ github.token }}
           branch: main
+          noVersionBumpBehavior: patch
       - name: "Display build version"
         run: echo "tag ${{ steps.semver.outputs.next }}"
       - name: Patch VERSION constant inside Starship/Rockstar.Engine/RockstarEnvironment.cs

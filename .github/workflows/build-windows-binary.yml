@@ -8,20 +8,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Get Next Version
-        id: semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ github.token }}
-          branch: main
-      - name: "Display build version"
-        run: echo "tag ${{ steps.semver.outputs.next }}"
       - name: Set up .NET 8 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-#      - name: Patch VERSION constant inside Starship/Rockstar/Program.cs
-#        run: (Get-content Starship/Rockstar/Program.cs) | Foreach-Object {$_ -replace "__VERSION__", "${{ steps.semver.outputs.next }}"} | Set-Content Starship/Rockstar/Program.cs
       - name: dotnet publish Windows x64 binary
         run: dotnet publish Starship/Rockstar -o rockstar-windows-x64-binary -c Release
       - name: Test Windows x64 binary

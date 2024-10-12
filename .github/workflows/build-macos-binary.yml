@@ -12,16 +12,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-      - name: Get Next Version
-        id: semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ github.token }}
-          branch: main
-      - name: "Display build version"
-        run: echo "tag ${{ steps.semver.outputs.next }}"
-#      - name: Patch VERSION constant inside Starship/Rockstar/Program.cs
-#        run: sed -i "" 's/__VERSION__/${{ steps.semver.outputs.next }}/g' Starship/Rockstar/Program.cs
       - name: dotnet publish macos x64 binary
         run: dotnet publish Starship/Rockstar -o rockstar-macos-x64-binary -r osx-x64 -c Release
       - name: dotnet publish macos ARM64 binary

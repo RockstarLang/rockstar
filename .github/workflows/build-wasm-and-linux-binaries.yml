@@ -1,0 +1,79 @@
+name: build-wasm-and-linux-binaries
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'Starship/**'
+      - '.github/workflows/build-wasm-and-linux-binaries.yml'
+      - '.github/workflows/build-windows-binary.yml'
+      - '.github/workflows/build-macos-binary.yml'
+  workflow_dispatch:
+  workflow_call:
+concurrency:
+  group: "build-wasm-and-linux-binaries"
+  cancel-in-progress: true
+jobs:
+  build-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+      - name: Install .NET WASM workloads
+        working-directory: ./Starship
+        run: dotnet workload install wasm-tools
+      - name: Get Next Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: main
+      - name: "Display build version"
+        run: echo "tag ${{ steps.semver.outputs.next }}"
+      - name: Patch VERSION constant inside Starship/Rockstar.Engine/RockstarEnvironment.cs
+        run: sed -i 's/VERSION = "[^"]*";/VERSION = "${{ steps.semver.outputs.next }}";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
+      - name: Build Rockstar
+        run: dotnet build Starship -c Release
+      - name: Test Rockstar
+        run: dotnet test Starship -c Release
+      # - name: Update CHANGELOG
+      #   id: changelog
+      #   uses: requarks/changelog-action@v1
+      #   with:
+      #     token: ${{ github.token }}
+      #     tag: ${{ github.ref_name }}
+      - name: Commit changes with new version
+        run: |
+          git config --global user.name 'workflows/build-wasm-and-linux-binaries.yml'
+          git config --global user.email 'dylanbeattie@users.noreply.github.com'
+          git commit -am "[skip actions] set VERSION = ${{ steps.semver.outputs.next }} in RockstarEnvironment.cs"
+          git push
+      - name: dotnet publish WASM engine
+        run: dotnet publish Starship/Rockstar.Wasm -o rockstar-wasm-binary -c Release
+      - name: dotnet publish Linux binary
+        run: dotnet publish Starship/Rockstar -o rockstar-linux-x64-binary -c Release
+      - uses: actions/cache/save@v4
+        name: save rockstar-wasm-binary to cache
+        id: save-rockstar-wasm-binary-to-cache
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-wasm-binary
+          key: rockstar-wasm-binary-${{ github.run_id }}
+      - uses: actions/cache/save@v4
+        name: save rockstar-linux-x64-binary to cache
+        id: save-rockstar-linux-x64-binary-to-cache
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-linux-x64-binary
+          key: rockstar-linux-x64-binary-${{ github.run_id }}
+  rockstar-macos-binary:
+    needs: build-engine
+    uses: ./.github/workflows/build-macos-binary.yml
+  rockstar-windows-binary:
+    needs: build-engine
+    uses: ./.github/workflows/build-windows-binary.yml
+

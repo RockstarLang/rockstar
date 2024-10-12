@@ -1,0 +1,21 @@
+print 2 / 2 (prints: 1)
+print 2 / "rock" (prints: 0)
+print 2 / true (prints: 2)
+
+print "rock" / 2 (prints: ro)
+print "12345" / 5 (prints: 1)
+print "haystack" / -1 (prints: kcatsyah)
+print "helloworld" / -2 (prints: dlrow)
+print "haystack haystack needle haystack" / "haystack" (prints: 3)
+print "haystack haystack needle haystack" / "needle" (prints: 1)
+print "haystack haystack needle haystack" / "banana" (prints: 0)
+
+print true / true (prints: 1)
+print true / 1 (prints: 1)
+print true / "hello" (prints: 0)
+print true / "e" (prints: 1)
+print false / "alse" (prints: 1)
+
+print null / true (prints: 0)
+print null / "hello" (prints: 0)
+print null / 1 (prints: 0)

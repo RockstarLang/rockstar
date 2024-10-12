@@ -1,0 +1,15 @@
+Rock ABBA with "Agnetha", "Anni-Frid", "Benny" 'n' "Björn"
+Rock the guys with "Björn" & "Benny"
+
+Shout ABBA without the guys (prints: [ "Agnetha", "Anni-Frid" ])
+Put ABBA without "Benny" with "Lemmy" into Abbahead
+Shout ABBA (prints: [ "Agnetha", "Anni-Frid", "Benny", "Björn" ])
+Shout Abbahead (prints: [ "Agnetha", "Anni-Frid", "Björn", "Lemmy" ])
+
+Let Rush at "guitars" be "Alex"
+Let Rush at "drums" be "Neil"
+Let Rush at "bass" be "Geddy"
+Shout Rush (prints: [ "guitars": "Alex"; "drums": "Neil"; "bass": "Geddy" ])
+
+Let Testament at "guitars" be "Alex"
+Shout Rush without Testament (prints: [ "drums": "Neil"; "bass": "Geddy" ])

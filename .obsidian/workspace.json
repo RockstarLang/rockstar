@@ -1,21 +1,21 @@
 {
   "main": {
-    "id": "0ccb4f25a00d801e",
+    "id": "daec523910f75076",
     "type": "split",
     "children": [
       {
-        "id": "b446a303a064afa7",
+        "id": "8defaba5a2a5b669",
         "type": "tabs",
         "children": [
           {
-            "id": "2628a240602d50df",
+            "id": "005da2a05b4fbf96",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "rockstar-2.md",
+                "file": "codewithrockstar.com/docs/02-types-and-values.md",
                 "mode": "source",
-                "source": false
+                "source": true
               }
             }
           }
@@ -25,15 +25,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "f690222422428971",
+    "id": "f268972251ee4b9e",
     "type": "split",
     "children": [
       {
-        "id": "0d09fb9a066e2e1b",
+        "id": "c8b707c9a0236288",
         "type": "tabs",
         "children": [
           {
-            "id": "d63958cb6777fd12",
+            "id": "efc3d0b2f9e18fac",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -43,7 +43,7 @@
             }
           },
           {
-            "id": "edfaaca8776d8fca",
+            "id": "aa578ce3457c6a61",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -58,7 +58,7 @@
             }
           },
           {
-            "id": "42df576a0b3c3273",
+            "id": "420b590388970899",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -72,20 +72,20 @@
     "width": 300
   },
   "right": {
-    "id": "d9851b42a3243e36",
+    "id": "9bff8b7aebd31401",
     "type": "split",
     "children": [
       {
-        "id": "8bcd16d8bb3a85be",
+        "id": "15ba46ad93ef4686",
         "type": "tabs",
         "children": [
           {
-            "id": "831e26003812585b",
+            "id": "9084c39fe202a25b",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "rockstar-2.md",
+                "file": "codewithrockstar.com/docs/02-types-and-values.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,19 +97,19 @@
             }
           },
           {
-            "id": "947fceb37d61fad5",
+            "id": "142902d61e1e985a",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "rockstar-2.md",
+                "file": "codewithrockstar.com/docs/02-types-and-values.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
             }
           },
           {
-            "id": "d9df56ca7c325aba",
+            "id": "1ec3213e536aed8b",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -120,12 +120,12 @@
             }
           },
           {
-            "id": "6aacb9c7afabddf1",
+            "id": "8c35ebdb306d03ea",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "rockstar-2.md"
+                "file": "codewithrockstar.com/docs/02-types-and-values.md"
               }
             }
           }
@@ -146,6 +146,53 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2628a240602d50df",
-  "lastOpenFiles": []
+  "active": "efc3d0b2f9e18fac",
+  "lastOpenFiles": [
+    "Starship/Rockstar.Engine/obj/Debug/net8.0/gw1hreob.tjq~",
+    "Starship/Rockstar.Test/obj/Debug/net8.0/nCrunchTemp_5bc5a958-8d02-4d54-9d5b-e9660cd70e4c.csproj.AssemblyReference.cache",
+    "Starship/Rockstar/obj/Debug/net8.0/nCrunchTemp_3c9525d6-b14c-40f6-be90-33819e483ee6.csproj.AssemblyReference.cache",
+    "Starship/Rockstar.Profiler/obj/Debug/net8.0/nCrunchTemp_d678d38e-5041-4245-a2a7-eb0a118524cb.csproj.AssemblyReference.cache",
+    "Starship/Rockstar.Engine/obj/Debug/net8.0/nCrunchTemp_8ca7425a-775c-4bc8-a44e-7cb90069cdab.csproj.AssemblyReference.cache",
+    "Starship/Rockstar.Test/obj/Debug/net8.0/nCrunchTemp_5bc5a958-8d02-4d54-9d5b-e9660cd70e4c.GlobalUsings.g.cs",
+    "Starship/Rockstar/obj/Debug/net8.0/nCrunchTemp_3c9525d6-b14c-40f6-be90-33819e483ee6.GlobalUsings.g.cs",
+    "Starship/Rockstar.Profiler/obj/Debug/net8.0/nCrunchTemp_d678d38e-5041-4245-a2a7-eb0a118524cb.GlobalUsings.g.cs",
+    "Starship/Rockstar.Engine/obj/Debug/net8.0/nCrunchTemp_8ca7425a-775c-4bc8-a44e-7cb90069cdab.GlobalUsings.g.cs",
+    "Starship/Rockstar.Test/obj/Debug/net8.0/nCrunchTemp_5bc5a958-8d02-4d54-9d5b-e9660cd70e4c.assets.cache",
+    "Starship/Rockstar/obj/Debug/net8.0/nCrunchTemp_3c9525d6-b14c-40f6-be90-33819e483ee6.assets.cache",
+    "codewithrockstar.com/docs/01-getting-started.md",
+    "codewithrockstar.com/docs/02-types-and-values.md",
+    "codewithrockstar.com/docs/09-arrays.md",
+    "codewithrockstar.com/docs/06-expressions.md",
+    "codewithrockstar.com/docs/99-rockstar-acid-test.md",
+    "codewithrockstar.com/docs/07-flow-control.md",
+    "codewithrockstar.com/links.md",
+    "codewithrockstar.com/news.md",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/red-on-press.webp",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/red-basic-fit.webp",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/red-logo.webp",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/blue-tailored.webp",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/blue-logo.webp",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/blue-kids-fit.webp",
+    "codewithrockstar.com/assets/img/teemill/480p/red-on-press.webp",
+    "codewithrockstar.com/assets/img/teemill/480p/red-logo.webp",
+    "codewithrockstar.com/assets/img/teemill/480p/red-basic-fit.webp",
+    "codewithrockstar.com/assets/img/teemill/480p/blue-tailored.webp",
+    "cm-lang-rockstar/node_modules/style-mod/src/README.md",
+    "cm-lang-rockstar/node_modules/@bcoe/v8-coverage/dist/lib/README.md",
+    "cm-lang-rockstar/node_modules/@bcoe/v8-coverage/dist/lib/LICENSE.md",
+    "cm-lang-rockstar/node_modules/@bcoe/v8-coverage/dist/lib/CHANGELOG.md",
+    "codewithrockstar.com/merch.md",
+    "cm-lang-rockstar/node_modules/@sinonjs/commons/lib/prototypes/README.md",
+    "cm-lang-rockstar/node_modules/@rollup/plugin-node-resolve/README.md",
+    "cm-lang-rockstar/node_modules/@codemirror/lint/README.md",
+    "cm-lang-rockstar/node_modules/deepmerge/changelog.md",
+    "cm-lang-rockstar/node_modules/terser/node_modules/source-map-support/README.md",
+    "cm-lang-rockstar/node_modules/tslib/README.md",
+    "cm-lang-rockstar/node_modules/imurmurhash/README.md",
+    "codewithrockstar.com/tutorial.md",
+    "codewithrockstar.com/docs/04-arithmetic.md",
+    "codewithrockstar.com/code-of-conduct.md",
+    "cm-lang-rockstar/README.md",
+    "codewithrockstar.com/index.md"
+  ]
 }

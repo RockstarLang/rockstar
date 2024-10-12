@@ -1,0 +1,16 @@
+Print not true (prints: false)
+Print not false (prints: true)
+
+Print non-true (prints: false)
+Print non-non-non-non-non true (prints: false)
+
+Print not 0 (prints: true)
+Print not 1 (prints: false)
+Print not "" (prints: true)
+Print not "false" (prints: false)
+
+Heinous is wrong!
+Say Heinous (prints: false)
+Bill is non heinous! Say Bill (prints: true)
+Bill is non-non heinous! Say Bill (prints: false)
+Bill is non-non-NON heinous! Say Bill (prints: true)

@@ -1,0 +1,11 @@
+Sum takes x, y
+Give back x + y
+End
+
+Print sum taking 5, 6
+
+Product takes x, y giving x * y
+
+Foo is 5
+Bar is 6
+Print product taking foo, bar

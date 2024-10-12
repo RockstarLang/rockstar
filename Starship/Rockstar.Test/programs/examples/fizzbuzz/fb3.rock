@@ -1,0 +1,26 @@
+Midnight takes your heart and your soul
+While your heart is as high as your soul
+Put your heart without your soul into your heart, baby
+Give back your heart, yeah
+
+Desire is a lovestruck ladykiller
+My world is nothing
+Fire is ice
+Fate is water
+
+Until my world is desire
+Build my world up
+if midnight taking my world, fire is 0 and midnight taking my world, fate is 0
+print "FizzBuzz"
+continue
+end (if)
+if midnight taking my world, fate is 0
+print "Buzz"
+continue
+end (if)
+if midnight taking my world, fire is 0
+print "Fizz"
+continue
+end (if)
+print my world
+end (while)

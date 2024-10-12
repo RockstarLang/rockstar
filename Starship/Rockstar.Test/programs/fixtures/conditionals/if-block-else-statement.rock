@@ -1,0 +1,5 @@
+if 0  say 1 else
+say 2 (prints: 2)
+say 3 (prints: 3)
+say 4 (prints: 4)
+end

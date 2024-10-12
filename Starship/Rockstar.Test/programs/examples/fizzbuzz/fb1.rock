@@ -1,0 +1,28 @@
+modulus takes number, divisor
+while number >= divisor
+number = number - divisor
+end (while)
+return number
+end (function)
+
+let limit = 100
+let counter = 0
+let fizz = 3
+let buzz = 5
+
+until counter = limit
+counter = counter + 1
+if modulus taking counter, fizz * buzz is 0
+print "FizzBuzz"
+continue
+end (if)
+if modulus taking counter, buzz is 0
+print "Buzz"
+continue
+end (if)
+if modulus taking counter, fizz is 0
+print "Fizz"
+continue
+end (if)
+print counter
+end (while)

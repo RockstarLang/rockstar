@@ -1,0 +1,11 @@
+Sum takes x and y
+Give back x with y
+
+Print sum taking 3, 4 (prints: 7)
+Print sum taking "hello", "world" (prints: helloworld)
+
+Success takes blood, sweat & rhythm'n'blues
+Say blood with sweat, rhythm & blues, baby
+
+Success taking 1, 2, 3 & 4 (prints: 10)
+Success taking "r", "o", "c", "k" (prints: rock)

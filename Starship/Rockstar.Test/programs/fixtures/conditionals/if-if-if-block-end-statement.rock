@@ -1,0 +1,10 @@
+(prints: 3\n4)
+if 1
+	if 2
+		if 3
+			say 3
+		end
+	end
+end
+
+say 4

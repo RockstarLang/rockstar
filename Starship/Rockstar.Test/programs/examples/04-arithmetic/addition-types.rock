@@ -1,0 +1,19 @@
+print 1 + 2 (prints: 3)
+print 1 + "2" (prints: 12)
+print 1 + true (prints: 2)
+print 1 + false (prints: 1)
+
+print "2" + 1 (prints: 21)
+print "hello" + "world" (prints: helloworld)
+print "hello" + true (prints: hellotrue)
+print "hello" + null (prints: hellonull)
+
+print true + true (prints: 2)
+print true + 1 (prints: 2)
+print true + "hello" (prints: truehello)
+print true + null (prints: 1)
+
+print null + null (prints: 0)
+print null + true (prints: 1)
+print null + "hello" (prints: nullhello)
+print null + 1 (prints: 1)

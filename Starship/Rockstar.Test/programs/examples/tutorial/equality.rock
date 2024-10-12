@@ -1,0 +1,7 @@
+X is 1
+If x = 1 print "Axl"
+If X is 1 print "Slash"
+If X != 2 print "Izzy"
+If X is not 2 print "Dizzy"
+If X isn't 2 print "Duff"
+If X ain't nothing print "Matt"

@@ -1,0 +1,32 @@
+@import "./color_schemes/dark";
+
+$body-background-color: #000;
+$table-background-color: #000;
+$sidebar-color: #000;
+$link-color: #b9f;
+$code-background-color: #213;
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+$body-font-family: system-ui, -apple-system, blinkmacsystemfont, "Segoe UI",  roboto, "Helvetica Neue", arial, sans-serif, "Segoe UI Emoji" !default;
+$mono-font-family: "SFMono-Regular", menlo, consolas, monospace !default;
+$root-font-size: 16px !default; // DEPRECATED: previously base font-size for rems
+$body-line-height: 1.4 !default;
+$content-line-height: 1.6 !default;
+$body-heading-line-height: 1.25 !default;
+
+/*
+$body-heading-color: $grey-lt-000;
+$body-text-color: $grey-lt-300;
+
+$nav-child-link-color: $grey-dk-000;
+$base-button-color: $grey-dk-250;
+$btn-primary-color: $blue-200;
+$code-background-color: #31343f;
+$code-linenumber-color: #dee2f7;
+$feedback-color: darken($sidebar-color, 3%);
+$table-background-color: $grey-dk-250;
+$search-background-color: $grey-dk-250;
+$search-result-preview-color: $grey-dk-000;
+$border-color: $grey-dk-200;
+*/

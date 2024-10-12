@@ -1,0 +1,5 @@
+say true is null (prints: false)
+say false is null (prints: true)
+say null is null (prints: true)
+say 0 is null (prints: true)
+say 1 is null (prints: false)

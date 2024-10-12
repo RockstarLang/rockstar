@@ -1,0 +1,7 @@
+The price is 5. The tax is 4. The discount is 3. The quantity is 2.
+The distance is 20. The time is 10. 
+
+Let the total be the price plus the tax. Print the total.
+Let the total be the price minus the discount. Print the total.
+Let the cost be the quantity times the price. Print the cost.
+Let the speed be the distance divided by the time. Print the speed.

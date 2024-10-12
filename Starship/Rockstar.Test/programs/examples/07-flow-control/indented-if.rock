@@ -1,0 +1,21 @@
+x is 6
+if x > 1
+	if x > 2
+		if x > 3
+			if x > 4
+				if x > 5
+					write "six,"
+					end
+				write "five,"
+				end
+			write "four,"
+			end
+		write "three,"
+		end
+	write "two,"
+otherwise
+	write "one,"
+end
+write "done!"
+
+(writes: six,five,four,three,two,done!)

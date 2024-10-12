@@ -1,0 +1,11 @@
+title: Rockstar
+description: Tommy used to work on the docs.
+theme: just-the-docs
+
+url: https://beta.codewithrockstar.com
+
+color_scheme: darkstar
+
+include:
+ - _framework
+

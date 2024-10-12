@@ -1,0 +1,10 @@
+Sum takes X and Y giving X with Y
+Product takes X and Y giving X times Y
+
+Shout sum taking product taking 2, 15, product taking 3, 4 (prints: 42)
+Shout sum taking 600 & product taking sum taking 2, 4, sum taking 5, 6 (prints: 666)
+
+Swap takes X and Y giving Y with X
+Bolt takes X and Y giving X with "⚡" & Y
+
+Shout bolt taking swap taking "C", "A", swap taking "C", "D" (prints: AC⚡DC)

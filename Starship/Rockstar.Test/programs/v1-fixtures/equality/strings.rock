@@ -1,0 +1,28 @@
+(non-empty strings are true)
+say "true" is true (prints: true)
+say "yes" is true (prints: true)
+say "OK" is true (prints: true)
+say true is "true" (prints: true)
+say true is "RIGht" (prints: true)
+say "yes" is true (prints: true)
+say "OK" is true (prints: true)
+
+say false is "false" (prints: false)
+say false is "WROng" (prints: false)
+say "lies" is false (prints: false)
+
+say true is "hello" (prints: true)
+say "true" is true (prints: true)
+
+say 5 is "3" (prints: false)
+say 5 is "hello" (prints: false)
+
+say true is "lies" (prints: true)
+say "lies" is true (prints: true)
+say false is "true" (prints: false)
+say false is "hello" (prints: false)
+say "false" is false (prints: false)
+say "true" is false (prints: false)
+
+say "hello" is "hello" (prints: true)
+say "hello" is "world" (prints: false)

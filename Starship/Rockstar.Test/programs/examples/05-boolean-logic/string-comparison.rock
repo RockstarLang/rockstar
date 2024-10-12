@@ -1,0 +1,16 @@
+Say "a" is greater than "b" (prints: false)
+
+Say "a" is greater than true (prints: false)
+Say "z" is greater than true (prints: true)
+
+Say true is greater than "a" (prints: true)
+Say true is greater than "z" (prints: false)
+
+Say "123" is greater than 456 (prints: false)
+Say "789" is greater than 456 (prints: true)
+
+Say "2" is greater than 10 (prints: true)
+Say 10 is greater than "2" (prints: false)
+
+Say 1 is as great as "1" (prints: true)
+Say 1 is as great as 2 (prints: false)

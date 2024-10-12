@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+	<PropertyGroup>
+		<TargetFramework>net8.0-browser</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<DebugSymbols>False</DebugSymbols>
+		<DebugType>None</DebugType>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<PublishTrimmed>true</PublishTrimmed>
+		<RunAOTCompilation>true</RunAOTCompilation>
+		<StripSymbols>true</StripSymbols>
+		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
+	</PropertyGroup>
+	<PropertyGroup>
+		<OutputType>exe</OutputType>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Runtime.WebAssembly.Sdk" Version="8.0.0" PrivateAssets="all" />
+	  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Rockstar.Engine\Rockstar.Engine.csproj" />
+	</ItemGroup>
+</Project>

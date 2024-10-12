@@ -1,0 +1,9 @@
+(writes: 135)
+x is 0
+while x is less than 5
+x is with 1
+if x is 2 continue
+if x is 4 continue
+write x
+end
+

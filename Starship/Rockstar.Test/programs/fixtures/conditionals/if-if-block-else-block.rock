@@ -1,0 +1,26 @@
+if 1
+if 2
+print 2 (prints: 2)
+else
+print 1
+end
+end
+
+if 1
+	if 2
+		print 2 (prints: 2)
+	else
+		print 1
+	end
+end
+
+
+if 1
+	if 2
+		if 3
+			print 3 (prints: 3)
+		end
+	end
+end
+print 0 (prints: 0)
+

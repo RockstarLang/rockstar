@@ -1,0 +1,3 @@
+print "Hello World" (prints: Hello World)
+exit
+print "This won't get printed because we already called exit"

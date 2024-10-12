@@ -1,0 +1,10 @@
+Absolution at 0 is "Intro"
+Absolution at 1 is "Apocalypse Please"
+My favourite is 7
+Absolution at my favourite is "Hysteria"
+Absolution at 2 + 3 is "Stockholm Syndrome"
+
+Print Absolution at 0 (prints: Intro)
+Print Absolution at 7 (prints: Hysteria)
+Print Absolution at 2 (prints: null)
+Print Absolution at 999 (prints: mysterious)

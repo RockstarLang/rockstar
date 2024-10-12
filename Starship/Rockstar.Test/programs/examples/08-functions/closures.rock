@@ -1,0 +1,29 @@
+Alpha takes x, y, and z
+	(The national isn't properly global, because it's declared inside Alpha,
+	but Beta and Gamma don't know that: as far as they're concerned it's a
+	global variable because it isn't local to *them*)
+	Let the national be empty
+	Beta takes nothing		
+		Gamma takes nothing
+			Shout "Gamma: " with x, " ", y, " ", z
+			Put x into the global
+			Put y into the national
+			Let the local be y
+		End (Gamma)
+		If the national is not empty shout the national
+		Return Gamma
+	End (Beta)
+	Return Beta
+End (Alpha)
+
+Call Alpha with "global", "national", "local" into Delta
+Call Delta into Epsilon
+Call Epsilon (prints: Gamma: global national local)
+Call Delta (prints: national)
+
+Shout the global (prints: global)
+Shout the national (prints: mysterious)
+Shout the local (prints: mysterious)
+
+
+

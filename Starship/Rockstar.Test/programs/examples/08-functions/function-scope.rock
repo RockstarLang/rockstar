@@ -1,0 +1,10 @@
+The function takes x, y
+Put x into the global (create a new global variable)
+Let my local be y (create a new local variable)
+Print x with " " with y
+End
+
+Call the function with "a", "b" (prints: a b)
+Shout the global (prints: a)
+Shout my local (prints: mysterious)
+

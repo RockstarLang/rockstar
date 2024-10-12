@@ -1,0 +1,10 @@
+(This is a Rockstar comment)
+
+(Rockstar supports nested comments (like this (see?)))
+
+Shout (as loud as you can (like, REALLY loud!)) "nested comments are cool!"
+
+(prints: nested comments are cool!)
+
+Shout "Comments inside strings (like this (see?)) aren't comments"
+(prints: Comments inside strings (like this (see?)) aren't comments)

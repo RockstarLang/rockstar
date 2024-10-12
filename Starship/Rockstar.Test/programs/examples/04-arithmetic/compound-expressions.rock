@@ -1,0 +1,11 @@
+X is 1
+X is with 2
+Print X (prints: 3)
+
+Y is 5
+It is without 3
+Print it. (prints: 2)
+
+Z is 100
+It is over 5, 4, & 2
+Shout it (prints: 2.5)

@@ -1,0 +1,9 @@
+global using System.Text;
+global using System.Text.RegularExpressions;
+global using NCrunch.Framework;
+global using Pegasus.Common;
+global using Rockstar.Engine;
+global using Rockstar.Engine.Statements;
+global using Shouldly;
+global using Xunit;
+global using Xunit.Abstractions;

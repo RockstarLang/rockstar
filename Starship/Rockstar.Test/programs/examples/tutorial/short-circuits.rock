@@ -1,0 +1,4 @@
+Print 3 or 5 (prints: 3)
+Print 0 or "rock!" (prints: rock!)
+Print false and 1/0 (prints: false) (and never divides by zero)
+Print "yeah!" or 1/0 (prints: yeah!) (and never divides by zero)

@@ -1,0 +1,9 @@
+Print true (prints: true)
+Say OK (prints: true)
+Scream yes (prints: true)
+Shout right (prints: true)
+ 
+Print false (prints: false)
+Say no (prints: false)
+Shout wrong (prints: false)
+Scream lies (prints: false)

@@ -1,0 +1,13 @@
+Shout (Comments can
+span multiple lines,
+like this) "hello" (see?) + "world"
+	(and in theory can contain all kinds of
+	'punctation' and other
+	bits)
+
+My function takes x
+	(Putting a multiline comment between a function declaration
+	and its body has caused some unusual behaviour)
+	Shout x
+End
+	

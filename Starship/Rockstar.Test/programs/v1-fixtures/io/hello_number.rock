@@ -1,0 +1,5 @@
+say -123.45 (prints: -123.45)
+say -1 (prints: -1)
+say 0 (prints: 0)
+say 1 (prints: 1)
+say 123.45 (prints: 123.45)

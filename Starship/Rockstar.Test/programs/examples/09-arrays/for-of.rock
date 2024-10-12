@@ -1,0 +1,23 @@
+Hash at "a" is 1
+Hash at "b" is true
+Hash at false is "nope"
+
+For value and key of hash
+Write key with ":" with value with " "
+End
+(writes: a:1 b:true false:nope )
+
+Vixen at "vocals" is "Janet"
+Vixen at "guitar" is "Jan"
+Vixen at "bass" is "Share"
+Vixen at "drums" is "Roxy"
+
+For every member and role of Vixen
+Shout the member with " (" with the role with ")"
+Yeah
+
+(prints:
+Janet (vocals)
+Jan (guitar)
+Share (bass)
+Roxy (drums))

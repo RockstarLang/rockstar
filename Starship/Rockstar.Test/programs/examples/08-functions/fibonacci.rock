@@ -1,0 +1,12 @@
+Fibonacci takes a number
+If it's less than 2 give it back
+Let the first be a number without 2
+Let the second be a number without 1
+Give back Fibonacci taking the first plus Fibonacci taking the second
+End
+
+Print Fibonacci taking 0 (prints: 0)
+Print Fibonacci taking 1 (prints: 1)
+Print Fibonacci taking 5 (prints: 5)
+Print Fibonacci taking 8 (prints: 21)
+Print Fibonacci taking 20 (prints: 6765)

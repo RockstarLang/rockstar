@@ -1,0 +1,9 @@
+Say 0 is nothing (prints: true)
+Say false is nothing (prints: true)
+Say nobody is nothing (prints: true)
+Say null is nothing (prints: true)
+Say "" is nothing (prints: true)
+
+Say 1 is nothing (prints: false)
+Say true is nothing (prints: false)
+Say "hello" is nothing (prints: false)

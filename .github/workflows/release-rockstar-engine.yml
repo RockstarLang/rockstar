@@ -1,0 +1,125 @@
+name: release-rockstar-engine
+on:
+  workflow_run:
+    workflows: ['build-wasm-and-linux-binaries']
+    types: [completed]
+    branches: ['main']
+  # push:
+  #   branches: ["main"]
+  #   paths:
+  #     - 'Starship/**'
+  #     - '.github/workflows/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "engine"
+  cancel-in-progress: true
+jobs:
+  release-rockstar-engine:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: restore macOS ARM64 binary from cache
+        uses: actions/cache/restore@v4
+        id: restore-cached-macos-arm64-binary
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-macos-arm64-binary
+          key: rockstar-macos-arm64-binary
+      - name: restore macOS x64 binary from cache
+        uses: actions/cache/restore@v4
+        id: restore-cached-macos-x64-binary
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-macos-x64-binary
+          key: rockstar-macos-x64-binary
+      - name: restore Linux binary from cache
+        uses: actions/cache/restore@v4
+        id: restore-cached-linux-binary
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-linux-x64-binary
+          key: rockstar-linux-x64-binary
+      - name: restore Windows binary from cache
+        uses: actions/cache/restore@v4
+        id: restore-cached-windows-x64-binary
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-windows-x64-binary
+          key: rockstar-windows-x64-binary
+      - name: restore WASM binary from cache
+        uses: actions/cache/restore@v4
+        id: restore-cached-rockstar-wasm-binary
+        with:
+          enableCrossOsArchive: true
+          path: rockstar-wasm-binary
+          key: rockstar-wasm-binary
+      - name: create download assets
+        run: |
+          ls -lR
+      - name: extract version from binary
+        id: version
+        run: |
+          ./rockstar-linux-x64-binary/rockstar --version
+          echo "version=$(./rockstar-linux-x64-binary/rockstar --version)" >> $GITHUB_OUTPUT
+      - name: create download assets
+        run: |
+          ls -lR
+          zip rockstar-${{ steps.version.outputs.version }}-windows-x64.zip rockstar-windows-x64-binary/*
+          tar -czf rockstar-${{ steps.version.outputs.version }}-macos-arm64.tar.gz rockstar-macos-arm64-binary/*
+          tar -czf rockstar-${{ steps.version.outputs.version }}-macos-x64.tar.gz rockstar-macos-x64-binary/*
+          tar -czf rockstar-${{ steps.version.outputs.version }}-linux-x64.tar.gz rockstar-linux-x64-binary/*
+
+      - name: create release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          draft: false
+          prerelease: true
+          release_name: rockstar-${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.version.outputs.version }}
+          body: |
+            Rockstar ${{ steps.version.outputs.version }}
+
+      - name: upload windows artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./rockstar-${{ steps.version.outputs.version }}-windows-x64.zip
+          asset_name: rockstar-${{ steps.version.outputs.version }}-windows-x64.zip
+          asset_content_type: application/zip
+      - name: upload macos-x64 artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./rockstar-${{ steps.version.outputs.version }}-macos-x64.tar.gz
+          asset_name: rockstar-${{ steps.version.outputs.version }}-macos-x64.tar.gz
+          asset_content_type: application/gzip
+      - name: upload linux-x64 artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./rockstar-${{ steps.version.outputs.version }}-linux-x64.tar.gz
+          asset_name: rockstar-${{ steps.version.outputs.version }}-linux-x64.tar.gz
+          asset_content_type: application/gzip
+      - name: upload macos-arm64 artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./rockstar-${{ steps.version.outputs.version }}-macos-arm64.tar.gz
+          asset_name: rockstar-${{ steps.version.outputs.version }}-macos-arm64.tar.gz
+          asset_content_type: application/gzip

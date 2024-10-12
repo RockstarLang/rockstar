@@ -1,0 +1,5 @@
+Sum takes x, y giving x with y
+Reverse takes a string giving a string times -1
+
+Print sum taking 18, 24 (prints: 42)
+Print reverse taking "rockstar" (prints: ratskcor)

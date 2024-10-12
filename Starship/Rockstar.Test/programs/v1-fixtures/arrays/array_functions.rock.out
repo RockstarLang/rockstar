@@ -1,0 +1,25 @@
+function that does nothing
+[ null ]
+null
+[ null ]
+null
+
+function that multiplies elements in an array
+3
+4
+5
+6
+7
+8
+9
+10
+1814400
+[ 3, 4, 5, 6, 7, 8, 9, 10 ]
+
+function that returns an array
+[ ]
+mysterious
+[ ]
+mysterious
+[ "hello" ]
+hello

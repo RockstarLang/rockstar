@@ -1,0 +1,20 @@
+(prints: pass 1)
+say "pass 1" (trailing comment)
+
+(prints: pass 2)
+(leading comment) say "pass 2"
+
+(prints: pass 3)
+say (inline comment) "pass 3"
+
+(prints: pass 4)
+(
+multiline
+comments
+are
+also
+supported
+) say "pass 4"
+
+(prints: pass 5)
+(((((((( nested comments are supported now 1 )))))))) say "pass 5"

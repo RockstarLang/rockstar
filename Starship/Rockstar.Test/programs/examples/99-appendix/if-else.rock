@@ -1,0 +1,4 @@
+if 3
+say 3
+  otherwise
+say 2

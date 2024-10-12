@@ -1,0 +1,7 @@
+Rock ints with 1, 2, 3
+Let the first be roll ints
+Let the second be roll ints
+Let the third be roll ints
+Shout the first (prints: 1)
+Shout the second (prints: 2)
+Shout the third (prints: 3)

@@ -1,0 +1,7 @@
+Rock the list with 4, 5, 6
+Roll the list into foo
+Roll the list into bar
+Roll the list into baz
+Shout foo (prints: 4)
+Shout bar (prints: 5)
+Shout baz (prints: 6)

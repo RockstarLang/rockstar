@@ -1,0 +1,10 @@
+x is 4
+if x is greater than 1 
+if x is greater than 2
+if x is greater than 3
+print "this appears if x is greater than 3"
+oh yeah baby
+print "this is always printed"
+
+(prints: this appears if x is greater than 3
+this is always printed)

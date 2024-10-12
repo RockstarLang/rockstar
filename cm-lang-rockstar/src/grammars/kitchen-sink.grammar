@@ -1,0 +1,191 @@
+@external propSource highlighting from "./kitchen-sink-highlight.js"
+
+//!top
+
+@top Program { expression* }
+
+expression {
+ Comment |
+ LineComment |
+ BlockComment |
+ DocComment |
+ Name |
+ VariableName |
+ TypeName |
+ TagName |
+ PropertyName |
+ AttributeName |
+ ClassName |
+ LabelName |
+ Namespace |
+ MacroName |
+ Literal |
+ String |
+ DocString |
+ Character |
+ AttributeValue |
+ Number |
+ Integer |
+ Float |
+ Bool |
+ Regexp |
+ Escape |
+ Color |
+ Url |
+ Keyword |
+ Self |
+ Null |
+ Atom |
+ Unit |
+ Modifier |
+ OperatorKeyword |
+ ControlKeyword |
+ DefinitionKeyword |
+ ModuleKeyword |
+ Operator |
+ DerefOperator |
+ ArithmeticOperator |
+ LogicOperator |
+ BitwiseOperator |
+ CompareOperator |
+ UpdateOperator |
+ DefinitionOperator |
+ TypeOperator |
+ ControlOperator |
+ Punctuation |
+ Separator |
+ Bracket |
+ AngleBracket |
+ SquareBracket |
+ Paren |
+ Brace |
+ Content |
+ Heading |
+ Heading1 |
+ Heading2 |
+ Heading3 |
+ Heading4 |
+ Heading5 |
+ Heading6 |
+ ContentSeparator |
+ List |
+ Quote |
+ Emphasis |
+ Strong |
+ Link |
+ Monospace |
+ Strikethrough |
+ Inserted |
+ Deleted |
+ Changed |
+ Invalid |
+ Meta |
+ DocumentMeta |
+ Annotation |
+ ProcessingInstruction |
+ Definition |
+ Constant |
+ Function |
+ Standard |
+ Local |
+ Special
+}
+
+
+//!tokens
+
+@tokens {
+ Comment  { "Comment" }
+ LineComment  { "LineComment" }
+ BlockComment  { "BlockComment" }
+ DocComment  { "DocComment" }
+ Name  { "Name" }
+ VariableName  { "VariableName" }
+ TypeName  { "TypeName" }
+ TagName  { "TagName" }
+ PropertyName  { "PropertyName" }
+ AttributeName  { "AttributeName" }
+ ClassName  { "ClassName" }
+ LabelName  { "LabelName" }
+ Namespace  { "Namespace" }
+ MacroName  { "MacroName" }
+ Literal  { "Literal" }
+ String  { "String" }
+ DocString  { "DocString" }
+ Character  { "Character" }
+ AttributeValue  { "AttributeValue" }
+ Number  { "Number" }
+ Integer  { "Integer" }
+ Float  { "Float" }
+ Bool  { "Bool" }
+ Regexp  { "Regexp" }
+ Escape  { "Escape" }
+ Color  { "Color" }
+ Url  { "Url" }
+ Keyword  { "Keyword" }
+ Self  { "Self" }
+ Null  { "Null" }
+ Atom  { "Atom" }
+ Unit  { "Unit" }
+ Modifier  { "Modifier" }
+ OperatorKeyword  { "OperatorKeyword" }
+ ControlKeyword  { "ControlKeyword" }
+ DefinitionKeyword  { "DefinitionKeyword" }
+ ModuleKeyword  { "ModuleKeyword" }
+ Operator  { "Operator" }
+ DerefOperator  { "DerefOperator" }
+ ArithmeticOperator  { "ArithmeticOperator" }
+ LogicOperator  { "LogicOperator" }
+ BitwiseOperator  { "BitwiseOperator" }
+ CompareOperator  { "CompareOperator" }
+ UpdateOperator  { "UpdateOperator" }
+ DefinitionOperator  { "DefinitionOperator" }
+ TypeOperator  { "TypeOperator" }
+ ControlOperator  { "ControlOperator" }
+ Punctuation  { "Punctuation" }
+ Separator  { "Separator" }
+ Bracket  { "Bracket" }
+ AngleBracket  { "AngleBracket" }
+ SquareBracket  { "SquareBracket" }
+ Paren  { "Paren" }
+ Brace  { "Brace" }
+ Content  { "Content" }
+ Heading  { "Heading" }
+ Heading1  { "Heading1" }
+ Heading2  { "Heading2" }
+ Heading3  { "Heading3" }
+ Heading4  { "Heading4" }
+ Heading5  { "Heading5" }
+ Heading6  { "Heading6" }
+ ContentSeparator  { "ContentSeparator" }
+ List  { "List" }
+ Quote  { "Quote" }
+ Emphasis  { "Emphasis" }
+ Strong  { "Strong" }
+ Link  { "Link" }
+ Monospace  { "Monospace" }
+ Strikethrough  { "Strikethrough" }
+ Inserted  { "Inserted" }
+ Deleted  { "Deleted" }
+ Changed  { "Changed" }
+ Invalid  { "Invalid" }
+ Meta  { "Meta" }
+ DocumentMeta  { "DocumentMeta" }
+ Annotation  { "Annotation" }
+ ProcessingInstruction  { "ProcessingInstruction" }
+ Definition  { "Definition(tag)" }
+ Constant  { "Constant(tag)" }
+ Function  { "Function(tag)" }
+ Standard  { "Standard(tag)" }
+ Local  { "Local(tag)" }
+ Special  { "Special(tag)" }
+ space { $[ \t\n\r]+ }
+}
+
+//!skip
+
+@skip { space }
+
+//!delim
+
+@detectDelim

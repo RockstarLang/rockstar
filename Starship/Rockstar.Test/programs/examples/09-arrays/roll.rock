@@ -1,0 +1,10 @@
+Rock ints with 1, 2, 3
+Print roll ints (prints: 1)
+Print pop ints (prints: 3)
+Print roll ints (prints: 2)
+Print pop ints (prints: mysterious)
+
+The string is "abcde"
+Roll the string into the letter
+Print the letter (prints: a)
+Print the string (prints: bcde)

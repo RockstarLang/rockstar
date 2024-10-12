@@ -1,0 +1,7 @@
+(comment on it's own)
+
+say "the words" (comment at the end of a line) (prints: the words)
+
+say (comment between items) "you want to say" (prints: you want to say)
+
+(comment before items) say "whatever you want" (prints: whatever you want)

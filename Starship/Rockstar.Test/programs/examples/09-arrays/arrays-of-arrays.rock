@@ -1,0 +1,8 @@
+The array at 1 at 2 at 3 is "yeah"
+Print the array at 1 at 2 at 3 (prints: yeah)
+Print the array (prints: [ null, [ null, null, [ null, null, null, "yeah" ] ] ])
+
+The words at 2 is "Slash"
+Print the words at 2 at 0 (prints: S)
+Print the words at 2 (prints: Slash)
+Print the words (prints: [ null, null, "Slash" ])

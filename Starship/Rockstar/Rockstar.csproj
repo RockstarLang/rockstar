@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Content Include="rockstar-icon.ico" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Rockstar.Engine\Rockstar.Engine.csproj" />
+	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugSymbols>False</DebugSymbols>
+		<DebugType>None</DebugType>
+		<PublishAot>true</PublishAot>
+		<StripSymbols>true</StripSymbols>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>rockstar</AssemblyName>
+		<ApplicationIcon>rockstar-icon.ico</ApplicationIcon>
+	</PropertyGroup>
+</Project>

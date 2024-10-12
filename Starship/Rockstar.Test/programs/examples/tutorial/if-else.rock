@@ -1,0 +1,9 @@
+X is 0
+Until X is 10
+Write X with ": "
+If X is 5 Print "X is 5!" Else Print "X is not 5" (one-line If statement)
+If X is 2
+Print X with " is 2"
+End (end of multi-line If block)
+Put X plus 1 into X
+End (end of Until loop)

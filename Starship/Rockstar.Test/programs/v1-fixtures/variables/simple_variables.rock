@@ -1,0 +1,43 @@
+Variable is 1
+Say variable (prints: 1)
+
+Value is 1
+say value with value (prints: 2)
+
+X is 1
+Y is 2
+Say x plus y (prints: 3)
+Alpha says r
+Beta says o
+Gamma says c
+Delta says k
+Say alpha with beta with gamma with delta (prints: rock)
+
+Let themes be 10 (variable name beginning with pronoun 'the')
+Let italics be true (variable name beginning with pronoun 'it')
+Shout themes (prints: 10)
+Shout italics (prints: true)
+
+TIME is 1
+say TIME (prints: 1)
+say time (prints: 1)
+say tIMe (prints: 1)
+say TIMe (prints: 1)
+
+time is 2
+say TIME (prints: 2)
+say time (prints: 2)
+say tIMe (prints: 2)
+say TIMe (prints: 2)
+
+tIMe is 3
+say TIME (prints: 3)
+say time (prints: 3)
+say tIMe (prints: 3)
+say TIMe (prints: 3)
+
+TIMe is 4
+say TIME (prints: 4)
+say time (prints: 4)
+say tIMe (prints: 4)
+say TIMe (prints: 4)

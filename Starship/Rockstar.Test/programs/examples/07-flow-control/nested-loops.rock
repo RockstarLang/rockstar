@@ -1,0 +1,8 @@
+(writes:  0.0 0.1 0.2 1.0 1.1 1.2 2.0 2.1 2.2)
+x is 0
+While x is less than 3
+Y is 0
+While y is less than 3
+write " " with x, ".", y
+Y is with 1 yeah
+X is with 1 yeah

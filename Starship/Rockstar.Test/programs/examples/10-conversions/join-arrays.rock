@@ -1,0 +1,12 @@
+Let the string be "abcde"
+Split the string into the tokens
+Join the tokens with ";"
+Print the tokens (prints: a;b;c;d;e)
+
+The input says hey now hey now now
+Split the input into the words with " "
+Unite the words into the output with "! "
+Print the output with "!" (prints: hey! now! hey! now! now!)
+
+Gather the words into the output with "-"
+Print the output (prints: hey-now-hey-now-now)

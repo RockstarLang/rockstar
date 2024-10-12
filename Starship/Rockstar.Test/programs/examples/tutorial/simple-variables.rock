@@ -1,0 +1,5 @@
+x is 123
+let myVariable be 456
+put 789 into customerId
+print x. print myVariable. print customerId.
+

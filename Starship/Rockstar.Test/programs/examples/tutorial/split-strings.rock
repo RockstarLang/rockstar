@@ -1,0 +1,12 @@
+Split "a,b,c" into the array
+Shout the array (prints: [ "a", ",", "b", ",", "c" ])
+Shout the array + 0 (prints: 5)
+
+Split "a,b,c" into the array with ","
+Shout the array (prints: [ "a", "b", "c" ])
+Shout the array + 0 (prints: 3)
+
+My life says heartbreak
+Cut my life into pieces
+Shout pieces (prints: [ "h", "e", "a", "r", "t", "b", "r", "e", "a", "k" ])
+Shout pieces + 0 (prints: 10)

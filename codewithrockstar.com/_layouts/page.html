@@ -1,0 +1,38 @@
+---
+layout: table_wrappers
+---
+
+<!DOCTYPE html>
+
+<html lang="{{ site.lang | default: 'en-US' }}" class="{{ page.html_class | default: " page" }}">
+{% include head.html %}
+
+<body>
+	<header>
+		<h1><a href="/">Rockstar</a></h1>
+		<h2>Tommy used to work on the docs</h2>
+	</header>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/docs">Docs</a>
+		<a href="/online">Try It</a>
+		<a href="/news">News</a>
+		<a href="/merch">Merch</a>
+		<a href="/community">Community</a>
+	</nav>
+	{{ content }}
+	<footer>
+		<div>
+			rockstar created by <a href="#">dylan beattie</a>
+			• copyright © 2018-2024 dylan beattie
+			• <a href="hello@codewithrockstar.com">hello@codewithrockstar.com</a>
+		</div>
+		<div>
+			<a href="/code-of-conduct">code of conduct</a>
+			• <a href="https://github.com/RockstarLang/rockstar">code on github</a>
+			• <a href="https://app.usefathom.com/share/xefkzvqw/codewithrockstar.com">analytics by fathom</a>
+		</div>
+	</footer>
+</body>
+
+</html>

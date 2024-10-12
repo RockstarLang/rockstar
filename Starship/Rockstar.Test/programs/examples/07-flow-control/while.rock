@@ -1,0 +1,12 @@
+(writes: 01234)
+X is 0. While x is less than 5
+Write x
+X is with 1, yeah. 
+
+(writes: 01234)
+x is 0
+while x is less than 5
+write x
+x is with 1
+end
+

@@ -1,0 +1,10 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <DefaultTestTimeout>0</DefaultTestTimeout>
+    <IgnoredTests>
+      <NamedTestSelector>
+        <TestName>Rockstar.Test.ParserTests.Parse("examples\\assorted\\rock_wine.rock")</TestName>
+      </NamedTestSelector>
+    </IgnoredTests>
+  </Settings>
+</ProjectConfiguration>

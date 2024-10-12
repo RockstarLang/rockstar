@@ -1,0 +1,8 @@
+Rock your stack with 1, 2, 3, 4, 5
+Shout pop your stack (prints: 5)
+Shout roll your stack (prints: 1)
+Shout pop your stack (prints: 4)
+Shout roll your stack (prints: 2)
+Shout your stack (prints: [ 3 ])
+Pop your stack
+Shout your stack (prints: [ ])

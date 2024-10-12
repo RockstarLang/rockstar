@@ -1,0 +1,14 @@
+Tommy says we've got to hold on to what we've got.
+Gina says it doesn't make a difference if we make it or not.
+
+Print Tommy (prints: we've got to hold on to what we've got.)
+Print Gina (prints: it doesn't make a difference if we make it or not.)
+
+A variable says, I start with a comma.
+Print a variable(prints: , I start with a comma.)
+
+A variable says: I start with punctuation.
+Print a variable (prints: : I start with punctuation.)
+
+My string said it had "quotes", 'quotes', українська, עִבְרִית, 🎸✨🎆	and	tabs
+Print my string (prints: it had "quotes", 'quotes', українська, עִבְרִית, 🎸✨🎆	and	tabs)

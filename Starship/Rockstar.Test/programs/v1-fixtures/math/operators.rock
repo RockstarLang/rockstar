@@ -1,0 +1,15 @@
+say 1 + 1 (prints: 2)
+say 5 + 10 (prints: 15)
+say 2.5 + 2.5 (prints: 5)
+say 1 + 0.2 + 0.03 (prints: 1.23)
+
+say 2 - 1 (prints: 1)
+say 0 - 1 (prints: -1)
+say 1 - 0.5 (prints: 0.5)
+
+say 1 * 0 (prints: 0)
+say 1 * 1 (prints: 1)
+say 1 * 2 (prints: 2)
+say 2 * 2 (prints: 4)
+
+say 1.000000000000 (prints: 1)

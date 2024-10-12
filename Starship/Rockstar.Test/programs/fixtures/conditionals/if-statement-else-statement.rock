@@ -1,0 +1,4 @@
+if false say 1 else say 2 (prints: 2)
+if true say true else say false (prints: true)
+if 1 then say "yeah" else say "nope" (prints: yeah)
+if 0 then say "yeah" else say "nope" (prints: nope)

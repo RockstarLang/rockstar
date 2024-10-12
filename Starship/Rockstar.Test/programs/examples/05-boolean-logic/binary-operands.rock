@@ -1,0 +1,7 @@
+Print "one" or "two" (prints: one)
+Print "hello" and 0 (prints: 0)
+Print "foo" and "bar" (prints: bar)
+
+Print false or "rock!" (prints: rock!)
+Print 0 or null (prints: null)
+Print true and "rock!" (prints: rock!)

@@ -1,0 +1,18 @@
+Print "this is a string literal"
+
+Print "This string includes ""quotes"""
+
+Print "This string
+contains
+line
+breaks"
+
+Print "Стріляй!
+Скажи, чому боїшся ти
+Зробити цей останній крок?"
+
+Print "🎸✨🎆💔🌃🐍💘🌾🍾"
+
+Print empty
+
+Print silence

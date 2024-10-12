@@ -1,0 +1,19 @@
+say mysterious (prints: mysterious)
+
+say null (prints: null)
+say nothing (prints: null)
+say nowhere (prints: null)
+say nobody (prints: null)
+say gone (prints: null)
+
+say empty (prints: )
+
+say true (prints: true)
+say right (prints: true)
+say yes (prints: true)
+say ok (prints: true)
+
+say false (prints: false)
+say wrong (prints: false)
+say no (prints: false)
+say lies (prints: false)

@@ -1,0 +1,12 @@
+Rock my array with 1, 2, 3
+Put my array with "rock!" into Array B
+Put my array with true into Array C
+Put my array with null into Array D
+Put my array with 5 into the number
+
+Shout my array  (prints: [ 1, 2, 3 ])
+Shout Array B (prints: [ 1, 2, 3, "rock!" ])
+Shout Array C (prints: [ 1, 2, 3, true ])
+Shout Array D (prints: [ 1, 2, 3, null ])
+Shout the number (prints: 8)
+

@@ -1,0 +1,16 @@
+if 1
+say 1
+otherwise
+say 2
+end
+
+if 1
+say 1
+else
+say 2
+end
+
+if 1
+say 1
+else
+say 2

@@ -1,0 +1,11 @@
+My boolean is true
+My number is 12.34
+The night is empty
+
+My boolean is with the night
+Shatter my boolean
+Whisper my boolean (prints: [ "t", "r", "u", "e" ])
+
+My number is with the night
+Shatter my number
+Whisper my number (prints: [ "1", "2", ".", "3", "4" ])

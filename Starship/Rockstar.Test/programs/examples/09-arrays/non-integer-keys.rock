@@ -1,0 +1,16 @@
+My string is "s"
+My decimal is 1.2
+My negative is -4
+My boolean is true
+
+The array at my string is "Sweet"
+The array at my decimal is "Child"
+The array at my negative is "O"
+The array at my boolean is "Mine"
+
+Print the array
+(prints: [ "s": "Sweet"; 1.2: "Child"; -4: "O"; true: "Mine" ])
+
+The array at 0 is "Whoa"
+Print the array
+(prints: [ "Whoa"; "s": "Sweet"; 1.2: "Child"; -4: "O"; true: "Mine" ])

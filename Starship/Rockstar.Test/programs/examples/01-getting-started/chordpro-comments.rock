@@ -1,0 +1,19 @@
+#!/bin/rockstar
+
+{title: The Rockstar Blues}
+{artist: Dylan Beattie}
+{tempo: 120bpm}
+
+{start_of_verse}
+[A] Say "it's one for the money"
+[A] Say "it's two for the show"
+[D] Say "three to get ready"
+[A] Say "now go go go"
+{end_of_verse}
+
+{start_of_chorus}
+[D] Say 5? [D] Say 6? [A] Say 7? [A] Say 8!
+[E] Say 9; [D] Say 10!
+[A] Say 11
+Say "and that's the Rockstar 12 bar blues"
+{end_of_chorus}

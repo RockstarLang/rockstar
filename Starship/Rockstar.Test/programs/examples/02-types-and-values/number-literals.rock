@@ -1,0 +1,7 @@
+Print 1 (prints: 1)
+Print 0.5 (prints: 0.5)
+Print +8 (prints: 8)
+Print -10 (prints: -10)
+Print -.4 (prints: -0.4)
+Print 1.000000000 (prints: 1)
+Print 1.2. (prints: 1.2)

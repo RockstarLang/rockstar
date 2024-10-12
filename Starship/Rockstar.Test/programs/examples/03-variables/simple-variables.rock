@@ -1,0 +1,7 @@
+x is 2
+pi is 3.14159
+greeting is "hello world"
+
+say x (prints: 2)
+say pi (prints: 3.14159)
+say greeting (prints: hello world)

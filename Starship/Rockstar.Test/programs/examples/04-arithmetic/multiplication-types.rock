@@ -1,0 +1,22 @@
+print 2 * 2 (prints: 4)
+print 2 * "rock" (prints: rockrock)
+print 2 * true (prints: 2)
+print 2 * false (prints: 0)
+
+print "rock" * 2 (prints: rockrock)
+print "rock" * 0 (prints: )
+print "rock" * -1 (prints: kcor)
+print "rock" * -2 (prints: kcorkcor)
+print "rock" * 1.5 (prints: rockro)
+print "rock" * -0.2 (prints: k)
+
+print true * true (prints: 1)
+print true * 1 (prints: 1)
+print true * "hello" (prints: hello)
+print false * "hello" (prints: )
+print true * null (prints: 0)
+
+print null * null (prints: 0)
+print null * true (prints: 0)
+print null * "hello" (prints: )
+print null * 1 (prints: 0)

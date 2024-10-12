@@ -1,0 +1,14 @@
+Rock ints with 1, 2, 3, 4, 5
+Print roll ints (prints: 1)
+Print pop ints (prints: 5)
+Print roll ints (prints: 2)
+print pop ints (prints: 4)
+print roll ints (prints: 3)
+Print pop ints (prints: mysterious)
+
+The string is "abcde"
+Roll the string into the first
+pop the string into the last
+Print the first (prints: a)
+print the last (prints: e)
+Print the string (prints: bcd)

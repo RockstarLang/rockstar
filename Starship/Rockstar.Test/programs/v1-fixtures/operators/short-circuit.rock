@@ -1,0 +1,4 @@
+say true or 1/0 (prints: true)
+say false and 1/0 (prints: false)
+
+

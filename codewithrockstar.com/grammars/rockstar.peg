@@ -1,0 +1,649 @@
+@namespace Rockstar.Engine
+@classname Parser
+@using System.Globalization
+@using System.Text.RegularExpressions
+@using Rockstar.Engine.Statements
+@using Rockstar.Engine.Expressions
+@using Rockstar.Engine.Values
+@trace true
+
+/*
+
+Notes on Rockstar grammar
+
+Rockstar has significant whitespace. Most operators, keywords, etc. *must* be separated by _.
+
+Rules beginning with _ include their own leading whitespace, so should
+go immediately after the preceding expression. Rules ending with _ including their own trailing
+whitespace.
+
+*/
+
+@ignorecase true
+
+program <Program>
+	= EOS* head:block tail:program
+		{ new Program(head).Concat(tail) }
+	/ EOS* EOF
+		{ new Program() }
+	// unexpected:("" [^ \t\r\n]+)
+	//	#error{ $"Unexpected '{unexpected.Replace("\r", "\\r").Replace("\n", "\\n")}' at line {state.Line}, col {state.Column - unexpected.Length}" }
+
+block <Block>
+	= _? head:statement EOS tail:block
+		{ new Block(head).Concat(tail) }
+	/ _? stmt:statement
+		{ new Block(stmt) }
+
+statement -memoize
+	= listen_stmt
+	/ output_stmt
+	/ function
+	/ function_call
+	/ call_stmt
+	/ return_stmt
+	/ break_stmt
+	/ continue_stmt
+	/ loop
+	/ conditional
+	/ declaration
+	/ assignment
+	/ enlistment
+	/ increment
+	/ decrement
+	/ mutation
+	/ rounding
+	/ exit_statement
+	/ !EOB e:expression &(EOS / EOF) { new ExpressionStatement(e) }
+
+
+enlistment <Statement>
+	= push _ e:expression _ into _ v:variable
+		{ new Enlist(v, e) }
+	/ push _ v:variable (_ with)? _ e:expression_list
+		{ new Enlist(v, e) }
+	/ push _ v:variable
+		{ new Enlist(v) }
+	/ d:delist _ into _ t:assignable
+		{ new Assign(t, d) }
+	/ d:delist
+		{ new ExpressionStatement(d) }
+
+delist <Delist>
+	= pop _ v:variable
+		{ new Delist(v) }
+
+listen_stmt <Statement>
+	= listen _ to _ v:variable
+		{ new Listen(v) }
+	/ listen
+		{ new Listen() }
+
+return_stmt <Return>
+	= return (_ back)? _ e:expression (_ back)?
+		{ new Return(e) }
+
+function <Statement>
+	= name:variable _ takes _ null body:consequent
+		{ new Assign(name, new Function(body)) }
+	/ name:variable _ takes _ args:variable_list body:consequent
+		{ new Assign(name, new Function(args, body)) }
+
+variable_list <IEnumerable<Variable>>
+	= head:variable _VLS_ tail:variable_list { head.Concat(tail) }
+	/ arg:variable { new List<Variable> { arg } }
+
+primary_list <IEnumerable<Expression>>
+	= head:primary _XLS_ tail:primary_list { head.Concat(tail) }
+	/ head:primary _XLS_ tail:primary { new List<Expression> { head, tail } }
+
+argument_list <IEnumerable<Expression>>
+ 	= head:primary _ALS_ tail:argument_list { head.Concat(tail) }
+ 	/ head:primary { new List<Expression> { head } }
+
+expression_list <IEnumerable<Expression>>
+	= head:expression _ALS_ tail:expression_list { head.Concat(tail) }
+	/ expr:expression { new List<Expression> { expr } }
+
+oxford_comma = ',' _ and
+_nacton	= (_ "n'" / _? "'n'")
+
+_VLS_	= _ and _ / _ALS_
+_ALS_	= oxford_comma _ / _XLS_
+_XLS_	= ','? _nacton _?
+		/ (',' _? ('&' _?)?)
+		/ _? '&' _?
+		/ _? ',' _?
+
+break_stmt <Statement>
+	= break w:wildcard
+		{ new Break(w) }
+
+continue_stmt <Statement>
+	= continue w:wildcard
+		{ new Continue(w) }
+
+end_of_wildcard = (end / 'o'+ 'h' )
+
+exit_statement <Statement>
+	= exit { new Exit() }
+
+wildcard <string>
+	= ignored:([^,.?!;\r\n]* ) { String.Join("", ignored.ToArray()) }
+	/ ignored:((. !end_of_wildcard)* .) { String.Join("", ignored.ToArray()) }
+	
+filler = (_ / [,?!.;])* 
+EOS = EOL / _? [.?!;:]
+EOL = filler '\r'? '\n'
+EOF = EOS* _? !.
+
+ooh = 'o' &('o'+ 'h')
+eob_signal
+	= &(_? else) // lookahead - if the next bit starts with else, end the block
+	/ ','? _? ooh
+	/ ','? _? end filler
+
+EOB -memoize
+	= EOS* eob_signal
+	/ EOL &EOL 
+	/ EOF
+
+consequent <Block>
+	// Yes, you SHOULD be able to put EOB at the end of the BLOCK definition and it'll work.
+	// IT DOESN'T. I have no idea why. It screws up break/continue wildcard parsing.
+	= ',' _ b:block EOB { b }
+	/ EOS+ b:block EOB { b }
+	/ ','? _ s:statement { new Block(s) }
+
+if_test <Expression>
+	= if _ e:expression (_ then)?
+		{ e }
+
+alternate <Block>
+	=  _? else a:consequent { a }
+	/  EOS+ else a:consequent { a }
+
+conditional <Statement>
+	= e:if_test c:consequent a:alternate
+		{ new Conditional(e, c, a) }
+	/ e:if_test a:alternate
+		{ new Conditional(e, new Block(), a ) }
+	/ e:if_test c:consequent
+		{ new Conditional(e, c) }
+
+loop <Statement>
+	= while _ test:expression body:consequent
+		{ new WhileLoop(test, body) }
+	/ until _ test:expression body:consequent
+		{ new UntilLoop(test,body) }
+
+output_stmt <Statement>
+	= debug _ e:expression
+		{ new Debug(e) }
+	/ write _ e:expression
+		{ new Output(e) }
+	/ print _ e:expression
+		{ new Output(e, Environment.NewLine) }
+
+assignable <Variable>
+	= v:variable i:indexes
+		{ v.AtIndex(i) }
+	/ v:variable { v }
+
+declaration <Statement>
+	= let _ v:assignable _ be op:_operator_ e:expression_list
+		{ new Declare(v, new Binary(op, new Lookup(v), e)) }
+	/ let _ v:assignable _ be _ e:expression
+		{ new Declare(v, e) }
+	/ let _ v:assignable
+		{ new Declare(v) }
+
+assignment <Statement>
+	= put _ e:expression _ into _ v:assignable
+		{ new Assign(v, e) }
+	/ v:assignable _ says_ s:poetic_string
+		{ new Assign(v, s) }
+	/ v:assignable _is op:_operator_ e:expression_list
+		{ new Assign(v, new Binary(op, new Lookup(v), e)) }
+	/ v:assignable _is _ now _ e:expression
+			{ new Assign(v, e) }
+	// Legacy workaround to preserve compatibility with v1 poetic literal syntax
+	/ v:assignable (_? '=' _? / _is _) p:v1_poetic_number
+		{ new Assign(v, p) }
+	/ v:assignable (_? '=' _? / _is _) e:expression
+		{ new Assign(v, e) }
+
+_operator_ =
+	_plus_ / _minus_ / _times_ / _divide_
+
+says_ = says ("" ' '? / !letter)
+
+poetic_string <Strïng>
+	= s:("" [^\r\n]+) &('\r'? '\n')
+		{ new Strïng(s) }
+
+_is <Operator> -memoize
+	= _is _ exactly
+		{ Operator.IdenticalTo }
+	/ ("'s" / "'re" / _ is)
+		{ Operator.Equals }
+
+_isnt <Operator> -memoize
+	= _isnt _ exactly
+		{ Operator.NotIdenticalTo }
+	/ (_is _ not / _ isnt)
+		{ Operator.NotEquals }
+
+variable <Variable>
+	= i:(his _ !keyword identifier) { new CommonVariable(i) }
+	/ i:pronoun { new Pronoun(i) }
+	/ i:proper_variable { new ProperVariable(i) }
+	/ i:(the _ identifier) { new CommonVariable(i) }
+	/ !keyword i:identifier { new SimpleVariable(i) }
+
+proper_variable	= proper_noun (_ proper_noun)+
+
+proper_noun	= uppercase_letter '.'
+			/ !keyword &uppercase_letter identifier
+
+identifier
+	= letter (letter / [0-9_])*
+
+letter = uppercase_letter / lowercase_letter
+
+uppercase_letter = c:. &{ Char.IsUpper(c,0) }
+lowercase_letter = c:. &{ Char.IsLower(c,0) }
+
+expression <Expression>
+	= boolean
+	/ primary
+
+boolean = binary_or
+
+binary_or <Expression>
+	= lhs:binary_nor _ or _ rhs:binary_or { new Binary(Operator.Or, lhs, rhs) }
+	/ binary_nor
+
+binary_nor <Expression>
+	= lhs:binary_and _ nor _ rhs:binary_nor { new Binary(Operator.Nor, lhs, rhs) }
+	/ binary_and
+
+binary_and <Expression>
+	= lhs:equality _ and _ rhs:binary_and { new Binary(Operator.And, lhs, rhs) }
+	/ equality
+
+equality <Expression>
+	= lhs:unary op:(_is / _isnt) _ rhs:equality { new Binary(op, lhs, rhs) }
+	/ unary
+
+unary <Expression>
+	= not_ u:unary { new Unary(Operator.Not, u) }
+	/ comparison
+
+not_
+	= (not _ / non _ / non '-' )
+
+comparison <Expression>
+	= lhs:addition op:comparator rhs:comparison { new Binary(op, lhs, rhs) }
+	/ addition
+
+comparator <Operator>
+	= (_? '>=' _? / _is _ as _ as_great _ as _) { Operator.MoreThanEqual }
+	/ (_? '<=' _? / _is _ as _ as_small _ as _) { Operator.LessThanEqual }
+	/ (_? '>' _? / _is _ (above / more _ than) _) { Operator.MoreThan }
+	/ (_? '<' _? / _is _ (under / less _ than) _) { Operator.LessThan }
+
+numeric_expression
+	= addition
+
+addition <Expression> -memoize
+	= lhs:addition op:(_plus_/_minus_) rhs:primary_list
+		{ new Binary(op, lhs, rhs) }
+	/ lhs:addition op:(_plus_/_minus_) rhs:product
+		{ new Binary(op, lhs, rhs) }
+	/ product
+
+product <Expression> -memoize
+	= lhs:product op:(_divide_/_times_) rhs:primary_list
+		{ new Binary(op, lhs, rhs) }
+	/ lhs:product op:(_divide_/_times_) rhs:primary
+		{ new Binary(op, lhs, rhs) }
+	/ primary
+
+_plus_	<Operator>	= (_? '+' _? / _ plus _ ) { Operator.Plus }
+_minus_ <Operator>	= (_? '-' _? / _ minus _ ) { Operator.Minus }
+_times_	<Operator>	= (_? '*' _? / _ times _ ) { Operator.Times }
+_divide_ <Operator>	= (_? '/' _? / _ divided_by _ ) { Operator.Divide }
+
+primary <Expression> -memoize
+	= function_call
+	/ delist
+	/ constant
+	/ string
+	/ number
+	/ lookup
+	// unexpected:("" [^ \t\r\n]+)
+	//	#error{ $"Expected primary expression, found '{unexpected}' at line {state.Line}, col {state.Column - unexpected.Length}" }
+
+call_stmt <Statement>
+	= call _ name:variable _ with _ args:argument_list _ into _ a:assignable
+		{ new Assign(a, new FunctionCall(name, args)) }
+	/ call _ name:variable _ with _ args:argument_list
+		{ new FunctionCall(name, args) }
+	/ call _ name:variable _ into _ a:assignable
+		{ new Assign(a, new FunctionCall(name)) }
+	/ call _ name:variable
+		{ new FunctionCall(name) }
+
+function_call <FunctionCall>
+	= name:variable _ taking _ args:argument_list
+		{ new FunctionCall(name, args) }
+
+lookup <Expression>
+	= v:variable i:indexes
+		{ new Lookup(v.AtIndex(i)) }
+	/ v:variable
+		{ new Lookup(v) }
+
+index <Expression>
+	= _ at _ i:numeric_expression
+		{ i }
+
+indexes <IEnumerable<Expression>>
+	= head:index tail:indexes
+		{ head.Concat(tail) }
+	/ head:index
+		{ new List<Expression> { head } }
+
+
+increment <Increment>
+	= build _ v:variable t:((_? ',')? _? up)+
+		{ new Increment(v, t.Count) }
+
+decrement <Decrement>
+	= knock _ v:variable t:((_? ',')? _? down)+
+		{ new Decrement(v, t.Count) }
+
+mutator <Operator>
+	= split
+		{ Operator.Split }
+	/ cast
+		{ Operator.Cast }
+	/ join
+		{ Operator.Join }
+
+mutation <Statement>
+	= op:mutator _ s:expression _ into _ t:assignable _ using _ m:expression
+		{ new Mutation(op, s, target: t, m) }
+	/ op:mutator _ s:expression _ using _ m:expression _ into _ t:assignable
+		{ new Mutation(op, s, target: t, modifier: m) }
+	/ op:mutator _ s:expression _ into _ t:assignable
+		{ new Mutation(op, s, target: t) }
+	/ op:mutator _ s:assignable _ using _ m:expression
+		{ new Mutation(op, s, target: s, modifier: m) }
+	/ op:mutator _ s:assignable
+		{ new Mutation(op, s, target: s) }
+
+rounding <Statement>
+	= floor / ceil / math_round
+
+floor <Statement>
+	= turn _ v:variable _ down
+		{ new Rounding(v, Round.Down) }
+	/ turn _ down _ v:variable
+		{ new Rounding(v, Round.Down) }
+
+ceil <Statement>
+	= turn _ v:variable _ up
+		{ new Rounding(v, Round.Up) }
+	/ turn _ up _ v:variable
+		{ new Rounding(v, Round.Up) }
+
+math_round <Statement>
+	= turn _ v:variable _ around
+		{ new Rounding(v, Round.Nearest) }
+	/ turn _ around _ v:variable
+		{ new Rounding(v, Round.Nearest) }
+
+
+constant <Value>
+	= null { Null.Instance }
+	/ true { Booleän.True }
+	/ false { Booleän.False }
+	/ empty { Strïng.Empty }
+	/ mysterious { Mysterious.Instance }
+
+number <Number>
+ = like _ n:poetic_number { n }
+	/ d:digits&{ decimal.TryParse(d, out var _) }
+		{ new Number(d) }
+	/ d:digits
+		#error{ $"Number {d} is out of range" }
+digits
+	= d:("" (('-' /'+')? [0-9]+ ("." [0-9]+)?)
+	/ (('-' /'+')? "." [0-9]+))
+
+poetic_number <PoeticNumber>
+	= whole_part:poetic_digits _? separator:('...' / '…') _ fractional_part:poetic_digits
+		{ new PoeticNumber (whole_part, separator, fractional_part) }
+	/ digits:poetic_digits
+		{ new PoeticNumber(digits) }
+
+// So... in Rockstar v1, you could say "desire is a lovestruck ladykiller"
+// Which worked. But for v2, poetic numbers have to start with 'like' or 'so'
+// So this is a workaround to preserve most existing usage but enable
+// the new syntax, by retrofitting a rule that a poetic number using v1
+// syntax must start with a letter, and can't start with any keyword
+// indicating an arithmetic or logical operator.
+v1_digit_filter
+	= &letter !keywords_which_can_begin_an_expression
+
+v1_poetic_number <Number>
+	= _? &v1_digit_filter whole_part:poetic_digits _? separator:('.') _ fractional_part:poetic_digits
+		{ new PoeticNumber (whole_part, separator, fractional_part) }
+	/ _? &v1_digit_filter digits:poetic_digits
+		{ new PoeticNumber(digits) }
+
+PDS = ("" _ / [0-9\',;:?!+_/] )
+
+poetic_digits <string>
+	= PDS* head:poetic_digit PDS+ tail:poetic_digits PDS*
+		{ head + " " + tail }
+	/ d:poetic_digit
+		{ d }
+
+poetic_digit <string>
+	= word:("" (letter / [\-'])+)
+
+string <Strïng> = s:quoted_string+ { new Strïng(String.Join("\"", s)) }
+quoted_string
+	= '"' s:("" [^"]*) '"' { s }
+
+keywords_which_can_begin_an_expression
+	= plus / minus / times / divided_by
+	/ like / and / or / nor / not / non
+	/ null / true / false / empty / mysterious
+
+keyword
+	= keywords_which_can_begin_an_expression
+	/ as
+	/ as_great
+	/ as_small
+	/ back
+	/ be
+	/ build
+	/ cast
+	/ down
+	/ else
+	/ end
+	/ false
+	/ if
+	/ into
+	/ is
+	/ isnt
+	/ join
+	/ knock
+	/ less
+	/ let
+	/ listen
+	/ more
+	/ non
+	/ not
+	/ null
+	/ or
+	/ over
+	/ print
+	/ pronoun
+	/ put
+	/ return
+	/ says
+	/ split
+	/ takes
+	/ taking
+	/ than
+	/ the
+	/ to
+	/ until
+	/ up
+	/ while
+
+_ = "" (whitespace / comment)+
+whitespace = [ \t]
+
+comment
+	= line_comment
+	/ chordpro_comment
+	/ block_comment
+
+line_comment = '#' [^\n]* '\n'
+chordpro_comment = 	'{' [^\}]* '}' / '[' [^\]]* ']'
+start_comment = '('
+end_comment = ')'
+not_comment = (!start_comment !end_comment .)
+block_comment	= start_comment (comment / not_comment)* end_comment
+
+	
+
+
+above = 'above' !letter / over
+and = 'and' !letter
+around = 'around' !letter / 'round' !letter
+as = 'as' !letter
+as_great = 'great' !letter / 'high' !letter / 'big' !letter / 'strong' !letter
+as_small = 'less' !letter / 'low' !letter / 'small' !letter / 'weak' !letter
+at = 'at' !letter
+back = 'back' !letter
+be = 'be' !letter
+break = 'break' !letter
+build = 'build' !letter
+call = 'call' !letter
+cast = 'cast' !letter / 'burn' !letter
+continue = 'continue' !letter / 'take' !letter
+debug = 'debug' !letter
+divided_by = 'divided' _ 'by' !letter / 'between' !letter / over
+down = 'down' !letter
+else = 'else' !letter / 'otherwise' !letter
+empty = 'empty' !letter / 'silent' !letter / 'silence' !letter
+end = 'end' !letter / 'yeah' !letter / 'baby' !letter / 'oh' !letter
+exit = 'exit' !letter
+exactly = 'exactly' !letter / 'totally' !letter / 'really' !letter
+false = "false" !letter / "lies" !letter / "no" !letter / "wrong"!letter
+his = 'his' !letter / 'her' !letter
+if = 'if' !letter / 'when' !letter
+into = 'into' !letter / 'in' !letter
+is = 'is' !letter / 'was' !letter / 'are' !letter / 'were' !letter / 'am' !letter
+isnt = "isnt" !letter / "isn't" !letter / 'aint' !letter / "ain't" !letter / "wasn't" !letter / "wasnt" !letter / "aren't" !letter / "arent" !letter / "weren't" !letter / "werent" !letter
+join = 'join' !letter / 'unite' !letter
+knock = 'knock' !letter
+less = 'less' !letter / 'lower'	 / 'smaller' !letter / 'weaker' !letter
+let = 'let' !letter
+like = 'like' !letter / 'so' !letter
+listen = 'listen' !letter
+minus = 'minus' !letter / 'without' !letter
+more = 'greater' / 'higher' / 'bigger' / 'stronger' !letter / 'more' !letter
+mysterious = 'mysterious' !letter
+non = 'non' !letter
+nor = 'nor' !letter
+not = 'not' !letter
+now = 'now' !letter
+null = 'null' !letter / 'nothing' !letter / 'nowhere' !letter / 'nobody' !letter / 'gone'!letter
+or = 'or' !letter
+over = 'over' !letter
+plus = 'plus' !letter / 'with' !letter
+pop = 'roll' !letter / 'pop' !letter
+print = "print" !letter / "shout" !letter / "say" !letter / "scream" !letter / "whisper" !letter
+pronoun	= 'they' !letter / 'them'!letter / 'she' !letter / 'him' !letter / 'her' !letter / 'hir' !letter / 'zie' !letter / 'zir' !letter / 'xem' !letter / 'ver'!letter / 'ze' !letter / 've' !letter / 'xe' !letter / 'it' !letter / 'he'!letter / 'you' !letter / 'me' !letter / 'i' !letter
+push = 'rock' !letter / 'push' !letter
+put = 'put' !letter
+return = 'return' !letter / 'giving' !letter / 'give' !letter / 'send' !letter
+says = 'say' !letter / 'says' !letter / 'said' !letter
+split = 'cut' !letter / 'split' !letter / 'shatter' !letter
+takes = 'takes' !letter / 'wants' !letter
+taking = 'taking' !letter
+than = 'than' !letter
+the	= 'an' !letter / 'a' !letter / 'the' !letter / 'my' !letter / 'your' !letter / 'our' !letter / 'their' !letter
+then = 'then' !letter
+times = 'times' !letter / 'of' !letter
+to = 'to' !letter
+true = "true" !letter / "yes" !letter / "ok" !letter / "right"!letter
+turn = 'turn' !letter
+under = 'under' !letter / 'below' !letter
+until = 'until' !letter
+up = 'up' !letter
+using = 'using' !letter / 'with' !letter
+while = 'while' !letter
+with = 'with' !letter
+write = 'write' !letter
+
+
+
+// argument
+// 	= molecule
+// 
+// molecule <Expression>
+// 	= molecular_boolean
+// 	/ primary
+// 
+// molecular_boolean = molecular_binary_or
+// 
+// molecular_binary_or <Expression>
+// 	= lhs:molecular_binary_nor _ or _ rhs:molecular_binary_or { new Binary(Operator.Or, lhs, rhs) }
+// 	/ molecular_binary_nor
+// 
+// molecular_binary_nor <Expression>
+// 	= lhs:molecular_binary_and _ nor _ rhs:molecular_binary_nor { new Binary(Operator.Nor, lhs, rhs) }
+// 	/ molecular_binary_and
+// 
+// molecular_binary_and <Expression>
+// 	= lhs:molecular_equality _ and _ rhs:molecular_binary_and { new Binary(Operator.And, lhs, rhs) }
+// 	/ molecular_equality
+// 
+// molecular_equality <Expression>
+// 	= lhs:molecular_unary op:(_is / _isnt) _ rhs:molecular_equality { new Binary(op, lhs, rhs) }
+// 	/ molecular_unary
+// 
+// molecular_unary <Expression>
+// 	= not_ u:molecular_unary { new Unary(Operator.Not, u) }
+// 	/ molecular_comparison
+// 
+// molecular_comparison <Expression>
+// 	= lhs:molecular_addition op:comparator rhs:molecular_comparison { new Binary(op, lhs, rhs) }
+// 	/ molecular_addition
+// 
+// molecular_addition <Expression> -memoize
+// 	= lhs:molecular_addition op:(_plus_/_minus_) rhs:molecular_product
+// 		{ new Binary(op, lhs, rhs) }
+// 	/ molecular_product
+// 
+// molecular_product <Expression> -memoize
+// 	= lhs:molecular_product op:(_divide_/_times_) rhs:primary
+// 		{ new Binary(op, lhs, rhs) }
+// 	/ primary
+
+// molecule_list <IEnumerable<Expression>>
+//  	= head:molecule _ALS_ tail:argument_list { head.Concat(tail) }
+//  	/ head:molecule { new List<Expression> { head } }
+
+// binary_rhs <IEnumerable<Expression>>
+//	= primary_list
+//	/ e:expression { new List<Expression> { e } }

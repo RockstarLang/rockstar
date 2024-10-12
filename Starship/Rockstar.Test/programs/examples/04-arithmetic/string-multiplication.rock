@@ -1,0 +1,17 @@
+print "abcde" times " " (prints: a b c d e )
+
+print " " times "abcde" (prints:
+ a
+ b
+ c
+ d
+ e)
+
+print "bon" times "jovi"
+
+(prints:
+bjojnj
+booono
+bvovnv
+bioini
+)

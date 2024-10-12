@@ -1,0 +1,6 @@
+Print true or 1/0 (prints: true)
+Print false and 1/0 (prints: false)
+Print true nor 1/0 (prints: false)
+
+
+

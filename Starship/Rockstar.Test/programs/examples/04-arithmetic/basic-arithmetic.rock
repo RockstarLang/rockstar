@@ -1,0 +1,11 @@
+x is 5. y is 2. z is 4.
+
+Print x * y (prints: 10)
+Print x / y (prints: 2.5)
+Print x + y (prints: 7)
+Print x - y (prints: 3)
+
+Print 1 + 5 / 2 (prints: 3.5)
+Print 1 + 2 * 3 (prints: 7)
+Print 3 - 2 - 1 (prints: 0)
+Print 1 + 2 * 3 / 4 - 5 + 6 * 7 / 8 - 9 (prints: -6.25)

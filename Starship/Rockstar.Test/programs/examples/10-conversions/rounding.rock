@@ -1,0 +1,11 @@
+X is 1.2
+Turn up X
+Shout X (prints: 2)
+
+X is 1.2
+Turn down X
+Shout X (prints: 1)
+
+The radio's like a siren... the fire has just begun. 
+Turn up the radio
+Say the radio (prints: 16)

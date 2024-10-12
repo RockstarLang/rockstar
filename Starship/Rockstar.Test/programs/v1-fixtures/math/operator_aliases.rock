@@ -1,0 +1,9 @@
+say 2 plus 2 (prints: 4)
+say 2 with 2 (prints: 4)
+say 5 minus 3 (prints: 2)
+say 5 without 3 (prints: 2)
+say 5 times 5 (prints: 25)
+say 5 of 5 (prints: 25)
+say 4 over 2 (prints: 2)
+
+

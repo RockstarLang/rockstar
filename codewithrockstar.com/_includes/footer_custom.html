@@ -1,0 +1,32 @@
+<script>
+function ready(fn) {
+  if (document.readyState !== 'loading') {
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
+const toggleDarkModeSwitch = document.querySelector('.js-toggle-dark-mode');
+function isDarkMode() {
+	var theme = jtd.getTheme();
+	return theme === 'darkstar' || theme === 'default';
+}
+
+function toggleDarkMode(){
+  if (isDarkMode()) {
+    jtd.setTheme('rockstar');
+  } else {
+    jtd.setTheme('darkstar');
+  }
+  updateToggleButton();
+}
+
+function updateToggleButton() {
+	toggleDarkModeSwitch.textContent = (isDarkMode() ? 'Light Theme' : 'Dark Theme');
+}
+
+ready(function() {
+	jtd.addEvent(toggleDarkModeSwitch, 'click', toggleDarkMode);
+	updateToggleButton();
+});
+</script>

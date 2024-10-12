@@ -1,3 +1,0 @@
-say "pass"
-(test we can cope with blank lines at the end of a file)
-

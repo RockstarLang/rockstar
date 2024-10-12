@@ -1,0 +1,9 @@
+put 10 into variable
+while variable
+say variable
+knock variable down
+(end loop)
+until variable
+say variable
+build variable up
+(end loop)

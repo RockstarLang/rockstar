@@ -1,0 +1,153 @@
+@external propSource highlighting from "./rockstar-highlight.js"
+
+@top Program {
+	Block (EOB+ Block)* EOF
+	| EOF
+}
+
+Block {
+	Statement (EOS* Statement)* EOB
+	| Statement EOF
+}
+
+@skip { Whitespace | Comment }
+
+Comment { LineComment | BlockComment }
+
+Statement {
+ 	ListenStatement
+ 	| OutputStatement
+// 	| Function
+// 	| FunctionCall
+// 	| CallStatement
+ 	| ReturnStatement
+ 	| BreakStatement
+ 	| ContinueStatement
+ 	| LoopStatement
+// 	//| ConditionalStatement
+// 	// | DeclarationStatement
+ 	| Assignment
+// 	// | Enlistment
+// 	// | Increment
+// 	// | Decrement
+// 	// | Mutation
+// 	// | Rounding
+	 Expression
+}
+
+// @precedence { VLS, XLS, ALS, Wildcard, Whitespace, EOS, EOB, And }
+
+Body { EOS+ Block | Statement }
+
+// Alternate { EOS+ Else Body | Else Body }
+
+// // ConditionalStatement {
+// // 	"if" Expression "then" Body "else" Body "end"
+// // 	//If Expression Then? Body Alternate
+// // 	//| If Expression Else Alternate
+// // 	//| If Expression Then? Body
+// // }
+
+ LoopStatement {
+ 	While Expression Body
+	| Until Expression Body
+ }
+
+ContinueStatement { Continue Wildcard }
+
+BreakStatement { Break Wildcard }
+
+ReturnStatement { Return Back? Expression  }
+
+// Function {
+// 	variable Takes variableList Body
+// }
+
+ CallStatement {
+ 	Call variable With argumentList Into assignable
+ 	| Call variable With argumentList
+ 	| Call variable Into assignable
+ 	| Call variable
+}
+
+FunctionCall {
+ 	variable Taking argumentList
+}
+
+argumentList { Primary ALS argumentList | Primary }
+
+variableList { variable VLS variableList | variable | Null }
+
+Assignment {
+	Put Expression Into assignable |
+	variable Says PoeticString |
+	variable Is Operator Expression |
+	variable Is Now Expression |
+	variable Is PoeticNumber
+	variable Is Expression
+}
+
+ListenStatement { Listen To assignable }
+OutputStatement { Print Expression }
+// Boolean { True | False }
+
+Expression {  Binary }
+
+Binary { Primary Operator Binary }
+
+Operator { LogicOperator | ArithmeticOperator | CompareOperator }
+
+Primary {
+ 	String | Number | Lookup | Constant
+// 	//| constant | function_call | delist
+}
+
+Constant { True | False | Empty | Null | Mysterious }
+
+Indexer { At Expression }
+
+assignable { variable Indexer* }
+
+Lookup { variable Indexer* } // (At index)* }
+
+variable { ProperVariable | CommonVariable | SimpleVariable | Pronoun }
+
+@external tokens Variables from "../tokenizers/rockstar-tokenizer" { ProperVariable, CommonVariable, SimpleVariable, Pronoun }
+@external tokens Operators from "../tokenizers/rockstar-tokenizer" { LogicOperator, CompareOperator, ArithmeticOperator }
+@external tokens PoeticNumber from "../tokenizers/rockstar-tokenizer" { PoeticNumber }
+@external tokens PoeticString from "../tokenizers/rockstar-tokenizer" { PoeticString }
+@external tokens EOB from "../tokenizers/rockstar-tokenizer" { EOB }
+@external tokens EOS from "../tokenizers/rockstar-tokenizer" { EOS }
+@external tokens Wildcard from "../tokenizers/rockstar-tokenizer" { Wildcard }
+
+@external tokens Keywords from "../tokenizers/rockstar-tokenizer" {
+	Above, And, Around, As, At, Back, Be, Break, Build, Call, Cast,
+	Continue, Debug, Divided, Down, Else, Empty, End, Exactly, False,
+	Great, His, If, Into, Is, Isnt, Join, Knock, Less, Let, Like,
+	Listen, Minus, More, Mysterious, Non, Nor, Not, Now, Null, Or, Over,
+	Plus,  Pop, Print, Push, Put, Return, Says, Small, Split, Takes,
+	Taking, Than, The, Then, Times, To, True, Turn, Under, Until, Up,
+	Using, While, With, Write
+}
+
+ALS { OxfordComma | XLS }
+VLS { and | XLS }
+XLS { Comma Ampersand? | Nacton | Ampersand | Comma }
+
+@tokens {
+	OxfordComma { ", " and }
+	Ampersand { "&" }
+	Comma { "," }
+ 	trailing_punctuation { (Comma | $[.?!;: \t])* }
+	and { "AND" | "ANd" | "AnD" | "And" | "aND" | "aNd" | "anD" | "and" }
+ 	Nacton { "n'" | "'n'" }
+ 	EOL { $[\r]? "\n" }
+ 	LineComment { "#" ![\n]* "\n" }
+ 	String { '"' (!["\\] | "\\" _)* '"' }
+ 	Number { (@digit+ "." | ".")? @digit+ }
+ 	BlockComment { "(" ![\)]* ")" | "{" ![\}]* "}" | "[" ![\]]* "]" }
+ 	Whitespace { $[ \r\n\t]+ }
+ 	EOF { @eof }
+}
+
+@detectDelim

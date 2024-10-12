@@ -1,0 +1,10 @@
+x = 5
+if x > 1
+if x > 2
+if x > 3
+if x > 4
+if x > 5
+print "this won't get printed because x is not greater than 5"
+oooooh
+print "this always gets printed"
+(prints: this always gets printed)

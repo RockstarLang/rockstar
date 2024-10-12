@@ -1,0 +1,26 @@
+Midnight takes your heart and your soul
+While your heart is as high as your soul
+Put your heart without your soul into your heart, baby
+Give back your heart, yeah
+
+let limit = 100
+let counter = 0
+let fizz = 3
+let buzz = 5
+
+until counter = limit
+counter = counter + 1
+if midnight taking counter, fizz * buzz is 0
+print "FizzBuzz"
+continue
+end (if)
+if midnight taking counter, buzz is 0
+print "Buzz"
+continue
+end (if)
+if midnight taking counter, fizz is 0
+print "Fizz"
+continue
+end (if)
+print counter
+end (while)

@@ -1,0 +1,25 @@
+If 1 say 1 (prints: 1)
+
+If 1
+Say 1 (prints: 1)
+End
+
+If 0 say 1
+Otherwise say 2 (prints: 2)
+
+(prints: 2)
+If 0
+Say 1
+Otherwise
+Say 2
+End
+
+(writes: 42)
+If 0
+Write 3
+Write 1
+Else
+Write 4
+Write 2
+End
+

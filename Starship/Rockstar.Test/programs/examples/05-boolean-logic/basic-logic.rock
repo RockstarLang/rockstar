@@ -1,0 +1,19 @@
+Print false nor false (prints: true)
+Print true nor false (prints: false)
+Print false nor true (prints: false)
+Print true nor true (prints: false)
+
+Print true and true (prints: true)
+Print true and false (prints: false)
+Print false and true (prints: false)
+Print false and false (prints: false)
+
+Print true or true (prints: true)
+Print true or false (prints: true)
+Print false or true (prints: true)
+Print false or false (prints: false)
+
+Print true and not true (prints: false)
+Print true and not false (prints: true)
+Print false or not true (prints: false)
+Print false or not false (prints: true)

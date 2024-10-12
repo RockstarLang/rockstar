@@ -1,0 +1,11 @@
+if true print 1 (prints: 1)
+
+when 1 is true say 1 else say 2 (prints: 1)
+
+if nothing is true say "yeah" otherwise say "no" (prints: no)
+
+if false otherwise print "rock on!" (prints: rock on!)
+
+if 1 if 2 if 3 if 4 say 4 else say 3 else say 2 else say 1 else say 0 (prints: 4)
+(the one-liner is done, so the next statement will always execute)
+print 1 (prints: 1)

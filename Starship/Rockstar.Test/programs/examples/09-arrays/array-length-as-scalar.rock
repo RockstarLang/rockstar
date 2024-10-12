@@ -1,0 +1,14 @@
+Let the array at 5150 be "Van Halen".
+Print the array + 0 (prints: 5151)
+Print the array at 0 (prints: null)
+
+Rock my array with 1, 2, 3
+The counter is 0
+While the counter ain't my array
+Print "Counting " with the counter
+Build the counter up, yeah
+
+(prints:
+Counting 0
+Counting 1
+Counting 2)

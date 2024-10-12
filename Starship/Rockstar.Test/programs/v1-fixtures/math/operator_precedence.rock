@@ -1,0 +1,6 @@
+say 1 + 1 * 2 (prints: 3)
+say 1 * 2 + 1 (prints: 3)
+say 1 / 2 * 3 + 4 (prints: 5.5)
+say 5-2*3 (prints: -1)
+say 2*3 - 5 (prints: 1)
+

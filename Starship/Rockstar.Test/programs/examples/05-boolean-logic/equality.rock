@@ -1,0 +1,16 @@
+Print 1 is 1 (prints: true)
+
+Your memories are 1. My dreams are 1.
+Say your memories are my dreams (prints: true)
+It's with 3.
+Say your memories are my dreams (prints: false)
+
+Print "rock" is "roll" (prints: false)
+
+Print 0 is true (prints: false)
+Print 0 is false (prints: true)
+Print 1 is true (prints: true)
+Print 2 is true (prints: true)
+
+Print 123 is "123" (prints: true)
+Print "yeah!" is true (prints: true)

@@ -1,0 +1,368 @@
+(The Rockstar Acid Test: every single language feature in a single file)
+
+# This is a line comment
+(Comments in parentheses)
+[ChordPro comments in square brackets]
+{ChordPro comments in braces}
+( [square brackets] and {braces} inside a comment)
+
+The variable is 1. Say it (prints: 1)
+The variable is true. Say it (prints: true)
+The variable is 1 + 1. Say it (prints: 2)
+The variable is like a series of words representing digits. Say it (prints: 162526)
+The variable is a version 1 poetic literal. Say it with love, say it with hate.
+Say it (prints: 1767.32443244)
+The variable says string literals can contain comments [see?]
+Say it (prints: string literals can contain comments [see?])
+
+Simple is "simple". Print it (prints: simple)
+Johnny B. Goode is a rock'n'roll pioneer.
+Print it. (prints: 197)
+He is dead now.
+Print it. (prints: 43)
+
+The number is 12345
+The variable is the number
+Say it (prints: 36)
+The variable is now the number
+Say it (prints: 12345)
+The variable is not the number
+Say it (prints: false)
+
+Let the variable be "Eddie". Say it. (prints: Eddie)
+Let the variable be with " van ". Say it (prints: Eddie van )
+Let it be with "H", "a" & "l" 'n' "e", and "n". Say it. (prints: Eddie van Halen)
+Put the variable into the box.
+Say it. (prints: Eddie van Halen)
+The variable is empty.
+Say the box. (prints: Eddie van Halen)
+Roll the box into the letter
+Say the letter (prints: E)
+Say the box (prints: ddie van Halen)
+
+Say the box at 1 (prints: d)
+Say the box at 1 + 1 (prints: i)
+
+The radio is quiet. Too quiet.
+Say it (prints: 5.35)
+Turn up the radio. Say it. (prints: 6)
+The radio is loud. Too loud.
+Turn down the radio. Say it. (prints: 4)
+The radio is broken. Totally destroyed.
+Say it (prints: 6.79)
+Turn it around.
+Say it. (prints: 7)
+
+A number is 1
+Your love is true.
+
+If a number is true say "a number is true" (prints: a number is true)
+If it is true say "it is true" (prints: it is true)
+If it ain't false say "it ain't false" (prints: it ain't false)
+If it ain't lies say "it ain't lies" (prints: it ain't lies)
+if it ain't nothing say "it ain't nothing" (prints: it ain't nothing)
+if it ain't nobody say "it ain't nobody" (prints: it ain't nobody)
+if it ain't gone say "it ain't gone" (prints: it ain't gone)
+
+If it isn't lies say 1 (prints: 1)
+If it wasn't lies say 1 (prints: 1)
+
+The kids are OK
+If they aren't wrong say 1 (prints: 1)
+If they weren't wrong say 1 (prints: 1)
+
+The boomers were wrong
+If they weren't right say 1 (prints: 1)
+If they aren't right say 1 (prints: 1)
+
+Jerry Garcia is 2
+Hunter S. Thompson is 2
+If Jerry Garcia is as high as Hunter S. Thompson
+Say "drugs are bad, mmmkay" (prints: drugs are bad, mmmkay)
+Yeah
+
+The word is "bnn!"
+Split the word into the letters
+Join the letters into the snack using "a"
+Shout the snack (prints: banana!)
+Unite the letters into the snack using "o"
+Shout the snack (prints: bonono!)
+
+Stringify takes the array.
+Let the result be empty
+Until the array is nothing
+Roll the array into the number,
+Cast the number into the letter,
+Let the result be with the letter.
+
+Give back the result
+
+Rock the balls
+Rock the balls with 65, 67, 9889, 68, 67
+Debug the balls
+Let the balls be stringify taking the balls
+Shout the balls (prints: AC⚡DC)
+
+A number is 5
+Shout a number plus 1 (prints: 6)
+Shout a number + 1 (prints: 6)
+Shout a number with 1 (prints: 6)
+
+Shout a number minus 1 (prints: 4)
+Shout a number without 1 (prints: 4)
+
+Shout a number times 2 (prints: 10)
+Shout a number * 3 (prints: 15)
+Shout 4 of a number (prints: 20)
+
+Shout a number divided by 2 (prints: 2.5)
+Shout a number over 1/2 (prints: 2.5)
+A half is 1/2
+Shout a number over a half (prints: 10)
+Shout 10 between 5 (prints: 2)
+
+Your love is lies
+If your love is true then say "yes" otherwise say "no" (prints: no)
+
+(prints: not a chance, loser!)
+If your love is true then say "yes"
+otherwise say "not a chance, loser!"
+
+(prints: not this time)
+If your love was true
+Say "yeah"
+otherwise
+say "not this time", baby
+
+Say mysterious (prints: mysterious)
+Say true (prints: true)
+Say false (prints: false)
+
+If true is true say "is" (prints: is)
+If true are true say "are" (prints: are)
+if true were true say "were" (prints: were)
+if true was true say "was" (prints: was)
+
+If false ain't true say "ain't" (prints: ain't)
+If false wasn't true say "wasn't" (prints: wasn't)
+If false aren't true say "aren't" (prints: aren't)
+If false weren't true say "weren't" (prints: weren't)
+
+If false is non-true say "is non-" (prints: is non-)
+If true is non-non-true say "is non-non-" (prints: is non-non-)
+
+If true or false print "or" (prints: or)
+If true and true print "and" (prints: and)
+
+If false nor false print "nor" (prints: nor)
+
+The moon is 5
+The cowshed is 4
+When the moon is over the cowshed say "moooo" (prints: moooo)
+
+Listen
+Listen to the sunrise
+Whisper the sunrise (prints: The second line of acid-test.rock.in)
+
+Ziggurat takes a number
+If a number is more than 0
+Write "z"
+If a number is more than 1
+Write "i"
+If a number is more than 2
+Write "g"
+If a number is more than 3
+Write "g"
+If a number is more than 4
+Write "u"
+If a number is more than 5
+Write "r"
+If a number is more than 6
+Write "a"
+If a number is more than 7
+Write "t"
+yeah, oh, baby, oooh, end
+(close eight nested blocks in various ways including this blank line)
+Print "!"
+End
+
+Ziggurat taking 8 (prints: ziggurat!)
+Ziggurat taking 3 (prints: zig!)
+Ziggurat taking 1 (prints: z!)
+Ziggurat taking -1 (prints: !)
+
+My heart is nothing
+While true
+If my heart is more than 5 break
+Build my heart up
+Yeah
+
+Shout my heart (prints: 6)
+
+The odds takes the limit
+A number is nothing
+While a number is less than the limit
+Build a number up
+Let half be a number over 2
+Turn down half 
+If half is a number over 2 continue
+Write a number
+Write ","
+Yeah, yeah
+
+Call the odds with 10 (writes: 1,3,5,7,9,)
+
+My head is "123"
+My heart is 123
+If my head is my heart say "my head is my heart" (prints: my head is my heart)
+
+(prints: it's alright, it's just a metaphor)
+If my head is exactly my heart
+Say "this is a serious medical condition"
+Otherwise
+Say "it's alright, it's just a metaphor"
+End
+
+Your love is true
+My cat is 1
+If your love is my cat print "your love is my cat" (prints: your love is my cat)
+
+(prints: types are hard, yo)
+If your love is exactly my cat say "I'm calling the cops" otherwise say "types are hard, yo"
+
+Alpha takes beta
+Gamma takes delta
+Epsilon takes zeta
+Give back zeta with " ", delta, " ", beta
+Yeah, yeah, yeah
+
+Put Alpha taking "Halen" into AddHalen
+Put AddHalen taking "van" into AddVanHalen
+Shout AddVanHalen taking "Alex" (prints: Alex van Halen)
+
+A number is silence
+They are with "F"
+Them is with "a"
+She is with "b"
+Him is with "u"
+Her is with "l"
+Hir is with "o"
+Zie is with "u" 
+Zir is with "s"
+Xem is with " "
+Ver is with "T"
+Ze is with "h"
+Ve is with "u"
+Xe is with "n"
+It is with "d"
+He is with "e"
+You are with "r"
+Me is with "birds"
+I am with "!"
+Say it (prints: Fabulous Thunderbirds!)
+
+
+The times is 5
+Say it times the times (prints: 25)
+Say the times times it (prints: 25)
+Say the times times the times (prints: 25)
+
+A girl is laughing
+Her eyes are bright
+Say her times the times (prints: 30)
+Say her times her eyes (prints: 36)
+
+A boy is crying
+His eyes are dark
+He is with a girl
+Say him (prints: 12)
+
+ReturnFunction takes x
+Return "Return " with x, oh
+
+GivingFunction takes x giving "Giving " with x
+
+GiveFunction takes x
+Give "Give " with x, yeah
+
+SendFunction takes x
+Send "Send " with x, baby
+
+Shout GivingFunction taking "La Vida Loca" (prints: Giving La Vida Loca)
+Shout GiveFunction taking "In To Me" (prints: Give In To Me)
+Shout SendFunction taking "Me An Angel" (prints: Send Me An Angel)
+Shout ReturnFunction taking "To Sender" (prints: Return To Sender)
+
+Tommy says we've got each other
+Gina said we've got to hold on
+The Scorpions say here I am
+
+Shout Gina (prints: we've got to hold on)
+Shout Tommy (prints: we've got each other)
+Shout the Scorpions (prints: here I am)
+
+A child is crying
+An angel is dying
+The day is long
+My heart is breaking
+Your lies are endless
+Our flag is death
+
+Print "" with a child, an angel, the day, my heart, your lies & our flag
+(prints: 654875)
+
+If 2 is greater than 1 print "greater" (prints: greater)
+If 2 is higher than 1 print "higher" (prints: higher)
+if 2 is stronger than 1 print "stronger" (prints: stronger)
+if 2 is more than 1 print "more" (prints: more)
+if 2 is above 1 print "above" (prints: above)
+if 2 > 1 print ">" (prints: >)
+
+if 1 is less than 2 print "less" (prints: less)
+if 1 is lower than 2 print "lower" (prints: lower)
+if 1 is smaller than 2 print "smaller" (prints: smaller)
+if 1 is weaker than 2 print "weaker" (prints: weaker)
+If 1 is below 2 print "below" (prints: below)
+If 1 < 2 print "<" (prints: <)
+
+if 2 is as great as 2 print "as great as" (prints: as great as)
+if 2 is as high as 2 print "as high as" (prints: as high as)
+if 2 is as big as 2 print "as big as" (prints: as big as)
+if 2 is as strong as 2 print "as strong as" (prints: as strong as)
+if 2 <= 2 print "<=" (prints: <=) 
+
+if 2 is as low as 2 print "as low as" (prints: as low as)
+if 2 is as small as 2 print "as small as" (prints: as small as)
+if 2 is as weak as 2 print "as weak as" (prints: as weak as)
+if 2 >= 2 print ">=" (prints: >=)
+
+Shout null (prints: null)
+Shout nothing (prints: null)
+Shout nowhere (prints: null)
+Shout nobody (prints: null)
+Shout gone (prints: null) 
+Shout empty (prints: )
+Shout silence (prints: )
+Shout silent (prints: )
+
+Blondie takes nothing
+Shout "Hanging on the telephone"
+End 
+
+Call me (prints: Hanging on the telephone)
+
+Cast "A" into the ascii
+Print the ascii (prints: 65)
+Cast 65 into the letter
+Print the letter (prints: A)
+Cast "123.45" into the number using 10 
+Print the number (prints: 123.45)
+Cast "100" into the octal using 8
+Print the octal (prints: 64)
+Cast "1.4" into the octal using 8
+Print the octal (prints: 1.5)
+Cast "abc.def" into the octal using 16
+Print the octal (prints: 2748.870849609375)
+
+Write "this is the end" (writes: this is the end)
+ 

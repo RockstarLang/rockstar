@@ -1,0 +1,209 @@
+@import 'page.scss';
+
+
+div.site-header a.site-title {
+	font-size: 0 !important;
+	position: relative;
+	left: 8px;
+	top: 12px;
+	height: 64px;
+	width: 300px;
+	background: url(/assets/img/rockstar-logotype.svg) left center no-repeat;
+}
+
+ul#index-nav {
+	list-style-type: none;
+  
+	li::before {
+	  content: none;
+	}
+  
+	padding: 0;
+	margin: 0;
+  
+	a {
+	  font-weight: bold;
+	}
+  
+	p {
+	  padding-left: 20px;
+	}
+  }
+
+body {
+	main {
+		h2 {
+			margin-top: 1em;
+			padding-top: 1em;
+			border-top: 2px solid $button-color;
+		}
+
+		h3 {
+			margin-top: 1em;
+		}
+	}
+}
+div.cm-editor {
+	border: 1px solid $link-color;
+	border-radius: 4px;
+	padding: 4px;
+}
+
+div.rockstar-inputs {
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+
+	label {
+		flex: 120px;
+		cursor: pointer;
+		display: block;
+		padding: 8px 8px 6px 8px;
+		text-align: left;
+		color: #ffffff !important;
+	}
+
+	textarea {
+		padding: 8px;
+		font-size: 12px;
+		line-height: 1.1em;
+		box-sizing: border-box;
+		margin: 8px 0 0 0;
+		border: 1px solid $link-color;
+		height: 100%;
+		border-radius: 4px;
+		resize: vertical;
+		overflow-y: auto;
+		min-height: 40px;
+		width: 100%;
+	}
+}
+
+div.rockstar-controls {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	@media (min-width: $breakpoint-fullwidth) {
+		flex-direction: row;
+	}
+
+	box-sizing: border-box;
+	padding-top: 8px;
+
+	.buttons {
+		align-self: flex-start;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+		gap: 8px;
+
+		@media (min-width: $breakpoint-fullwidth) {
+			flex-direction: column;
+			width: auto;
+			flex: 120px;
+			height: 120px;
+			margin-bottom: 0;
+		}
+
+		button {
+			width: 100%;
+			max-width: 120px;
+			cursor: pointer;
+			display: block;
+			padding: 6px 8px;
+			border-radius: 4px;
+			border: 1px outset $button-color;
+			background-color: $button-color !important;
+			text-align: left;
+			color: $button-text !important;
+			i {
+				position: relative;
+				top: 1px;
+				float: right;
+			}
+		}
+	}
+
+	div.output {
+		position: relative;
+		font-family: monospace;
+		white-space: pre;
+		padding: 8px 8px 40px 8px;
+		font-size: 12px;
+		line-height: 1.1em;
+		box-sizing: border-box;
+		margin: 0;
+		border: 1px solid $link-color;
+		height: 100%;
+		border-radius: 4px;
+		resize: vertical;
+		overflow-y: auto;
+		min-height: 120px;
+		&.loading-messages {
+			text-align: center;
+			color: $link-color;
+			font-style: italic;
+		}
+		background: rgba(0,0,0,0.75);
+
+		&.parse-tree {
+			color: $link-color;
+			font-style: italic;
+		}
+
+		@media (max-width: $breakpoint-fullwidth) {
+			width: 100%;
+		}
+
+		width: 100%;
+
+		span {
+			font-style: italic;
+			position: absolute;
+			left: 8px;
+			bottom: 8px;
+			padding: 4px;
+			border-radius: 2px;
+		}
+
+		span.error {
+			color: #f3c;
+			border: 1px solid #f3c;
+			background-color: #312;
+		}
+
+		span.result {
+			color: $link-color;
+			border: 1px solid $link-color;
+			background-color: #000;
+		}
+	}
+
+}
+
+pre {
+	tab-size: 2 !important;
+}
+
+:not(pre, figure)>code {
+	border: 0;
+	font-size: 1.0em !important;
+	background-color: $code-background-color;
+	padding: 2px;
+	margin: 0;
+}
+
+article#teemill-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	section {
+		flex: 240px;
+		a {
+			width: 100%;
+		}
+	}
+}

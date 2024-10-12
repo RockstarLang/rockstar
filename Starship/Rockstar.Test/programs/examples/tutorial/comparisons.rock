@@ -1,0 +1,12 @@
+X is 5
+If x >= 5 print "Ozzy"
+If x <= 5 print "Tony"
+If x < 6 print "Geezer"
+if x > 4 print "Bill"
+
+My heart is crying
+The sky is on fire
+If the sky is greater than my heart print "Vince"
+If the sky is as high as my heart print "Mick"
+If my heart is weaker than the sky print "Nikki"
+If my heart is as low as the sky print "Tommy"

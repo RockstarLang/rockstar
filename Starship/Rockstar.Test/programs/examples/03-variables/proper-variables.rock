@@ -1,0 +1,8 @@
+Tom Sawyer is right
+Shout Tom Sawyer (prints: true)
+
+Doctor Feelgood is wrong
+Scream DOCTOR FEELGOOD (prints: false)
+
+Mötley Crüe are OK
+SCREAM MÖTLEY CRÜE (prints: true)

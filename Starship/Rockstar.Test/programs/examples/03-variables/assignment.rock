@@ -1,0 +1,11 @@
+x is 1. Print x (prints: 1)
+Y was 2. Print y (prints: 2)
+z is -1. Print z (prints: -1)
+The limit's 55. Print the limit. (prints: 55)
+
+Put 12 into a variable. Print a variable. (prints: 12)
+Let my variable be 34. Print my variable (prints: 34)
+
+Put nothing into the fire. Print the fire. (prints: null)
+Let the fire be silence. Print the fire. (prints: )
+

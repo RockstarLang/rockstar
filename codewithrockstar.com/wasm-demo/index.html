@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rockstar in WASM</title>
+	<style>
+		textarea, pre {
+			width: 100%;
+			font-family: Consolas, monospace;
+			border: 1px solid #000;
+			min-height: 100px;
+			font-size: 16px;
+			padding: 8px;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+	<h1>A Rockstar Interpreter in WASM</h1>
+	<h2>Source:</h2>
+	<textarea id="source">shout "hello world"
+	</textarea>
+	<input id="runButton" type="button" value="Run" />
+	<h2>Output:</h2>
+	<pre id="output"></pre>
+	</pre>
+	<script src="wasm.js" type="module">
+
+	</script>
+</body>
+</html>

@@ -1,4 +1,0 @@
-
-
-(this file tests that parsers can handle BLANK leading lines)
-say "pass"

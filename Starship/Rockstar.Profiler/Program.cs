@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Rockstar.Engine;
 
-const string DIRECTORY = "D:/Projects/github/RockstarLang/rockstar2/Starship/Rockstar.Test/programs";
+const string DIRECTORY = "D:/Projects/github/RockstarLang/rockstar/Starship/Rockstar.Test/programs";
 var fullPath = Path.GetFullPath(DIRECTORY);
 Console.WriteLine(fullPath);
 var files = Directory.GetFiles(fullPath, "*.rock", SearchOption.AllDirectories);

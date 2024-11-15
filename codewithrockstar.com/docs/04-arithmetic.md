@@ -30,7 +30,7 @@ Here's how Rockstar operators are defined for various combinations of types.
 
 As a rough rule, operations involving numbers will return numbers. For arithmetic purposes, `true` is `1`, `null` and `false` are `0`. Operations involving strings will generally return strings. Any operation involving `mysterious` will always return `mysterious`.
 
-#### Addition
+### Addition
 
 Addition adds numbers and concatenates strings.
 
@@ -40,7 +40,7 @@ Addition adds numbers and concatenates strings.
 
 If both operands  have a numeric value, subtraction is numeric. If either or both operands is a string, Rockstar will "subtract" strings by removing the the bit you're taking away (the *subtrahend*, if you want to get technical) from the bit you're taking it away from (the *minuend*). Most of the time, this has no effect and subtraction just returns the string representation of the left-hand argument, but hey -- you're the one trying to subtract strings here; let's not make out like I'm the one who has a problem.
 
-{% rockstar_include addition-types.rock %}
+{% rockstar_include subtraction-types.rock %}
 ### Multiplication
 
 Rockstar lets you multiply strings. Multiplying by positive integers will repeat the string. Multiply by `-1` to reverse the string, multiplying by decimal fractions will extract substrings. You'll figure it out.

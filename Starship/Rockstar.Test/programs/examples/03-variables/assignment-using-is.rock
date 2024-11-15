@@ -1,0 +1,19 @@
+(Assignment to a literal number)
+Foo is 2
+Say foo (prints: 2)
+
+(Assignment to an expression beginning with a literal)
+Foo is 2 + 2
+Say foo (prints: 4)
+
+(Assignment to an expression beginning with a keyword)
+Foo is with 2
+Say foo (prints: 6)
+
+(Assignment to a poetic number that looks like a variable name)
+Bar is foo
+Say bar (prints: 3)
+
+(Assignment to a poetic number that looks like an expression)
+Bar is foo with bar
+Say bar (prints: 343)

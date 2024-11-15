@@ -6,13 +6,22 @@ summary: Ever wished you could create a variable with a space in it? Welcome to 
 ---
 Rockstar variables are dynamically typed. There are three different ways to assign a variable in Rockstar.
 
-1. `<variable> is <expression>`.  Valid aliases for `is` are `are`, `am`, `was`, `were`, and the contractions `'s` and `'re`
+1. `<variable> is <literal>`.  Valid aliases for `is` are `are`, `am`, `was`, `were`, and the contractions `'s` and `'re`
 2. `put <expression> into <variable>`
 3. `let <variable> be <expression>`
 
 {% rockstar_include assignment.rock %}
 
-Rockstar variables are function scoped - see variable scope in the section on functions for more about how this work.
+## Assignment using `is`
+
+The `is` keyword in Rockstar has some idiosyncratic behaviour to maintain backwards compatibility. Specifically, the **right-hand side of `is`  cannot start with a variable**:
+
+* If the expression on the right-hand side of `is` starts with a literal or a language keyword, it will be interpreted as an *expression*
+* Any other value will be interpreted as a **[poetic number](#poetic-numbers)**, even if it's the name of a variable.
+
+{% rockstar_include assignment-using-is.rock %}
+
+Rockstar variables are function scoped - see variable scope in the [functions](08-functions.md)  for more about how this work.
 # Variable names in Rockstar
 
 Rockstar supports three different kinds of variable names.
@@ -76,15 +85,21 @@ Say her times 456
 ## Poetic Literals
 
 One of Rockstar's unique features is the ability to initialise variables using song lyrics.
+
 ### Poetic Numbers
 
-A poetic number begins with the `like` or `so` keyword, followed by a series of words. The Rockstar parser takes the length of each word and interprets it as a decimal digit:
+A poetic number is a way of hiding numbers in lyrics; the Rockstar parser takes the length of each word and interprets it as a decimal digit.
+
+Poetic numbers are indicated by the `like` and `so` keywords:
 
 {% rockstar_include poetic-numbers.rock %}
+
+Assignment using `is` will trigger poetic number parsing if the right-hand side of the `is` expression does **not** start with a keyword or literal; see [assignment using `is`](#assignment-using-is) for more about how this works.
 
 Words of 10 or more letters are counted modulo 10, so you can use 10-letter words for `0`, 11 letters for `1` and 12 letters for `2`. Hyphens `-` are counted as letters, so `demon-haunted` is treated as a 12-letter word. Apostrophes are **not** counted, so `nothing` counts as 7 but `nothin'` counts as 6. A poetic number counts every word until the end of the current statement (indicated by a newline or punctuation `.!?;`) If you need a poetic number with a decimal point, use an ellipsis `...`  or the Unicode equivalent U+2026 `…` as the decimal.
 
 {% rockstar_include poetic-numbers-2.rock %}
+
 ### Poetic strings
 You can initialise string variables without quotes by using the `says` or `said` keyword. This will skip exactly one space character and then capture the rest of the line as a literal string. If the character immediately following the `says` keyword is not a space, it will be included in the string literal.
 

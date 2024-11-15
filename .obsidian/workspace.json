@@ -13,10 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "codewithrockstar.com/docs/02-types-and-values.md",
+                "file": "codewithrockstar.com/docs/03-variables.md",
                 "mode": "source",
                 "source": true
-              }
+              },
+              "icon": "lucide-file",
+              "title": "03-variables"
             }
           }
         ]
@@ -39,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -54,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -62,7 +68,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -85,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "codewithrockstar.com/docs/02-types-and-values.md",
+                "file": "codewithrockstar.com/docs/03-variables.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,7 +101,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 03-variables"
             }
           },
           {
@@ -102,10 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "codewithrockstar.com/docs/02-types-and-values.md",
+                "file": "codewithrockstar.com/docs/03-variables.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 03-variables"
             }
           },
           {
@@ -116,7 +128,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -125,8 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "codewithrockstar.com/docs/02-types-and-values.md"
-              }
+                "file": "codewithrockstar.com/docs/03-variables.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 03-variables"
             }
           }
         ]
@@ -146,37 +162,44 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "efc3d0b2f9e18fac",
+  "active": "005da2a05b4fbf96",
   "lastOpenFiles": [
-    "Starship/Rockstar.Engine/obj/Debug/net8.0/gw1hreob.tjq~",
-    "Starship/Rockstar.Test/obj/Debug/net8.0/nCrunchTemp_5bc5a958-8d02-4d54-9d5b-e9660cd70e4c.csproj.AssemblyReference.cache",
-    "Starship/Rockstar/obj/Debug/net8.0/nCrunchTemp_3c9525d6-b14c-40f6-be90-33819e483ee6.csproj.AssemblyReference.cache",
-    "Starship/Rockstar.Profiler/obj/Debug/net8.0/nCrunchTemp_d678d38e-5041-4245-a2a7-eb0a118524cb.csproj.AssemblyReference.cache",
-    "Starship/Rockstar.Engine/obj/Debug/net8.0/nCrunchTemp_8ca7425a-775c-4bc8-a44e-7cb90069cdab.csproj.AssemblyReference.cache",
-    "Starship/Rockstar.Test/obj/Debug/net8.0/nCrunchTemp_5bc5a958-8d02-4d54-9d5b-e9660cd70e4c.GlobalUsings.g.cs",
-    "Starship/Rockstar/obj/Debug/net8.0/nCrunchTemp_3c9525d6-b14c-40f6-be90-33819e483ee6.GlobalUsings.g.cs",
-    "Starship/Rockstar.Profiler/obj/Debug/net8.0/nCrunchTemp_d678d38e-5041-4245-a2a7-eb0a118524cb.GlobalUsings.g.cs",
-    "Starship/Rockstar.Engine/obj/Debug/net8.0/nCrunchTemp_8ca7425a-775c-4bc8-a44e-7cb90069cdab.GlobalUsings.g.cs",
-    "Starship/Rockstar.Test/obj/Debug/net8.0/nCrunchTemp_5bc5a958-8d02-4d54-9d5b-e9660cd70e4c.assets.cache",
-    "Starship/Rockstar/obj/Debug/net8.0/nCrunchTemp_3c9525d6-b14c-40f6-be90-33819e483ee6.assets.cache",
-    "codewithrockstar.com/docs/01-getting-started.md",
-    "codewithrockstar.com/docs/02-types-and-values.md",
-    "codewithrockstar.com/docs/09-arrays.md",
+    "codewithrockstar.com/_site/examples/03-variables/assignment-using-is.rock",
+    "Starship/Rockstar.Test/programs/examples/03-variables/assignment-using-is.rock",
+    "Starship/Rockstar.Test/programs/examples/03-variables/simple-variables copy.rock",
+    "codewithrockstar.com/_site/wasm/wwwroot/main.js",
+    "codewithrockstar.com/_site/wasm/wwwroot/index.html",
+    "codewithrockstar.com/_site/wasm/wwwroot/_framework/netstandard.wasm.gz",
+    "codewithrockstar.com/_site/wasm/wwwroot/_framework/netstandard.wasm.br",
+    "codewithrockstar.com/_site/wasm/wwwroot/_framework/netstandard.wasm",
+    "codewithrockstar.com/_site/wasm/wwwroot/_framework/icudt_no_CJK.dat.gz",
+    "codewithrockstar.com/_site/wasm/wwwroot/_framework/icudt_no_CJK.dat.br",
+    "codewithrockstar.com/_site/wasm/wwwroot/_framework/icudt_no_CJK.dat",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/programs/examples/gallery/README.md",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/EmptyFiles/image/empty.webp",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/EmptyFiles/image/empty.png",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/EmptyFiles/image/empty.jpg",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/EmptyFiles/image/empty.gif",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/EmptyFiles/image/empty.bmp",
+    "Starship/Rockstar.Test/bin/Debug/net8.0/EmptyFiles/image/empty.avif",
+    "codewithrockstar.com/_site/peg notes.md",
+    "codewithrockstar.com/_site/links.md",
+    "codewithrockstar.com/_site/images/chordpro-example.png",
+    "codewithrockstar.com/_site/favicon.png",
+    "codewithrockstar.com/_site/examples/gallery/README.md",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/red-on-press.webp",
+    "codewithrockstar.com/_site/assets/img/teemill/480p/red-logo.webp",
+    "codewithrockstar.com/_site/README.md",
     "codewithrockstar.com/docs/06-expressions.md",
+    "codewithrockstar.com/docs/03-variables.md",
+    "codewithrockstar.com/docs/02-types-and-values.md",
+    "codewithrockstar.com/docs/08-functions.md",
+    "codewithrockstar.com/docs/01-getting-started.md",
+    "codewithrockstar.com/docs/09-arrays.md",
     "codewithrockstar.com/docs/99-rockstar-acid-test.md",
     "codewithrockstar.com/docs/07-flow-control.md",
     "codewithrockstar.com/links.md",
     "codewithrockstar.com/news.md",
-    "codewithrockstar.com/_site/assets/img/teemill/480p/red-on-press.webp",
-    "codewithrockstar.com/_site/assets/img/teemill/480p/red-basic-fit.webp",
-    "codewithrockstar.com/_site/assets/img/teemill/480p/red-logo.webp",
-    "codewithrockstar.com/_site/assets/img/teemill/480p/blue-tailored.webp",
-    "codewithrockstar.com/_site/assets/img/teemill/480p/blue-logo.webp",
-    "codewithrockstar.com/_site/assets/img/teemill/480p/blue-kids-fit.webp",
-    "codewithrockstar.com/assets/img/teemill/480p/red-on-press.webp",
-    "codewithrockstar.com/assets/img/teemill/480p/red-logo.webp",
-    "codewithrockstar.com/assets/img/teemill/480p/red-basic-fit.webp",
-    "codewithrockstar.com/assets/img/teemill/480p/blue-tailored.webp",
     "cm-lang-rockstar/node_modules/style-mod/src/README.md",
     "cm-lang-rockstar/node_modules/@bcoe/v8-coverage/dist/lib/README.md",
     "cm-lang-rockstar/node_modules/@bcoe/v8-coverage/dist/lib/LICENSE.md",
@@ -186,13 +209,6 @@
     "cm-lang-rockstar/node_modules/@rollup/plugin-node-resolve/README.md",
     "cm-lang-rockstar/node_modules/@codemirror/lint/README.md",
     "cm-lang-rockstar/node_modules/deepmerge/changelog.md",
-    "cm-lang-rockstar/node_modules/terser/node_modules/source-map-support/README.md",
-    "cm-lang-rockstar/node_modules/tslib/README.md",
-    "cm-lang-rockstar/node_modules/imurmurhash/README.md",
-    "codewithrockstar.com/tutorial.md",
-    "codewithrockstar.com/docs/04-arithmetic.md",
-    "codewithrockstar.com/code-of-conduct.md",
-    "cm-lang-rockstar/README.md",
-    "codewithrockstar.com/index.md"
+    "cm-lang-rockstar/node_modules/terser/node_modules/source-map-support/README.md"
   ]
 }

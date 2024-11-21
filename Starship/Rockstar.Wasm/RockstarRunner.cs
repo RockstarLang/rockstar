@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.JavaScript;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Rockstar.Engine;
 
@@ -9,10 +10,10 @@ namespace Rockstar.Wasm;
 public class WasmIO(Action<string> output, Queue<string> input) : IRockstarIO {
 	public string? Read() => input.TryDequeue(out var s) ? s : null;
 	public void Write(string s) => output(s);
+	public void WriteLine(string s) => output(s + Environment.NewLine);
 }
 
 public partial class RockstarRunner {
-
 
 	[JSExport]
 	public static Task<string> Status() {
@@ -29,11 +30,16 @@ public partial class RockstarRunner {
 		Console.WriteLine("Running Rockstar program");
 		var inputQueue = new Queue<string>((input ?? "").Split(Environment.NewLine));
 		return Task.Run(() => {
-			var program = parser.Parse(source);
-			var e = new WasmIO(output, inputQueue);
-			var env = new RockstarEnvironment(e);
-			var result = env.Execute(program);
-			return result?.Value?.ToString() ?? "";
+			IRockstarIO io = new WasmIO(output, inputQueue);
+			var env = new RockstarEnvironment(io);
+			try {
+				var program = parser.Parse(source);
+				var result = env.Execute(program);
+				return result?.Value?.ToString() ?? "";
+			} catch (ParserException ex) {
+				io.WriteError(ex, source);
+				return "";
+			}
 		});
 	}
 

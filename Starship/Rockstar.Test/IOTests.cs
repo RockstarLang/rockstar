@@ -13,7 +13,6 @@ public class IOTests {
 	[Theory]
 	[InlineData("""A\nB""", new byte[] { 65, 10, 66 })]
 	[InlineData("""A\r\nB""", new byte[] { 65, 13, 10, 66 })]
-	[InlineData("""A\nB""", new byte[] { 65, 10, 66 })]
 	[InlineData("""A\tB""", new byte[] { 65, 9, 66 })]
 	[InlineData("""A\\B""", new byte[] { 65, 92, 66 })]
 	public void EscapingOutputStringsWorks(string source, byte[] chars) {

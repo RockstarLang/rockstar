@@ -7,6 +7,7 @@ public class StringBuilderIO(Func<string?> readInput) : IRockstarIO {
 	private readonly StringBuilder sb = new();
 	public string? Read() => readInput();
 	public void Write(string? s) => sb.Append(s);
+	public void WriteLine(string s) => sb.AppendLine(s);
 	public string Output => sb.ToString();
 	public void Reset() => sb.Clear();
 }

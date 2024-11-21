@@ -1,5 +1,5 @@
 @namespace Rockstar.Engine
-@classname Parser
+@classname PegParser
 @using System.Globalization
 @using System.Text.RegularExpressions
 @using Rockstar.Engine.Statements
@@ -26,8 +26,6 @@ program <Program>
 		{ new Program(head).Concat(tail) }
 	/ EOS* EOF
 		{ new Program() }
-	// unexpected:("" [^ \t\r\n]+)
-	//	#error{ $"Unexpected '{unexpected.Replace("\r", "\\r").Replace("\n", "\\n")}' at line {state.Line}, col {state.Column - unexpected.Length}" }
 
 block <Block>
 	= _? head:statement EOS tail:block
@@ -47,7 +45,7 @@ statement -memoize
 	/ loop
 	/ conditional
 	/ declaration
-	/ a:assignment
+	/ assignment
 	/ enlistment
 	/ crement
 	/ mutation
@@ -56,15 +54,14 @@ statement -memoize
 	/ ninja_string
 	/ !EOB e:expression &(EOS / EOF) { new ExpressionStatement(e) }
 
-
 enlistment <Statement>
-	= push _ e:expression _ into _ v:variable
+	= push _ e:expression_or_error _ into _ v:variable_or_error
 		{ new Enlist(v, e) }
-	/ push _ v:variable (_ with)? _ e:expression_list
+	/ push _ v:variable_or_error (_ with)? _ e:expression_list
 		{ new Enlist(v, e) }
-	/ push _ v:variable
+	/ push _ v:variable_or_error
 		{ new Enlist(v) }
-	/ d:delist _ into _ t:assignable
+	/ d:delist _ into _ t:assignable_or_error 
 		{ new Assign(t, d) }
 	/ d:delist
 		{ new ExpressionStatement(d) }
@@ -74,36 +71,47 @@ delist <VariableExpression>
 	/ pop_list
 
 roll_list <Dequeue>
-	= roll _ v:variable
+	= roll _ v:variable_or_error
 		{ new Dequeue(v) }
 
 pop_list <Pop>
-	= pop _ v:variable
+	= pop _ v:variable_or_error
 		{ new Pop(v) }
 
 listen_stmt <Statement>
-	= listen _ to _ v:variable
+	= listen _ to _ v:variable_or_error
 		{ new Listen(v) }
 	/ listen
 		{ new Listen() }
 
 return_stmt <Return>
-	= return (_ back)? _ e:expression (_ back)?
+	= return (_ back)? _ e:expression_or_error (_ back)?
 		{ new Return(e) }
 
+body_or_error <Block>
+	= body:(consequent / #error{ $"expected statement" }) { body }
+
 function <Statement>
-	= name:variable _ takes _ null body:consequent
+	= name:variable _ takes _ null body:body_or_error
 		{ new Assign(name, new Functiön(body)) }
-	/ name:variable _ takes _ args:variable_list body:consequent
+	/ name:variable _ takes _
+		args:(variable_list / #error{ "expected variable_list" })
+		body:body_or_error
 		{ new Assign(name, new Functiön(args, body)) }
 
 variable_list <IEnumerable<Variable>>
 	= head:variable _VLS_ tail:variable_list { head.Concat(tail) }
-	/ arg:variable { new List<Variable> { arg } }
+	/ arg:variable_or_error { new List<Variable> { arg } }
+
+primary_or_error <Expression>
+	= p:(primary / #error{ "expected primary expression" }) { p }
 
 primary_list <IEnumerable<Expression>>
 	= head:primary _XLS_ tail:primary_list { head.Concat(tail) }
 	/ head:primary _XLS_ tail:primary { new List<Expression> { head, tail } }
+
+argument_list_or_error <IEnumerable<Expression>>
+	= a:(argument_list / #error{ "expected argument list" }) { a }
 
 argument_list <IEnumerable<Expression>>
  	= head:primary _ALS_ tail:argument_list { head.Concat(tail) }
@@ -164,7 +172,7 @@ consequent <Block>
 	/ _ s:statement { new Block(s) }
 
 if_test <Expression>
-	= if _ e:expression (_ then)?
+	= if _ e:expression_or_error (_ then)?
 		{ e }
 
 alternate <Block>
@@ -181,26 +189,25 @@ conditional <Statement>
 
 _and_index <Variable> = _ and _ v:variable { v }
 loop <Statement>
-	= for _ every:(every _)? v:variable i:_and_index? _ in _ e:expression body:consequent
+	= for _ every:(every _)? v:variable_or_error i:_and_index? _ in _ e:expression_or_error body:consequent
 		{ new ForInLoop(v, i.FirstOrDefault(), e, body, every.Any()) }
-	// for _ every _ v:variable _ and _ i:variable _ in _ e:expression body:consequent
-	//	{ new ForInLoop(v, i, e, body) }
-	// for _ every _ v:variable _ of _ e:expression body:consequent
-	//	{ new ForOfLoop(v, e, body, every != null) }
-	/ for _ every:(every _)? v:variable i:_and_index? _ of _ e:expression body:consequent
+	/ for _ every:(every _)? v:variable_or_error i:_and_index? _ of _ e:expression_or_error body:consequent
 		{ new ForOfLoop(v, i.FirstOrDefault(), e, body, every.Any()) }
-	/ while _ test:expression body:consequent
+	/ while _ test:expression_or_error body:consequent
 		{ new WhileLoop(test, body) }
-	/ until _ test:expression body:consequent
+	/ until _ test:expression_or_error body:consequent
 		{ new UntilLoop(test,body) }
 
 output_stmt <Statement>
-	= debug _ e:expression
+	= debug _ e:expression_or_error
 		{ new Debug(e) }
-	/ write _ e:expression
+	/ write _ e:expression_or_error
 		{ new Output(e) }
-	/ print _ e:expression
+	/ print _ e:expression_or_error
 		{ new Output(e, Environment.NewLine) }
+
+assignable_or_error <Variable>
+	= a:(assignable / #error{ "expected variable" }) { a }
 
 assignable <Variable>
 	= v:variable i:indexes
@@ -208,13 +215,13 @@ assignable <Variable>
 	/ v:variable { v }
 
 declaration <Statement>
-	= let _ v:assignable _ be op:_operator_ e:expression_list
+	= let _ v:assignable_or_error _ be op:_operator_ e:expression_list
 		{ new Declare(v, new Binary(op, new Lookup(v), e)) }
-	/ let _ v:assignable _ be _ e:expression
+	/ let _ v:assignable_or_error _ be _ e:expression_or_error
 		{ new Declare(v, e) }
-	/ let _ v:assignable _? '=' _? e:expression
+	/ let _ v:assignable_or_error _? '=' _? e:expression_or_error
 		{ new Declare(v, e) }
-	/ let _ v:assignable
+	/ let _ v:assignable_or_error
 		{ new Declare(v) }
 
 ninja_string <Statement>
@@ -224,9 +231,9 @@ ninja_string <Statement>
 		{ new Ninja(s,n) }
 
 assignment <Statement>
-	= v:assignable _? '=' _? e:expression
+	= v:assignable _? '=' _? e:expression_or_error
 		{ new Assign(v, e) }
-	/ put _ e:expression _ into _ v:assignable
+	/ put _ e:expression_or_error _ into _ v:assignable_or_error
 		{ new Assign(v, e) }
 	/ v:assignable _ says_ s:poetic_string
 		{ new Assign(v, s) }
@@ -234,12 +241,12 @@ assignment <Statement>
 		{ new Assign(v, n) }
 	/ v:assignable _is op:_operator_ e:expression_list
 		{ new Assign(v, new Binary(op, new Lookup(v), e)) }
-	/ v:assignable _is _ now _ e:expression
+	/ v:assignable _is _ now _ e:expression_or_error
 			{ new Assign(v, e) }
 	// Legacy workaround to preserve compatibility with v1 poetic literal syntax
 	/ v:assignable _is _ p:v1_poetic_number
 		{ new Assign(v, p) }
-	/ v:assignable _is _ e:expression
+	/ v:assignable _is _ e:expression_or_error
 		{ new Assign(v, e) }
 
 _operator_ =
@@ -268,6 +275,9 @@ _isnt <Operator> -memoize
 	/ (_is _ not / _ isnt / _? '!=')
 		{ Operator.NotEquals }
 
+variable_or_error <Variable>
+	= v:(variable / #error{ "expected variable" }) { v }
+
 variable <Variable>
 	= args { RockstarEnvironment.Arguments }
 	/ i:(his _ !keyword identifier) { new CommonVariable(i) }
@@ -291,26 +301,29 @@ letter = uppercase_letter / lowercase_letter
 uppercase_letter = c:. &{ Char.IsUpper(c,0) }
 lowercase_letter = c:. &{ Char.IsLower(c,0) }
 
+expression_or_error <Expression>
+	= e:(expression / #error{ "expected expression" }) { e }
+
 expression <Expression>
 	= boolean
-	/ primary
+	/ primary	
 
 boolean = binary_or
 
 binary_or <Expression>
-	= lhs:binary_nor _ or _ rhs:binary_or { new Binary(Operator.Or, lhs, rhs) }
+	= lhs:binary_nor _ or _ rhs:(binary_or / #error{ "expected expression" }) { new Binary(Operator.Or, lhs, rhs) }
 	/ binary_nor
 
 binary_nor <Expression>
-	= lhs:binary_and _ nor _ rhs:binary_nor { new Binary(Operator.Nor, lhs, rhs) }
+	= lhs:binary_and _ nor _ rhs:(binary_nor / #error{ "expected expression" }) { new Binary(Operator.Nor, lhs, rhs) }
 	/ binary_and
 
 binary_and <Expression>
-	= lhs:equality _ and _ rhs:binary_and { new Binary(Operator.And, lhs, rhs) }
+	= lhs:equality _ and _ rhs:(binary_and / #error{ "expected expression" }) { new Binary(Operator.And, lhs, rhs) }
 	/ equality
 
 equality <Expression>
-	= lhs:unary op:(_eq / _isnt) _ rhs:equality { new Binary(op, lhs, rhs) }
+	= lhs:unary op:(_eq / _isnt) _ rhs:(equality / #error{ "expected expression" }) { new Binary(op, lhs, rhs) }
 	/ unary
 
 unary <Expression>
@@ -321,7 +334,7 @@ not_
 	= (not _ / non _ / non '-' )
 
 comparison <Expression>
-	= lhs:addition op:comparator rhs:comparison { new Binary(op, lhs, rhs) }
+	= lhs:addition op:comparator rhs:(comparison / #error{ "expected expression" }) { new Binary(op, lhs, rhs) }
 	/ addition
 
 comparator <Operator>
@@ -336,14 +349,14 @@ numeric_expression
 addition <Expression> -memoize
 	= lhs:addition op:(_plus_/_minus_) rhs:primary_list
 		{ new Binary(op, lhs, rhs) }
-	/ lhs:addition op:(_plus_/_minus_) rhs:product
+	/ lhs:addition op:(_plus_/_minus_) rhs:(product / #error{ $"expected expression" }) 
 		{ new Binary(op, lhs, rhs) }
 	/ product
 
 product <Expression> -memoize
 	= lhs:product op:(_divide_/_times_) rhs:primary_list
 		{ new Binary(op, lhs, rhs) }
-	/ lhs:product op:(_divide_/_times_) rhs:primary
+	/ lhs:product op:(_divide_/_times_) rhs:(primary / #error{ $"expected expression" })
 		{ new Binary(op, lhs, rhs) }
 	/ primary
 
@@ -363,17 +376,17 @@ primary <Expression> -memoize
 	//	#error{ $"Expected primary expression, found '{unexpected}' at line {state.Line}, col {state.Column - unexpected.Length}" }
 
 call_stmt <Statement>
-	= call _ name:variable _ with _ args:argument_list _ into _ a:assignable
+	= call _ name:variable_or_error _ with _ args:argument_list_or_error _ into _ a:assignable_or_error
 		{ new Assign(a, new FunctionCall(name, args)) }
-	/ call _ name:variable _ with _ args:argument_list
+	/ call _ name:variable_or_error _ with _ args:argument_list_or_error
 		{ new FunctionCall(name, args) }
-	/ call _ name:variable _ into _ a:assignable
+	/ call _ name:variable_or_error _ into _ a:assignable_or_error
 		{ new Assign(a, new FunctionCall(name)) }
-	/ call _ name:variable
+	/ call _ name:variable_or_error
 		{ new FunctionCall(name) }
 
 function_call <FunctionCall>
-	= name:variable _ taking _ args:argument_list
+	= name:variable _ taking _ args:argument_list_or_error
 		{ new FunctionCall(name, args) }
 
 lookup <Expression>
@@ -394,9 +407,9 @@ indexes <IEnumerable<Expression>>
 
 
 crement <Crement>
-	= build _ v:variable t:((_? ',')? _? up)+
+	= build _ v:variable_or_error t:((_? ',')? _? up)+
 		{ new Crement(v, t.Count) }
-	/ knock _ v:variable t:((_? ',')? _? down)+
+	/ knock _ v:variable_or_error t:((_? ',')? _? down)+
 		{ new Crement(v, -t.Count) }
 
 mutator <Operator>
@@ -408,39 +421,38 @@ mutator <Operator>
 		{ Operator.Join }
 
 mutation <Statement>
-	= op:mutator _ s:expression _ into _ t:assignable _ using _ m:expression
+	= op:mutator _ s:expression_or_error _ into _ t:assignable_or_error _ using _ m:expression_or_error
 		{ new Mutation(op, s, target: t, m) }
-	/ op:mutator _ s:expression _ using _ m:expression _ into _ t:assignable
+	/ op:mutator _ s:expression_or_error _ using _ m:expression_or_error _ into _ t:assignable_or_error
 		{ new Mutation(op, s, target: t, modifier: m) }
-	/ op:mutator _ s:expression _ into _ t:assignable
+	/ op:mutator _ s:expression_or_error _ into _ t:assignable_or_error
 		{ new Mutation(op, s, target: t) }
-	/ op:mutator _ s:assignable _ using _ m:expression
+	/ op:mutator _ s:assignable_or_error _ using _ m:expression_or_error
 		{ new Mutation(op, s, target: s, modifier: m) }
-	/ op:mutator _ s:assignable
+	/ op:mutator _ s:assignable_or_error
 		{ new Mutation(op, s, target: s) }
 
 rounding <Statement>
 	= floor / ceil / math_round
 
 floor <Statement>
-	= turn _ v:variable _ down
+	= turn _ down _ v:variable_or_error
 		{ new Rounding(v, Round.Down) }
-	/ turn _ down _ v:variable
+	/ turn _ v:variable _ down
 		{ new Rounding(v, Round.Down) }
 
 ceil <Statement>
-	= turn _ v:variable _ up
+	= turn _ up _ v:variable_or_error
 		{ new Rounding(v, Round.Up) }
-	/ turn _ up _ v:variable
+	/ turn _ v:variable _ up
 		{ new Rounding(v, Round.Up) }
 
 math_round <Statement>
-	= turn _ v:variable _ around
+	= turn _ around _ v:variable_or_error
 		{ new Rounding(v, Round.Nearest) }
-	/ turn _ around _ v:variable
+	/ turn _ v:variable _ around
 		{ new Rounding(v, Round.Nearest) }
-
-
+	
 constant <Value>
 	= null { Nüll.Instance }
 	/ true { Booleän.True }
@@ -470,6 +482,7 @@ poetic_number <PoeticNumbër>
 // the new syntax, by retrofitting a rule that a poetic number using v1
 // syntax must start with a letter, and can't start with any keyword
 // indicating an arithmetic or logical operator.
+
 v1_digit_filter
 	= &letter !keywords_which_can_begin_an_expression
 

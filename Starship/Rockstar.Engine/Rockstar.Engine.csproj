@@ -15,4 +15,7 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</PegGrammar>
 	</ItemGroup>
+	<ItemGroup>
+		<Watch Include="rockstar.peg" />
+	</ItemGroup>
 </Project>

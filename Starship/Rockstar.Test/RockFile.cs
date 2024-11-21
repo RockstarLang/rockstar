@@ -87,8 +87,8 @@ public class RockFile(string absolutePath) : IXunitSerializable {
 		return String.Join("", output).ReplaceLineEndings();
 	}
 
-	public bool ExtractedExpectedError(string label, out string? error) {
-		error = null;
+	public bool ExtractedExpectedError(string label, out string error) {
+		error = String.Empty;
 		var source = File.Exists(AbsolutePath) ? File.ReadAllText(AbsolutePath, Encoding.UTF8) : AbsolutePath;
 		var limit = source.Length;
 		var token = $"({label}: ";

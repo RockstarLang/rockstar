@@ -46,7 +46,7 @@ public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBa
 				ParseFile(rockFile);
 				throw new("Parser should have failed.");
 			} catch (Exception ex) {
-				ex.Message.ShouldBe(error);
+				ex.Message.ShouldContain(error);
 			}
 		} else {
 			var program = ParseFile(rockFile);
@@ -63,7 +63,7 @@ public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBa
 		Program program;
 		try {
 			program = Parser.Parse(source);
-		} catch (FormatException ex) {
+		} catch (ParserException ex) {
 			PrettyPrint(rockFile, ex);
 			throw;
 		}

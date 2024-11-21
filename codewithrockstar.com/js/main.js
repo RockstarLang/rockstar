@@ -28,7 +28,10 @@ function handleMessageFromWorker(message) {
 		}
 	} else if (message.data.editorId) {
 		var output = document.getElementById(`rockstar-output-${message.data.editorId}`);
-		if (message.data.type == "output") return output.innerText += message.data.output;
+		if (message.data.type == "output") {
+			console.log(message.data.output);
+			return output.innerHTML += message.data.output;
+		}
 		if (message.data.type == "error") {
 			output.innerHTML += `<span class="error">error: ${message.data.error}</span>`;
 		} else if (message.data.type == "result") {

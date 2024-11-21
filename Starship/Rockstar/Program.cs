@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Rockstar.Engine;
 namespace Rockstar;
 
@@ -30,8 +31,14 @@ public static class Program {
 	}
 
 	private static void RunFile(string path, string[] args) {
-		var env = new RockstarEnvironment(new ConsoleIO(), args);
-		Run(File.ReadAllText(path), env);
+		IRockstarIO io = new ConsoleIO();
+		var env = new RockstarEnvironment(io, args);
+		var source = File.ReadAllText(path).ReplaceLineEndings();
+		try {
+			Run(source, env);
+		} catch (ParserException ex) {
+			io.WriteError(ex, source);
+		}
 	}
 
 	private static void RunPrompt() {

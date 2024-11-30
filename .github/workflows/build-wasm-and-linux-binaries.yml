@@ -38,7 +38,8 @@ jobs:
         run: echo "tag v2.0.0-beta.${{ github.run_number }}"
       - name: Patch VERSION constant inside Starship/Rockstar.Engine/RockstarEnvironment.cs
         # run: sed -i 's/VERSION = "[^"]*";/VERSION = "v2.0.0-beta.${{ steps.semver.outputs.nextStrict }}";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
-        run: sed -i 's/VERSION = "[^"]*";/VERSION = "v2.0.0-beta.${{ github.run_number }}";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
+        # run: sed -i 's/VERSION = "[^"]*";/VERSION = "v2.0.0-beta.${{ github.run_number }}";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
+        run: sed -i 's/VERSION = "[^"]*";/VERSION = "v2.0.0";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
       - name: Build Rockstar
         run: dotnet build Starship -c Release
       - name: Test Rockstar
@@ -53,7 +54,7 @@ jobs:
         run: |
           git config --global user.name 'workflows/build-wasm-and-linux-binaries.yml'
           git config --global user.email 'dylanbeattie@users.noreply.github.com'
-          git commit -am "[skip actions] set VERSION = v2.0.0-beta.${{ github.run_number }} in RockstarEnvironment.cs"
+          git commit -am "[skip actions] set VERSION = v2.0.0 in RockstarEnvironment.cs"
           git push
       - name: dotnet publish WASM engine
         run: dotnet publish Starship/Rockstar.Wasm -o rockstar-wasm-binary -c Release

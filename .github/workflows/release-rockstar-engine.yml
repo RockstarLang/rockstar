@@ -69,10 +69,10 @@ jobs:
       - name: create download assets
         run: |
           ls -lR
-          zip rockstar-${{ steps.version.outputs.version }}-windows-x64.zip rockstar-windows-x64-binary/*
-          tar -czf rockstar-${{ steps.version.outputs.version }}-macos-arm64.tar.gz rockstar-macos-arm64-binary/*
-          tar -czf rockstar-${{ steps.version.outputs.version }}-macos-x64.tar.gz rockstar-macos-x64-binary/*
-          tar -czf rockstar-${{ steps.version.outputs.version }}-linux-x64.tar.gz rockstar-linux-x64-binary/*
+          zip rockstar-${{ steps.version.outputs.version }}-windows-x64.zip rockstar-windows-x64-binary/rockstar.exe
+          tar -czf rockstar-${{ steps.version.outputs.version }}-macos-arm64.tar.gz rockstar-macos-arm64-binary/rockstar
+          tar -czf rockstar-${{ steps.version.outputs.version }}-macos-x64.tar.gz rockstar-macos-x64-binary/rockstar
+          tar -czf rockstar-${{ steps.version.outputs.version }}-linux-x64.tar.gz rockstar-linux-x64-binary/rockstar
 
       - name: create release
         uses: actions/create-release@v1

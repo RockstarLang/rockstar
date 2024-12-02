@@ -69,9 +69,8 @@ Functions can contain other functions, and because every function defines its ow
 
 To declare a function with no arguments, specify it `takes null` (or aliases `nothing`, `nowhere`, `nobody`). To call a function with no arguments, use the `call` keyword, or suffix the function name with an exclamation mark:
 
-```rockstar
- {% rockstar_include functions-with-no-arguments.rock %}
- ```
+{% rockstar_include functions-with-no-arguments.rock %}
+
 ### Variables, Closures and Function Scope
 Rockstar uses the same scoping mechanism as JavaScript:
 
@@ -80,9 +79,7 @@ Rockstar uses the same scoping mechanism as JavaScript:
 
 In this example, calling `My function` initialises two variables:
 
-```rockstar
- {% rockstar_include function-scope.rock %}
- ```
+{% rockstar_include function-scope.rock %}
 
 You can declare variables inside functions, functions can contain other functions, and declaring a function inside another function creates a *closure*, which captures the state of any variables that existed when the function was declared.
 

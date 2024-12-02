@@ -65,9 +65,7 @@ call: FuncA
 
 Functions can contain other functions, and because every function defines its own variable scope, nested functions can have the same names as the functions which enclose them. *(I have no idea why you would ever want to do this, but making it impossible would have been really difficult.)*
 
-```rockstar
- {% rockstar_include nested-functions.rock %}
- ```
+{% rockstar_include nested-functions.rock %}
 
 To declare a function with no arguments, specify it `takes null` (or aliases `nothing`, `nowhere`, `nobody`). To call a function with no arguments, use the `call` keyword, or suffix the function name with an exclamation mark:
 

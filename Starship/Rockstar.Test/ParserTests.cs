@@ -26,4 +26,18 @@ public class ArgumentTests {
 		env.Execute(program);
 		io.Output.ShouldBe("one\ntwo\nthree\n".ReplaceLineEndings());
 	}
+	[Theory]
+	[InlineData("my world")]
+	[InlineData("your outside")]
+	public void Arguments_Require_The_Not_Any_Other_Prefix(string alias) {
+		var io = new StringBuilderIO();
+		var env = new RockstarEnvironment(io, ["one", "two", "three"]);
+		var code = $"""
+		            write {alias}
+		            """;
+		var parser = new Parser();
+		var program = parser.Parse(code);
+		env.Execute(program);
+		io.Output.ShouldBe("mysterious".ReplaceLineEndings());
+	}
 }

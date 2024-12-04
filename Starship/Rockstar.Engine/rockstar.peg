@@ -61,7 +61,7 @@ enlistment <Statement>
 		{ new Enlist(v, e) }
 	/ push _ v:variable_or_error
 		{ new Enlist(v) }
-	/ d:delist _ into _ t:assignable_or_error 
+	/ d:delist _ into _ t:assignable_or_error
 		{ new Assign(t, d) }
 	/ d:delist
 		{ new ExpressionStatement(d) }
@@ -147,8 +147,8 @@ exit_statement <Statement>
 wildcard <string>
 	= ignored:([^,.?!;\r\n]* ) { String.Join("", ignored.ToArray()) }
 	/ ignored:((. !end_of_wildcard)* .) { String.Join("", ignored.ToArray()) }
-	
-filler = (_ / [,?!.;])* 
+
+filler = (_ / [,?!.;])*
 EOS = EOL / _? [.?!;:]
 EOL = filler '\r'? '\n'
 EOF = EOS* _? !.
@@ -161,7 +161,7 @@ eob_signal
 
 EOB -memoize
 	= EOS* eob_signal
-	/ EOL &EOL 
+	/ EOL &EOL
 	/ EOF
 
 consequent <Block>
@@ -268,7 +268,7 @@ _eq <Operator> -memoize
 _is <Operator> -memoize
 	= ("'s" / "'re" / _ is)
 		{ Operator.Equals }
-		
+
 _isnt <Operator> -memoize
 	= _isnt _ exactly
 		{ Operator.NotIdenticalTo }
@@ -286,7 +286,7 @@ variable <Variable>
 	/ i:(the _ identifier) { new CommonVariable(i) }
 	/ !keyword i:identifier { new SimpleVariable(i) }
 
-args = arguments / the _ world / the _ outside
+args = arguments / 'the' _ ( world / outside )
 
 proper_variable	= proper_noun (_ proper_noun)+
 
@@ -306,7 +306,7 @@ expression_or_error <Expression>
 
 expression <Expression>
 	= boolean
-	/ primary	
+	/ primary
 
 boolean = binary_or
 
@@ -349,7 +349,7 @@ numeric_expression
 addition <Expression> -memoize
 	= lhs:addition op:(_plus_/_minus_) rhs:primary_list
 		{ new Binary(op, lhs, rhs) }
-	/ lhs:addition op:(_plus_/_minus_) rhs:(product / #error{ $"expected expression" }) 
+	/ lhs:addition op:(_plus_/_minus_) rhs:(product / #error{ $"expected expression" })
 		{ new Binary(op, lhs, rhs) }
 	/ product
 
@@ -452,7 +452,7 @@ math_round <Statement>
 		{ new Rounding(v, Round.Nearest) }
 	/ turn _ v:variable _ around
 		{ new Rounding(v, Round.Nearest) }
-	
+
 constant <Value>
 	= null { Nüll.Instance }
 	/ true { Booleän.True }
@@ -572,7 +572,7 @@ end_comment = ')'
 not_comment = (!start_comment !end_comment .)
 block_comment	= start_comment (comment / not_comment)* end_comment
 
-	
+
 
 
 above = 'above' !letter / over
@@ -658,42 +658,42 @@ write = 'write' !letter
 
 // argument
 // 	= molecule
-// 
+//
 // molecule <Expression>
 // 	= molecular_boolean
 // 	/ primary
-// 
+//
 // molecular_boolean = molecular_binary_or
-// 
+//
 // molecular_binary_or <Expression>
 // 	= lhs:molecular_binary_nor _ or _ rhs:molecular_binary_or { new Binary(Operator.Or, lhs, rhs) }
 // 	/ molecular_binary_nor
-// 
+//
 // molecular_binary_nor <Expression>
 // 	= lhs:molecular_binary_and _ nor _ rhs:molecular_binary_nor { new Binary(Operator.Nor, lhs, rhs) }
 // 	/ molecular_binary_and
-// 
+//
 // molecular_binary_and <Expression>
 // 	= lhs:molecular_equality _ and _ rhs:molecular_binary_and { new Binary(Operator.And, lhs, rhs) }
 // 	/ molecular_equality
-// 
+//
 // molecular_equality <Expression>
 // 	= lhs:molecular_unary op:(_is / _isnt) _ rhs:molecular_equality { new Binary(op, lhs, rhs) }
 // 	/ molecular_unary
-// 
+//
 // molecular_unary <Expression>
 // 	= not_ u:molecular_unary { new Unary(Operator.Not, u) }
 // 	/ molecular_comparison
-// 
+//
 // molecular_comparison <Expression>
 // 	= lhs:molecular_addition op:comparator rhs:molecular_comparison { new Binary(op, lhs, rhs) }
 // 	/ molecular_addition
-// 
+//
 // molecular_addition <Expression> -memoize
 // 	= lhs:molecular_addition op:(_plus_/_minus_) rhs:molecular_product
 // 		{ new Binary(op, lhs, rhs) }
 // 	/ molecular_product
-// 
+//
 // molecular_product <Expression> -memoize
 // 	= lhs:molecular_product op:(_divide_/_times_) rhs:primary
 // 		{ new Binary(op, lhs, rhs) }

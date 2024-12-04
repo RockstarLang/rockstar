@@ -51,9 +51,11 @@ If the condition or the `else` keyword is followed by a new line, it begins a ne
 * The `else` or `otherwise` keywords implicitly end the current block and start the alternate block for the current `if`.
 
 The end of file (EOF) will implicitly close any open blocks. This isn't Lisp, folks. The parser knows what you mean.
+
 ## This is the end, oh yeah, baby
 
 Consider this example from a C-like language:
+
 ```c
 if (x) {
 	if (y) {
@@ -69,13 +71,14 @@ Before the final line, we need to close three blocks, so we use three closing br
 
 Languages like Python that use indentation to control scope don't have this problem: indenting creates a block, and if you drop a level of indentation, the block's over.
 
-Rock lyrics don't have curly braces, and they don't have indentation. To end a block, you can use the keyword `end`:
+Rock lyrics don't have curly braces, and they don't have indentation. Rockstar historically used a blank line to denote the end of a block; this turned out to be really confusing when you had nested blocks, so as well as a blank line, you can now use the keyword `end`:
 
 {% rockstar_include oh-yeah-baby-minimalist.rock %}
 
-Singing `end end end` doesn't sound very rock'n'roll, so Rockstar also supports the aliases `oh`, `yeah` and `baby` - because it turns out you can get away with repeating that stuff almost *ad infinitum* and it just sounds like song lyrics. The Corrs' "So Young" opens with the line "yeah, yeah, yeah, yeah, yeah", Whitesnake's "The Deeper The Love" has a "baby baby baby", and if you throw in the odd "oh, yeah baby, yeah yeah yeah" you can close half-a-dozen nested blocks and nobody's going to notice except the Rockstar parser.
+Singing `end end end` doesn't sound very rock'n'roll, so Rockstar also supports the aliases `oh`, `yeah` and `baby` - because it turns out you can get away with repeating that stuff almost *ad infinitum* and it just sounds like song lyrics. The Corrs' "So Young" opens with the line "yeah, yeah, yeah, yeah, yeah", Whitesnake's "The Deeper The Love" has a "baby baby baby", and if you throw in the odd `oh, yeah baby, yeah yeah yeah` you can close half-a-dozen nested blocks and nobody's going to notice except the Rockstar parser.
 
 {% rockstar_include oh-yeah-baby-idiomatic.rock %}
+
 ### Oooooh
 
 You can also close as many blocks as you need to by using Rockstar's `oooh` keyword. This closes one block for every letter `o` -- so `oh` closes one block, `ooh` closes two blocks, `oooh` closes three blocks, and so on. You can also combine `oooh` with other keywords, so that `oooh yeah baby` will close five blocks, and if there's a blank line immediately after it, that'll close a sixth block.

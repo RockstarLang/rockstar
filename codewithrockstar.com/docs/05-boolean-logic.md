@@ -54,9 +54,8 @@ Equality in Rockstar uses the `is`, `was`, `are` and `were` keywords. Equality i
 
 * If one operand is a Boolean, compare it to the truthiness of the other operand:
 	* All non-zero numbers and non-empty strings are equal to `true`
-* Otherwise, if one operand is a string, compare it with the string representation of the other argument
-	*
-* Otherwise, the values of the two operands are compared.
+	* Otherwise, if one operand is a string, compare it with the string representation of the other argument
+	* Otherwise, the values of the two operands are compared.
 
 {% rockstar_include equality.rock %}
 
@@ -68,7 +67,7 @@ Inequality uses the `isn't` and `ain't` keywords.
 
 {% rockstar_include inequality.rock %}
 
-### Identity
+### Strict Equality
 To compare values without performing any type coercion, use the `exactly` keyword, or its aliases `really`, `actually` or `totally`:
 
 {% rockstar_include identity.rock %}

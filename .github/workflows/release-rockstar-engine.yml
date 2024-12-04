@@ -81,7 +81,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           draft: false
-          prerelease: true
+          prerelease: false
           release_name: rockstar-${{ steps.version.outputs.version }}
           tag_name: ${{ steps.version.outputs.version }}
           body: |

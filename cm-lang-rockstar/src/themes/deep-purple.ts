@@ -7,7 +7,7 @@ export const deepPurple = createTheme({
 	settings: {
 		background: '#070010',
 		foreground: '#ffffff',
-		caret: '#6633a9',
+		caret: '#ffffff',
 		selection: '#6633a9',
 		gutterBackground: '#070010',
 		gutterForeground: '#6633a9',

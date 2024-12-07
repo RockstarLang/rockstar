@@ -49,6 +49,30 @@ div.cm-editor {
 	padding: 4px;
 }
 
+div.rockstar-args {
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+	label {
+		flex: 120px;
+		cursor: pointer;
+		display: block;
+		padding: 8px 8px 6px 8px;
+		text-align: left;
+		color: #ffffff !important;
+	}
+	input[type=text] {
+		padding: 8px;
+		font-size: 12px;
+		box-sizing: border-box;
+		margin: 0 0 0 0;
+		border: 1px solid $link-color;
+		height: 100%;
+		border-radius: 4px;
+		width: 100%;
+	}
+}
+
 div.rockstar-inputs {
 	display: flex;
 	flex-direction: row;

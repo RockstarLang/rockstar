@@ -26,12 +26,13 @@ public partial class RockstarRunner {
 
 	[JSExport]
 	public static Task<string> Run(string source,
-		[JSMarshalAs<JSType.Function<JSType.String>>] Action<string> output, string? input = null) {
+		[JSMarshalAs<JSType.Function<JSType.String>>] Action<string> output, string? input = null, string? args = null) {
 		Console.WriteLine("Running Rockstar program");
 		var inputQueue = new Queue<string>((input ?? "").Split(Environment.NewLine));
+		var argList = Regex.Split((args ?? ""), "\\s+");
 		return Task.Run(() => {
 			IRockstarIO io = new WasmIO(output, inputQueue);
-			var env = new RockstarEnvironment(io);
+			var env = new RockstarEnvironment(io, argList);
 			try {
 				var program = parser.Parse(source);
 				var result = env.Execute(program);

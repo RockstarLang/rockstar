@@ -10,10 +10,9 @@ function report(editorId) {
 		self.postMessage({ type: "output", output: output, editorId: editorId })
 	}
 }
-async function RunRockstarProgram(source, editorId, stdin) {
-	console.log(stdin);
+async function RunRockstarProgram(source, editorId, stdin, args) {
 	try {
-		var result = await exports.Rockstar.Wasm.RockstarRunner.Run(source, report(editorId), stdin);
+		var result = await exports.Rockstar.Wasm.RockstarRunner.Run(source, report(editorId), stdin, args);
 		self.postMessage({ type: "result", result: result, editorId: editorId });
 	} catch (error) {
 		self.postMessage({ type: "error", error: error, editorId: editorId })
@@ -34,7 +33,7 @@ self.addEventListener('message', async function (message) {
 	var data = message.data;
 	if (data.program) {
 		switch(data.command) {
-			case "run": return await RunRockstarProgram(data.program, data.editorId, data.input);
+			case "run": return await RunRockstarProgram(data.program, data.editorId, data.input, data.args);
 			case "parse": return await ParseRockstarProgram(data.program, data.editorId);
 		}
 	} else {

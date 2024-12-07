@@ -17,6 +17,9 @@ var starshipLoaded = false;
 function handleMessageFromWorker(message) {
 	console.log(message);
 	if (message.data.type == "ready") {
+		if (document.getElementById("rockstar-wasm-editor-status")) {
+			document.getElementById("rockstar-wasm-editor-status").innerHTML = message.data.status + " ready.";
+		}
 		console.log(message.data.status);
 		starshipLoaded = true;
 		clearLoadingMessages();
@@ -24,12 +27,10 @@ function handleMessageFromWorker(message) {
 			var message = queuedMessages.pop();
 			rockCount++;
 			worker.postMessage(message);
-			console.log(message);
 		}
 	} else if (message.data.editorId) {
 		var output = document.getElementById(`rockstar-output-${message.data.editorId}`);
 		if (message.data.type == "output") {
-			console.log(message.data.output);
 			return output.innerHTML += message.data.output;
 		}
 		if (message.data.type == "error") {
@@ -41,7 +42,7 @@ function handleMessageFromWorker(message) {
 		} else {
 			console.log(message);
 		}
-		var button = document.getElementById(`rockstar-button-${message.data.editorId}`);
+		var button = document.getElementById(`rockstar-rock-button-${message.data.editorId}`);
 		button.innerHTML = ROCK_BUTTON_HTML;
 		rockCount--;
 	} else {
@@ -90,9 +91,15 @@ function displayLoadingMessages(output) {
 	});
 }
 
-function executeProgram(program, editorId, input) {
+function executeProgram(program, editorId, input, args) {
 	var output = document.getElementById(`rockstar-output-${editorId}`);
-	var message = { command: "run", program: program, editorId: editorId, input: input };
+	var message = {
+		command: "run",
+		program: program,
+		editorId: editorId,
+		input: input,
+		args: args
+	};
 	if (!starshipLoaded) {
 		displayLoadingMessages(output);
 		queuedMessages.push(message);
@@ -157,18 +164,24 @@ function logTree(tree, targetElement) {
 
 function makeRockstarRunner(editorId) {
 	return function handleCtrlEnter({ state, dispatch }) {
-		document.getElementById(`rockstar-button-${editorId}`).click();
-		console.log(state);
-		console.log(dispatch);
+		document.getElementById(`rockstar-rock-button-${editorId}`).click();
 		return true;
 	}
 }
+function makeRockstarParser(editorId) {
+	return function handleShiftCtrlEnter({ state, dispatch }) {
+		document.getElementById(`rockstar-parse-button-${editorId}`).click();
+		return true;
+	}
 
-function replaceElementWithEditor({ editorElement, content, languageSupport, theme, editorId, parseTreeElement }) {
+}
+
+function replaceElementWithEditor({ editorElement, content, languageSupport, theme, editorId, parseTreeElement, storageKey }) {
 	let language = (languageSupport ? languageSupport() : null);
 	let rockstarKeymap = Prec.highest(
 		keymap.of([
-			{ key: "Ctrl-Enter", mac: "Cmd-Enter", run: makeRockstarRunner(editorId) }
+			{ key: "Ctrl-Enter", mac: "Cmd-Enter", run: makeRockstarRunner(editorId) },
+			{ key: "Shift-Ctrl-Enter", mac: "Shift-Cmd-Enter", run: makeRockstarParser(editorId) }
 		])
 	);
 	let extensions = [basicSetup, rockstarKeymap];
@@ -182,13 +195,26 @@ function replaceElementWithEditor({ editorElement, content, languageSupport, the
 
 	const fixedHeightEditor = EditorView.theme({
 		".cm-content, .cm-gutter": { minHeight: "60px" }
-		//		"&": {height: "300px"},
-		//		".cm-scroller": {overflow: "auto"}
 	});
 	extensions.push(fixedHeightEditor);
+	const onChangeHandler = EditorView.updateListener.of(viewUpdate => {
+		var source = viewUpdate.state.doc.text.join('\n');
+		if (viewUpdate.docChanged && storageKey) localStorage.setItem(storageKey, source);
+		editorElement.dispatchEvent(new CustomEvent("update", { detail: viewUpdate }));
+	});
+	extensions.push(onChangeHandler);
 	let view = new EditorView({ doc: content, extensions: extensions });
 	editorElement.parentNode.insertBefore(view.dom, editorElement);
 	editorElement.style.display = "none";
+	if (storageKey) {
+		var storedSource = localStorage.getItem(storageKey);
+		const update = {changes: {
+			from: 0,
+			to: view.state.doc.length,
+			insert: storedSource
+		}};
+		view.dispatch(update);
+	}
 	return view;
 }
 
@@ -204,8 +230,8 @@ function createControls(editorId, editorView, originalSource, controls) {
 	let resetButton = document.createElement("button");
 	let buttonContainer = document.createElement("div");
 	buttonContainer.className = "buttons";
-
-	rockButton.id = `rockstar-button-${editorId}`;
+	rockButton.id = `rockstar-rock-button-${editorId}`;
+	parseButton.id = `rockstar-parse-button-${editorId}`;
 	output.id = `rockstar-output-${editorId}`;
 	rockButton.innerHTML = ROCK_BUTTON_HTML;
 	resetButton.innerHTML = "Reset <i class='fa-solid fa-rotate-right'></i>";
@@ -221,17 +247,18 @@ function createControls(editorId, editorView, originalSource, controls) {
 	}
 	rockButton.onclick = () => {
 		output.classList.remove("parse-tree");
-		console.log(rockCount);
 		if (rockCount > 0) {
 			stopTheRock();
 		} else {
 			rockButton.innerHTML = STOP_BUTTON_HTML;
 			output.innerText = "";
 			let source = editorView.state.doc.toString();
-			let inputTextarea = document.getElementById(`rockstar-input-${editorId}`);
+			let inputTextarea = document.getElementById(`rockstar-stdin-${editorId}`);
 			let input = inputTextarea ? inputTextarea.value : "";
+			let argsInput = document.getElementById(`rockstar-args-${editorId}`);
+			let args = argsInput ? argsInput.value : "";
 			try {
-				executeProgram(source, editorId, input);
+				executeProgram(source, editorId, input, args);
 			} catch (e) {
 				console.log(e);
 			}
@@ -256,7 +283,7 @@ function createControls(editorId, editorView, originalSource, controls) {
 	return div;
 }
 
-let options = ["play", "parse", "reset", "input", "result"];
+let options = ["play", "parse", "reset", "args", "input", "result"];
 
 function configureControls(preElement) {
 	let list = (preElement.getAttribute("data-controls") ?? "").split(",");
@@ -274,29 +301,46 @@ document.querySelectorAll(('code.language-rockstar')).forEach((codeElement) => {
 	let controls = configureControls(preElement);
 	editorId++;
 	var originalSource = codeElement.innerText;
+	var storageKey = preElement.getAttribute("data-storage-key");
 	var settings = {
 		content: originalSource,
 		editorElement: preElement,
 		parseTreeTextarea: document.getElementById('parseTreeTextarea'),
 		language: Rockstar, // Rockstar
 		theme: deepPurple, // kitchenSink
-		editorId: editorId
+		editorId: editorId,
+		storageKey: storageKey
 	};
 	var editorView = replaceElementWithEditor(settings);
 	if (controls.input) {
 		let inputDiv = document.createElement("div");
 		inputDiv.className = "rockstar-inputs";
 		let label = document.createElement("label");
-		label.setAttribute("for", `rockstar-input-${editorId}`);
+		label.setAttribute("for", `rockstar-stdin-${editorId}`);
 		label.innerText = "Input:";
 		let input = document.createElement("textarea");
-		input.id = `rockstar-input-${editorId}`;
+		input.id = `rockstar-stdin-${editorId}`;
 		input.className = "rockstar-stdin";
 		input.placeholder = "Does your program need input from stdin? Paste it here.";
 		// input.value = "";
 		inputDiv.appendChild(label);
 		inputDiv.appendChild(input);
 		preElement.parentNode.insertBefore(inputDiv, preElement);
+	}
+	if (controls.args) {
+		let argsDiv = document.createElement("div");
+		argsDiv.className = "rockstar-args";
+		let label = document.createElement("label");
+		label.setAttribute("for", `rockstar-args-${editorId}`);
+		label.innerText = "Arguments:";
+		let input = document.createElement("input");
+		input.type = "text";
+		input.id = `rockstar-args-${editorId}`;
+		input.className = "rockstar-args";
+		input.placeholder = "add command line arguments here";
+		argsDiv.appendChild(label);
+		argsDiv.appendChild(input);
+		preElement.parentNode.insertBefore(argsDiv, preElement);
 	}
 	var controlPanel = createControls(editorId, editorView, originalSource, controls);
 	preElement.parentNode.insertBefore(controlPanel, preElement);
@@ -307,7 +351,7 @@ document.querySelectorAll(('code.language-kitchen-sink')).forEach((codeElement) 
 	editorId++;
 	var content = codeElement.innerText;
 	// kitchenSink, blackSabbath, espresso, cobalt, dracula, solarizedLight, coolGlow, amy
-	let extensions = [ basicSetup, KitchenSink(), deepPurple ];
+	let extensions = [basicSetup, KitchenSink(), deepPurple];
 	let view = new EditorView({ doc: content, extensions: extensions });
 	preElement.parentNode.insertBefore(view.dom, preElement);
 	preElement.style.display = "none";

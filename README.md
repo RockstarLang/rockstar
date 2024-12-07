@@ -1,5 +1,10 @@
-# rockstar2
-It's time. Rockstar 2: "The Difficult Second Version"
+## Do you wanna get rocked?
+
+This is Rockstar, an esoteric programming language whose syntax is inspired by the lyrics to 80s hard rock and heavy metal songs.
+
+### What's Here
+
+
 
 The Build Process
 

@@ -1,15 +1,23 @@
-using System.Text.RegularExpressions;
+using System.Diagnostics;
 using Rockstar.Engine;
 namespace Rockstar;
 
 public static class Program {
+	private static bool showTiming = false;
 	private static readonly Parser parser = new();
 	public static void Main(string[] args) {
 		string? rockstarProgramFile = null;
 		List<string> programArguments = [];
 		foreach (var arg in args) {
 			if (rockstarProgramFile == null) {
-				if (arg == "--version") DisplayVersionAndExit();
+				switch (arg) {
+					case "--version" or "-v":
+						DisplayVersionAndExit();
+						break;
+					case "--timing" or "-t":
+						showTiming = true;
+						break;
+				}
 				if (arg.EndsWith(".rock", StringComparison.InvariantCultureIgnoreCase)) rockstarProgramFile = arg;
 			} else {
 				programArguments.Add(arg);
@@ -31,14 +39,27 @@ public static class Program {
 	}
 
 	private static void RunFile(string path, string[] args) {
+		Stopwatch? sw = null;
 		IRockstarIO io = new ConsoleIO();
 		var env = new RockstarEnvironment(io, args);
 		var source = File.ReadAllText(path).ReplaceLineEndings();
+		if (showTiming) {
+			sw = new();
+			sw.Start();
+		}
 		try {
 			Run(source, env);
 		} catch (ParserException ex) {
 			io.WriteError(ex, source);
 		}
+		if (sw == null) return;
+		sw.Stop();
+		Console.WriteLine();
+		Console.Write("Program completed in ");
+		Console.WriteLine(sw.ElapsedMilliseconds switch {
+			> 9999 => sw.Elapsed.TotalSeconds + " seconds",
+			_ => sw.ElapsedMilliseconds + " ms"
+		});
 	}
 
 	private static void RunPrompt() {

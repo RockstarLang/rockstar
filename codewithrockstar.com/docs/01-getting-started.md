@@ -39,10 +39,10 @@ Rockstar statements end with a newline, or with any of the punctuation character
 
 If you're running Rockstar from the command line, you can pass parameters to your Rockstar program. Parameters beginning `-` or `--` are for the Rockstar interpreter itself:
 
-| Argument      | Effect                                                      |
-| ------------- | ----------------------------------------------------------- |
-| `--version`    | Display the Rockstar version number and exit.               |
-
+| Argument          | Effect                                                 |
+| ----------------- | ------------------------------------------------------ |
+| `-v`, `--version` | Display the Rockstar version number and exit.          |
+| `-t`, `--timing`  | Display execution time when your program has completed |
 All subsequent parameters will be passed to your Rockstar program, where you can access them in a global array called `arguments`, or its aliases `the outside` or `the world`:
 
 {% rockstar_include args.rock %}

@@ -199,7 +199,7 @@ function replaceElementWithEditor({ editorElement, content, languageSupport, the
 	extensions.push(fixedHeightEditor);
 	const onChangeHandler = EditorView.updateListener.of(viewUpdate => {
 		var source = viewUpdate.state.doc.text.join('\n');
-		if (viewUpdate.docChanged && storageKey) localStorage.setItem(storageKey, source);
+		if (viewUpdate.docChanged && storageKey) sessionStorage.setItem(storageKey, source);
 		editorElement.dispatchEvent(new CustomEvent("update", { detail: viewUpdate }));
 	});
 	extensions.push(onChangeHandler);
@@ -207,7 +207,7 @@ function replaceElementWithEditor({ editorElement, content, languageSupport, the
 	editorElement.parentNode.insertBefore(view.dom, editorElement);
 	editorElement.style.display = "none";
 	if (storageKey) {
-		var storedSource = localStorage.getItem(storageKey);
+		var storedSource = sessionStorage.getItem(storageKey);
 		const update = {changes: {
 			from: 0,
 			to: view.state.doc.length,

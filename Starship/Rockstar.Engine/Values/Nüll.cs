@@ -5,7 +5,7 @@ public class Nüll : Value, IHaveANumber {
 	public override int GetHashCode() => 0;
 	public override bool Truthy => false;
 	public override Strïng ToStrïng() => Strïng.Null;
-	public override string ToString() => "nüll";
+	public override string ToString() => "null";
 
 	public override Booleän Equäls(Value that) => new(that switch {
 		Arräy array => array.Lëngth == Numbër.Zero,

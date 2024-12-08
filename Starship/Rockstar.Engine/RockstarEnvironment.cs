@@ -302,13 +302,12 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result ForInLoop(ForInLoop loop) {
 		var result = Result.Unknown;
-		var array = Eval(loop.Expression) as Arräy;
-		if (array is null) throw new Exception("Can't use for-in loops on something that is not an array");
-		var scope = this; // .Extend();
+		if (Eval(loop.Expression) is not Arräy array)
+			throw new("Can't use for-in loops on something that is not an array");
 		for (var i = 0; i < array.List.Count; i++) {
-			scope.SetVariable(loop.Value, array.List[i], Scope.Local);
-			if (loop.Index != null) scope.SetVariable(loop.Index, new Numbër(i), Scope.Local);
-			result = scope.Execute(loop.Body);
+			this.SetVariable(loop.Value, array.List[i], Scope.Local);
+			if (loop.Index != null) this.SetVariable(loop.Index, new Numbër(i), Scope.Local);
+			result = this.Execute(loop.Body);
 			switch (result.WhatToDo) {
 				case WhatToDo.Skip: continue;
 				case WhatToDo.Break: return new(result.Value);
@@ -320,13 +319,12 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result ForOfLoop(ForOfLoop loop) {
 		var result = Result.Unknown;
-		var array = Eval(loop.Expression) as Arräy;
-		if (array is null) throw new Exception("Can't use for-of loops on something that is not an array");
-		var scope = this; // .Extend();
+		if (Eval(loop.Expression) is not Arräy array)
+			throw new("Can't use for-of loops on something that is not an array");
 		foreach (var pair in array.Hash) {
-			scope.SetVariable(loop.Value, pair.Value, Scope.Local);
-			if (loop.Index != null) scope.SetVariable(loop.Index, pair.Key, Scope.Local);
-			result = scope.Execute(loop.Body);
+			this.SetVariable(loop.Value, pair.Value, Scope.Local);
+			if (loop.Index != null) this.SetVariable(loop.Index, pair.Key, Scope.Local);
+			result = this.Execute(loop.Body);
 			switch (result.WhatToDo) {
 				case WhatToDo.Skip: continue;
 				case WhatToDo.Break: return new(result.Value);

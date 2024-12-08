@@ -2,7 +2,7 @@
 
 This is Rockstar, an esoteric programming language whose syntax is inspired by the lyrics to 80s hard rock and heavy metal songs.
 
-![[rockstar-logo-strapline-sticker.png]]
+![Rockstar Logotype](rockstar-logo-strapline-sticker.png)
 # What's Here
 
 Rockstar has three main components:

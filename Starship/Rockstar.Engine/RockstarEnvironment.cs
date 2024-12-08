@@ -244,16 +244,14 @@ public class RockstarEnvironment(IRockstarIO io) {
 	}
 
 	private Result Enlist(Enlist e) {
-		var variable = QualifyPronoun(e.Variable);
-		var value = LookupValue(variable.Key);
+		var value = Lookup(e.Variable);
 		if (value is Strïng s) {
 			foreach (var expr in e.Expressions) s.Append(Eval(expr));
 			return new(s);
 		}
-
 		if (value is not Arräy array) {
 			array = value == Mysterious.Instance ? new Arräy() : new(value);
-			SetLocal(variable, array);
+			SetVariable(e.Variable, array, Scope.Local);
 		}
 		foreach (var expr in e.Expressions) array.Push(Eval(expr));
 		return new(array);

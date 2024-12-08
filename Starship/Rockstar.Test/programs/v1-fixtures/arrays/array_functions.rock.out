@@ -1,7 +1,7 @@
 function that does nothing
 [ null ]
 null
-[ null ]
+null
 null
 
 function that multiplies elements in an array

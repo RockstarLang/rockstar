@@ -77,8 +77,8 @@ public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBa
 				testOutput.WriteLine(result);
 				return;
 			}
-			var actualOutputPath = $@"C:\rocktest\actual\{rockFile.NameThing}.txt";
-			var expectOutputPath = $@"C:\rocktest\expect\{rockFile.NameThing}.txt";
+			var actualOutputPath = $@"D:\rocktest\actual\{rockFile.NameThing}.txt";
+			var expectOutputPath = $@"D:\rocktest\expect\{rockFile.NameThing}.txt";
 			testOutput.WriteLine(actualOutputPath);
 			try {
 				File.WriteAllText(actualOutputPath, output.WithDebugInformationRemoved());

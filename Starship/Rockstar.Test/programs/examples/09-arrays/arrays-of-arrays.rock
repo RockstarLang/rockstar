@@ -1,3 +1,15 @@
+Rock my array
+Print my array (prints: [ ])
+
+Rock my array at 1
+Print my array (prints: [ null, [ ] ])
+
+Rock your array at 1 using 2, 3, 4
+Print your array (prints: [ null, [ 2, 3, 4 ] ])
+
+Rock her array at "key" using "a", "b", "c"
+Print her array (prints: [ "key": [ "a", "b", "c" ] ])
+
 The array at 1 at 2 at 3 is "yeah"
 Print the array at 1 at 2 at 3 (prints: yeah)
 Print the array (prints: [ null, [ null, null, [ null, null, null, "yeah" ] ] ])
@@ -6,3 +18,4 @@ The words at 2 is "Slash"
 Print the words at 2 at 0 (prints: S)
 Print the words at 2 (prints: Slash)
 Print the words (prints: [ null, null, "Slash" ])
+

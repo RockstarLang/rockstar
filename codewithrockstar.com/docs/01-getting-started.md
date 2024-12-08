@@ -48,7 +48,7 @@ All subsequent parameters will be passed to your Rockstar program, where you can
 {% rockstar_include args.rock %}
 ## Comments
 
-The use of comments in Rockstar programs is strongly discouraged: this is rock’n’roll; it’s up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses `()`. Yes, this means you can’t use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments.
+The use of comments in Rockstar programs is strongly discouraged. This is rock’n’roll; it’s up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses `()`. Yes, this means you can’t use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments.
 
 {% rockstar_include comments.rock %}
 ### Line comments

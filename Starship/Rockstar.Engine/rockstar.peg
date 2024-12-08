@@ -55,11 +55,11 @@ statement -memoize
 	/ !EOB e:expression &(EOS / EOF) { new ExpressionStatement(e) }
 
 enlistment <Statement>
-	= push _ e:expression_or_error _ into _ v:variable_or_error
+	= push _ e:expression_or_error _ into _ v:assignable_or_error
 		{ new Enlist(v, e) }
-	/ push _ v:variable_or_error (_ with)? _ e:expression_list
+	/ push _ v:assignable_or_error (_ using)? _ e:expression_list
 		{ new Enlist(v, e) }
-	/ push _ v:variable_or_error
+	/ push _ v:assignable_or_error
 		{ new Enlist(v) }
 	/ d:delist _ into _ t:assignable_or_error
 		{ new Assign(t, d) }

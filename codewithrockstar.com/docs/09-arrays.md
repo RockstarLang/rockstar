@@ -7,7 +7,7 @@ summary: Whether it's a set list, the stack of 4x12 speaker cabinets, or the que
 ---
 ## Arrays
 
-Rockstar supports JavaScript-style arrays. Arrays are zero-based, and dynamically allocated when values are assigned using numeric indexes. Array elements are initialised to `null`; passing an out-of-range index returns `mysterious`:
+Rockstar supports JavaScript-style arrays, with array elements accessed using the `at` keyword. Arrays are zero-based, and dynamically allocated when values are assigned using numeric indexes. Array elements are initialised to `null`; passing an out-of-range index returns `mysterious`:
 
 {% rockstar_include basic-arrays.rock %}
 
@@ -26,10 +26,13 @@ Returning an array in a numeric context will return the current length of the ar
 Array indexes can be of any type, and you can mix key types within the same array. The array length only considers keys whose values are non-negative integers:
 
 {% rockstar_include non-integer-keys.rock %}
+### Nested Arrays
 
-Arrays in Rockstar are one-dimensional, but they can contain other arrays:
+Arrays in Rockstar are one-dimensional, but they can contain other arrays.
 
-{% rockstar_include non-integer-keys.rock %}
+To initialise an empty array, `rock the array`. To put an empty array inside another array, `rock my array at 1`; to populate a nested array, `rock my array at 1 using 2, 3, 4`:
+
+{% rockstar_include arrays-of-arrays.rock %}
 
 You can use indexes to read characters from strings, and extract bits from numbers. You can also use indexers to modify individual characters in a string:
 

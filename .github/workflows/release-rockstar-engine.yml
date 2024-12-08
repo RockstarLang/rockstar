@@ -1,7 +1,7 @@
 name: release-rockstar-engine
 on:
   workflow_run:
-    workflows: ['build-wasm-and-linux-binaries']
+    workflows: ['build-rockstar-2.0']
     types: [completed]
     branches: ['main']
   # push:

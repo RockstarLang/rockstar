@@ -483,6 +483,9 @@
     <None Update="programs\examples\09-arrays\invalid-assignment.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="programs\examples\09-arrays\modify-array-inside-loop.rock">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="programs\examples\09-arrays\non-integer-keys.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

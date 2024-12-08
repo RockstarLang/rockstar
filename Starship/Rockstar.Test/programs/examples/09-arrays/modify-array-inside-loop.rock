@@ -1,0 +1,13 @@
+keys are "abc"
+shatter keys
+debug keys
+
+for key in keys
+point is 1
+rock point with 2
+let points at key be point
+rock lists at key using point
+end
+
+print points (prints: [ "a": [ 1, 2 ]; "b": [ 1, 2 ]; "c": [ 1, 2 ] ])
+print lists (prints: [ "a": [ [ 1, 2 ] ]; "b": [ [ 1, 2 ] ]; "c": [ [ 1, 2 ] ] ])

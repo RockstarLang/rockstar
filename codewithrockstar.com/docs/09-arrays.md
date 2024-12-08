@@ -48,7 +48,7 @@ To loop over the *list* elements of an array, use `for <value> in <array>` If yo
 
 {% rockstar_include for-in.rock %}
 
-To loop over the *hash* elements of an array, use `for <key> of <array>` - this will call the loop once for each element in the hash, setting *key* to the key of that element. If you need the element values as well, use `for <key> and <value> of <array>`:
+To loop over the *hash* elements of an array, use `for <value> of <array>` - this will call the loop once for each element in the hash, setting *value* to the value of that element. If you need the element keys as well, use `for <value> and <key> of <array>`:
 
 {% rockstar_include for-of.rock %}
 
@@ -63,9 +63,14 @@ Yeah
 so you can use the `every` keyword, which will prepend `the ` to the variable names assigned inside the body of the loop:
 
 ```
+For every element in the array print the element
+For every value and key of the hash print the key with ":" with the value
+
 For every star in the sky
-Whisper the star
-Yeah
+Whisper the star, yeah
+
+For every beat of my heart
+Whisper the beat, baby
 ```
 ### Queue operations
 

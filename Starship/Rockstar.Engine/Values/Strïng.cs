@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 namespace Rockstar.Engine.Values;
@@ -19,8 +20,10 @@ public class Strïng(string value) : ValueOf<string>(value) {
 		_ => that.ToStrïng().Value.Equals(this.Value, StringComparison.InvariantCultureIgnoreCase)
 	});
 
-	public override Booleän IdenticalTo(Value that)
-		=> that is Strïng ? this.Equäls(that) : Booleän.False;
+	public override Booleän IdenticalTo(Value that) => new(that switch {
+		Strïng s => String.Equals(this.Value, s.Value, StringComparison.Ordinal),
+		_ => false
+	});
 
 	public override Value AtIndex(Value index) => index switch {
 		IHaveANumber n => CharAt(n),

@@ -50,12 +50,13 @@ In the following examples, short-circuiting means the division by zero is never 
 
 ## Equality and Comparison
 
-Equality in Rockstar uses the `is`, `was`, `are` and `were` keywords. Equality is determined as follows:
+Equality in Rockstar uses the `is`, `was`, `are` and `were` keywords.
 
-* If one operand is a Boolean, compare it to the truthiness of the other operand:
-	* All non-zero numbers and non-empty strings are equal to `true`
-	* Otherwise, if one operand is a string, compare it with the string representation of the other argument
-	* Otherwise, the values of the two operands are compared.
+* If one operand is a Boolean, compare it to the truthiness of the other operand.
+* Otherwise, if one operand is a string, compare it with the string representation of the other argument. 
+* Otherwise, the values of the two operands are compared.
+
+String comparisons in Rockstar are case insensitive and culture invariant; use [strict equality](#strict-equality) to perform case-sensitive string comparisons.
 
 {% rockstar_include equality.rock %}
 
@@ -68,7 +69,7 @@ Inequality uses the `isn't` and `ain't` keywords.
 {% rockstar_include inequality.rock %}
 
 ### Strict Equality
-To compare values without performing any type coercion, use the `exactly` keyword, or its aliases `really`, `actually` or `totally`:
+To compare values without performing any type coercion, use the `exactly` keyword, or its aliases `really`, `actually` or `totally`. This will also force string comparisons to be case sensitive.
 
 {% rockstar_include identity.rock %}
 
@@ -88,17 +89,4 @@ By default, comparison use type coercion:
 * Otherwise, the numeric values of the operands are compared (`true` is `1`, `null` and `false` are 0)
 
 {% rockstar_include string-comparison.rock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
 

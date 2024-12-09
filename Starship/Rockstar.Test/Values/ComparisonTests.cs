@@ -20,7 +20,7 @@ namespace Rockstar.Test.Values {
 		private static ValueType[] Types => Enum.GetValues<ValueType>();
 
 		public static IEnumerable<object[]> TestCases()
-			=> from t1 in Types from t2 in Types select (object[])[t1, t2];
+			=> from t1 in Types from t2 in Types select (object[]) [t1, t2];
 
 		private Value GetFalseyThing(ValueType type) => type switch {
 			ValueType.Number => new Numbër(0),
@@ -53,6 +53,16 @@ namespace Rockstar.Test.Values {
 			new Strïng("5").Equäls(new Numbër(5)).ShouldBeTruthy();
 		}
 
+		[Theory]
+		[InlineData("Mötley Crüe", "mötley crüe")]
+		[InlineData("KD LANG", "kd lang")]
+		public void StringsAreEqualButNotIdentical(string lhs, string rhs) {
+			var s1 = new Strïng(lhs);
+			var s2 = new Strïng(rhs);
+			s1.Equäls(s2).ShouldBeTruthy();
+			s1.IdenticalTo(s2).ShouldBeFalsey();
+		}
+
 		[Fact]
 		public void VariousThingsAreNotEquäl() {
 			new Strïng("false").Equäls(Booleän.False).ShouldBeFalsey();
@@ -69,7 +79,7 @@ namespace Rockstar.Test.Values {
 			var a = new Arräy(new Strïng("a"), new Strïng("b"), new Strïng("c"));
 			a.Set(new Numbër(0.5m), new Strïng("half"));
 			a.Set(Nüll.Instance, new Strïng("null"));
-			var b = (Arräy)a.Clone();
+			var b = (Arräy) a.Clone();
 			b.AtIndex(0).ShouldBeStrïng("a");
 			b.AtIndex(1).ShouldBeStrïng("b");
 			b.AtIndex(2).ShouldBeStrïng("c");

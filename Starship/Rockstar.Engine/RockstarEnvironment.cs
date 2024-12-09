@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text.RegularExpressions;
 using Rockstar.Engine.Expressions;
 using Rockstar.Engine.Statements;
@@ -303,11 +304,11 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result ForInLoop(ForInLoop loop) {
 		var result = Result.Unknown;
-		if (Eval(loop.Expression) is not Arräy array)
-			throw new("Can't use for-in loops on something that is not an array");
-		for (var i = 0; i < array.List.Count; i++) {
-			this.SetVariable(loop.Value, array.List[i], Scope.Local);
-			if (loop.Index != null) this.SetVariable(loop.Index, new Numbër(i), Scope.Local);
+		if (Eval(loop.Expression) is not IEnumerable<(Value, Numbër)> list)
+			throw new("Can't use for-in loops on something that is not enumerable");
+		foreach (var (item, index) in list) {
+			this.SetVariable(loop.Value, item, Scope.Local);
+			if (loop.Index != null) this.SetVariable(loop.Index, index, Scope.Local);
 			result = this.Execute(loop.Body);
 			switch (result.WhatToDo) {
 				case WhatToDo.Skip: continue;

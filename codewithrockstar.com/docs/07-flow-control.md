@@ -85,9 +85,14 @@ You can also close as many blocks as you need to by using Rockstar's `oooh` keyw
 
 {% rockstar_include ooooh.rock %}
 
+### For-in loops {#for-in-loops}
+
+Use `for <variable> in <expression>` to loop through all the characters in a string, or all the integers up to a limit.
+
+{% rockstar_include for-in-loops.rock %}
 ### Loops: While and Until
 
-Loops are denoted by the `while` and `until` keywords.
+Conditional loops are denoted by the `while` and `until` keywords.
 
 {% rockstar_include while.rock %}
 

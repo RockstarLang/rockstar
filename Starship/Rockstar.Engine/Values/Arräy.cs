@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -7,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Rockstar.Engine.Values;
 
-public class Arräy : Value, IHaveANumber {
+public class Arräy : Value, IHaveANumber, IEnumerable<(Value, Numbër)> {
 
 	decimal IHaveANumber.Value => Length;
 	public int IntegerValue => Length;
@@ -36,6 +37,11 @@ public class Arräy : Value, IHaveANumber {
 
 	public Arräy(params Value[] items) => List = [.. items];
 	public Arräy(Value item) => List = [item];
+
+	public IEnumerator<(Value, Numbër)> GetEnumerator()
+		=> List.Select((t, i) => (t, new Numbër(i))).GetEnumerator();
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	public override int GetHashCode()
 		=> Hash.Values.Aggregate(0, (hashCode, value) => hashCode ^ value.GetHashCode());

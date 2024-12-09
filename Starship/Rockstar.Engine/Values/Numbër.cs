@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Rockstar.Engine.Values;
 
-public class Numbër(decimal value) : ValueOf<decimal>(value), IHaveANumber {
+public class Numbër(decimal value) : ValueOf<decimal>(value), IHaveANumber, IEnumerable<(Value, Numbër)> {
 
 	public static Numbër Zero = new(0);
 
@@ -39,6 +40,13 @@ public class Numbër(decimal value) : ValueOf<decimal>(value), IHaveANumber {
 	};
 
 	public override Value Clone() => new Numbër(Value);
+
+	public IEnumerator<(Value, Numbër)> GetEnumerator()
+		=> Enumerable.Range(0, IntegerValue)
+			.Select((value, index) => ((Value)new Numbër(value), new Numbër(index)))
+			.GetEnumerator();
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	public override string ToString() => FormatNumber(this.Value);
 

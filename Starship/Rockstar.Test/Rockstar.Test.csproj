@@ -474,6 +474,9 @@
     <None Update="programs\examples\09-arrays\basic-arrays.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="programs\examples\07-flow-control\for-in-loops.rock">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="programs\examples\09-arrays\for-of.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -501,7 +504,7 @@
     <None Update="programs\examples\09-arrays\pop-and-roll.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="programs\examples\09-arrays\for-in.rock">
+    <None Update="programs\examples\09-arrays\for-in-arrays.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="programs\examples\09-arrays\subtracting-arrays.rock">

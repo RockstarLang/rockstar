@@ -1,0 +1,12 @@
+String says hello
+For character in string
+Write character with "!"
+End
+(writes: h!e!l!l!o!)
+
+Limit is 5
+for counter in limit
+Write counter
+End
+(writes: 01234)
+

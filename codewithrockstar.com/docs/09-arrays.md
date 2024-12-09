@@ -42,11 +42,9 @@ Trying to assign an indexed value to an existing variable which is not an array 
 
 {% rockstar_include invalid-assignment.rock %}
 
-### Looping over arrays
-
 To loop over the *list* elements of an array, use `for <value> in <array>` If you also need the index of each element, use `for <value> and <index> in <array>`:
 
-{% rockstar_include for-in.rock %}
+{% rockstar_include for-in-arrays.rock %}
 
 To loop over the *hash* elements of an array, use `for <value> of <array>` - this will call the loop once for each element in the hash, setting *value* to the value of that element. If you need the element keys as well, use `for <value> and <key> of <array>`:
 

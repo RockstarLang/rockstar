@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using System.Text;
 
 namespace Rockstar.Engine.Values;
 
-public class Strïng(string value) : ValueOf<string>(value) {
+public class Strïng(string value) : ValueOf<string>(value), IEnumerable<(Value, Numbër)> {
 
 	public Strïng(params char[] chars) : this(new string(chars)) { }
 
@@ -31,6 +32,11 @@ public class Strïng(string value) : ValueOf<string>(value) {
 	};
 
 	public override Value Clone() => new Strïng(Value);
+
+	public IEnumerator<(Value, Numbër)> GetEnumerator()
+		=> Value.Select((c, i) => ((Value)new Strïng(c), new Numbër(i))).GetEnumerator();
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 	public override string ToString() => $"\"{this.Value}\"";
 

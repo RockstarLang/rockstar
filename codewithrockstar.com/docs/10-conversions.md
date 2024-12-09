@@ -41,7 +41,11 @@ The built-in `cast` function (aka `burn`) will parse strings into numbers, or co
 
 Rounding and string case conversion in Rockstar is done using `turn` .
 
-For numbers, `Turn up` will round up (i.e. towards positive infinity), to the nearest integer; `turn down` will round down (towards negative infinity) to the nearest integer, and `turn round` will round to the nearest integer. Bonnie Tyler enthusiasts will be pleased to note that Rockstar accepts `turn around` as a valid alias. For strings, `turn up` will convert the string to `UPPERCASE`, `turn down` will convert the string to `lowercase`, `turn round` will reverse the string.
+For numbers, `Turn up` will round up (i.e. towards positive infinity), to the nearest integer; `turn down` will round down (towards negative infinity) to the nearest integer, and `turn round` will round to the nearest integer. Bonnie Tyler enthusiasts will be pleased to note that Rockstar accepts `turn around` as a valid alias. 
+
+For strings, `turn up` will convert the string to `UPPERCASE`, `turn down` will convert the string to `lowercase`. 
+
+> `turn the string around` will reverse the string because, well, what else would you expect `turn the string around` to do?
 
 Both `turn <variable> <direction>` and `turn <direction> <variable>` are valid. Turn operations act in-place: they modify the variable directly, and will return the rounded value.
 

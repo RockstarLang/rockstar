@@ -215,6 +215,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 			Strïng s => new Strïng(r.Round switch {
 				Round.Down => s.Value.ToLowerInvariant(),
 				Round.Up => s.Value.ToUpperInvariant(),
+				Round.Nearest => new(s.Value.Reverse().ToArray()),
 				_ => throw new($"Can't apply rounding to variable {r.Variable.Name} of type {value.GetType().Name}")
 			}),
 			_ => throw new($"Can't apply rounding to variable {r.Variable.Name} of type {value.GetType().Name}")

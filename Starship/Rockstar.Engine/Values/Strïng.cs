@@ -17,7 +17,7 @@ public class Strïng(string value) : ValueOf<string>(value) {
 		Arräy array => this.IsEmpty && array.IsEmpty,
 		IHaveANumber { Value: 0 } => this.IsEmpty,
 		Numbër n => Decimal.TryParse(Value, out var d) && n.Value == d,
-		_ => that.ToStrïng().Value.Equals(this.Value, StringComparison.InvariantCultureIgnoreCase)
+		_ => that.ToStrïng().Value.Equals(this.Value, StringComparison.InvariantCulture)
 	});
 
 	public override Booleän IdenticalTo(Value that) => new(that switch {

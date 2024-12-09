@@ -9,3 +9,9 @@ Shout X (prints: 1)
 The radio's like a siren... the fire has just begun. 
 Turn up the radio
 Say the radio (prints: 16)
+
+My dad says Motley Crue is lame
+Turn it up.
+Shout it (prints: MOTLEY CRUE IS LAME)
+Turn it down.
+Shout it (prints: motley crue is lame)

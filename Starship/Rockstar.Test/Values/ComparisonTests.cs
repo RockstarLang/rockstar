@@ -53,16 +53,6 @@ namespace Rockstar.Test.Values {
 			new Strïng("5").Equäls(new Numbër(5)).ShouldBeTruthy();
 		}
 
-		[Theory]
-		[InlineData("Mötley Crüe", "mötley crüe")]
-		[InlineData("KD LANG", "kd lang")]
-		public void StringsAreEqualButNotIdentical(string lhs, string rhs) {
-			var s1 = new Strïng(lhs);
-			var s2 = new Strïng(rhs);
-			s1.Equäls(s2).ShouldBeTruthy();
-			s1.IdenticalTo(s2).ShouldBeFalsey();
-		}
-
 		[Fact]
 		public void VariousThingsAreNotEquäl() {
 			new Strïng("false").Equäls(Booleän.False).ShouldBeFalsey();

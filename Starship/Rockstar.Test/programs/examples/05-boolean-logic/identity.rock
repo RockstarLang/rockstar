@@ -12,9 +12,6 @@ Print 1 - 1 is really false (prints: false)
 Print 1 + 2 is "3" (prints: true)
 Print 1 + 2 is exactly "3" (prints: false)
 
-Print "KD LANG" is "kd lang" (prints: true)
-Print "KD LANG" is exactly "kd lang" (prints: false)
-
 Heinous is wrong
 Bill is right
 Say Bill is totally non-non-non-non-NON heinous (prints: true)

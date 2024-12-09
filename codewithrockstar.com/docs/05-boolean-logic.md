@@ -56,7 +56,7 @@ Equality in Rockstar uses the `is`, `was`, `are` and `were` keywords.
 * Otherwise, if one operand is a string, compare it with the string representation of the other argument. 
 * Otherwise, the values of the two operands are compared.
 
-String comparisons in Rockstar are case insensitive and culture invariant; use [strict equality](#strict-equality) to perform case-sensitive string comparisons.
+String comparisons in Rockstar are case sensitive and culture invariant. 
 
 {% rockstar_include equality.rock %}
 
@@ -69,7 +69,7 @@ Inequality uses the `isn't` and `ain't` keywords.
 {% rockstar_include inequality.rock %}
 
 ### Strict Equality
-To compare values without performing any type coercion, use the `exactly` keyword, or its aliases `really`, `actually` or `totally`. This will also force string comparisons to be case sensitive.
+To compare values without performing any type coercion, use the `exactly` keyword, or its aliases `really`, `actually` or `totally`.
 
 {% rockstar_include identity.rock %}
 

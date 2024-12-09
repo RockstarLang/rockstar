@@ -1,6 +1,6 @@
 namespace Rockstar.Test;
 
-public abstract class RockstarTestBase(ITestOutputHelper testOutput) {
+public abstract class RockstarTestBase(ITestOutputHelper testOutputHelper) {
 
 	protected readonly Parser Parser = new();
 

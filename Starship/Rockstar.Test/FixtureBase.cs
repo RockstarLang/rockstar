@@ -1,6 +1,7 @@
 namespace Rockstar.Test;
 
-public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBase(testOutput) {
+public abstract class FixtureBase(ITestOutputHelper testOutputHelper) : RockstarTestBase(testOutputHelper) {
+	private readonly ITestOutputHelper output = testOutputHelper;
 
 	protected static readonly string ExamplesDirectory = Path.Combine("programs", "examples");
 	protected static readonly string FixturesDirectory = Path.Combine("programs", "fixtures");
@@ -23,16 +24,16 @@ public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBa
 		if (cursor == default) return;
 		var outputLine = cursor.Line;
 		var line = file.Contents.Split('\n')[cursor.Line - 1].TrimEnd('\r');
-		testOutput.WriteLine(line);
-		testOutput.WriteLine(String.Empty.PadLeft(cursor.Column - 1) + "^ error is here!");
+		output.WriteLine(line);
+		output.WriteLine(String.Empty.PadLeft(cursor.Column - 1) + "^ error is here!");
 		var ncrunchOutputMessage = $"   at <Rockstar code> in {file.UncrunchedFilePath}:line {outputLine}";
-		testOutput.WriteLine(ncrunchOutputMessage);
+		output.WriteLine(ncrunchOutputMessage);
 	}
 
 	public Program ParseFile(RockFile rockFile) {
 		var source = rockFile.Contents;
 		try {
-			testOutput.WriteLine($"   at <Rockstar code> in {rockFile.UncrunchedFilePath}:line 1");
+			output.WriteLine($"   at <Rockstar code> in {rockFile.UncrunchedFilePath}:line 1");
 			return Parser.Parse(source);
 		} catch (FormatException ex) {
 			PrettyPrint(rockFile, ex);
@@ -50,13 +51,13 @@ public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBa
 			}
 		} else {
 			var program = ParseFile(rockFile);
-			testOutput.WriteLine(program);
+			output.WriteLine(program);
 		}
 	}
 
 	public void RunFile(RockFile rockFile) {
 		if (rockFile.HasExpectedErrors("error")) {
-			testOutput.WriteLine($"Skipping {rockFile.UncrunchedFilePath} since it has expected errors.");
+			this.output.WriteLine($"Skipping {rockFile.UncrunchedFilePath} since it has expected errors.");
 			return;
 		}
 		var source = rockFile.Contents;
@@ -73,28 +74,28 @@ public abstract class FixtureBase(ITestOutputHelper testOutput) : RockstarTestBa
 			(var result, output) = RunProgram(program, inputs);
 			var expect = rockFile.ExpectedOutput;
 			if (String.IsNullOrEmpty(expect)) {
-				testOutput.WriteLine(output);
-				testOutput.WriteLine(result);
+				this.output.WriteLine(output);
+				this.output.WriteLine(result);
 				return;
 			}
 			var actualOutputPath = $@"D:\rocktest\actual\{rockFile.NameThing}.txt";
 			var expectOutputPath = $@"D:\rocktest\expect\{rockFile.NameThing}.txt";
-			testOutput.WriteLine(actualOutputPath);
+			this.output.WriteLine(actualOutputPath);
 			try {
 				File.WriteAllText(actualOutputPath, output.WithDebugInformationRemoved());
 				File.WriteAllText(expectOutputPath, expect);
 			} catch (Exception ex) {
-				testOutput.WriteLine("Exception trying to write test output:");
-				testOutput.WriteLine(ex.Message);
+				this.output.WriteLine("Exception trying to write test output:");
+				this.output.WriteLine(ex.Message);
 			}
 			output.WithDebugInformationRemoved().ShouldBe(expect);
 		} catch(Exception ex) {
 			if (rockFile.ExtractedExpectedError("runtime error", out var error) && ex.Message == error) return;
-			testOutput.WriteLine(program.ToString());
+			this.output.WriteLine(program.ToString());
 			throw;
 		} finally {
-			testOutput.WriteNCrunchFilePath(rockFile);
-			testOutput.WriteLine(output);
+			this.output.WriteNCrunchFilePath(rockFile);
+			this.output.WriteLine(output);
 		}
 	}
 }

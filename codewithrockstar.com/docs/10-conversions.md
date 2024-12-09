@@ -37,33 +37,12 @@ The built-in `cast` function (aka `burn`) will parse strings into numbers, or co
 
 {% rockstar_include cast.rock %}
 
-#### Arithmetic Rounding
+#### Turn Up The Rock: Arithmetic Rounding and String Casing {#rounding}
 
-Rounding in Rockstar is performed by the `turn` keyword. `Turn up` will round up (i.e. towards positive infinity), to the nearest integer; `turn down` will round down (towards negative infinity) to the nearest integer, and `turn round` will round to the nearest integer. Bonnie Tyler enthusiasts will be pleased to note that Rockstar accepts `turn around` as a valid alias.
+Rounding and string case conversion in Rockstar is done using `turn` .
 
-Turn operations act in-place: they modify the variable directly, and will return the rounded value.
+For numbers, `Turn up` will round up (i.e. towards positive infinity), to the nearest integer; `turn down` will round down (towards negative infinity) to the nearest integer, and `turn round` will round to the nearest integer. Bonnie Tyler enthusiasts will be pleased to note that Rockstar accepts `turn around` as a valid alias. For strings, `turn up` will convert the string to `UPPERCASE`, `turn down` will convert the string to `lowercase`, `turn round` will reverse the string.
 
-```
-X is 1.2
-Turn up X
-Shout X (will print 2)
+Both `turn <variable> <direction>` and `turn <direction> <variable>` are valid. Turn operations act in-place: they modify the variable directly, and will return the rounded value.
 
-X is 1.2
-Turn down X
-Shout X (will print 1)
-
-The radio's playing. The night has just begun.
- (initialises the radio with 7.35345)
-Turn up the radio
-Say the radio (will print 8)
-```
-
-Rounding supports variable [pronouns](https://docs.codewithrockstar.com/docs#pronouns), so you can write phrases like:
-
-```
-My heart is on fire. Aflame with desire.
-Turn it up.
-Shout it.
-```
-
-which will print the value 25 (obviously).
+{% rockstar_include rounding.rock %}

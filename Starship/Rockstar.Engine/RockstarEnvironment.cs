@@ -70,8 +70,6 @@ public class RockstarEnvironment(IRockstarIO io) {
 		return new(stored);
 	}
 
-	private Value SetLocal(Variable variable, Value value) => SetLocal(variable, [], value);
-
 	private Value SetLocal(Variable variable, IList<Value> indexes, Value value) {
 		if (!indexes.Any()) return variables[variable.Key] = value;
 		variables.TryAdd(variable.Key, new Arräy());
@@ -81,11 +79,6 @@ public class RockstarEnvironment(IRockstarIO io) {
 			Numbër n => n.SetBit(indexes, value),
 			_ => throw new($"{variable.Name} is not an indexed variable")
 		};
-	}
-
-	public Result Execute(Quine quine) {
-		Write(quine.Source);
-		return Result.Exit;
 	}
 
 	public Result Execute(Program program)
@@ -212,13 +205,20 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result Rounding(Rounding r) {
 		var value = Lookup(r.Variable);
-		if (value is not Numbër n) throw new($"Can't apply rounding to variable {r.Variable.Name} of type {value.GetType().Name}");
-		var rounded = new Numbër(r.Round switch {
-			Round.Down => Math.Floor(n.Value),
-			Round.Up => Math.Ceiling(n.Value),
-			Round.Nearest => Math.Round(n.Value),
-			_ => throw new ArgumentOutOfRangeException()
-		});
+		Value rounded = value switch {
+			Numbër n => new Numbër(r.Round switch {
+				Round.Down => Math.Floor(n.Value),
+				Round.Up => Math.Ceiling(n.Value),
+				Round.Nearest => Math.Round(n.Value),
+				_ => throw new ArgumentOutOfRangeException()
+			}),
+			Strïng s => new Strïng(r.Round switch {
+				Round.Down => s.Value.ToLowerInvariant(),
+				Round.Up => s.Value.ToUpperInvariant(),
+				_ => throw new($"Can't apply rounding to variable {r.Variable.Name} of type {value.GetType().Name}")
+			}),
+			_ => throw new($"Can't apply rounding to variable {r.Variable.Name} of type {value.GetType().Name}")
+		};
 		SetVariable(r.Variable, rounded);
 		return new(rounded);
 	}

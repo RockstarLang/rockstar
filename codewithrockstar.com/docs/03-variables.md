@@ -96,7 +96,7 @@ Poetic numbers are indicated by the `like` and `so` keywords:
 
 Assignment using `is` will trigger poetic number parsing if the right-hand side of the `is` expression does **not** start with a keyword or literal; see [assignment using `is`](#assignment-using-is) for more about how this works.
 
-Words of 10 or more letters are counted modulo 10, so you can use 10-letter words for `0`, 11 letters for `1` and 12 letters for `2`. Hyphens `-` are counted as letters, so `demon-haunted` is treated as a 12-letter word. Apostrophes are **not** counted, so `nothing` counts as 7 but `nothin'` counts as 6. A poetic number counts every word until the end of the current statement (indicated by a newline or punctuation `.!?;`) If you need a poetic number with a decimal point, use an ellipsis `...`  or the Unicode equivalent U+2026 `…` as the decimal.
+Words of 10 or more letters are counted modulo 10, so you can use 10-letter words for `0`, 11 letters for `1` and 12 letters for `2`. Hyphens `-` are counted as letters, so `demon-haunted` is treated as a 13-letter word. Apostrophes are **not** counted, so `nothing` counts as 7 but `nothin'` counts as 6. A poetic number counts every word until the end of the current statement (indicated by a newline or punctuation `.!?;`) If you need a poetic number with a decimal point, use an ellipsis `...`  or the Unicode equivalent U+2026 `…` as the decimal.
 
 {% rockstar_include poetic-numbers-2.rock %}
 

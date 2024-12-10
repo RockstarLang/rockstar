@@ -50,7 +50,7 @@ public abstract class Variable(string name) : Expression {
 	}
 
 	public string PrintIndexes() {
-		if (Indexes.Any()) return ("[" + String.Join(",", Indexes.Select(i => i.ToString()).ToArray()) + "]");
+		if (Indexes.Any()) return ("[" + String.Join("][", Indexes.Select(i => i.ToString()).ToArray()) + "]");
 		return String.Empty;
 	}
 }

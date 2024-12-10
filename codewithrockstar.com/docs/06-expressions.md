@@ -29,7 +29,7 @@ Rockstar supports both the **UK nacton** `'n'` (as in *fish 'n' chips*) and the 
 
 {% rockstar_include variable-lists.rock %}
 
-Then there's an **primary list**, used to provide arguments to a function. The elements in a primary list must be **primaries**, and you **can't separate a primary list with an Oxford comma** - if the parser sees `, and`, that means the primary list is finished and move on to the next thing.
+Then there's a **primary list**, used to provide arguments to a function. The elements in a primary list must be **primaries**, and you **can't separate a primary list with an Oxford comma** - if the parser sees `, and`, that means the primary list is finished and move on to the next thing.
 
 {% rockstar_include primary-lists.rock %}
 

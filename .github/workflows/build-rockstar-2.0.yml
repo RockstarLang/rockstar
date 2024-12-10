@@ -77,7 +77,11 @@ jobs:
   rockstar-macos-binary:
     needs: build-engine
     uses: ./.github/workflows/build-macos-binary.yml
+    with:
+      rockstar_version: "v2.0.${{ github.run_number }}"
   rockstar-windows-binary:
     needs: build-engine
     uses: ./.github/workflows/build-windows-binary.yml
+    with:
+      rockstar_version: "v2.0.${{ github.run_number }}"
 

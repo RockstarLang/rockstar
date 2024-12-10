@@ -1,7 +1,11 @@
 name: build-macos-binary
 on:
-  workflow_dispatch:
   workflow_call:
+    inputs:
+      rockstar_version:
+        required: true
+        type: string
+        default: "v0.0.0-test"
 jobs:
   build:
     runs-on: macos-latest
@@ -12,6 +16,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
+      - name: Patch VERSION constant inside Starship/Rockstar.Engine/RockstarEnvironment.cs
+        run: sed -i 's/VERSION = "[^"]*";/VERSION = "${{ inputs.rockstar_version }}";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
       - name: dotnet publish macos x64 binary
         run: dotnet publish Starship/Rockstar -o rockstar-macos-x64-binary -r osx-x64 -c Release
       - name: dotnet publish macos ARM64 binary

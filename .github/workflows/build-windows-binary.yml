@@ -1,7 +1,11 @@
 name: build-windows-binary
 on:
-  workflow_dispatch:
   workflow_call:
+    inputs:
+      rockstar_version:
+        required: true
+        type: string
+        default: "v0.0.0-test"
 jobs:
   build:
     runs-on: windows-latest
@@ -12,6 +16,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.x'
+      - name: update version constant
+        run: |
+          (Get-content Starship/Rockstar.Engine/RockstarEnvironment.cs)
+          | Foreach-Object {$_ -replace "VERSION = ""[^""]+"";", "VERSION = ""${{ github.events.inputs.rockstar_version }}"";"}
+          | Set-Content Starship/Rockstar.Engine/RockstarEnvironment.cs
       - name: dotnet publish Windows x64 binary
         run: dotnet publish Starship/Rockstar -o rockstar-windows-x64-binary -c Release
       - name: Test Windows x64 binary

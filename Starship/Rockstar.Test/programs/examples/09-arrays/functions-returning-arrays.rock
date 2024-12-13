@@ -1,0 +1,31 @@
+MakeLocalArray takes number
+Rock array (this will always declare a new, empty array)
+Rock array with number
+Give back array
+Yeah
+
+ModifyGlobalArray takes number
+rock array with number (this will mutate a global variable if one exists)
+give back array
+yeah
+
+Call MakeLocalArray with 1 into array1
+Call MakeLocalArray with 2 into array2
+
+Call ModifyGlobalArray with 3 into array3
+Call ModifyGlobalArray with 4 into array4
+
+Rock array
+(array is now a global variable, so the next two calls
+to ModifyGlobalArray will mutate it, not create new ones)
+
+Call ModifyGlobalArray with 5 into array5
+Call ModifyGlobalArray with 6 into array6
+
+Print array1 (prints: [ 1 ])
+Print array2 (prints: [ 2 ])
+Print array3 (prints: [ 3 ])
+Print array4 (prints: [ 4 ])
+Print array5 (prints: [ 5, 6 ])
+Print array6 (prints: [ 5, 6 ])
+

@@ -246,7 +246,8 @@ public class RockstarEnvironment(IRockstarIO io) {
 	}
 
 	private Result Enlist(Enlist e) {
-		var value = Lookup(e.Variable);
+		var scope = e.Expressions.Any() ? Scope.Global : Scope.Local;
+		var value = Lookup(e.Variable, scope);
 		if (value is Strïng s) {
 			foreach (var expr in e.Expressions) s.Append(Eval(expr));
 			return new(s);
@@ -378,14 +379,15 @@ public class RockstarEnvironment(IRockstarIO io) {
 	private Value MakeLambda(Functiön functiön, Variable variable)
 		=> this.Parent == default ? new(functiön, variable, this.Extend()) : new Closure(functiön, variable, this);
 
-	private Value LookupValue(string key) {
+	private Value LookupValue(string key, Scope scope = Scope.Global) {
 		if (variables.TryGetValue(key, out var value)) return value;
-		return Parent != default ? Parent.LookupValue(key) : Mysterious.Instance;
-	}
+		if (scope == Scope.Global) 
+			return Parent != default ? Parent.LookupValue(key, scope) : Mysterious.Instance;
+		return Mysterious.Instance; }
 
-	public Value Lookup(Variable variable) {
+	public Value Lookup(Variable variable, Scope scope = Scope.Global) {
 		var key = variable is Pronoun pronoun ? QualifyPronoun(pronoun).Key : variable.Key;
-		var value = LookupValue(key);
+		var value = LookupValue(key, scope);
 		return value.AtIndex(variable.Indexes.Select(Eval));
 	}
 }

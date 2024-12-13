@@ -3,7 +3,7 @@ title: Arrays and Collections
 layout: docs
 examples: /examples/09-arrays/
 nav_order: "1008"
-summary: Whether it's a set list, the stack of 4x12 speaker cabinets, or the queue of eager fans waiting to get into the show, rock'n'roll is all about collections. Just no hashes until after the show, OK?
+summary: Whether it's the set list, the stack of 4x12 speaker cabinets, or the queue of eager fans waiting to get into the show, rock'n'roll is all about collections.
 ---
 ## Arrays
 
@@ -30,7 +30,13 @@ Array indexes can be of any type, and you can mix key types within the same arra
 
 Arrays in Rockstar are one-dimensional, but they can contain other arrays.
 
-To initialise an empty array, `rock the array`. To put an empty array inside another array, `rock my array at 1`; to populate a nested array, `rock my array at 1 using 2, 3, 4`:
+To initialise an empty array, `rock the array`. 
+
+> **Be careful modifying arrays inside functions!** `rock the array` (with no parameters) will always declare a new empty array in the current function scope, even if `the array` is already a global variable -- but if you `rock the array with 1` and `the array` exists in global scope, your function will modify it, *not* create a new one.
+
+{% rockstar_include functions-returning-arrays.rock %}
+
+To put an empty array inside another array, `rock my array at 1`; to populate a nested array, `rock my array at 1 using 2, 3, 4`:
 
 {% rockstar_include arrays-of-arrays.rock %}
 

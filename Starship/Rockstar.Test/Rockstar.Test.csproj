@@ -477,6 +477,9 @@
     <None Update="programs\examples\07-flow-control\for-in-loops.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="programs\examples\09-arrays\functions-returning-arrays.rock">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="programs\examples\09-arrays\for-of.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

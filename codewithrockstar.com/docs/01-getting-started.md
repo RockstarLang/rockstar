@@ -43,6 +43,7 @@ If you're running Rockstar from the command line, you can pass parameters to you
 | ----------------- | ------------------------------------------------------ |
 | `-v`, `--version` | Display the Rockstar version number and exit.          |
 | `-t`, `--timing`  | Display execution time when your program has completed |
+| `-p`, `--parse`   | Display parse tree instead of running the program      |
 All subsequent parameters will be passed to your Rockstar program, where you can access them in a global array called `arguments`, or its aliases `the outside` or `the world`:
 
 {% rockstar_include args.rock %}

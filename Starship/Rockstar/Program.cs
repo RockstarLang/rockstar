@@ -4,6 +4,7 @@ namespace Rockstar;
 
 public static class Program {
 	private static bool showTiming = false;
+	private static bool showParseTree = false;
 	private static readonly Parser parser = new();
 	public static void Main(string[] args) {
 		string? rockstarProgramFile = null;
@@ -13,6 +14,9 @@ public static class Program {
 				switch (arg) {
 					case "--version" or "-v":
 						DisplayVersionAndExit();
+						break;
+					case "--parse" or "-p":
+						showParseTree = true;
 						break;
 					case "--timing" or "-t":
 						showTiming = true;
@@ -76,13 +80,16 @@ public static class Program {
 	private static Result Run(string source, RockstarEnvironment env) {
 		try {
 			var program = parser.Parse(source);
-			var result = env.Execute(program);
-			if (result.WhatToDo == WhatToDo.Exit) Environment.Exit(0);
-			return result;
+			if (showParseTree) {
+				env.Write(program.ToString());
+			} else {
+				var result = env.Execute(program);
+				if (result.WhatToDo == WhatToDo.Exit) Environment.Exit(0);
+				return result;
+			}
 		} catch (FormatException ex) {
 			Console.Error.WriteLine(ex);
 		}
-
 		return Result.Unknown;
 	}
 }

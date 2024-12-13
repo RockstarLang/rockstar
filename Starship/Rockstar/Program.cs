@@ -22,7 +22,7 @@ public static class Program {
 						showTiming = true;
 						break;
 				}
-				if (arg.EndsWith(".rock", StringComparison.InvariantCultureIgnoreCase)) rockstarProgramFile = arg;
+				if (arg.EndsWith(".rock", StringComparison.OrdinalIgnoreCase)) rockstarProgramFile = arg;
 			} else {
 				programArguments.Add(arg);
 			}

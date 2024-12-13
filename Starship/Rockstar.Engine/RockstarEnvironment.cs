@@ -141,7 +141,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 		var value = Eval(debug.Expression);
 		Write("DEBUG: ");
 		if (debug.Expression is Lookup lookup) Write(lookup.Variable.Name + ": ");
-		Write(value.GetType().Name.ToLowerInvariant() + " " + value switch {
+		Write(value.GetType().Name.ToLower() + " " + value switch {
 			Strïng s => "\"" + s.Value + "\"",
 			_ => value.ToStrïng().Value
 		});
@@ -214,7 +214,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 				_ => throw new ArgumentOutOfRangeException()
 			}),
 			Strïng s => new Strïng(r.Round switch {
-				Round.Down => s.Value.ToLowerInvariant(),
+				Round.Down => s.Value.ToLower(),
 				Round.Up => s.Value.ToUpperInvariant(),
 				Round.Nearest => new(s.Value.Reverse().ToArray()),
 				_ => throw new($"Can't apply rounding to variable {r.Variable.Name} of type {value.GetType().Name}")

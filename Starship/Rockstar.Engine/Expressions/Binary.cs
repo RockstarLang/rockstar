@@ -63,7 +63,7 @@ public class Binary : Expression {
 	}
 
 	public override StringBuilder Print(StringBuilder sb, string prefix) {
-		sb.Append(prefix).AppendLine($"{op}:".ToLowerInvariant());
+		sb.Append(prefix).AppendLine($"{op}:".ToLower());
 		lhs.Print(sb, prefix + INDENT);
 		foreach (var expr in rhs) expr.Print(sb, prefix + INDENT);
 		return sb;

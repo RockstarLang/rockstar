@@ -11,7 +11,7 @@ public class Mutation(Operator op, Expression expr, Variable? target = default, 
 	public Expression? Modifier => modifier;
 
 	public override StringBuilder Print(StringBuilder sb, string prefix) {
-		sb.Append(prefix).Append(op.ToString().ToLowerInvariant()).AppendLine(":");
+		sb.Append(prefix).Append(op.ToString().ToLower()).AppendLine(":");
 		Expression.Print(sb, prefix + INDENT);
 		if (Target != default) {
 			sb.Append(prefix + INDENT).AppendLine("target:");

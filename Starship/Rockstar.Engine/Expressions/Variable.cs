@@ -10,7 +10,7 @@ public abstract class Variable(string name) : Expression {
 	protected string NormalizedName { get; init; } = String.Join("_", whitespace.Split(name));
 
 	public override string ToString()
-		=> $"{GetType().Name.ToLowerInvariant()}: {Key}"
+		=> $"{GetType().Name.ToLower()}: {Key}"
 			+ (Indexes.Any() ? "[" + String.Join("][", Indexes.Select(i => i.ToString())) + "]" : "");
 	
 

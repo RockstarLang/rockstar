@@ -56,7 +56,7 @@ Equality in Rockstar uses the `is`, `was`, `are` and `were` keywords.
 * Otherwise, if one operand is a string, compare it with the string representation of the other argument. 
 * Otherwise, the values of the two operands are compared.
 
-String comparisons in Rockstar are case sensitive and culture invariant. 
+String comparisons in Rockstar are ordinal, based on the underlying Unicode code points of the characters. 
 
 {% rockstar_include equality.rock %}
 

@@ -53,7 +53,7 @@ public abstract class Value : Expression {
 	public virtual Booleän IdenticalTo(Value that) => new(ReferenceEquals(this, that));
 
 	private int Compare(Strïng lhs, Strïng rhs)
-		=> String.Compare(lhs.Value, rhs.Value, StringComparison.InvariantCulture);
+		=> String.Compare(lhs.Value, rhs.Value, StringComparison.Ordinal);
 
 	public Booleän Compare(Value lhs, Value rhs, Func<decimal, decimal, bool> comp)
 		=> new((lhs, rhs) switch {

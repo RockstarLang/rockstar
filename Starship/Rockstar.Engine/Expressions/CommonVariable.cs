@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 namespace Rockstar.Engine.Expressions;
 
 public class CommonVariable(string name) : Variable(name) {
-	public override string Key => NormalizedName.ToLowerInvariant();
+	public override string Key => NormalizedName.ToLower();
 }
 
 public class ProperVariable : Variable {

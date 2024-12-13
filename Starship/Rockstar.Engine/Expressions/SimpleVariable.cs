@@ -7,5 +7,5 @@ public class SimpleVariable : Variable {
 	public SimpleVariable(string name) :base(name) {
 		if (illegalCharacters.IsMatch(name)) throw new ArgumentException($"{name} is not a valid simple variable name");
 	}
-	public override string Key => Name.ToLowerInvariant();
+	public override string Key => Name.ToLower();
 }

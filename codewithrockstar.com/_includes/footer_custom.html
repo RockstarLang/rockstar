@@ -6,6 +6,9 @@ function ready(fn) {
     document.addEventListener('DOMContentLoaded', fn);
   }
 }
+let jtdTheme = localStorage.getItem("jtdTheme");
+if (jtdTheme) jtd.setTheme(jtdTheme);
+
 const toggleDarkModeSwitch = document.querySelector('.js-toggle-dark-mode');
 function isDarkMode() {
 	var theme = jtd.getTheme();
@@ -15,8 +18,10 @@ function isDarkMode() {
 function toggleDarkMode(){
   if (isDarkMode()) {
     jtd.setTheme('rockstar');
+	localStorage.setItem("jtdTheme", "rockstar");
   } else {
     jtd.setTheme('darkstar');
+	localStorage.setItem("jtdTheme", "darkstar");
   }
   updateToggleButton();
 }

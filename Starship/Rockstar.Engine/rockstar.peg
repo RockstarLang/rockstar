@@ -518,6 +518,7 @@ keyword
 	/ as
 	/ as_great
 	/ as_small
+	/ at
 	/ back
 	/ be
 	/ build
@@ -545,6 +546,7 @@ keyword
 	/ print
 	/ pronoun
 	/ put
+	/ push
 	/ return
 	/ says
 	/ split

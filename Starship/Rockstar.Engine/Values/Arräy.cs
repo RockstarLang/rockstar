@@ -46,7 +46,7 @@ public class Arräy : Value, IHaveANumber, IEnumerable<(Value, Numbër)> {
 	public override int GetHashCode()
 		=> Hash.Values.Aggregate(0, (hashCode, value) => hashCode ^ value.GetHashCode());
 
-	public override bool Truthy => Hash.Count > 0;
+	public override bool Truthy => Length > 0 || Hash.Count > 0;
 	public bool IsEmpty => Length == 0;
 
 	public override Strïng ToStrïng() => new(this.ToString());

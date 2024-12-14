@@ -237,6 +237,9 @@
     <None Update="programs\examples\04-boolean-logic\unary-not.rock">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="programs\examples\05-boolean-logic\truthiness.rock">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="programs\examples\05-boolean-logic\basic-logic.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -25,7 +25,7 @@ Printing things isn't very rock‘n’roll, though. Rockers don't print, they `s
 
 To read a line of input from `STDIN`, use the `listen` keyword. To read a line into a variable, use `listen to <variable>`:
 
-{% rockstar_include listen.rock %}
+{% rockstar_include listen.rock parse,play,input %}
 
 Almost everything in Rockstar is case-insensitive, and most whitespace is ignored:
 
@@ -44,9 +44,10 @@ If you're running Rockstar from the command line, you can pass parameters to you
 | `-v`, `--version` | Display the Rockstar version number and exit.          |
 | `-t`, `--timing`  | Display execution time when your program has completed |
 | `-p`, `--parse`   | Display parse tree instead of running the program      |
+
 All subsequent parameters will be passed to your Rockstar program, where you can access them in a global array called `arguments`, or its aliases `the outside` or `the world`:
 
-{% rockstar_include args.rock %}
+{% rockstar_include args.rock parse,play,args %}
 ## Comments
 
 The use of comments in Rockstar programs is strongly discouraged. This is rock’n’roll; it’s up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses `()`. Yes, this means you can’t use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments.

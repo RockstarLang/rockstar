@@ -13,18 +13,18 @@ div.site-header a.site-title {
 
 ul#index-nav {
 	list-style-type: none;
-  
+
 	li::before {
 	  content: none;
 	}
-  
+
 	padding: 0;
 	margin: 0;
-  
+
 	a {
 	  font-weight: bold;
 	}
-  
+
 	p {
 	  padding-left: 20px;
 	}
@@ -37,6 +37,7 @@ body {
 			padding-top: 1em;
 			border-top: 2px solid $button-color;
 		}
+		pre + h2 { border-top: 0; padding-top: 0; }
 
 		h3 {
 			margin-top: 1em;
@@ -200,6 +201,7 @@ div.rockstar-controls {
 		}
 
 		span.result {
+			display: none;
 			color: $link-color;
 			border: 1px solid $link-color;
 			background-color: #000;
@@ -230,4 +232,25 @@ article#teemill-gallery {
 			width: 100%;
 		}
 	}
+}
+
+a.rockstar-interpreter-panel-toggle {
+	position: relative;
+	top: -24px;
+	padding: 2px 4px;
+	border: 1px solid $link-color;
+	border-radius: 4px 4px;
+	background-color: $button-color !important;
+	margin-right: 24px;
+	float: right;
+	cursor: pointer;
+	color:  $button-text !important;
+	&:hover {
+		background-color: $link-color !important;
+	}
+}
+div.rockstar-interpreter-panel {
+	transition:height 0.2s ease-out;
+    height:0;
+    overflow:hidden;
 }

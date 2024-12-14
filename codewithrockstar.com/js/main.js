@@ -208,11 +208,13 @@ function replaceElementWithEditor({ editorElement, content, languageSupport, the
 	editorElement.style.display = "none";
 	if (storageKey) {
 		var storedSource = sessionStorage.getItem(storageKey);
-		const update = {changes: {
-			from: 0,
-			to: view.state.doc.length,
-			insert: storedSource
-		}};
+		const update = {
+			changes: {
+				from: 0,
+				to: view.state.doc.length,
+				insert: storedSource
+			}
+		};
 		view.dispatch(update);
 	}
 	return view;
@@ -283,7 +285,7 @@ function createControls(editorId, editorView, originalSource, controls) {
 	return div;
 }
 
-let options = ["play", "parse", "reset", "args", "input", "result"];
+let options = ["play", "parse", "reset", "result"];
 
 function configureControls(preElement) {
 	let list = (preElement.getAttribute("data-controls") ?? "").split(",");
@@ -292,6 +294,9 @@ function configureControls(preElement) {
 	if (list.length == 1 && list[0] == '') return controls;
 	if (list.includes("all")) return controls;
 	for (var option of options) controls[option] = list.includes(option);
+	if (list.includes("args")) controls["args"] = true;
+	if (list.includes("input")) controls["input"] = true;
+	if (list.includes("full")) controls["full"] = true;
 	return controls;
 }
 
@@ -312,6 +317,14 @@ document.querySelectorAll(('code.language-rockstar')).forEach((codeElement) => {
 		storageKey: storageKey
 	};
 	var editorView = replaceElementWithEditor(settings);
+	let panel = null;
+	if (!controls.full) {
+		panel = document.createElement('div');
+		panel.className = "rockstar-interpreter-panel";
+		panel.setAttribute("id", `rockstar-panel-${editorId}`);
+	}
+	let addToLayout = element => (panel ? panel.appendChild(element) : preElement.parentNode.insertBefore(element, preElement));
+
 	if (controls.input) {
 		let inputDiv = document.createElement("div");
 		inputDiv.className = "rockstar-inputs";
@@ -325,7 +338,7 @@ document.querySelectorAll(('code.language-rockstar')).forEach((codeElement) => {
 		// input.value = "";
 		inputDiv.appendChild(label);
 		inputDiv.appendChild(input);
-		preElement.parentNode.insertBefore(inputDiv, preElement);
+		addToLayout(inputDiv);
 	}
 	if (controls.args) {
 		let argsDiv = document.createElement("div");
@@ -340,10 +353,30 @@ document.querySelectorAll(('code.language-rockstar')).forEach((codeElement) => {
 		input.placeholder = "add command line arguments here";
 		argsDiv.appendChild(label);
 		argsDiv.appendChild(input);
-		preElement.parentNode.insertBefore(argsDiv, preElement);
+		addToLayout(argsDiv);
 	}
 	var controlPanel = createControls(editorId, editorView, originalSource, controls);
-	preElement.parentNode.insertBefore(controlPanel, preElement);
+	addToLayout(controlPanel);
+	if (panel) {
+		let panelToggle = document.createElement('a');
+		panelToggle.className = "rockstar-interpreter-panel-toggle";
+		panelToggle.innerHTML = `Try It <i class="fa-solid fa-caret-down"></i>`;
+		panelToggle.addEventListener("click", function () {
+			if (panel.open) {
+				panel.style.height = `${panel.scrollHeight}px`;
+				panel.open = false;
+				window.setTimeout(() => panel.style.height = "0px", 10);
+				panelToggle.innerHTML = `Try It <i class="fa-solid fa-caret-down"></i>`;
+			} else {
+				panel.style.height = `${panel.scrollHeight}px`;
+				window.setTimeout(() => panel.style.height = `auto`, 500);
+				panelToggle.innerHTML = `Try it <i class="fa-solid fa-caret-up"></i>`;
+				panel.open = true;
+			}
+		});
+		preElement.parentNode.insertBefore(panel, preElement);
+		preElement.parentNode.insertBefore(panelToggle, preElement);
+	}
 });
 
 document.querySelectorAll(('code.language-kitchen-sink')).forEach((codeElement) => {

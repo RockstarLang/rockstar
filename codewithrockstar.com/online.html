@@ -6,20 +6,25 @@ nav_exclude: true
 ---
 
 <style>
-	html, body {
+	html,
+	body {
 		overflow: hidden;
 	}
+
 	header {
 		display: none;
 	}
+
 	nav {
 		max-width: 100% !important;
 		margin: 10px !important;
 
 	}
+
 	footer {
 		display: none;
 	}
+
 	main {
 		max-width: 1920px !important;
 		position: fixed;
@@ -33,6 +38,7 @@ nav_exclude: true
 		grid-template-columns: 4fr 1fr;
 		grid-template-rows: 4fr 40px 180px 20px;
 	}
+
 	p#hints {
 		font-size: 60%;
 		margin: 0;
@@ -41,19 +47,35 @@ nav_exclude: true
 		justify-content: space-between;
 		grid-column: 1 / span 2;
 	}
+	a.rockstar-interpreter-panel-toggle {
+		display: none;
+	}
+
+	div.rockstar-interpreter-panel {
+		height: 100% !important;
+	}
+
 	div.rockstar-inputs label {
 		display: none;
 	}
+
 	div.rockstar-inputs textarea.rockstar-stdin {
 		margin: 0;
 	}
+
 	div.rockstar-controls {
 		grid-column: 1 / span 2;
 		padding-top: 0px;
 	}
+
+	div.rockstar-controls div.output {
+		height: 100% important;
+	}
+
 	div.rockstar-args {
 		grid-column: 1 / span 2;
 	}
+
 	div.cm-editor {
 		width: 100%;
 		height: 100%;
@@ -71,7 +93,7 @@ nav_exclude: true
 </style>
 <a href="/"><img id="editor-logotype" src="/assets/img/rockstar-logotype-no-tail.svg" /></a>
 <main id="full-page-editor">
-	<pre data-controls="play,parse,reset,args,input" data-storage-key="rockstar-editor" id="rockstar-editor">
+	<pre data-controls="play,parse,reset,args,input,full" data-storage-key="rockstar-editor" id="rockstar-editor">
 		<code class="language-rockstar">Shout "Hello, World!"
 		</code>
 	</pre>
@@ -81,12 +103,12 @@ nav_exclude: true
 	</p>
 </main>
 <script>
-document
-	.getElementById("rockstar-editor")
-	.addEventListener("update", function (e) {
-		let viewUpdate = e.detail;
-		if (viewUpdate.docChanged) {
+	document
+		.getElementById("rockstar-editor")
+		.addEventListener("update", function (e) {
+			let viewUpdate = e.detail;
+			if (viewUpdate.docChanged) {
 
-		}
-	});
+			}
+		});
 </script>

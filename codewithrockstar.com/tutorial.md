@@ -13,7 +13,7 @@ Welcome! In this tutorial, you'll learn the basics of Rockstar, and find out wha
 
 {% rockstar_include print-hello-world.rock play %}
 
-All the examples in this tutorial are interactive: press the "Rock <i class="fa-solid fa-play"></i>" button to try it out and see what it does.
+All the examples in this tutorial are interactive: click on "Try It <i class="fa-solid fa-caret-down"></i>" to open the control panel, then press the "Rock <i class="fa-solid fa-play"></i>" button to run the code and see what it does.
 
 Because Rockstar's designed to write programs that look like song lyrics, it's very relaxed when it comes to syntax. Almost everything in Rockstar is case-insensitive, and most keywords have several different `aliases` so you can pick the one that suits the mood of your program.
 
@@ -100,7 +100,7 @@ To read input from the console, use `listen`. `Listen` on its own will read a li
 
 > For all kinds of complicated reasons, the Rockstar engine that runs on this website can't prompt you for input, so you'll need to provide the input in advance using the text box below the Rockstar editor.
 
-{% rockstar_include listen.rock %}
+{% rockstar_include listen.rock play,parse,reset,input %}
 ## Ninja Strings
 
 The problem with literal strings is they often don't fit the mood of the song you're trying to write. `FizzBuzz` is all well & good, but shouting the word "fizz" in the middle of power ballad just isn't gonna work.

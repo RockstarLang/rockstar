@@ -11,7 +11,7 @@ walk you through the basics and have you up and rocking in no time.
 
 ## "Hello, World"
 
-"Hello World" in Rockstar looks like this:
+"Hello, World" in Rockstar looks like this:
 
 {% rockstar_include hello-world.rock %}
 

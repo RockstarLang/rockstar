@@ -103,9 +103,6 @@ variable_list <IEnumerable<Variable>>
 	= head:variable _VLS_ tail:variable_list { head.Concat(tail) }
 	/ arg:variable_or_error { new List<Variable> { arg } }
 
-primary_or_error <Expression>
-	= p:(primary / #error{ "expected primary expression" }) { p }
-
 primary_list <IEnumerable<Expression>>
 	= head:primary _XLS_ tail:primary_list { head.Concat(tail) }
 	/ head:primary _XLS_ tail:primary { new List<Expression> { head, tail } }

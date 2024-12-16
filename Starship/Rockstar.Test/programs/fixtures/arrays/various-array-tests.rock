@@ -3,3 +3,9 @@ n=0
 r at i=0
 
 print r (prints: [ 0 ])
+
+
+foo is 1
+shout it (prints: 1)
+rock bar with it
+shout bar (prints: [ 1 ])

@@ -128,6 +128,11 @@ public class Strïng(string value) : ValueOf<string>(value), IEnumerable<(Value,
 		};
 	}
 
+	public Value Append(params Value[] values) {
+		foreach (var value in values) this.Append(value);
+		return this;
+	}
+
 	public Value Append(Value v) {
 		if (v is Numbër number) {
 			this.Value += (char) number.IntegerValue;

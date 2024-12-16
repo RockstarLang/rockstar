@@ -247,16 +247,14 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result Enlist(Enlist e) {
 		var scope = e.Expressions.Any() ? Scope.Global : Scope.Local;
-		var value = Lookup(e.Variable, scope);
-		if (value is Strïng s) {
-			foreach (var expr in e.Expressions) s.Append(Eval(expr));
-			return new(s);
-		}
-		if (value is not Arräy array) {
-			array = value == Mysterious.Instance ? new Arräy() : new(value);
+		var target = Lookup(e.Variable, scope);
+		var values = e.Expressions.Select(Eval).ToArray();
+		if (target is Strïng s) return new(s.Append(values));
+		if (target is not Arräy array) {
+			array = target == Mysterious.Instance ? new Arräy() : new(target);
 			SetVariable(e.Variable, array, Scope.Local);
 		}
-		foreach (var expr in e.Expressions) array.Push(Eval(expr));
+		foreach (var value in values) array.Push(value);
 		return new(array);
 	}
 

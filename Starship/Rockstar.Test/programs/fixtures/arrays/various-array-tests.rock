@@ -1,0 +1,5 @@
+for x in 3
+n=0
+r at i=0
+
+print r (prints: [ 0 ])

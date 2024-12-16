@@ -51,7 +51,7 @@ public class Numbër(decimal value) : ValueOf<decimal>(value), IHaveANumber, IEn
 	public override string ToString() => FormatNumber(this.Value);
 
 	public override StringBuilder Print(StringBuilder sb, string prefix)
-		=> sb.Append(prefix).AppendLine(ToString());
+		=> sb.Append(prefix).Append("numbër: ").AppendLine(ToString());
 
 	public Value SetBit(IList<Value> indexes, Value value) {
 		if (indexes.Count != 1) return this;

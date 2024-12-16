@@ -65,9 +65,9 @@ public class RockstarEnvironment(IRockstarIO io) {
 	public Result SetVariable(Variable variable, Value value, Scope scope = Scope.Global) {
 		var target = QualifyPronoun(variable);
 		var store = GetStore(target, scope);
-		if (variable is not Pronoun) UpdatePronounSubject(target);
 		var indexes = variable.Indexes.Select(Eval).ToList();
 		var stored = store.SetLocal(target, indexes, value);
+		if (variable.ShouldUpdatePronounWhenAssigned) UpdatePronounSubject(target);
 		return new(stored);
 	}
 

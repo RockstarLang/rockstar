@@ -8,6 +8,7 @@ public class Assign(Variable variable, Expression expression) : ExpressionStatem
 	public override StringBuilder Print(StringBuilder sb, string prefix) {
 		sb.AppendLine(prefix + "assign:");
 		variable.Print(sb, prefix + INDENT);
-		return Expression.Print(sb, prefix + INDENT);
+		sb.AppendLine(prefix + INDENT + "value:");
+		return Expression.Print(sb, prefix + INDENT + INDENT);
 	}
 }

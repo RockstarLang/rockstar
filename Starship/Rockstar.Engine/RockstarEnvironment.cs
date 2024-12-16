@@ -14,7 +14,7 @@ public enum Scope {
 public class RockstarEnvironment(IRockstarIO io) {
 	// This line will be automatically overwritten by GitHub Actions
 	// when the engine is built.
-	public const string VERSION = "v2.0.24";
+	public const string VERSION = "v2.0.25";
 
 	private const string ARGUMENTS_ARRAY_NAME = "__arguments__";
 	public static CommonVariable Arguments = new CommonVariable(ARGUMENTS_ARRAY_NAME);

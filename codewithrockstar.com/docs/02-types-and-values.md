@@ -31,7 +31,7 @@ The keywords `empty`, `silent`, and `silence` are aliases for the empty strin
 
 A Rockstar number is a 128-bit fixed-precision decimal, between -79,228,162,514,264,337,593,543,950,335 and +79,228,162,514,264,337,593,543,950,335.
 
-You get 29 digits, a minus sign if you need it, and a a decimal point you can put anywhere you like:
+You get 29 digits, a minus sign if you need it, and a decimal point you can put anywhere you like:
 
 {% rockstar_include number-limits.rock %}
 

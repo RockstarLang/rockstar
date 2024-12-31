@@ -16,9 +16,22 @@ Rockstar has three main components:
 To build the Starship engine, you'll need the .NET 9 SDK
 
 ```dotnetcli
+git clone https://github.com/RockstarLang/rockstar.git
+cd rockstar
+dotnet workload install wasm-tools
 dotnet build ./Starship/Starship.sln
 dotnet test ./Starship/
 ```
+
+To build a Rockstar native binary on Linux, you'll need `gcc` installed, and then:
+
+```
+git clone https://github.com/RockstarLang/rockstar.git
+cd rockstar
+dotnet publish ./Starship/Rockstar -o binaries -c Release
+```
+
+That'll create a standalone binary executable in `binaries/rockstar`.
 
 The `codewithrockstar.com` website is built with Jekyll and hosted on GitHub Pages.
 

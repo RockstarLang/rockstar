@@ -1191,6 +1191,9 @@
     <None Update="programs\fixtures\conditionals\if-statement.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="programs\fixtures\loops\assignment-inside-loop.rock">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

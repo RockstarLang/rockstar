@@ -371,6 +371,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	public Result Assign(Variable variable, Value value, Scope scope = Scope.Global) => value switch {
 		Functiön function => SetVariable(variable, MakeLambda(function, variable), Scope.Local),
+		Strïng strïng => SetVariable(variable, strïng.Clone(), scope),
 		_ => SetVariable(variable, value, scope)
 	};
 

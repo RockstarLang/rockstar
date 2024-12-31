@@ -1,0 +1,11 @@
+(writes: Hello!Hello!Hello!)
+for counter in 3
+hi = "Hello"
+rock hi with "!"
+write hi
+
+for counter in 3
+hi = 1
+hi is with 5
+write hi
+(writes: 666)

@@ -53,6 +53,8 @@ All subsequent parameters will be passed to your Rockstar program, where you can
 The use of comments in Rockstar programs is strongly discouraged. This is rock’n’roll; it’s up to the audience to find their own meaning. If you absolutely insist on commenting your Rockstar programs, comments should be contained in parentheses `()`. Yes, this means you can’t use brackets in arithmetic expressions and may need to decompose complex expressions into multiple evaluations and assignments.
 
 {% rockstar_include comments.rock %}
+
+Rockstar treats comments as whitespace; you can separate keywords and expressions with a comment -- `shout(comment)"hey!"` -- but you can't put a comment inside a keyword; `sh(comment)out "hey!"` is not valid Rockstar code.
 ### Line comments
 
 You can also use the `#` character to indicate a comment. Line comments last until the end of the line.

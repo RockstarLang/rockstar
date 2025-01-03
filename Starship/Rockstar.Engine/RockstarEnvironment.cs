@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text;
 using System.Text.RegularExpressions;
 using Rockstar.Engine.Expressions;
 using Rockstar.Engine.Statements;
@@ -116,6 +117,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 		Rounding r => Rounding(r),
 		Listen listen => Listen(listen),
 		Crement crement => Crement(crement),
+		Dump _ => Dump(),
 		Debug debug => Debug(debug),
 		ExpressionStatement e => ExpressionStatement(e),
 		Ninja n => Ninja(n),
@@ -149,10 +151,23 @@ public class RockstarEnvironment(IRockstarIO io) {
 		return new(value);
 	}
 
+	private Result Dump() {
+		var sb = new StringBuilder();
+		sb.AppendLine("======== DUMP ========");
+		foreach (var variable in variables) {
+			sb.Append(variable.Key).Append(" : ");
+			variable.Value.Dump(sb, "");
+		}
+		sb.AppendLine("======================");
+		var dump = sb.ToString();
+		Write(dump);
+		return new(new Strïng(dump));
+	}
+
 	private Result Crement(Crement crement) {
 		var variable = QualifyPronoun(crement.Variable);
 		return Eval(variable) switch {
-			Nüll n => Assign(variable, new Numbër(crement.Delta)),
+			Nüll => Assign(variable, new Numbër(crement.Delta)),
 			Booleän b => crement.Delta % 2 == 0 ? new(b) : Assign(variable, b.Negate),
 			IHaveANumber n => Assign(variable, new Numbër(n.Value + crement.Delta)),
 			Strïng s => s.IsEmpty ? Assign(variable, new Numbër(crement.Delta)) : throw new($"Cannot increment '{variable.Name}' - strings can only be incremented if they're empty"),

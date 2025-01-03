@@ -564,6 +564,9 @@
     <None Update="programs\examples\10-conversions\write-strings.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="programs\examples\12-deep-cuts\dump-arrays.rock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="programs\examples\99-appendix\acid-test.rock.in">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1190,6 +1193,9 @@
     </None>
     <None Update="programs\fixtures\conditionals\if-statement.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="programs\fixtures\debugging\dump.rock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="programs\fixtures\loops\assignment-inside-loop.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

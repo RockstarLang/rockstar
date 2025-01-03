@@ -171,4 +171,18 @@ public class Arräy : Value, IHaveANumber, IEnumerable<(Value, Numbër)> {
 		Numbër n => new Numbër(this.Lëngth.Value + n.Value),
 		_ => this.Concat(rhs)
 	};
+
+	public override StringBuilder Dump(StringBuilder sb, string prefix) {
+		sb.Append(prefix).AppendLine($"array [#{this.ObjectId}] [");
+		for (var i = 0; i < this.List.Count; i++) {
+			sb.Append(prefix + INDENT).Append(i).Append(" : ");
+			this.List[i].Dump(sb, prefix + INDENT);
+		}
+		foreach (var (key, value) in this.Hash) {
+			sb.Append(prefix + INDENT).Append(key).Append(" : ");
+			value.Dump(sb, prefix + INDENT);
+		}
+		sb.Append(prefix).AppendLine("]");
+		return sb;
+	}
 }

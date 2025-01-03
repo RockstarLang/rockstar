@@ -1,0 +1,10 @@
+x = 1
+my string = "hello"
+rock the array with x, my string, "token", true
+let the band at "Vocals" be "Axl"
+let the band at "Guitar" be "Slash"
+rock the array with the band
+rock the words with "alpha", "bravo", "charlie"
+rock the array with the words
+
+@dump

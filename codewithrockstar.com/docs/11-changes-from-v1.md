@@ -5,7 +5,6 @@ examples: /examples/11-changes-from-v1/
 nav_order: "1011"
 summary: "Great songs get rerecorded. Great records get remastered. Rockstar 2 introduced a bunch of new features, and a handful of breaking changes."
 ---
-
 In 2024, Rockstar was ported from JavaScript to C#/.NET, so that we could publish[ native binaries](https://github.com/RockstarLang/rockstar/releases) for Windows, Linux and macOS, and a web-based interpreter using WebAssembly.
 
 The old JavaScript interpreter powered by Satriani is still online at [old.codewithrockstar.com](https://old.codewithrockstar.com) but all future development will be on the .NET engine, which is codenamed "Starship" [for reasons that will become obvious](https://youtu.be/IDI2WQJyE7I?t=100).

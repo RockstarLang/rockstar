@@ -196,7 +196,9 @@ loop <Statement>
 		{ new UntilLoop(test,body) }
 
 output_stmt <Statement>
-	= debug _ e:expression_or_error
+	= dump
+		{ new Dump() }
+	/ debug _ e:expression_or_error
 		{ new Debug(e) }
 	/ write _ e:expression_or_error
 		{ new Output(e) }
@@ -590,6 +592,7 @@ call = 'call' !letter
 cast = 'cast' !letter / 'burn' !letter
 continue = 'continue' !letter / 'take' !letter
 debug = 'debug' !letter
+dump = '@dump'
 divided_by = 'divided' _ 'by' !letter / 'between' !letter / over
 down = 'down' !letter
 else = 'else' !letter / 'otherwise' !letter

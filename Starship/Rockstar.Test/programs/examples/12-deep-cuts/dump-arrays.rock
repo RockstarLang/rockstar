@@ -1,0 +1,10 @@
+Alpha is "one"
+let beta be alpha
+put beta into gamma
+@dump
+
+rock the array with alpha, beta, gamma
+@dump
+roll alpha
+@dump
+

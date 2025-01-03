@@ -1,8 +1,13 @@
+using System.Text;
 using Rockstar.Engine.Expressions;
 
 namespace Rockstar.Engine.Values;
 
 public abstract class Value : Expression {
+
+	private static int nextObjectId = 1;
+
+	public int ObjectId { get; } = Interlocked.Increment(ref nextObjectId);
 
 	public override bool Equals(object? obj)
 		=> obj?.GetType() == this.GetType() && Equals((Value) obj);
@@ -77,4 +82,7 @@ public abstract class Value : Expression {
 
 	public virtual Value AtIndex(Value index) => this;
 	public virtual Value Clone() => this;
+
+	public virtual StringBuilder Dump(StringBuilder sb, string prefix)
+		=> sb.AppendLine($"{this} [#{this.ObjectId}]");
 }

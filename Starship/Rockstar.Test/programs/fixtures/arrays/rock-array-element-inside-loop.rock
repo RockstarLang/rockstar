@@ -1,0 +1,13 @@
+# https://github.com/RockstarLang/rockstar/issues/374
+
+rock x1 "Sa"
+for y1 in 2
+for z1 in x1+"tr"
+write roll z1
+(writes: Stat)
+
+rock x2 "Sa"
+for y2 in 2
+for z2 in x2+"tr"*1
+write roll z2
+(writes: Stat)

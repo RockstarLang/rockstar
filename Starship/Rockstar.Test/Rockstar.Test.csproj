@@ -1170,6 +1170,9 @@
     <None Update="programs\examples\tutorial\print-hello-world.rock">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="programs\fixtures\arrays\rock-array-element-inside-loop.rock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="programs\fixtures\arrays\various-array-tests.rock">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

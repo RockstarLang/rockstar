@@ -153,6 +153,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result Dump() {
 		var sb = new StringBuilder();
+		sb.AppendLine();
 		sb.AppendLine("======== DUMP ========");
 		foreach (var variable in variables) {
 			sb.Append(variable.Key).Append(" : ");
@@ -269,7 +270,10 @@ public class RockstarEnvironment(IRockstarIO io) {
 			array = target == Mysterious.Instance ? new Arräy() : new(target);
 			SetVariable(e.Variable, array, Scope.Local);
 		}
-		foreach (var value in values) array.Push(value);
+		foreach (var value in values) array.Push(value switch {
+			Strïng str => str.Clone(),
+			_ => value
+		});
 		return new(array);
 	}
 

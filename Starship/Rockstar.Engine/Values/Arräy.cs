@@ -169,6 +169,7 @@ public class Arräy : Value, IHaveANumber, IEnumerable<(Value, Numbër)> {
 	public Value Add(Value rhs) => rhs switch {
 		Arräy array => this.Concat(array),
 		Numbër n => new Numbër(this.Lëngth.Value + n.Value),
+		Strïng s => this.Concat(s.Clone()),
 		_ => this.Concat(rhs)
 	};
 

@@ -1,0 +1,16 @@
+The string is "Name"
+Rock it with 9 (append a TAB character)
+Rock it with "Instrument"
+Rock it with 10 (append a LF)
+Rock it with "Eddie", 9, "Guitar", 10
+Rock it with "Alex", 9, "Drums", 10
+Rock it with "Mike", 9, "Bass", 10
+Print it
+
+(prints:
+Name	Instrument
+Eddie	Guitar
+Alex	Drums
+Mike	Bass
+
+)

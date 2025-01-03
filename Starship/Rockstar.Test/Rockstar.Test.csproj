@@ -81,6 +81,9 @@
     <None Update="programs\examples\02-types-and-values\number-overflow.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="programs\examples\02-types-and-values\unprintable-characters.rock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="programs\examples\02-types-and-values\string-literals.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1202,6 +1205,9 @@
     </None>
     <None Update="programs\fixtures\loops\assignment-inside-loop.rock">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="programs\fixtures\strings\string-literals.rock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

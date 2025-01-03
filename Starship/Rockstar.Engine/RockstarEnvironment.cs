@@ -134,7 +134,7 @@ public class RockstarEnvironment(IRockstarIO io) {
 
 	private Result Output(Output output) {
 		var value = Eval(output.Expression);
-		Write(Regex.Unescape(value.ToStrïng().Value));
+		Write(value.ToStrïng().Value);
 		Write(output.Suffix);
 		return new(value);
 	}

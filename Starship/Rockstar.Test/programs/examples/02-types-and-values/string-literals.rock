@@ -2,6 +2,8 @@ Print "this is a string literal"
 
 Print "This string includes ""quotes"""
 
+Print "backslashes \don't \do \anything \special \r\n\t\w\s\0"
+
 Print "This string
 contains
 line

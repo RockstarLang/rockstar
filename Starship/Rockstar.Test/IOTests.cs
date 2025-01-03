@@ -11,11 +11,12 @@ public class IOTests {
 	}
 
 	[Theory]
-	[InlineData("""A\nB""", new byte[] { 65, 10, 66 })]
-	[InlineData("""A\r\nB""", new byte[] { 65, 13, 10, 66 })]
-	[InlineData("""A\tB""", new byte[] { 65, 9, 66 })]
-	[InlineData("""A\\B""", new byte[] { 65, 92, 66 })]
-	public void EscapingOutputStringsWorks(string source, byte[] chars) {
+	[InlineData("""A\nB""", new byte[] { 65, 92, 110, 66 })]
+	[InlineData("""A\r\nB""", new byte[] { 65, 92, 114, 92, 110, 66 })]
+	[InlineData("""A\tB""", new byte[] { 65, 92, 116, 66 })]
+	[InlineData("""A\\B""", new byte[] { 65, 92, 92, 66 })]
+	[InlineData(@"\", new byte[] { 92 })]
+	public void BackspacesAreNotSpecial(string source, byte[] chars) {
 		var result = Run($"write \"{source}\"");
 		Encoding.UTF8.GetBytes(result).ShouldBe(chars);
 	}

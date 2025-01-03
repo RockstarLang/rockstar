@@ -23,6 +23,10 @@ Rockstar strings are surrounded by double quotes. A string literal includes ever
 The keywords `empty`, `silent`, and `silence` are aliases for the empty string (`""`)
 
 {% rockstar_include string-literals.rock %}
+
+A backslash in Rockstar doesn't do anything special, and Rockstar doesn't have escape sequences like `\n` or `\t`. If you need to add special characters to Rockstar strings, use the `rock` keyword to append characters based on their ASCII / Unicode code point:
+
+{% rockstar_include unprintable-characters.rock %}
 ## Numbers
 
 **Number literals** are written as ordinary digits; decimals and negative numbers are supported:
@@ -39,6 +43,7 @@ Numbers with more than 29 digits will be rounded to 29 digits if they have a dec
 
 {% rockstar_include number-29-digits.rock %}
 ## Booleans
+
 Rockstar supports the Boolean literals `true` (aliases: `yes`, `ok`, `right`) and `false` (aliases: `no`, `wrong`, `lies`).
 {% rockstar_include boolean-literals.rock %}
 ## Null

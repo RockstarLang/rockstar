@@ -1,5 +1,6 @@
 this is a string literal
 This string includes "quotes"
+backslashes \don't \do \anything \special \r\n\t\w\s\0
 This string
 contains
 line

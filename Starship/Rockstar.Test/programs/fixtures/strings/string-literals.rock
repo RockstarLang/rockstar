@@ -1,0 +1,4 @@
+the string = "A\tB"
+for every char in the string write the char
+print the string
+(prints: A\\tBA\\tB)

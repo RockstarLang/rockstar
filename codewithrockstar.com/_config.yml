@@ -1,8 +1,17 @@
 title: Rockstar
-description: Tommy used to work on the docs.
+tagline: Tommy used to work on the docs.
 theme: just-the-docs
 
 url: https://codewithrockstar.com
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      title: Rockstar
+      tagline: Tommy used to work on the docs.
+      image: /images/rockstar-og-image.jpg
+      description: "Rockstar is an esoteric programming language based on the ‘lyrical conventions of 1980s hard rock songs and power ballads.’. It was created by Dylan Beattie in 2018."
 
 color_scheme: darkstar
 

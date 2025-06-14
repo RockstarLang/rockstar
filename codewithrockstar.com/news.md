@@ -46,5 +46,5 @@ Solving Advent of Code in Rockstar is surprisingly popular: [/r/adventofcode?sea
 
 In 2021, [/u/CCC_037](https://old.reddit.com/user/CCC_037) completed the [whole of Advent of Code in Rockstar](https://old.reddit.com/r/adventofcode/comments/r7b7h0/2021_day_all_rockstar_listen_to_your_heart_a/)
 
-Sanguine Whale created [this submission for AoC 2022 day 1](https://www.youtube.com/watch?v=Z58ggY_URNM&t=61s), and actually set it to music.
+Sanguine Whale created [this submission for AoC 2022 day 1](https://www.youtube.com/watch?v=Z58ggY_URNM), and actually set it to music.
 

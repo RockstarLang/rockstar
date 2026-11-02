@@ -17,12 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Set up .NET 9 SDK
-        uses: actions/setup-dotnet@v4
+      - name: Set up .NET 10 SDK
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '9.x'
+          dotnet-version: '10.x'
       - name: Install .NET WASM workloads
         working-directory: ./Starship
         run: dotnet workload install wasm-tools
@@ -60,14 +60,14 @@ jobs:
         run: dotnet publish Starship/Rockstar.Wasm -o rockstar-wasm-binary -c Release
       - name: dotnet publish Linux binary
         run: dotnet publish Starship/Rockstar -o rockstar-linux-x64-binary -c Release
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         name: save rockstar-wasm-binary to cache
         id: save-rockstar-wasm-binary-to-cache
         with:
           enableCrossOsArchive: true
           path: rockstar-wasm-binary
           key: rockstar-wasm-binary-${{ github.run_id }}
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         name: save rockstar-linux-x64-binary to cache
         id: save-rockstar-linux-x64-binary-to-cache
         with:

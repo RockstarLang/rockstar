@@ -1,6 +1,6 @@
 namespace Rockstar.Test;
 
-public abstract class FixtureBase(ITestOutputHelper testOutputHelper) : RockstarTestBase(testOutputHelper) {
+public abstract class FixtureBase(ITestOutputHelper testOutputHelper) : RockstarTestBase {
 	private readonly ITestOutputHelper output = testOutputHelper;
 
 	protected static readonly string ExamplesDirectory = Path.Combine("programs", "examples");

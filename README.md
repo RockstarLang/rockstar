@@ -13,7 +13,7 @@ Rockstar has three main components:
 
 ### Building Rockstar
 
-To build the Starship engine, you'll need the .NET 9 SDK
+To build the Starship engine, you'll need the .NET 10 SDK
 
 ```dotnetcli
 git clone https://github.com/RockstarLang/rockstar.git
@@ -74,13 +74,13 @@ In dev mode, I use symbolic directory links between the various parts of the pro
 
 ```
 > cd codewithrockstar.com
-> mklink /d wasm ..\Starship\Rockstar.Wasm\bin\Debug\net8.0-browser
+> mklink /d wasm ..\Starship\Rockstar.Wasm\bin\Debug\net10.0-browser
 > mklink /d examples ..\Starship\Rockstar.Test\programs\examples
 ```
 
 ```
 codewithrockstar.com
-  /wasm --> [ /Starship/Rockstar.Wasm/bin/Debug/net8.0-browser ]
+  /wasm --> [ /Starship/Rockstar.Wasm/bin/Debug/net10.0-browser ]
   /examples --> [ /Starship/Rockstar.Test/programs/examples ]
   /index.html
   /example.md

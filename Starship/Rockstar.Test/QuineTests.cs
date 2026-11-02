@@ -1,6 +1,6 @@
 namespace Rockstar.Test;
 
-public class QuineTests(ITestOutputHelper testOutputHelper) : RockstarTestBase(testOutputHelper) {
+public class QuineTests(ITestOutputHelper testOutputHelper) : RockstarTestBase {
 	//[Theory]
 	//[InlineData("quine")]
 	//[InlineData("this is a quine")]

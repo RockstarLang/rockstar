@@ -11,11 +11,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up .NET 9 SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/checkout@v7
+      - name: Set up .NET 10 SDK
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '9.x'
+          dotnet-version: '10.x'
       - name: Patch VERSION constant inside Starship/Rockstar.Engine/RockstarEnvironment.cs
         run: sed -i "" 's/VERSION = "[^"]*";/VERSION = "${{ inputs.rockstar_version }}";/g' Starship/Rockstar.Engine/RockstarEnvironment.cs
       - name: dotnet publish macos x64 binary
@@ -25,14 +25,14 @@ jobs:
       - name: Test ARM64 binary
         run:
           rockstar-macos-arm64-binary/rockstar --version
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         name: Save rockstar-macos-x64-binary to cache
         id: save-rockstar-macos-x64-binary-to-cache
         with:
           enableCrossOsArchive: true
           path: rockstar-macos-x64-binary
           key: rockstar-macos-x64-binary-${{ github.run_id }}
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         name: Save rockstar-macos-arm64-binary to cache
         id: save-rockstar-macos-arm64-binary-to-cache
         with:

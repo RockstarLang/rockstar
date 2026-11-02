@@ -1,6 +1,6 @@
 namespace Rockstar.Test;
 
-public abstract class RockstarTestBase(ITestOutputHelper testOutputHelper) {
+public abstract class RockstarTestBase {
 
 	protected readonly Parser Parser = new();
 
@@ -8,9 +8,9 @@ public abstract class RockstarTestBase(ITestOutputHelper testOutputHelper) {
 		=> RunProgram(Parser.Parse(program), inputs);
 
 	protected (Result Result, string Output) RunProgram(Program program, Queue<string>? inputs = null) {
-		string? ReadInput() => inputs != null && inputs.TryDequeue(out var result) ? result : null;
 		var env = new TestEnvironment(ReadInput);
 		var result = env.Execute(program);
 		return (result, env.Output);
+		string? ReadInput() => inputs != null && inputs.TryDequeue(out var input) ? input : null;
 	}
 }

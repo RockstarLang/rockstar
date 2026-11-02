@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.WebAssembly">
 	<PropertyGroup>
-		<TargetFramework>net9.0-browser</TargetFramework>
+		<TargetFramework>net10.0-browser</TargetFramework>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -16,9 +16,6 @@
 		<OutputType>exe</OutputType>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Runtime.WebAssembly.Sdk" Version="8.0.0" PrivateAssets="all" />
-	  </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Rockstar.Engine\Rockstar.Engine.csproj" />
 	</ItemGroup>

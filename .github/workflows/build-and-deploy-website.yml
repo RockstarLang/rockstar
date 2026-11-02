@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -38,9 +38,9 @@ jobs:
           working-directory: ./codewithrockstar.com
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
       - name: fetch rockstar-wasm-binary from cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         id: restore-cached-wasm-binary
         with:
           enableCrossOsArchive: true
@@ -48,6 +48,10 @@ jobs:
           key: rockstar-wasm-binary
       - name: Copy WASM binaries into site source
         run: cp -r rockstar-wasm-binary/ codewithrockstar.com/wasm/
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26'
       - name: build CodeMirror editor bundle with Rockstar language support
         run: |
           cd cm-lang-rockstar
@@ -62,7 +66,7 @@ jobs:
         env:
           JEKYLL_ENV: production
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./codewithrockstar.com/_site
   deploy:
@@ -74,4 +78,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

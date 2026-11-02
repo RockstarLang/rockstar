@@ -1,21 +1,20 @@
 import * as fs from "fs"
 import * as path from "path"
 import { fileURLToPath } from 'url';
-import { parser } from "../src/grammars/rockstar.js";
+import { errors } from "./helpers.js";
 
-let caseDir = path.dirname(fileURLToPath(import.meta.url))
-let examples = path.join(caseDir, "../../codewithrockstar.com/examples/");
-var allFiles = fs.readdirSync(examples, { recursive: true });
-var rockFiles = [];
-for (var file of allFiles) {
-	if (! /\.rock$/.test(file)) continue;
-	rockFiles.push(file);
-}
+// Every Rockstar program in the engine's own test suite should parse without
+// errors, apart from the ones that are there to test error handling.
+const testDir = path.dirname(fileURLToPath(import.meta.url));
+const programs = path.join(testDir, "../../Starship/Rockstar.Test/programs/");
 
-test.each(rockFiles)("parser parses %p", (file) => {
- 	let source = fs.readFileSync(path.join(examples, file), "utf8");
-	expect(source.length).not.toBe(0);
- 	// let result = parser.parse(source);
- 	//console.log(result.toString());
+const rockFiles = fs.readdirSync(programs, { recursive: true })
+	.filter(file => /\.rock$/.test(file))
+	.filter(file => !fs.readFileSync(path.join(programs, file), "utf8").includes("(error: "));
+
+test("found the test programs", () => expect(rockFiles.length).toBeGreaterThan(200));
+
+test.each(rockFiles)("%s parses without errors", file => {
+	const source = fs.readFileSync(path.join(programs, file), "utf8");
+	expect(errors(source)).toEqual([]);
 });
-

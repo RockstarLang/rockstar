@@ -1,153 +1,241 @@
+// Lezer grammar for Rockstar 2, derived from Starship/Rockstar.Engine/rockstar.peg
+//
+// Rockstar can't be tokenized without knowing where you are in the parse:
+// "with" might be addition, "using" or part of a call statement; "say" might
+// be print or the start of a poetic string; any word after "like" is a poetic
+// digit. So nearly every token is produced by one contextual external
+// tokenizer (src/tokenizers/rockstar-lexer.js), which asks the parser which
+// tokens it can accept (stack.canShift) before deciding what a word means.
+// The grammar below is therefore mostly about structure.
+
 @external propSource highlighting from "./rockstar-highlight.js"
 
-@top Program {
-	Block (EOB+ Block)* EOF
-	| EOF
+@precedence {
+	call,
+	index,
+	list,
+	times @left,
+	plus @left,
+	compare @left,
+	not,
+	equal @left,
+	and @right,
+	nor @right,
+	or @right,
+	assign,
+	else @right
 }
 
-Block {
-	Statement (EOS* Statement)* EOB
-	| Statement EOF
+@top Program { statement? (EOS statement? | glue statement)* }
+
+@skip { space | LineComment | BlockComment | Noise | StrayEnd | PoeticNoise }
+
+// ---------------------------------------------------------------- statements
+
+statement[@isGroup=Statement] {
+	ListenStatement
+	| OutputStatement
+	| FunctionDefinition
+	| CallStatement
+	| ReturnStatement
+	| BreakStatement
+	| ContinueStatement
+	| WhileLoop
+	| UntilLoop
+	| ForLoop
+	| Conditional
+	| Declaration
+	| Assignment
+	| Enlistment
+	| Crement
+	| Mutation
+	| Rounding
+	| ExitStatement
+	| NinjaString
+	| ExpressionStatement
 }
 
-@skip { Whitespace | Comment }
+// A block body starts with a newline (or a comma) and ends with an EOB:
+// a blank line, "end"/"yeah"/"baby"/"oh"/"ooh", the end of the file,
+// or (zero-width) just before an "else".
+Block { (EOS+ | Comma) statement (EOS statement? | glue statement)* EOB }
 
-Comment { LineComment | BlockComment }
+// `glue` is a zero-width separator the tokenizer inserts when a statement
+// follows an end-of-block word on the same line: "..., oh baby, whisper it"
 
-Statement {
- 	ListenStatement
- 	| OutputStatement
-// 	| Function
-// 	| FunctionCall
-// 	| CallStatement
- 	| ReturnStatement
- 	| BreakStatement
- 	| ContinueStatement
- 	| LoopStatement
-// 	//| ConditionalStatement
-// 	// | DeclarationStatement
- 	| Assignment
-// 	// | Enlistment
-// 	// | Increment
-// 	// | Decrement
-// 	// | Mutation
-// 	// | Rounding
-	 Expression
+body { Block | statement }
+
+ListenStatement { Listen (To target)? }
+
+OutputStatement { Dump | (Debug | Write | Print) expression }
+
+FunctionDefinition { FunctionName Takes (Null | ParamList) body }
+
+ParamList { variable ((AndSep | ListSep) variable)* }
+
+CallStatement { Call FunctionName (With ArgList)? (Into target)? }
+
+ReturnStatement { Return Back? expression Back? }
+
+BreakStatement { Break Wildcard? }
+
+ContinueStatement { Continue Wildcard? }
+
+WhileLoop { While expression body }
+
+UntilLoop { Until expression body }
+
+ForLoop { For Every? variable (AndSep variable)? (In | Of) expression body }
+
+Conditional { If expression Then? (body (!else Else body)? | Else body) }
+
+Declaration {
+	Let target (
+		Be compoundOp expressionList
+		| Be expression
+		| "=" expression
+	)?
 }
-
-// @precedence { VLS, XLS, ALS, Wildcard, Whitespace, EOS, EOB, And }
-
-Body { EOS+ Block | Statement }
-
-// Alternate { EOS+ Else Body | Else Body }
-
-// // ConditionalStatement {
-// // 	"if" Expression "then" Body "else" Body "end"
-// // 	//If Expression Then? Body Alternate
-// // 	//| If Expression Else Alternate
-// // 	//| If Expression Then? Body
-// // }
-
- LoopStatement {
- 	While Expression Body
-	| Until Expression Body
- }
-
-ContinueStatement { Continue Wildcard }
-
-BreakStatement { Break Wildcard }
-
-ReturnStatement { Return Back? Expression  }
-
-// Function {
-// 	variable Takes variableList Body
-// }
-
- CallStatement {
- 	Call variable With argumentList Into assignable
- 	| Call variable With argumentList
- 	| Call variable Into assignable
- 	| Call variable
-}
-
-FunctionCall {
- 	variable Taking argumentList
-}
-
-argumentList { Primary ALS argumentList | Primary }
-
-variableList { variable VLS variableList | variable | Null }
 
 Assignment {
-	Put Expression Into assignable |
-	variable Says PoeticString |
-	variable Is Operator Expression |
-	variable Is Now Expression |
-	variable Is PoeticNumber
-	variable Is Expression
+	target !assign "=" expression
+	| Put expression Into target
+	| target Says PoeticString?
+	| target !assign Is (
+		Now? expression
+		| compoundOp expressionList
+		| V1PoeticNumber
+	)
 }
 
-ListenStatement { Listen To assignable }
-OutputStatement { Print Expression }
-// Boolean { True | False }
-
-Expression {  Binary }
-
-Binary { Primary Operator Binary }
-
-Operator { LogicOperator | ArithmeticOperator | CompareOperator }
-
-Primary {
- 	String | Number | Lookup | Constant
-// 	//| constant | function_call | delist
+Enlistment {
+	Push expression Into target
+	| Push target (Using? expressionList)?
+	| Delist Into target
 }
 
-Constant { True | False | Empty | Null | Mysterious }
-
-Indexer { At Expression }
-
-assignable { variable Indexer* }
-
-Lookup { variable Indexer* } // (At index)* }
-
-variable { ProperVariable | CommonVariable | SimpleVariable | Pronoun }
-
-@external tokens Variables from "../tokenizers/rockstar-tokenizer" { ProperVariable, CommonVariable, SimpleVariable, Pronoun }
-@external tokens Operators from "../tokenizers/rockstar-tokenizer" { LogicOperator, CompareOperator, ArithmeticOperator }
-@external tokens PoeticNumber from "../tokenizers/rockstar-tokenizer" { PoeticNumber }
-@external tokens PoeticString from "../tokenizers/rockstar-tokenizer" { PoeticString }
-@external tokens EOB from "../tokenizers/rockstar-tokenizer" { EOB }
-@external tokens EOS from "../tokenizers/rockstar-tokenizer" { EOS }
-@external tokens Wildcard from "../tokenizers/rockstar-tokenizer" { Wildcard }
-
-@external tokens Keywords from "../tokenizers/rockstar-tokenizer" {
-	Above, And, Around, As, At, Back, Be, Break, Build, Call, Cast,
-	Continue, Debug, Divided, Down, Else, Empty, End, Exactly, False,
-	Great, His, If, Into, Is, Isnt, Join, Knock, Less, Let, Like,
-	Listen, Minus, More, Mysterious, Non, Nor, Not, Now, Null, Or, Over,
-	Plus,  Pop, Print, Push, Put, Return, Says, Small, Split, Takes,
-	Taking, Than, The, Then, Times, To, True, Turn, Under, Until, Up,
-	Using, While, With, Write
+Crement {
+	Build variable (Comma? Up)+
+	| Knock variable (Comma? Down)+
 }
 
-ALS { OxfordComma | XLS }
-VLS { and | XLS }
-XLS { Comma Ampersand? | Nacton | Ampersand | Comma }
+Mutation {
+	(Split | Cast | Join) expression (
+		Into target (Using expression)?
+		| Using expression (Into target)?
+	)?
+}
+
+Rounding {
+	Turn (Up | Down | Around) variable
+	| Turn variable (Up | Down | Around)
+}
+
+ExitStatement { Exit }
+
+NinjaString { target Holds (PoeticNumber | Number) }
+
+ExpressionStatement { expression }
+
+target { Lookup }
+
+// --------------------------------------------------------------- expressions
+
+expression[@isGroup=Expression] {
+	primary
+	| BinaryExpression
+	| UnaryExpression
+}
+
+BinaryExpression {
+	expression !times (timesOp | divideOp) (expression | PrimaryList)
+	| expression !plus (plusOp | minusOp) (expression | PrimaryList)
+	| expression !compare comparator expression
+	| expression !equal equalOp expression
+	| expression !and And expression
+	| expression !nor Nor expression
+	| expression !or Or expression
+}
+
+UnaryExpression { (Not | Non) !not expression }
+
+PrimaryList { primary (!list ListSep primary)+ }
+
+expressionList { expression (ListSep expression)* }
+
+primary {
+	FunctionCall
+	| Delist
+	| constant
+	| String
+	| Number
+	| PoeticLiteral
+	| Lookup
+}
+
+FunctionCall { FunctionName Taking ArgList }
+
+ArgList { primary (!call ListSep primary)* }
+
+Delist { (Roll | Pop) variable }
+
+Lookup { variable (!index Index)* }
+
+Index { At expression }
+
+FunctionName { variable }
+
+constant { Null | True | False | Empty | Mysterious }
+
+PoeticLiteral { Like PoeticNumber }
+
+PoeticNumber { PoeticDigit+ (PoeticDecimal PoeticDigit+)? }
+
+V1PoeticNumber { PoeticDigit+ (V1Decimal PoeticDigit+)? }
+
+variable { SimpleVariable | CommonVariable | ProperVariable | Pronoun | Arguments }
+
+plusOp { Plus | "+" }
+minusOp { Minus | "-" }
+timesOp { Times | "*" }
+divideOp { DividedBy | "/" }
+
+compoundOp { plusOp | minusOp | timesOp | divideOp }
+
+comparator {
+	">=" | "<=" | ">" | "<"
+	| Is As AsGreat As
+	| Is As AsSmall As
+	| Is (Above | More Than)
+	| Is (Under | Less Than)
+}
+
+equalOp {
+	Is Exactly?
+	| Isnt Exactly?
+	| "="
+	| "!="
+}
+
+// -------------------------------------------------------------------- tokens
+
+@external tokens rockstarTokens from "../tokenizers/rockstar-tokenizer.js" {
+	EOS, EOB, glue, Comma, ListSep, AndSep, Noise, StrayEnd,
+	LineComment, BlockComment,
+	PoeticString, PoeticDigit, PoeticDecimal, V1Decimal, PoeticNoise, Wildcard,
+	SimpleVariable, CommonVariable, ProperVariable, Pronoun, Arguments,
+	Above, And, Around, As, AsGreat, AsSmall, At, Back, Be, Break, Build,
+	Call, Cast, Continue, Debug, DividedBy, Down, Else, Empty, Every, Exit,
+	Exactly, False, For, Holds, If, In, Into, Is, Isnt, Join, Knock, Less,
+	Let, Like, Listen, Minus, More, Mysterious, Non, Nor, Not, Now, Null, Of,
+	Or, Plus, Pop, Print, Push, Put, Return, Roll, Says, Split, Takes, Taking,
+	Than, Then, Times, To, True, Turn, Under, Until, Up, Using, While, With, Write
+}
 
 @tokens {
-	OxfordComma { ", " and }
-	Ampersand { "&" }
-	Comma { "," }
- 	trailing_punctuation { (Comma | $[.?!;: \t])* }
-	and { "AND" | "ANd" | "AnD" | "And" | "aND" | "aNd" | "anD" | "and" }
- 	Nacton { "n'" | "'n'" }
- 	EOL { $[\r]? "\n" }
- 	LineComment { "#" ![\n]* "\n" }
- 	String { '"' (!["\\] | "\\" _)* '"' }
- 	Number { (@digit+ "." | ".")? @digit+ }
- 	BlockComment { "(" ![\)]* ")" | "{" ![\}]* "}" | "[" ![\]]* "]" }
- 	Whitespace { $[ \r\n\t]+ }
- 	EOF { @eof }
+	space { $[ \t]+ }
+	Number { @digit+ ("." @digit+)? | "." @digit+ } // signed numbers come from the external tokenizer
+	String { ('"' ![\"]* '"')+ }
+	Dump { "@dump" }
+	"=" "!=" ">=" "<=" ">" "<" "+" "-" "*" "/"
 }
-
-@detectDelim

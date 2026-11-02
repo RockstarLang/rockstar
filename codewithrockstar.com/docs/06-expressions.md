@@ -39,25 +39,7 @@ Rockstar grammar supports three different kinds of lists:
 * Variable lists
 * Primary lists
 
-Foo is 1 with 2 + 3, 4, 5 and 6, bar taking 7, 8 and 9, 10, "yeah"
-
-First, `8 and 9` cannot be a function argument (functions only accept primaries), so `bar taking 7` is an expression:
-
-Foo is 1 with 2 + 3, 4, 5 and 6, (bar taking 7), 8 and 9, 10, "yeah"
-
-Second, ` and `  (with no leading comma) is always the logical-and operator, and the right-hand operand in a logic expression can't be a list:
-
-Foo is 1 with 2 + 3, 4, (5 and 6), (bar taking 7), (8 and 9), 10, "yeah"
-
-So now we propagate the `+` operator to each adjacent pair of arguments
-
-Foo is 1 + 2 + 3 + 4 + (5 and 6) + (bar taking 7) + (8 and 9) + 10 + yeah
-
-So from the left:
-
-1 with (2 + 3, 4, )
-
-The most restrictive is the **primary list**, used in compound arithmetic expressions:
+The most restrictive is the **primary list**, used in compound arithmetic expressions.
 
 Elements in a primary list must be primary expressions. A **primary expression** in Rockstar is anything which yields a value without using any operators. Primaries are literal strings and numbers, variables, function calls, and language constants.
 

@@ -59,7 +59,7 @@ Consider this example from a C-like language:
 ```c
 if (x) {
 	if (y) {
-		if (z {
+		if (z) {
 			print "this might get printed"
 		}
 	}

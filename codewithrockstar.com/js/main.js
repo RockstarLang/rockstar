@@ -311,7 +311,7 @@ document.querySelectorAll(('code.language-rockstar')).forEach((codeElement) => {
 		content: originalSource,
 		editorElement: preElement,
 		parseTreeTextarea: document.getElementById('parseTreeTextarea'),
-		language: Rockstar, // Rockstar
+		languageSupport: Rockstar,
 		theme: deepPurple, // kitchenSink
 		editorId: editorId,
 		storageKey: storageKey

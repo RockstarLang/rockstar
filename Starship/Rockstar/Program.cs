@@ -22,7 +22,7 @@ public static class Program {
 						showTiming = true;
 						break;
 				}
-				if (arg.EndsWith(".rock", StringComparison.OrdinalIgnoreCase)) rockstarProgramFile = arg;
+				if (arg == "-" || arg.EndsWith(".rock", StringComparison.OrdinalIgnoreCase)) rockstarProgramFile = arg;
 			} else {
 				programArguments.Add(arg);
 			}
@@ -46,7 +46,8 @@ public static class Program {
 		Stopwatch? sw = null;
 		IRockstarIO io = new ConsoleIO();
 		var env = new RockstarEnvironment(io, args);
-		var source = File.ReadAllText(path).ReplaceLineEndings();
+		var source = path == "-" ? Console.In.ReadToEnd() : File.ReadAllText(path);
+		source = source.ReplaceLineEndings();
 		if (showTiming) {
 			sw = new();
 			sw.Start();

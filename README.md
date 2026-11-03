@@ -8,7 +8,7 @@ This is Rockstar, an esoteric programming language whose syntax is inspired by t
 Rockstar has three main components:
 
 * `/Starship` contains the Starship interpreter for Rockstar, built in C# and .NET
-* `/cm-lang-rockstar` contains the CodeMirror editor used on the Rockstar website
+* `/codemirror-lang-rockstar` contains the CodeMirror editor used on the Rockstar website
 * `/codewithrockstar.com` contains the Rockstar website, docs and examples
 
 ### Building Rockstar

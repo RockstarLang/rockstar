@@ -54,7 +54,7 @@ jobs:
           node-version: '26'
       - name: build CodeMirror editor bundle with Rockstar language support
         run: |
-          cd cm-lang-rockstar
+          cd codemirror-lang-rockstar
           npm install
           npm run test
           npm run prepare

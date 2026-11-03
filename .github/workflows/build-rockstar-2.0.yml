@@ -7,6 +7,8 @@ on:
       - '.github/workflows/build-rockstar-*.yml'
       - '.github/workflows/build-windows-binary.yml'
       - '.github/workflows/build-macos-binary.yml'
+      - 'codemirror-lang-rockstar/**'
+      - '.github/workflows/publish-codemirror-lang-rockstar.yml'
   workflow_dispatch:
   workflow_call:
 concurrency:

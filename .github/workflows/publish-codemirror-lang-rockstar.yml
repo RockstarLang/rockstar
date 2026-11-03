@@ -1,0 +1,62 @@
+name: publish-codemirror-lang-rockstar
+on:
+  # Run after the engine is rebuilt, so the package version matches the engine version
+  workflow_run:
+    workflows: ['build-rockstar-2.0']
+    types: [completed]
+    branches: ['main']
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write # npm trusted publishing (OIDC) and provenance
+concurrency:
+  group: "publish-codemirror-lang-rockstar"
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./codemirror-lang-rockstar
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # Latest main, which includes the VERSION commit pushed by build-rockstar-2.0
+          ref: main
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Get version from RockstarEnvironment.cs
+        id: version
+        run: |
+          VERSION=$(sed -n 's/.*VERSION = "v\([^"]*\)".*/\1/p' ../Starship/Rockstar.Engine/RockstarEnvironment.cs)
+          if [ -z "$VERSION" ]; then
+            echo "::error::Could not read VERSION from Starship/Rockstar.Engine/RockstarEnvironment.cs"
+            exit 1
+          fi
+          echo "Rockstar engine version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: Check whether this version is already on npm
+        id: check
+        run: |
+          if npm view "@rockstarlang/codemirror-lang-rockstar@${{ steps.version.outputs.version }}" version 2>/dev/null | grep -q .; then
+            echo "@rockstarlang/codemirror-lang-rockstar@${{ steps.version.outputs.version }} is already published, skipping."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Set package version
+        if: steps.check.outputs.skip != 'true'
+        run: npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
+      - name: Install dependencies and build
+        if: steps.check.outputs.skip != 'true'
+        # package-lock.json is gitignored, so npm ci isn't available; `prepare` runs the build.
+        run: npm install
+      - name: Publish to npm
+        if: steps.check.outputs.skip != 'true'
+        # prepublishOnly runs the tests. Trusted publishing adds provenance automatically.
+        run: npm publish --access public

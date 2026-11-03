@@ -28,13 +28,12 @@ export const highlighting = styleTags({
 
 	// Punctuation
 	"EOS Comma": t.punctuation,
-	"ListSep AndSep": t.separator,
+	"ListSep AndSep At": t.separator,
 
 	// Operators
 	"Plus Minus Times DividedBy \"+\" \"-\" \"*\" \"/\"": t.arithmeticOperator,
 	"Is Isnt Exactly Above Under More Less Than As AsGreat AsSmall \"=\" \"!=\" \">=\" \"<=\" \">\" \"<\"": t.compareOperator,
 	"And Or Nor Not Non": t.logicOperator,
-	At: t.derefOperator,
 
 	// Control flow
 	"If Then Else While Until For Every In Of Break Continue Return Back Exit EOB StrayEnd": t.controlKeyword,

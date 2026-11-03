@@ -41,15 +41,20 @@ export const deepPurple = createTheme({
 			],
 			color: '#ff9c04',
 		},
-		// Numbers and constants; poetic numbers are italic and a lighter shade
+		// Numbers; poetic numbers are italic and a lighter shade
 		{
-			tag: [t.number, t.bool, t.null],
+			tag: t.number,
 			color: '#ff00a8',
 		},
 		{
 			tag: t.special(t.number),
 			color: '#ff7ad9',
 			fontStyle: 'italic',
+		},
+		// Constants (true, false, null, mysterious, empty/silence)
+		{
+			tag: [t.bool, t.null, t.constant(t.string)],
+			color: '#a8ff60',
 		},
 		// Keywords
 		{

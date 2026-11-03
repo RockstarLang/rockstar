@@ -59,4 +59,6 @@ jobs:
       - name: Publish to npm
         if: steps.check.outputs.skip != 'true'
         # prepublishOnly runs the tests. Trusted publishing adds provenance automatically.
-        run: npm publish --access public
+        # No --access flag: the package is already public, and sending access with an
+        # OIDC token was refused with "403 OIDC permission denied for this action".
+        run: npm publish
